@@ -1,13 +1,16 @@
 Audio
 =====
 
-*Generate sine wave with PortAudio.*
+*Generate music with PortAudio.*
 
 # Usage
 
 Run:
 
-    gcc run.c -o run -lportaudio -Wall -Wextra -O3 && ./run
+    gcc src/run.c -o bin/run -Wall -Wextra -O3 && ./bin/run && afplay output/run.wav
+
+If using player:
+    gcc src/run.c -o bin/run -lportaudio -Wall -Wextra -O3 && ./bin/run
 
 # License
 

@@ -1,1 +1,2 @@
-run
+bin/run
+output/*.wav

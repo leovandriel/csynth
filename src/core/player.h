@@ -1,34 +1,31 @@
-#include <stdio.h>
-#include <math.h>
-#include "portaudio.h"
+#ifndef COMPOSER_PLAYER_H
+#define COMPOSER_PLAYER_H
 
+#include <stdio.h>
+#include <portaudio.h>
+
+#include "func.h"
+
+#define SAMPLE_RATE 44100
 #define INPUT_CHANNELS 0
 #define OUTPUT_CHANNELS 1
-#define SAMPLE_RATE 44100
 #define FRAMES_PER_BUFFER 256
-#define DURATION_SECONDS 10
-
-#define CYCLE_SECONDS 4
 
 typedef struct
 {
-    unsigned long long index;
+    unsigned long index;
+    int rate;
+    Func *root;
 } UserData;
 
-static int callback(__attribute__((unused)) const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer, __attribute__((unused)) const PaStreamCallbackTimeInfo *timeInfo, __attribute__((unused)) PaStreamCallbackFlags statusFlags, void *userData)
+static int callback(__attribute__((unused)) const void *argBuffer, void *outputBuffer, unsigned long framesPerBuffer, __attribute__((unused)) const PaStreamCallbackTimeInfo *timeInfo, __attribute__((unused)) PaStreamCallbackFlags statusFlags, void *userData)
 {
     UserData *data = (UserData *)userData;
     float *out = (float *)outputBuffer;
-    for (unsigned int frame = 0; frame < framesPerBuffer; frame++)
+    for (unsigned long frame = 0; frame < framesPerBuffer; frame++)
     {
-        float t = data->index / (float)SAMPLE_RATE;
-        float phase = 0;
-        float time = fmodf(t + phase, (float)CYCLE_SECONDS);
-        float fade = (1 - cosf(2 * M_PI * time / CYCLE_SECONDS)) / 2;
-        float frequency = 440 + 440 * time / CYCLE_SECONDS;
-        float amplitude = sinf(2 * M_PI * frequency * time) * fade;
-        *out++ = amplitude;
-        data->index++;
+        double output = func_eval(data->root, data->index++, data->rate);
+        *out++ = (float)(output > 1.0 ? 1.0 : output < -1.0 ? -1.0 : output);
     }
     return 0;
 }
@@ -40,20 +37,24 @@ int error(PaError err)
     return 1;
 }
 
-int main(void)
+int play(Func *root, double duration)
 {
     PaError err = Pa_Initialize();
     if (err != paNoError)
         return error(err);
+    func_init(root, SAMPLE_RATE);
+    UserData data = {
+        .root = root,
+        .rate = SAMPLE_RATE,
+    };
     PaStream *stream;
-    UserData data = {0};
     err = Pa_OpenDefaultStream(&stream, INPUT_CHANNELS, OUTPUT_CHANNELS, paFloat32, SAMPLE_RATE, FRAMES_PER_BUFFER, callback, &data);
     if (err != paNoError)
         return error(err);
     err = Pa_StartStream(stream);
     if (err != paNoError)
         return error(err);
-    Pa_Sleep(DURATION_SECONDS * 1000);
+    Pa_Sleep(duration * 1000);
     err = Pa_StopStream(stream);
     if (err != paNoError)
         return error(err);
@@ -61,5 +62,8 @@ int main(void)
     if (err != paNoError)
         return error(err);
     Pa_Terminate();
+    func_free(root);
     return 0;
 }
+
+#endif // COMPOSER_PLAYER_H
