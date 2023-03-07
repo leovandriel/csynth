@@ -3,7 +3,7 @@
 
 #include "../core/func.h"
 
-double smooth_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *_context)
+double smooth_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *context)
 {
     unsigned long edge0 = func_eval(args[0], index, rate) * rate;
     unsigned long edge1 = func_eval(args[1], index, rate) * rate;

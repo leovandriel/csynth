@@ -3,7 +3,7 @@
 
 #include "../core/func.h"
 
-double step_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *_context)
+double step_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *context)
 {
     unsigned long span = func_eval(args[0], index, rate) * rate;
     return index < span ? 0.0 : 1.0;

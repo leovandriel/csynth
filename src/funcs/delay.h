@@ -3,7 +3,7 @@
 
 #include "../core/func.h"
 
-double delay_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *_context)
+double delay_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *context)
 {
     unsigned long span = func_eval(args[1], index, rate) * rate;
     double output = 0.0;
