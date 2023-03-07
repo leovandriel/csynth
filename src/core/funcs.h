@@ -18,7 +18,6 @@
 #include "../funcs/notes.h"
 #include "../funcs/reverb.h"
 #include "../funcs/saw.h"
-#include "../funcs/scale.h"
 #include "../funcs/sine.h"
 #include "../funcs/smooth.h"
 #include "../funcs/square.h"

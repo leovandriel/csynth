@@ -13,7 +13,7 @@ func beep_boop()
     func melody = sum_3(beep, boop1, boop2);
     func looped = loop(melody, cons(1.6));
     func echoed = reverb(looped, cons(.2), cons(.5));
-    func scaled = scale(echoed, cons(.1));
+    func scaled = mul(echoed, cons(.1));
     return scaled;
 }
 
@@ -26,7 +26,7 @@ func shapes()
                     mul(saw(A5), cons(.25)), cons(0.3), ZERO, cons(0.2),
                     ZERO);
     func looped = loop(all, cons(2));
-    func scaled = scale(looped, cons(.1));
+    func scaled = mul(looped, cons(.1));
     return scaled;
 }
 
@@ -56,7 +56,7 @@ func beats()
                          ZERO);
     func composition = sum_3(base_line, hat_line, low_line);
     func looped = loop(composition, cons(8));
-    func scaled = scale(looped, cons(.1));
+    func scaled = mul(looped, cons(.1));
     return scaled;
 }
 
@@ -92,7 +92,7 @@ func filters()
                             mul(sine(A4), cons(.25)), cons(1), highs, mul(each, cons(count)),
                             ZERO);
     func looped = loop(composition, cons(2 * count + 2));
-    func scaled = scale(looped, cons(.1));
+    func scaled = mul(looped, cons(.1));
     return scaled;
 }
 
@@ -110,7 +110,7 @@ func lows()
     }
     func composition = comp_args(80, inputs);
     func looped = loop(composition, cons(40));
-    func scaled = scale(looped, cons(.1));
+    func scaled = mul(looped, cons(.1));
     return scaled;
 }
 
