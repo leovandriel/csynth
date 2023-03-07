@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 #include "../core/func.h"
 
@@ -14,11 +15,11 @@ typedef struct
     unsigned long max;
 } ReverbContext;
 
-double reverb_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, void *_context)
+double reverb_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
 {
     ReverbContext *context = (ReverbContext *)_context;
     double input = func_eval(args[0], index, rate);
-    unsigned long size = func_eval(args[1], index, rate) * rate;
+    unsigned long size = round(func_eval(args[1], index, rate) * rate);
     double decay = func_eval(args[2], index, rate);
     if (size != context->size)
     {

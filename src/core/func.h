@@ -8,8 +8,8 @@
 typedef struct Func Func;
 typedef Func *func;
 
-typedef double (*eval_func)(unsigned long index, int rate, Func **args, int count, void *context);
-typedef void (*init_func)(int rate, Func **args, int count, void *context);
+typedef double (*eval_func)(unsigned long index, double rate, Func **args, int count, void *context);
+typedef void (*init_func)(double rate, Func **args, int count, void *context);
 typedef void (*free_func)(void *context);
 
 struct Func
@@ -73,7 +73,7 @@ Func *func_create(init_func init, eval_func eval, free_func free, size_t size, v
     return func;
 }
 
-void func_init(Func *func, int rate)
+void func_init(Func *func, double rate)
 {
     for (int i = 0; i < func->count; i++)
     {
@@ -110,7 +110,7 @@ void func_free(Func *func)
     }
 }
 
-double func_eval(Func *func, int index, int rate)
+double func_eval(Func *func, int index, double rate)
 {
     return func->eval(index, rate, func->args, func->count, func->context);
 }

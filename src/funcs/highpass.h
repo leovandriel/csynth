@@ -11,7 +11,7 @@ typedef struct
     double output;
 } HighpassContext;
 
-double highpass_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, void *_context)
+double highpass_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
 {
     HighpassContext *context = (HighpassContext *)_context;
     double input = func_eval(args[0], index, rate);

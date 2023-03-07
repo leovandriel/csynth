@@ -5,7 +5,7 @@
 
 #include "../core/func.h"
 
-double mul_eval(unsigned long index, int rate, Func **args, int count, __attribute__((unused)) void *context)
+double mul_eval(unsigned long index, double rate, Func **args, int count, __attribute__((unused)) void *context)
 {
     double output = 1.0;
     for (int i = 0; i < count; i++)

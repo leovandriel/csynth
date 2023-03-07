@@ -2,6 +2,7 @@
 #define COMPOSER_COMP_H
 
 #include <stdarg.h>
+#include <math.h>
 
 #include "../core/func.h"
 
@@ -12,13 +13,13 @@ typedef struct
     unsigned long index;
 } CompContext;
 
-double comp_eval(unsigned long index, int rate, Func **args, int count, void *_context)
+double comp_eval(unsigned long index, double rate, Func **args, int count, void *_context)
 {
     CompContext *context = (CompContext *)_context;
     unsigned long lower = 0;
     for (int item = 0; item < count / 2; item++)
     {
-        unsigned long span = func_eval(args[item * 2 + 1], index, rate) * rate;
+        unsigned long span = round(func_eval(args[item * 2 + 1], index, rate) * rate);
         double upper = context->rel_abs ? lower + span : span;
         if (index >= lower && index < upper)
         {

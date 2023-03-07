@@ -1,6 +1,8 @@
 #ifndef COMPOSER_LOOP_H
 #define COMPOSER_LOOP_H
 
+#include <math.h>
+
 #include "../core/func.h"
 
 typedef struct
@@ -8,10 +10,10 @@ typedef struct
     unsigned long index;
 } LoopContext;
 
-double loop_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, void *_context)
+double loop_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
 {
     LoopContext *context = (LoopContext *)_context;
-    unsigned long duration = func_eval(args[1], index, rate) * rate;
+    unsigned long duration = round(func_eval(args[1], index, rate) * rate);
     if (index >= context->index + duration)
     {
         context->index = index;

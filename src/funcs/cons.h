@@ -8,7 +8,7 @@ typedef struct
     double value;
 } ConsContext;
 
-double cons_eval(__attribute__((unused)) unsigned long index, __attribute__((unused)) int rate, __attribute__((unused)) Func **args, __attribute__((unused)) int count, void *_context)
+double cons_eval(__attribute__((unused)) unsigned long index, __attribute__((unused)) double rate, __attribute__((unused)) Func **args, __attribute__((unused)) int count, void *_context)
 {
     ConsContext *context = (ConsContext *)_context;
     return context->value;

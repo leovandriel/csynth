@@ -11,7 +11,7 @@ typedef struct
     double direction;
 } SineContext;
 
-double sine_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, void *_context)
+double sine_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
 {
     SineContext *context = (SineContext *)_context;
     double frequency = func_eval(args[0], index, rate);

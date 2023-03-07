@@ -9,10 +9,10 @@ typedef struct
     double index;
 } SquareContext;
 
-double square_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, void *_context)
+double square_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
 {
     SquareContext *context = (SquareContext *)_context;
-    unsigned long span = rate / (func_eval(args[0], index, rate) * 2.0);
+    unsigned long span = round(rate / (func_eval(args[0], index, rate) * 2.0));
     if (index >= context->index + span)
     {
         context->index = index;

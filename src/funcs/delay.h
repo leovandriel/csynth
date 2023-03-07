@@ -1,11 +1,13 @@
 #ifndef COMPOSER_DELAY_H
 #define COMPOSER_DELAY_H
 
+#include <math.h>
+
 #include "../core/func.h"
 
-double delay_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *context)
+double delay_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *context)
 {
-    unsigned long span = func_eval(args[1], index, rate) * rate;
+    unsigned long span = round(func_eval(args[1], index, rate) * rate);
     double output = 0.0;
     if (index >= span)
     {

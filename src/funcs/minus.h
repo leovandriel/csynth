@@ -3,7 +3,7 @@
 
 #include "../core/func.h"
 
-double minus_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *context)
+double minus_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *context)
 {
     double a = func_eval(args[0], index, rate);
     double b = func_eval(args[1], index, rate);

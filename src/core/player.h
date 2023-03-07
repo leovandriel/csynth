@@ -14,7 +14,7 @@
 typedef struct
 {
     unsigned long index;
-    int rate;
+    double rate;
     Func *root;
 } UserData;
 

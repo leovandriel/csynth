@@ -10,7 +10,7 @@ typedef struct
     double output;
 } LowpassContext;
 
-double lowpass_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, void *_context)
+double lowpass_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
 {
     LowpassContext *context = (LowpassContext *)_context;
     double input = func_eval(args[0], index, rate);

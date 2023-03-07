@@ -9,7 +9,7 @@ typedef struct
     double direction;
 } TriangleContext;
 
-double triangle_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, void *_context)
+double triangle_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
 {
     TriangleContext *context = (TriangleContext *)_context;
     double frequency = func_eval(args[0], index, rate);

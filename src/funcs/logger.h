@@ -16,7 +16,7 @@ typedef struct
     unsigned long count;
 } LoggerContext;
 
-double logger_eval(unsigned long index, int rate, Func **args, __attribute__((unused)) int count, void *_context)
+double logger_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
 {
     LoggerContext *context = (LoggerContext *)_context;
     double input = func_eval(args[0], index, rate);
@@ -33,14 +33,14 @@ double logger_eval(unsigned long index, int rate, Func **args, __attribute__((un
         const char *pass = at_zero ? "zero" : at_min ? "min"
                                           : at_max   ? "max"
                                                      : "";
-        double time = (double)index / rate;
+        double time = index / rate;
         double delta = input - context->output;
         double frequency = -1.0;
         if (at_zero)
         {
             if (context->zero1 != -1)
             {
-                frequency = (double)rate / (index - context->zero1);
+                frequency = rate / (index - context->zero1);
             }
             context->zero1 = context->zero0;
             context->zero0 = index;
@@ -49,7 +49,7 @@ double logger_eval(unsigned long index, int rate, Func **args, __attribute__((un
         {
             if (context->min != -1)
             {
-                frequency = (double)rate / (index - context->min);
+                frequency = rate / (index - context->min);
             }
             context->min = index;
         }
@@ -57,7 +57,7 @@ double logger_eval(unsigned long index, int rate, Func **args, __attribute__((un
         {
             if (context->max != -1)
             {
-                frequency = (double)rate / (index - context->max);
+                frequency = rate / (index - context->max);
             }
             context->max = index;
         }
