@@ -1,9 +1,9 @@
 #ifndef COMPOSER_REVERB_H
 #define COMPOSER_REVERB_H
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 
 #include "../core/func.h"
 

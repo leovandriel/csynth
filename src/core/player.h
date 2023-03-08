@@ -1,8 +1,8 @@
 #ifndef COMPOSER_PLAYER_H
 #define COMPOSER_PLAYER_H
 
-#include <stdio.h>
 #include <portaudio.h>
+#include <stdio.h>
 
 #include "func.h"
 

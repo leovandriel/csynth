@@ -1,6 +1,8 @@
 #ifndef COMPOSER_SQUARE_H
 #define COMPOSER_SQUARE_H
 
+#include <math.h>
+
 #include "../core/func.h"
 
 typedef struct

@@ -1,8 +1,8 @@
 #ifndef COMPOSER_COMP_H
 #define COMPOSER_COMP_H
 
-#include <stdarg.h>
 #include <math.h>
+#include <stdarg.h>
 
 #include "../core/func.h"
 

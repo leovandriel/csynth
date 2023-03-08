@@ -1,8 +1,8 @@
 #ifndef COMPOSER_MIN_H
 #define COMPOSER_MIN_H
 
-#include <stdarg.h>
 #include <float.h>
+#include <stdarg.h>
 
 #include "../core/func.h"
 

@@ -1,8 +1,8 @@
 #ifndef COMPOSER_FUNC_H
 #define COMPOSER_FUNC_H
 
-#include <stdlib.h>
 #include <stdarg.h>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct Func Func;

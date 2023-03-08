@@ -1,8 +1,8 @@
 #ifndef COMPOSER_MAX_H
 #define COMPOSER_MAX_H
 
-#include <stdarg.h>
 #include <float.h>
+#include <stdarg.h>
 
 #include "../core/func.h"
 
