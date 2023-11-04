@@ -28,7 +28,7 @@ typedef struct
     uint32_t data_size;
 } FileHeader;
 
-void write(Func *root, double duration, const char *filename)
+void write_file(Func *root, double duration, const char *filename)
 {
     size_t count = duration * SAMPLE_RATE;
     FileHeader header = {0};
@@ -67,6 +67,11 @@ void write(Func *root, double duration, const char *filename)
     }
     func_free(root);
     fclose(file);
+}
+
+void write(Func *root, double duration)
+{
+    write_file(root, duration, "output/default.wav");
 }
 
 #endif // COMPOSER_WRITER_H

@@ -1,6 +1,5 @@
 #include "./core/funcs.h"
 #include "./core/writer.h"
-// #include "./core/player.h"
 
 func beep_boop()
 {
@@ -117,12 +116,10 @@ func lows()
 
 int main(void)
 {
-    // write(beep_boop(), 60, "output/beep_boop.wav");
-    // write(beats(), 60, "output/beats.wav");
-    // write(shapes(), 60, "output/shapes.wav");
-    // write(filters(), 60, "output/filters.wav");
-    // write(lows(), 60, "output/lows.wav");
-    write(beep_boop(), 60, "output/run.wav");
-    // play(beep_boop(), 60);
+    write(beep_boop(), 15);
+    // write(beats(), 15);
+    // write(shapes(), 30);
+    // write(filters(), 30);
+    // write(lows(), 30);
     return 0;
 }

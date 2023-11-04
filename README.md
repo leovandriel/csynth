@@ -1,17 +1,13 @@
-Audio
-=====
+# CSynth
 
-*Generate music with PortAudio.*
+*A simple synth in C.*
 
-# Usage
+## Usage
 
-Run:
+Run (replace `afplay` with wav player):
 
-    gcc src/run.c -o bin/run -Wall -Wextra -O3 && ./bin/run && afplay output/run.wav
+    gcc src/run.c -o bin/run -Wall -Wextra -O3 && ./bin/run && afplay output/default.wav
 
-If using player:
-    gcc src/run.c -o bin/run -lportaudio -Wall -Wextra -O3 && ./bin/run
-
-# License
+## License
 
 MIT
