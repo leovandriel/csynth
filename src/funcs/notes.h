@@ -1,8 +1,6 @@
 #ifndef COMPOSER_NOTES_H
 #define COMPOSER_NOTES_H
 
-// python: print("\n".join(f'#define {["A","As","Bb","B","C","Cs","Db","D","Ds","Eb","E","F","Fs","Gb","G","Gs","Ab"][i%17]}{i//17} cons(440 * pow(2, {round(i*12/17-59.95)} / 12.0)) // {440*(2**(round(i*12/17-59.95)/12)):.2f}' for i in range(17*11)))
-
 #define A0 cons(440 * pow(2, -60 / 12.0))  // 13.75
 #define As0 cons(440 * pow(2, -59 / 12.0)) // 14.57
 #define Bb0 cons(440 * pow(2, -59 / 12.0)) // 14.57
@@ -190,5 +188,19 @@
 #define G10 cons(440 * pow(2, 70 / 12.0))  // 25087.71
 #define Gs10 cons(440 * pow(2, 71 / 12.0)) // 26579.50
 #define Ab10 cons(440 * pow(2, 71 / 12.0)) // 26579.50
+
+static const char *note_names[] = {"A", "As", "Bb", "B", "C", "Cs", "Db", "D", "Ds", "Eb", "E", "F", "Fs", "Gb", "G", "Gs", "Ab"};
+
+void print_notes_h(void)
+{
+    for (int i = 0; i < 17 * 11; i++)
+    {
+        const char *note = note_names[i % 17];
+        int octave = i / 17;
+        int index = round(i * 12.0 / 17 - 59.95);
+        double freq = 440 * pow(2, index / 12.0);
+        printf("#define %s%d cons(440 * pow(2, %d / 12.0)) // %.2f\n", note, octave, index, freq);
+    }
+}
 
 #endif // COMPOSER_NOTES_H
