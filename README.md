@@ -6,7 +6,7 @@
 
 Run (replace `afplay` with wav player):
 
-    gcc src/run.c -o bin/run -Wall -Wextra -O3 && ./bin/run && afplay output/default.wav
+    gcc src/run.c -o bin/run -Wall -Wextra -O3 && ./bin/run && afplay output/run.wav
 
 ## License
 

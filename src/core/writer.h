@@ -71,7 +71,7 @@ void write_file(Func *root, double duration, const char *filename)
 
 void write(Func *root, double duration)
 {
-    write_file(root, duration, "output/default.wav");
+    write_file(root, duration, "output/run.wav");
 }
 
 #endif // COMPOSER_WRITER_H
