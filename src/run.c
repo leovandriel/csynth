@@ -8,7 +8,7 @@ func beep_boop()
     func beep = mul(high, block(0, .1));
     func boop1 = mul(low, block(.4, .5));
     func boop2 = mul(low, block(1, 1.1));
-    func melody = sum(beep, boop1, boop2);
+    func melody = add(beep, boop1, boop2);
     func looped = loop(melody, _(1.6));
     func echoed = reverb(looped, _(.2), _(.5));
     func scaled = mul(echoed, _(.1));
@@ -30,7 +30,7 @@ func shapes()
 func beats()
 {
     func base = mul(sine(A1), hump(0, 0.01, .05, .1), _(2));
-    func hat = mul(sum(saw(A5), noise()), hump(0, 0.005, 0.005, .01), _(.5));
+    func hat = mul(add(saw(A5), noise()), hump(0, 0.005, 0.005, .01), _(.5));
     func base_line = comp(
         base, _(1.25), base, _(.75),
         base, _(1.25), base, _(.5), base, _(.25),
@@ -48,7 +48,7 @@ func beats()
         mul(sine(E1), hump(0, 0.05, .45, .5), _(8)), _(.5),
         mul(sine(A1), hump(0, 0.05, 1.95, 2), _(8)), _(2),
         mul(sine(C1), hump(0, 0.05, 1.95, 2), _(8)), _(2));
-    func composition = sum(base_line, hat_line, low_line);
+    func composition = add(base_line, hat_line, low_line);
     func looped = loop(composition, _(8));
     func scaled = mul(looped, _(.1));
     return scaled;

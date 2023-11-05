@@ -1,6 +1,7 @@
 #ifndef COMPOSER_FUNCS_H
 #define COMPOSER_FUNCS_H
 
+#include "../funcs/add.h"
 #include "../funcs/comp.h"
 #include "../funcs/cons.h"
 #include "../funcs/delay.h"
@@ -22,7 +23,6 @@
 #include "../funcs/smooth.h"
 #include "../funcs/square.h"
 #include "../funcs/step.h"
-#include "../funcs/sum.h"
 #include "../funcs/triangle.h"
 
 #endif // COMPOSER_FUNCS_H
