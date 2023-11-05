@@ -22,4 +22,6 @@ Func *cons(double value)
     return func_create(NULL, cons_eval, NULL, sizeof(ConsContext), &initial, 0);
 }
 
+#define _(...) cons(__VA_ARGS__)
+
 #endif // COMPOSER_CONS_H
