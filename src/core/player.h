@@ -11,20 +11,13 @@
 #define OUTPUT_CHANNELS 1
 #define FRAMES_PER_BUFFER 256
 
-typedef struct
-{
-    unsigned long index;
-    double rate;
-    Func *root;
-} UserData;
-
 static int callback(__attribute__((unused)) const void *argBuffer, void *outputBuffer, unsigned long framesPerBuffer, __attribute__((unused)) const PaStreamCallbackTimeInfo *timeInfo, __attribute__((unused)) PaStreamCallbackFlags statusFlags, void *userData)
 {
-    UserData *data = (UserData *)userData;
+    Func *func = (Func *)userData;
     float *out = (float *)outputBuffer;
     for (unsigned long frame = 0; frame < framesPerBuffer; frame++)
     {
-        double output = func_eval(data->root, data->index++, 1.0 / data->rate);
+        double output = func_eval(func);
         *out++ = (float)(output > 1.0 ? 1.0 : output < -1.0 ? -1.0
                                                             : output);
     }
@@ -44,12 +37,8 @@ int play(Func *root, double duration)
     if (err != paNoError)
         return error(err);
     func_init(root, 1.0 / SAMPLE_RATE);
-    UserData data = {
-        .root = root,
-        .rate = SAMPLE_RATE,
-    };
     PaStream *stream;
-    err = Pa_OpenDefaultStream(&stream, INPUT_CHANNELS, OUTPUT_CHANNELS, paFloat32, SAMPLE_RATE, FRAMES_PER_BUFFER, callback, &data);
+    err = Pa_OpenDefaultStream(&stream, INPUT_CHANNELS, OUTPUT_CHANNELS, paFloat32, SAMPLE_RATE, FRAMES_PER_BUFFER, callback, root);
     if (err != paNoError)
         return error(err);
     err = Pa_StartStream(stream);
