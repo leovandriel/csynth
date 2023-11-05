@@ -8,6 +8,7 @@
 #include "../funcs/comp.h"
 #include "../funcs/cons.h"
 #include "../funcs/delay.h"
+#include "../funcs/division.h"
 #include "../funcs/helpers.h"
 #include "../funcs/high_pass.h"
 #include "../funcs/limit.h"
@@ -26,6 +27,7 @@
 #include "../funcs/smooth.h"
 #include "../funcs/square.h"
 #include "../funcs/step.h"
+#include "../funcs/timer.h"
 #include "../funcs/triangle.h"
 
 #endif // COMPOSER_FUNCS_H

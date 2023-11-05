@@ -2,8 +2,8 @@
 
 func beep_boop()
 {
-    func high = sine(A3);
-    func low = mul(saw(A1), _(.5));
+    func high = sine(A4);
+    func low = mul(saw(A2), _(.5));
     func beep = mul(high, block_(0, .1));
     func boop1 = mul(low, block_(.4, .5));
     func boop2 = mul(low, block_(1, 1.1));
