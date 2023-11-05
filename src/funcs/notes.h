@@ -1,10 +1,6 @@
 #ifndef COMPOSER_NOTES_H
 #define COMPOSER_NOTES_H
 
-#define A0 cons(440 * pow(2, -60 / 12.0))  // 13.75
-#define As0 cons(440 * pow(2, -59 / 12.0)) // 14.57
-#define Bb0 cons(440 * pow(2, -59 / 12.0)) // 14.57
-#define B0 cons(440 * pow(2, -58 / 12.0))  // 15.43
 #define C0 cons(440 * pow(2, -57 / 12.0))  // 16.35
 #define Cs0 cons(440 * pow(2, -56 / 12.0)) // 17.32
 #define Db0 cons(440 * pow(2, -56 / 12.0)) // 17.32
@@ -18,10 +14,10 @@
 #define G0 cons(440 * pow(2, -50 / 12.0))  // 24.50
 #define Gs0 cons(440 * pow(2, -49 / 12.0)) // 25.96
 #define Ab0 cons(440 * pow(2, -49 / 12.0)) // 25.96
-#define A1 cons(440 * pow(2, -48 / 12.0))  // 27.50
-#define As1 cons(440 * pow(2, -47 / 12.0)) // 29.14
-#define Bb1 cons(440 * pow(2, -47 / 12.0)) // 29.14
-#define B1 cons(440 * pow(2, -46 / 12.0))  // 30.87
+#define A0 cons(440 * pow(2, -48 / 12.0))  // 27.50
+#define As0 cons(440 * pow(2, -47 / 12.0)) // 29.14
+#define Bb0 cons(440 * pow(2, -47 / 12.0)) // 29.14
+#define B0 cons(440 * pow(2, -46 / 12.0))  // 30.87
 #define C1 cons(440 * pow(2, -45 / 12.0))  // 32.70
 #define Cs1 cons(440 * pow(2, -44 / 12.0)) // 34.65
 #define Db1 cons(440 * pow(2, -44 / 12.0)) // 34.65
@@ -35,10 +31,10 @@
 #define G1 cons(440 * pow(2, -38 / 12.0))  // 49.00
 #define Gs1 cons(440 * pow(2, -37 / 12.0)) // 51.91
 #define Ab1 cons(440 * pow(2, -37 / 12.0)) // 51.91
-#define A2 cons(440 * pow(2, -36 / 12.0))  // 55.00
-#define As2 cons(440 * pow(2, -35 / 12.0)) // 58.27
-#define Bb2 cons(440 * pow(2, -35 / 12.0)) // 58.27
-#define B2 cons(440 * pow(2, -34 / 12.0))  // 61.74
+#define A1 cons(440 * pow(2, -36 / 12.0))  // 55.00
+#define As1 cons(440 * pow(2, -35 / 12.0)) // 58.27
+#define Bb1 cons(440 * pow(2, -35 / 12.0)) // 58.27
+#define B1 cons(440 * pow(2, -34 / 12.0))  // 61.74
 #define C2 cons(440 * pow(2, -33 / 12.0))  // 65.41
 #define Cs2 cons(440 * pow(2, -32 / 12.0)) // 69.30
 #define Db2 cons(440 * pow(2, -32 / 12.0)) // 69.30
@@ -52,10 +48,10 @@
 #define G2 cons(440 * pow(2, -26 / 12.0))  // 98.00
 #define Gs2 cons(440 * pow(2, -25 / 12.0)) // 103.83
 #define Ab2 cons(440 * pow(2, -25 / 12.0)) // 103.83
-#define A3 cons(440 * pow(2, -24 / 12.0))  // 110.00
-#define As3 cons(440 * pow(2, -23 / 12.0)) // 116.54
-#define Bb3 cons(440 * pow(2, -23 / 12.0)) // 116.54
-#define B3 cons(440 * pow(2, -22 / 12.0))  // 123.47
+#define A2 cons(440 * pow(2, -24 / 12.0))  // 110.00
+#define As2 cons(440 * pow(2, -23 / 12.0)) // 116.54
+#define Bb2 cons(440 * pow(2, -23 / 12.0)) // 116.54
+#define B2 cons(440 * pow(2, -22 / 12.0))  // 123.47
 #define C3 cons(440 * pow(2, -21 / 12.0))  // 130.81
 #define Cs3 cons(440 * pow(2, -20 / 12.0)) // 138.59
 #define Db3 cons(440 * pow(2, -20 / 12.0)) // 138.59
@@ -69,10 +65,10 @@
 #define G3 cons(440 * pow(2, -14 / 12.0))  // 196.00
 #define Gs3 cons(440 * pow(2, -13 / 12.0)) // 207.65
 #define Ab3 cons(440 * pow(2, -13 / 12.0)) // 207.65
-#define A4 cons(440 * pow(2, -12 / 12.0))  // 220.00
-#define As4 cons(440 * pow(2, -11 / 12.0)) // 233.08
-#define Bb4 cons(440 * pow(2, -11 / 12.0)) // 233.08
-#define B4 cons(440 * pow(2, -10 / 12.0))  // 246.94
+#define A3 cons(440 * pow(2, -12 / 12.0))  // 220.00
+#define As3 cons(440 * pow(2, -11 / 12.0)) // 233.08
+#define Bb3 cons(440 * pow(2, -11 / 12.0)) // 233.08
+#define B3 cons(440 * pow(2, -10 / 12.0))  // 246.94
 #define C4 cons(440 * pow(2, -9 / 12.0))   // 261.63
 #define Cs4 cons(440 * pow(2, -8 / 12.0))  // 277.18
 #define Db4 cons(440 * pow(2, -8 / 12.0))  // 277.18
@@ -86,10 +82,10 @@
 #define G4 cons(440 * pow(2, -2 / 12.0))   // 392.00
 #define Gs4 cons(440 * pow(2, -1 / 12.0))  // 415.30
 #define Ab4 cons(440 * pow(2, -1 / 12.0))  // 415.30
-#define A5 cons(440 * pow(2, 0 / 12.0))    // 440.00
-#define As5 cons(440 * pow(2, 1 / 12.0))   // 466.16
-#define Bb5 cons(440 * pow(2, 1 / 12.0))   // 466.16
-#define B5 cons(440 * pow(2, 2 / 12.0))    // 493.88
+#define A4 cons(440 * pow(2, 0 / 12.0))    // 440.00
+#define As4 cons(440 * pow(2, 1 / 12.0))   // 466.16
+#define Bb4 cons(440 * pow(2, 1 / 12.0))   // 466.16
+#define B4 cons(440 * pow(2, 2 / 12.0))    // 493.88
 #define C5 cons(440 * pow(2, 3 / 12.0))    // 523.25
 #define Cs5 cons(440 * pow(2, 4 / 12.0))   // 554.37
 #define Db5 cons(440 * pow(2, 4 / 12.0))   // 554.37
@@ -103,10 +99,10 @@
 #define G5 cons(440 * pow(2, 10 / 12.0))   // 783.99
 #define Gs5 cons(440 * pow(2, 11 / 12.0))  // 830.61
 #define Ab5 cons(440 * pow(2, 11 / 12.0))  // 830.61
-#define A6 cons(440 * pow(2, 12 / 12.0))   // 880.00
-#define As6 cons(440 * pow(2, 13 / 12.0))  // 932.33
-#define Bb6 cons(440 * pow(2, 13 / 12.0))  // 932.33
-#define B6 cons(440 * pow(2, 14 / 12.0))   // 987.77
+#define A5 cons(440 * pow(2, 12 / 12.0))   // 880.00
+#define As5 cons(440 * pow(2, 13 / 12.0))  // 932.33
+#define Bb5 cons(440 * pow(2, 13 / 12.0))  // 932.33
+#define B5 cons(440 * pow(2, 14 / 12.0))   // 987.77
 #define C6 cons(440 * pow(2, 15 / 12.0))   // 1046.50
 #define Cs6 cons(440 * pow(2, 16 / 12.0))  // 1108.73
 #define Db6 cons(440 * pow(2, 16 / 12.0))  // 1108.73
@@ -120,10 +116,10 @@
 #define G6 cons(440 * pow(2, 22 / 12.0))   // 1567.98
 #define Gs6 cons(440 * pow(2, 23 / 12.0))  // 1661.22
 #define Ab6 cons(440 * pow(2, 23 / 12.0))  // 1661.22
-#define A7 cons(440 * pow(2, 24 / 12.0))   // 1760.00
-#define As7 cons(440 * pow(2, 25 / 12.0))  // 1864.66
-#define Bb7 cons(440 * pow(2, 25 / 12.0))  // 1864.66
-#define B7 cons(440 * pow(2, 26 / 12.0))   // 1975.53
+#define A6 cons(440 * pow(2, 24 / 12.0))   // 1760.00
+#define As6 cons(440 * pow(2, 25 / 12.0))  // 1864.66
+#define Bb6 cons(440 * pow(2, 25 / 12.0))  // 1864.66
+#define B6 cons(440 * pow(2, 26 / 12.0))   // 1975.53
 #define C7 cons(440 * pow(2, 27 / 12.0))   // 2093.00
 #define Cs7 cons(440 * pow(2, 28 / 12.0))  // 2217.46
 #define Db7 cons(440 * pow(2, 28 / 12.0))  // 2217.46
@@ -137,10 +133,10 @@
 #define G7 cons(440 * pow(2, 34 / 12.0))   // 3135.96
 #define Gs7 cons(440 * pow(2, 35 / 12.0))  // 3322.44
 #define Ab7 cons(440 * pow(2, 35 / 12.0))  // 3322.44
-#define A8 cons(440 * pow(2, 36 / 12.0))   // 3520.00
-#define As8 cons(440 * pow(2, 37 / 12.0))  // 3729.31
-#define Bb8 cons(440 * pow(2, 37 / 12.0))  // 3729.31
-#define B8 cons(440 * pow(2, 38 / 12.0))   // 3951.07
+#define A7 cons(440 * pow(2, 36 / 12.0))   // 3520.00
+#define As7 cons(440 * pow(2, 37 / 12.0))  // 3729.31
+#define Bb7 cons(440 * pow(2, 37 / 12.0))  // 3729.31
+#define B7 cons(440 * pow(2, 38 / 12.0))   // 3951.07
 #define C8 cons(440 * pow(2, 39 / 12.0))   // 4186.01
 #define Cs8 cons(440 * pow(2, 40 / 12.0))  // 4434.92
 #define Db8 cons(440 * pow(2, 40 / 12.0))  // 4434.92
@@ -154,10 +150,10 @@
 #define G8 cons(440 * pow(2, 46 / 12.0))   // 6271.93
 #define Gs8 cons(440 * pow(2, 47 / 12.0))  // 6644.88
 #define Ab8 cons(440 * pow(2, 47 / 12.0))  // 6644.88
-#define A9 cons(440 * pow(2, 48 / 12.0))   // 7040.00
-#define As9 cons(440 * pow(2, 49 / 12.0))  // 7458.62
-#define Bb9 cons(440 * pow(2, 49 / 12.0))  // 7458.62
-#define B9 cons(440 * pow(2, 50 / 12.0))   // 7902.13
+#define A8 cons(440 * pow(2, 48 / 12.0))   // 7040.00
+#define As8 cons(440 * pow(2, 49 / 12.0))  // 7458.62
+#define Bb8 cons(440 * pow(2, 49 / 12.0))  // 7458.62
+#define B8 cons(440 * pow(2, 50 / 12.0))   // 7902.13
 #define C9 cons(440 * pow(2, 51 / 12.0))   // 8372.02
 #define Cs9 cons(440 * pow(2, 52 / 12.0))  // 8869.84
 #define Db9 cons(440 * pow(2, 52 / 12.0))  // 8869.84
@@ -171,10 +167,10 @@
 #define G9 cons(440 * pow(2, 58 / 12.0))   // 12543.85
 #define Gs9 cons(440 * pow(2, 59 / 12.0))  // 13289.75
 #define Ab9 cons(440 * pow(2, 59 / 12.0))  // 13289.75
-#define A10 cons(440 * pow(2, 60 / 12.0))  // 14080.00
-#define As10 cons(440 * pow(2, 61 / 12.0)) // 14917.24
-#define Bb10 cons(440 * pow(2, 61 / 12.0)) // 14917.24
-#define B10 cons(440 * pow(2, 62 / 12.0))  // 15804.27
+#define A9 cons(440 * pow(2, 60 / 12.0))   // 14080.00
+#define As9 cons(440 * pow(2, 61 / 12.0))  // 14917.24
+#define Bb9 cons(440 * pow(2, 61 / 12.0))  // 14917.24
+#define B9 cons(440 * pow(2, 62 / 12.0))   // 15804.27
 #define C10 cons(440 * pow(2, 63 / 12.0))  // 16744.04
 #define Cs10 cons(440 * pow(2, 64 / 12.0)) // 17739.69
 #define Db10 cons(440 * pow(2, 64 / 12.0)) // 17739.69
@@ -188,8 +184,12 @@
 #define G10 cons(440 * pow(2, 70 / 12.0))  // 25087.71
 #define Gs10 cons(440 * pow(2, 71 / 12.0)) // 26579.50
 #define Ab10 cons(440 * pow(2, 71 / 12.0)) // 26579.50
+#define A10 cons(440 * pow(2, 72 / 12.0))  // 28160.00
+#define As10 cons(440 * pow(2, 73 / 12.0)) // 29834.48
+#define Bb10 cons(440 * pow(2, 73 / 12.0)) // 29834.48
+#define B10 cons(440 * pow(2, 74 / 12.0))  // 31608.53
 
-static const char *note_names[] = {"A", "As", "Bb", "B", "C", "Cs", "Db", "D", "Ds", "Eb", "E", "F", "Fs", "Gb", "G", "Gs", "Ab"};
+static const char *note_names[] = {"C", "Cs", "Db", "D", "Ds", "Eb", "E", "F", "Fs", "Gb", "G", "Gs", "Ab", "A", "As", "Bb", "B"};
 
 void print_notes_h(void)
 {
@@ -197,7 +197,7 @@ void print_notes_h(void)
     {
         const char *note = note_names[i % 17];
         int octave = i / 17;
-        int index = round(i * 12.0 / 17 - 59.95);
+        int index = round((i + 4) * 12.0 / 17 - 59.95);
         double freq = 440 * pow(2, index / 12.0);
         printf("#define %s%d cons(440 * pow(2, %d / 12.0)) // %.2f\n", note, octave, index, freq);
     }
