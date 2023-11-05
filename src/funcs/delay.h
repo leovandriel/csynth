@@ -1,3 +1,9 @@
+//
+// delay.h - A time delay on the sampling of a function
+//
+// `delay(input, duration)` waits duration (a function) seconds before it starts
+// sampling the input function.
+//
 #ifndef COMPOSER_DELAY_H
 #define COMPOSER_DELAY_H
 

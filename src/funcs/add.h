@@ -1,3 +1,8 @@
+//
+// add.h - Addition function
+//
+// `add(...)` returns the sum of a list of functions.
+//
 #ifndef COMPOSER_ADD_H
 #define COMPOSER_ADD_H
 

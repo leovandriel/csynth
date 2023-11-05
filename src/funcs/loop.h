@@ -1,3 +1,8 @@
+//
+// loop.h - A time loop on the sampling of a function
+//
+// `loop(input, duration)` loops the input function every duration (a function).
+//
 #ifndef COMPOSER_LOOP_H
 #define COMPOSER_LOOP_H
 

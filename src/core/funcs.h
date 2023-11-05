@@ -1,3 +1,6 @@
+//
+// funcs.h - A single include file for all the functions.
+//
 #ifndef COMPOSER_FUNCS_H
 #define COMPOSER_FUNCS_H
 

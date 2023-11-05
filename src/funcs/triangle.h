@@ -1,3 +1,8 @@
+//
+// triangle.h - A triangle function
+//
+// `triangle(frequency)` returns a triangle wave with the given frequency.
+//
 #ifndef COMPOSER_TRIANGLE_H
 #define COMPOSER_TRIANGLE_H
 

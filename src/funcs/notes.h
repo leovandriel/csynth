@@ -1,3 +1,8 @@
+//
+// notes.h - Note constants for 11 octaves.
+//
+// The contents of this file can be generated using `print_notes_h`.
+//
 #ifndef COMPOSER_NOTES_H
 #define COMPOSER_NOTES_H
 

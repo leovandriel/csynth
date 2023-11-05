@@ -1,3 +1,8 @@
+//
+// reverb.h - Reverb function
+//
+// `reverb(input, interval, decay)` returns a reverberated version of input.
+//
 #ifndef COMPOSER_REVERB_H
 #define COMPOSER_REVERB_H
 

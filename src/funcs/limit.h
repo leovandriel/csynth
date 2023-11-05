@@ -1,3 +1,9 @@
+//
+// limit.h - Limits the delta between successive samples
+//
+// `limit(input, limit)` with input and limit functions and limit the amplitude
+// delta. This can be used to prevent clicks and pops.
+//
 #ifndef COMPOSER_LIMIT_H
 #define COMPOSER_LIMIT_H
 

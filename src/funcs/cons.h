@@ -1,3 +1,13 @@
+//
+// cons.h - A constant value function.
+//
+// `cons(value)` takes one value, which it will return during sampling. Primary
+// purpose is wrapping doubles in a Func, so it can be used as argument for
+// other functions.
+//
+// For convenience, the macro `_(value)` is provided, which is equal to
+// `cons(value)`.
+//
 #ifndef COMPOSER_CONS_H
 #define COMPOSER_CONS_H
 

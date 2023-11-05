@@ -1,3 +1,8 @@
+//
+// noise.h - Noise function
+//
+// `noise()` returns a random value in [-1, 1].
+//
 #ifndef COMPOSER_NOISE_H
 #define COMPOSER_NOISE_H
 

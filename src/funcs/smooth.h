@@ -1,3 +1,8 @@
+//
+// smooth.h - A smooth step function
+//
+// `smooth(edge0, edge1)` returns 1 if time is past edge1, 0 before edge0.
+//
 #ifndef COMPOSER_SMOOTH_H
 #define COMPOSER_SMOOTH_H
 

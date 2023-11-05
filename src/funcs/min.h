@@ -1,3 +1,8 @@
+//
+// min.h - Min function
+//
+// `min(...)` returns the minimum of the input functions.
+//
 #ifndef COMPOSER_MIN_H
 #define COMPOSER_MIN_H
 

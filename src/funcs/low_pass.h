@@ -1,3 +1,8 @@
+//
+// low_pass.h - A first-order low-pass filter
+//
+// `low_pass(input, frequency)` with input and frequency functions.
+//
 #ifndef COMPOSER_LOW_PASS_H
 #define COMPOSER_LOW_PASS_H
 

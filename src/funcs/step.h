@@ -1,3 +1,8 @@
+//
+// step.h - A step function
+//
+// `step(at)` returns 1 if time is past at, otherwise 0.
+//
 #ifndef COMPOSER_STEP_H
 #define COMPOSER_STEP_H
 

@@ -1,3 +1,8 @@
+//
+// sine.h - A sine function
+//
+// `sine(frequency)` returns a sine wave with the given frequency.
+//
 #ifndef COMPOSER_SINE_H
 #define COMPOSER_SINE_H
 

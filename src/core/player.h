@@ -1,3 +1,6 @@
+//
+// player.h - Samples a function and plays it using PortAudio.
+//
 #ifndef COMPOSER_PLAYER_H
 #define COMPOSER_PLAYER_H
 

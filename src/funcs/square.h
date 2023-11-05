@@ -1,3 +1,8 @@
+//
+// square.h - A square function
+//
+// `square(frequency)` returns a square wave with the given frequency.
+//
 #ifndef COMPOSER_SQUARE_H
 #define COMPOSER_SQUARE_H
 

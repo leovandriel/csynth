@@ -1,3 +1,8 @@
+//
+// minus.h - Minus function
+//
+// `minus(a, b)` returns the difference a - b.
+//
 #ifndef COMPOSER_MINUS_H
 #define COMPOSER_MINUS_H
 

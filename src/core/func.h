@@ -1,3 +1,8 @@
+//
+// func.h - An interface for creating and evaluating functions.
+//
+// This is the heart of the library.
+//
 #ifndef COMPOSER_FUNC_H
 #define COMPOSER_FUNC_H
 
@@ -13,6 +18,7 @@ typedef double (*eval_cb)(Gen **args, int count, double delta, void *context);
 typedef void (*init_cb)(Gen **args, int count, double delta, void *context);
 typedef void (*free_cb)(void *context);
 
+// Represents a function (R -> Rn) that takes one or more inputs and outputs a single value.
 struct Func
 {
     Func **args;

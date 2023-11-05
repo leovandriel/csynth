@@ -1,3 +1,15 @@
+//
+// comp.h - Sequential composition of functions.
+//
+// comp(...) takes multiple amplitude-duration pairs (both functions) and
+// composes amplitudes sequentially, each with specified duration. This can be
+// used for playing notes in sequence.
+//
+// Has two modes:
+// - abs: Each duration is absolute, with each larger than the previous.
+// - rel: Each duration is relative, specifying the duration of a single
+//   function.
+//
 #ifndef COMPOSER_COMP_H
 #define COMPOSER_COMP_H
 

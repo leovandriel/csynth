@@ -1,3 +1,8 @@
+//
+// high_pass.h - A first-order high-pass filter
+//
+// `high_pass(input, frequency)` with input and frequency functions.
+//
 #ifndef COMPOSER_HIGH_PASS_H
 #define COMPOSER_HIGH_PASS_H
 

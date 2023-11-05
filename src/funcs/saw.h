@@ -1,3 +1,8 @@
+//
+// saw.h - A sawtooth function
+//
+// `saw(frequency)` returns a sawtooth wave with the given frequency.
+//
 #ifndef COMPOSER_SAW_H
 #define COMPOSER_SAW_H
 

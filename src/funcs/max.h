@@ -1,3 +1,8 @@
+//
+// max.h - Max function
+//
+// `max(...)` returns the maximum of the input functions.
+//
 #ifndef COMPOSER_MAX_H
 #define COMPOSER_MAX_H
 

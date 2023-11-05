@@ -1,3 +1,8 @@
+//
+// logger.h - Logs the samples plus some metrics
+//
+// `logger(input, count)` with count the maximum number of log to be logged.
+//
 #ifndef COMPOSER_LOGGER_H
 #define COMPOSER_LOGGER_H
 

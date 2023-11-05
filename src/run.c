@@ -1,3 +1,6 @@
+//
+// run.c - Demo of the CSync library.
+//
 #include "./core/funcs.h"
 #include "./core/writer.h"
 

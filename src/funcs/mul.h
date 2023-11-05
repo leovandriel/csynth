@@ -1,3 +1,8 @@
+//
+// mul.h - Multiplication function
+//
+// `mul(a, b)` returns the product of a list of functions.
+//
 #ifndef COMPOSER_MUL_H
 #define COMPOSER_MUL_H
 

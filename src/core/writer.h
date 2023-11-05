@@ -1,3 +1,6 @@
+//
+// writer.h - Samples a function and writes the result to a WAV file.
+//
 #ifndef COMPOSER_WRITER_H
 #define COMPOSER_WRITER_H
 
