@@ -20,7 +20,7 @@ double max_eval(Func **args, int count, __attribute__((unused)) double delta, __
     return max;
 }
 
-Func *max_n(int count, ...)
+Func *max_args(int count, ...)
 {
     va_list valist;
     va_start(valist, count);
@@ -29,19 +29,6 @@ Func *max_n(int count, ...)
     return func;
 }
 
-Func *max(Func *a, Func *b)
-{
-    return max_n(2, a, b);
-}
-
-Func *max_3(Func *a, Func *b, Func *c)
-{
-    return max_n(3, a, b, c);
-}
-
-Func *max_4(Func *a, Func *b, Func *c, Func *d)
-{
-    return max_n(4, a, b, c, d);
-}
+#define max(...) max_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__)
 
 #endif // COMPOSER_MAX_H

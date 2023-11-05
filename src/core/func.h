@@ -48,7 +48,7 @@ Func *func_create_int(init_func init, eval_func eval, free_func free, size_t siz
     return func;
 }
 
-Func *func_create_args(init_func init, eval_func eval, free_func free, size_t size, void *context, int count, Func **args)
+Func *func_create_array(init_func init, eval_func eval, free_func free, size_t size, void *context, int count, Func **args)
 {
     Func *func = func_create_int(init, eval, free, size, context, count);
     memcpy(func->args, args, count * sizeof(Func *));

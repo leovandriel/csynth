@@ -15,7 +15,7 @@ double sum_eval(Func **args, int count, __attribute__((unused)) double delta, __
     return sum;
 }
 
-Func *sum_n(int count, ...)
+Func *sum_args(int count, ...)
 {
     va_list valist;
     va_start(valist, count);
@@ -24,19 +24,6 @@ Func *sum_n(int count, ...)
     return func;
 }
 
-Func *sum(Func *a, Func *b)
-{
-    return sum_n(2, a, b);
-}
-
-Func *sum_3(Func *a, Func *b, Func *c)
-{
-    return sum_n(3, a, b, c);
-}
-
-Func *sum_4(Func *a, Func *b, Func *c, Func *d)
-{
-    return sum_n(4, a, b, c, d);
-}
+#define sum(...) sum_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__)
 
 #endif // COMPOSER_SUM_H

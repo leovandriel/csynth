@@ -20,7 +20,7 @@ double min_eval(Func **args, int count, __attribute__((unused)) double delta, __
     return min;
 }
 
-Func *min_n(int count, ...)
+Func *min_args(int count, ...)
 {
     va_list valist;
     va_start(valist, count);
@@ -29,19 +29,6 @@ Func *min_n(int count, ...)
     return func;
 }
 
-Func *min(Func *a, Func *b)
-{
-    return min_n(2, a, b);
-}
-
-Func *min_3(Func *a, Func *b, Func *c)
-{
-    return min_n(3, a, b, c);
-}
-
-Func *min_4(Func *a, Func *b, Func *c, Func *d)
-{
-    return min_n(4, a, b, c, d);
-}
+#define min(...) min_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__)
 
 #endif // COMPOSER_MIN_H

@@ -15,7 +15,7 @@ double mul_eval(Func **args, int count, __attribute__((unused)) double delta, __
     return output;
 }
 
-Func *mul_n(int count, ...)
+Func *mul_args(int count, ...)
 {
     va_list valist;
     va_start(valist, count);
@@ -24,19 +24,6 @@ Func *mul_n(int count, ...)
     return func;
 }
 
-Func *mul(Func *a, Func *b)
-{
-    return mul_n(2, a, b);
-}
-
-Func *mul_3(Func *a, Func *b, Func *c)
-{
-    return mul_n(3, a, b, c);
-}
-
-Func *mul_4(Func *a, Func *b, Func *c, Func *d)
-{
-    return mul_n(4, a, b, c, d);
-}
+#define mul(...) mul_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__)
 
 #endif // COMPOSER_MUL_H
