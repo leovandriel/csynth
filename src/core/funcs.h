@@ -16,7 +16,6 @@
 #include "../funcs/mul.h"
 #include "../funcs/noise.h"
 #include "../funcs/notes.h"
-#include "../funcs/rate.h"
 #include "../funcs/reverb.h"
 #include "../funcs/saw.h"
 #include "../funcs/sine.h"

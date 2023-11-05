@@ -24,8 +24,9 @@ static int callback(__attribute__((unused)) const void *argBuffer, void *outputB
     float *out = (float *)outputBuffer;
     for (unsigned long frame = 0; frame < framesPerBuffer; frame++)
     {
-        double output = func_eval(data->root, data->index++, data->rate);
-        *out++ = (float)(output > 1.0 ? 1.0 : output < -1.0 ? -1.0 : output);
+        double output = func_eval(data->root, data->index++, 1.0 / data->rate);
+        *out++ = (float)(output > 1.0 ? 1.0 : output < -1.0 ? -1.0
+                                                            : output);
     }
     return 0;
 }
@@ -42,7 +43,7 @@ int play(Func *root, double duration)
     PaError err = Pa_Initialize();
     if (err != paNoError)
         return error(err);
-    func_init(root, SAMPLE_RATE);
+    func_init(root, 1.0 / SAMPLE_RATE);
     UserData data = {
         .root = root,
         .rate = SAMPLE_RATE,

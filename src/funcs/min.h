@@ -6,12 +6,12 @@
 
 #include "../core/func.h"
 
-double min_eval(unsigned long index, double rate, Func **args, int count, __attribute__((unused)) void *context)
+double min_eval(Func **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double min = FLT_MAX;
     for (int i = 0; i < count; i++)
     {
-        double f = func_eval(args[i], index, rate);
+        double f = func_eval(args[i]);
         if (min > f)
         {
             min = f;

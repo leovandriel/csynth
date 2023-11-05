@@ -6,15 +6,14 @@ func beep_boop()
     func high = sine(A4);
     func low1 = mul(saw(A2), cons(.5));
     func low2 = mul(saw(A2), cons(.5));
-    func beep = mul(high, block(0, .2));
-    func boop1 = mul(low1, block(.8, 1));
-    func boop2 = mul(low2, block(2, 2.2));
+    func beep = mul(high, block(0, .1));
+    func boop1 = mul(low1, block(.4, .5));
+    func boop2 = mul(low2, block(1, 1.1));
     func melody = sum_3(beep, boop1, boop2);
-    func looped = loop(melody, cons(3.2));
-    func echoed = reverb(looped, cons(.4), cons(.5));
+    func looped = loop(melody, cons(1.6));
+    func echoed = reverb(looped, cons(.2), cons(.5));
     func scaled = mul(echoed, cons(.1));
-    func rated = rate(scaled, cons(2));
-    return rated;
+    return scaled;
 }
 
 func shapes()
@@ -116,9 +115,9 @@ func lows()
 
 int main(void)
 {
-    write(beep_boop(), 15);
-    // write(beats(), 15);
-    // write(shapes(), 30);
+    write(beep_boop(), 8);
+    // write(beats(), 16);
+    // write(shapes(), 15);
     // write(filters(), 30);
     // write(lows(), 30);
     return 0;

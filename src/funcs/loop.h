@@ -7,19 +7,20 @@
 
 typedef struct
 {
-    unsigned long index;
+    double time;
 } LoopContext;
 
-double loop_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
+double loop_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     LoopContext *context = (LoopContext *)_context;
-    unsigned long duration = round(func_eval(args[1], index, rate) * rate);
-    if (index >= context->index + duration)
+    double duration = func_eval(args[1]);
+    if (context->time >= duration)
     {
-        context->index = index;
-        func_init(args[0], rate);
+        context->time -= duration;
+        func_init(args[0], delta);
     }
-    double output = func_eval(args[0], index - context->index, rate);
+    double output = func_eval(args[0]);
+    context->time += delta;
     return output;
 }
 

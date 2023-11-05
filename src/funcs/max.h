@@ -6,12 +6,12 @@
 
 #include "../core/func.h"
 
-double max_eval(unsigned long index, double rate, Func **args, int count, __attribute__((unused)) void *context)
+double max_eval(Func **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double max = -FLT_MAX;
     for (int i = 0; i < count; i++)
     {
-        double f = func_eval(args[i], index, rate);
+        double f = func_eval(args[i]);
         if (max < f)
         {
             max = f;

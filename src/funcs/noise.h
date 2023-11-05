@@ -5,7 +5,7 @@
 
 #include "../core/func.h"
 
-double noise_eval(__attribute__((unused)) unsigned long index, __attribute__((unused)) double rate, __attribute__((unused)) Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *context)
+double noise_eval(__attribute__((unused)) Func **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     return 2.0 * rand() / RAND_MAX - 1.0;
 }

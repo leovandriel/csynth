@@ -5,20 +5,27 @@
 
 #include "../core/func.h"
 
-double delay_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *context)
+typedef struct
 {
-    unsigned long span = round(func_eval(args[1], index, rate) * rate);
+    double time;
+} DelayContext;
+
+double delay_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
+{
+    DelayContext *context = (DelayContext *)_context;
+    double span = func_eval(args[1]);
     double output = 0.0;
-    if (index >= span)
+    if (context->time >= span)
     {
-        output = func_eval(args[0], index, rate);
+        output = func_eval(args[0]);
     }
+    context->time += delta;
     return output;
 }
 
 Func *delay(Func *input, Func *duration)
 {
-    return func_create(NULL, delay_eval, NULL, 0, NULL, 2, input, duration);
+    return func_create(NULL, delay_eval, NULL, sizeof(DelayContext), NULL, 2, input, duration);
 }
 
 #endif // COMPOSER_DELAY_H

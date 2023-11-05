@@ -5,28 +5,37 @@
 
 #include "../core/func.h"
 
-double smooth_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *context)
+typedef struct
 {
-    unsigned long edge0 = round(func_eval(args[0], index, rate) * rate);
-    unsigned long edge1 = round(func_eval(args[1], index, rate) * rate);
-    if (index < edge0)
+    double time;
+} SmoothContext;
+
+double smooth_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
+{
+    SmoothContext *context = (SmoothContext *)_context;
+    double edge0 = func_eval(args[0]);
+    double edge1 = func_eval(args[1]);
+    if (context->time <= edge0)
     {
+        context->time += delta;
         return 0.0;
     }
-    else if (index >= edge1)
+    else if (context->time >= edge1)
     {
+        context->time += delta;
         return 1.0;
     }
     else
     {
-        double s = (double)(index - edge0) / (edge1 - edge0);
+        double s = (context->time - edge0) / (edge1 - edge0);
+        context->time += delta;
         return s * s * (3.0 - 2.0 * s);
     }
 }
 
 Func *smooth(Func *edge0, Func *edge1)
 {
-    return func_create(NULL, smooth_eval, NULL, 0, NULL, 2, edge0, edge1);
+    return func_create(NULL, smooth_eval, NULL, sizeof(SmoothContext), NULL, 2, edge0, edge1);
 }
 
 #endif // COMPOSER_SMOOTH_H

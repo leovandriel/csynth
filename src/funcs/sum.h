@@ -5,12 +5,12 @@
 
 #include "../core/func.h"
 
-double sum_eval(unsigned long index, double rate, Func **args, int count, __attribute__((unused)) void *context)
+double sum_eval(Func **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double sum = 0;
     for (int i = 0; i < count; i++)
     {
-        sum += func_eval(args[i], index, rate);
+        sum += func_eval(args[i]);
     }
     return sum;
 }

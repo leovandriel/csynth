@@ -7,19 +7,20 @@
 
 typedef struct
 {
+    double time;
     double output;
-    double index;
 } SquareContext;
 
-double square_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
+double square_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     SquareContext *context = (SquareContext *)_context;
-    unsigned long span = round(rate / (func_eval(args[0], index, rate) * 2.0));
-    if (index >= context->index + span)
+    double span = 1.0 / (func_eval(args[0]) * 2.0);
+    if (context->time >= span)
     {
-        context->index = index;
+        context->time -= span;
         context->output = -context->output;
     }
+    context->time += delta;
     return context->output;
 }
 

@@ -8,11 +8,11 @@ typedef struct
     double output;
 } LimitContext;
 
-double limit_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
+double limit_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     LimitContext *context = (LimitContext *)_context;
-    double input = func_eval(args[0], index, rate);
-    double limit = func_eval(args[1], index, rate) / rate;
+    double input = func_eval(args[0]);
+    double limit = func_eval(args[1]) * delta;
     if (input < context->output - limit)
     {
         input = context->output - limit;

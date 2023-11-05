@@ -5,15 +5,23 @@
 
 #include "../core/func.h"
 
-double step_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, __attribute__((unused)) void *context)
+typedef struct
 {
-    unsigned long span = round(func_eval(args[0], index, rate) * rate);
-    return index < span ? 0.0 : 1.0;
+    double time;
+} StepContext;
+
+double step_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
+{
+    StepContext *context = (StepContext *)_context;
+    double span = func_eval(args[0]);
+    double value = context->time < span ? 0.0 : 1.0;
+    context->time += delta;
+    return value;
 }
 
 Func *step(Func *at)
 {
-    return func_create(NULL, step_eval, NULL, 0, NULL, 1, at);
+    return func_create(NULL, step_eval, NULL, sizeof(StepContext), NULL, 1, at);
 }
 
 #endif // COMPOSER_STEP_H

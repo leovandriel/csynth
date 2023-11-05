@@ -8,11 +8,11 @@ typedef struct
     double output;
 } SawContext;
 
-double saw_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
+double saw_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     SawContext *context = (SawContext *)_context;
-    double frequency = func_eval(args[0], index, rate);
-    context->output += 2.0 * frequency / rate;
+    double frequency = func_eval(args[0]);
+    context->output += 2.0 * frequency * delta;
     if (context->output > 1.0)
     {
         context->output -= 2.0;

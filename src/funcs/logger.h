@@ -14,62 +14,64 @@ typedef struct
     long zero0;
     long zero1;
     unsigned long count;
+    unsigned long index;
 } LoggerContext;
 
-double logger_eval(unsigned long index, double rate, Func **args, __attribute__((unused)) int count, void *_context)
+double logger_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     LoggerContext *context = (LoggerContext *)_context;
-    double input = func_eval(args[0], index, rate);
-    if (index < context->count)
+    double input = func_eval(args[0]);
+    if (context->index < context->count)
     {
-        int dir_up = index > 0 && context->output < input;
-        int dir_down = index > 0 && context->output > input;
-        char dir = dir_up ? '/' : dir_down ? '\\'
-                              : index > 0  ? '-'
-                                           : '.';
-        int at_zero = index > 0 && (context->output > 0) != (input > 0);
-        int at_min = index > 1 && dir != context->dir && dir == '/';
-        int at_max = index > 1 && dir != context->dir && dir == '\\';
+        int dir_up = context->index > 0 && context->output < input;
+        int dir_down = context->index > 0 && context->output > input;
+        char dir = dir_up ? '/' : dir_down         ? '\\'
+                              : context->index > 0 ? '-'
+                                                   : '.';
+        int at_zero = context->index > 0 && (context->output > 0) != (input > 0);
+        int at_min = context->index > 1 && dir != context->dir && dir == '/';
+        int at_max = context->index > 1 && dir != context->dir && dir == '\\';
         const char *pass = at_zero ? "zero" : at_min ? "min"
                                           : at_max   ? "max"
                                                      : "";
-        double time = index / rate;
+        double time = context->index * delta;
         double delta = input - context->output;
         double frequency = -1.0;
         if (at_zero)
         {
             if (context->zero1 != -1)
             {
-                frequency = rate / (index - context->zero1);
+                frequency = 1.0 / (delta * (context->index - context->zero1));
             }
             context->zero1 = context->zero0;
-            context->zero0 = index;
+            context->zero0 = context->index;
         }
         else if (at_min)
         {
             if (context->min != -1)
             {
-                frequency = rate / (index - context->min);
+                frequency = 1.0 / (delta * (context->index - context->min));
             }
-            context->min = index;
+            context->min = context->index;
         }
         else if (at_max)
         {
             if (context->max != -1)
             {
-                frequency = rate / (index - context->max);
+                frequency = 1.0 / (delta * (context->index - context->max));
             }
-            context->max = index;
+            context->max = context->index;
         }
         char buffer[100];
         snprintf(buffer, 100, "%f", frequency);
         const char *freq = frequency >= 0 ? buffer : "";
-        printf("index: %lu  time: %f  value: %f  delta: %f  dir: %c %s %s\n", index, time, input, delta, dir, pass, freq);
+        printf("index: %lu  time: %f  value: %f  delta: %f  dir: %c %s %s\n", context->index, time, input, delta, dir, pass, freq);
         context->dir = dir;
         context->output = input;
-        index++;
+        context->index += 1;
         return 0.0;
     }
+    context->index += 1;
     return input;
 }
 

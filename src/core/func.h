@@ -8,8 +8,8 @@
 typedef struct Func Func;
 typedef Func *func;
 
-typedef double (*eval_func)(unsigned long index, double rate, Func **args, int count, void *context);
-typedef void (*init_func)(double rate, Func **args, int count, void *context);
+typedef double (*eval_func)(Func **args, int count, double delta, void *context);
+typedef void (*init_func)(Func **args, int count, double delta, void *context);
 typedef void (*free_func)(void *context);
 
 struct Func
@@ -17,6 +17,7 @@ struct Func
     Func **args;
     int count;
     size_t size;
+    double delta;
     void *context;
     void *initial;
     init_func init;
@@ -73,11 +74,12 @@ Func *func_create(init_func init, eval_func eval, free_func free, size_t size, v
     return func;
 }
 
-void func_init(Func *func, double rate)
+void func_init(Func *func, double delta)
 {
+    func->delta = delta;
     for (int i = 0; i < func->count; i++)
     {
-        func_init(func->args[i], rate);
+        func_init(func->args[i], delta);
     }
     if (func->initial != NULL)
     {
@@ -85,7 +87,7 @@ void func_init(Func *func, double rate)
     }
     if (func->init != NULL)
     {
-        func->init(rate, func->args, func->count, func->context);
+        func->init(func->args, func->count, delta, func->context);
     }
 }
 
@@ -110,9 +112,9 @@ void func_free(Func *func)
     }
 }
 
-double func_eval(Func *func, int index, double rate)
+double func_eval(Func *func)
 {
-    return func->eval(index, rate, func->args, func->count, func->context);
+    return func->eval(func->args, func->count, func->delta, func->context);
 }
 
 #endif // COMPOSER_FUNC_H
