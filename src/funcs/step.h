@@ -13,15 +13,15 @@ typedef struct
 double step_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     StepContext *context = (StepContext *)_context;
-    double span = gen_eval(args[0]);
-    double value = context->time < span ? 0.0 : 1.0;
+    double edge = gen_eval(args[0]);
+    double value = context->time < edge ? 0.0 : 1.0;
     context->time += delta;
     return value;
 }
 
-Func *step(Func *at)
+Func *step(Func *edge)
 {
-    return func_create(NULL, step_eval, NULL, sizeof(StepContext), NULL, 1, at);
+    return func_create(NULL, step_eval, NULL, sizeof(StepContext), NULL, 1, edge);
 }
 
 #endif // COMPOSER_STEP_H
