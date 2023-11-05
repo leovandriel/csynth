@@ -3,10 +3,10 @@
 
 #include "../core/func.h"
 
-double minus_eval(Func **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+double minus_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
-    double a = func_eval(args[0]);
-    double b = func_eval(args[1]);
+    double a = gen_eval(args[0]);
+    double b = gen_eval(args[1]);
     return a - b;
 }
 

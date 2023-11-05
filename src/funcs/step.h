@@ -10,10 +10,10 @@ typedef struct
     double time;
 } StepContext;
 
-double step_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
+double step_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     StepContext *context = (StepContext *)_context;
-    double span = func_eval(args[0]);
+    double span = gen_eval(args[0]);
     double value = context->time < span ? 0.0 : 1.0;
     context->time += delta;
     return value;

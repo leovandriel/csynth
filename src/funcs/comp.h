@@ -13,23 +13,23 @@ typedef struct
     double time;
 } CompContext;
 
-double comp_eval(Func **args, int count, double delta, void *_context)
+double comp_eval(Gen **args, int count, double delta, void *_context)
 {
     CompContext *context = (CompContext *)_context;
     double lower = 0;
     for (int index = 0; index < count / 2; index++)
     {
-        double span = func_eval(args[index * 2 + 1]);
+        double span = gen_eval(args[index * 2 + 1]);
         double upper = context->rel_abs ? lower + span : span;
         if (context->time >= lower && context->time < upper)
         {
             if (context->index != index)
             {
-                func_init(args[index * 2], delta);
+                gen_reset(args[index * 2]);
                 context->index = index;
             }
             context->time += delta;
-            return func_eval(args[index * 2]);
+            return gen_eval(args[index * 2]);
         }
         lower = upper;
     }

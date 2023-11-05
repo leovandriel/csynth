@@ -17,10 +17,10 @@ typedef struct
     unsigned long index;
 } LoggerContext;
 
-double logger_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
+double logger_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     LoggerContext *context = (LoggerContext *)_context;
-    double input = func_eval(args[0]);
+    double input = gen_eval(args[0]);
     if (context->index < context->count)
     {
         int dir_up = context->index > 0 && context->output < input;

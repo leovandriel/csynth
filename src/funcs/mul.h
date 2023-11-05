@@ -5,12 +5,12 @@
 
 #include "../core/func.h"
 
-double mul_eval(Func **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+double mul_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double output = 1.0;
     for (int i = 0; i < count; i++)
     {
-        output *= func_eval(args[i]);
+        output *= gen_eval(args[i]);
     }
     return output;
 }

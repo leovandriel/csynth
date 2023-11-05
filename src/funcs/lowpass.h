@@ -10,11 +10,11 @@ typedef struct
     double output;
 } LowpassContext;
 
-double lowpass_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
+double lowpass_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     LowpassContext *context = (LowpassContext *)_context;
-    double input = func_eval(args[0]);
-    double frequency = func_eval(args[1]);
+    double input = gen_eval(args[0]);
+    double frequency = gen_eval(args[1]);
     double factor = 1 / (delta * frequency * 2.0 * M_PI) + 1.0;
     context->output = context->output + (input - context->output) / factor;
     return context->output;

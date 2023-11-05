@@ -15,12 +15,12 @@ typedef struct
     unsigned long max;
 } ReverbContext;
 
-double reverb_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
+double reverb_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     ReverbContext *context = (ReverbContext *)_context;
-    double input = func_eval(args[0]);
-    unsigned long size = round(func_eval(args[1]) / delta);
-    double decay = func_eval(args[2]);
+    double input = gen_eval(args[0]);
+    unsigned long size = round(gen_eval(args[1]) / delta);
+    double decay = gen_eval(args[2]);
     if (size != context->size)
     {
         if (context->buffer == NULL)

@@ -10,16 +10,16 @@ typedef struct
     double time;
 } LoopContext;
 
-double loop_eval(Func **args, __attribute__((unused)) int count, double delta, void *_context)
+double loop_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     LoopContext *context = (LoopContext *)_context;
-    double duration = func_eval(args[1]);
+    double duration = gen_eval(args[1]);
     if (context->time >= duration)
     {
         context->time -= duration;
-        func_init(args[0], delta);
+        gen_reset(args[0]);
     }
-    double output = func_eval(args[0]);
+    double output = gen_eval(args[0]);
     context->time += delta;
     return output;
 }

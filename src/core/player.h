@@ -13,11 +13,11 @@
 
 static int callback(__attribute__((unused)) const void *argBuffer, void *outputBuffer, unsigned long framesPerBuffer, __attribute__((unused)) const PaStreamCallbackTimeInfo *timeInfo, __attribute__((unused)) PaStreamCallbackFlags statusFlags, void *userData)
 {
-    Func *func = (Func *)userData;
+    Gen *gen = (Gen *)userData;
     float *out = (float *)outputBuffer;
     for (unsigned long frame = 0; frame < framesPerBuffer; frame++)
     {
-        double output = func_eval(func);
+        double output = gen_eval(gen);
         *out++ = (float)(output > 1.0 ? 1.0 : output < -1.0 ? -1.0
                                                             : output);
     }
@@ -36,9 +36,9 @@ int play(Func *root, double duration)
     PaError err = Pa_Initialize();
     if (err != paNoError)
         return error(err);
-    func_init(root, 1.0 / SAMPLE_RATE);
+    Gen *gen = gen_create(root, 1.0 / SAMPLE_RATE);
     PaStream *stream;
-    err = Pa_OpenDefaultStream(&stream, INPUT_CHANNELS, OUTPUT_CHANNELS, paFloat32, SAMPLE_RATE, FRAMES_PER_BUFFER, callback, root);
+    err = Pa_OpenDefaultStream(&stream, INPUT_CHANNELS, OUTPUT_CHANNELS, paFloat32, SAMPLE_RATE, FRAMES_PER_BUFFER, callback, gen);
     if (err != paNoError)
         return error(err);
     err = Pa_StartStream(stream);
@@ -52,7 +52,7 @@ int play(Func *root, double duration)
     if (err != paNoError)
         return error(err);
     Pa_Terminate();
-    func_free(root);
+    gen_free(gen);
     return 0;
 }
 

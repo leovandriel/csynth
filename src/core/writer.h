@@ -47,12 +47,12 @@ void write_file(Func *root, double duration, const char *filename)
     header.data_size = count * BITS_SAMPLE * OUTPUT_CHANNELS / 8;
     FILE *file = fopen(filename, "wb");
     fwrite(&header, sizeof(header), 1, file);
-    func_init(root, 1.0 / SAMPLE_RATE);
+    Gen *gen = gen_create(root, 1.0 / SAMPLE_RATE);
     int16_t buffer[BUFFER_SIZE];
     int i = 0;
     for (size_t index = 0; index < count; index++)
     {
-        double output = func_eval(root);
+        double output = gen_eval(gen);
         double clip = output > 1.0 ? 1.0 : (output < -1.0 ? -1.0 : output);
         buffer[i++] = clip * 32767;
         if (i == BUFFER_SIZE)
@@ -65,7 +65,7 @@ void write_file(Func *root, double duration, const char *filename)
     {
         fwrite(buffer, sizeof(uint16_t), i, file);
     }
-    func_free(root);
+    gen_free(gen);
     fclose(file);
 }
 
