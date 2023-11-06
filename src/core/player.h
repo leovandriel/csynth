@@ -59,4 +59,8 @@ int play(Func *root, double duration)
     return 0;
 }
 
+void test_player()
+{
+}
+
 #endif // CSYNTH_PLAYER_H

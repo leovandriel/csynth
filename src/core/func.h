@@ -178,4 +178,8 @@ void gen_reset(Gen *gen)
     }
 }
 
+void test_func()
+{
+}
+
 #endif // CSYNTH_FUNC_H

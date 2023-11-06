@@ -6,6 +6,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "func.h"
 
@@ -80,6 +81,10 @@ void write_file(Func *root, double duration, const char *filename)
 void write_stdout(Func *root, double duration)
 {
     write(root, duration, stdout);
+}
+
+void test_writer()
+{
 }
 
 #endif // CSYNTH_WRITER_H
