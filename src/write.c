@@ -1,4 +1,4 @@
-#include "./examples/all.h"
+#include "./example/all.h"
 #include "./core/writer.h"
 
 int main()
