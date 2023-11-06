@@ -4,8 +4,8 @@
 // `limit(input, limit)` with input and limit functions and limit the amplitude
 // delta. This can be used to prevent clicks and pops.
 //
-#ifndef COMPOSER_LIMIT_H
-#define COMPOSER_LIMIT_H
+#ifndef CSYNTH_LIMIT_H
+#define CSYNTH_LIMIT_H
 
 #include <assert.h>
 
@@ -22,23 +22,25 @@ double limit_eval(Gen **args, __attribute__((unused)) int count, double delta, v
 {
     LimitContext *context = (LimitContext *)_context;
     double input = gen_eval(args[0]);
-    double limit = gen_eval(args[1]) * delta;
-    if (input < context->output - limit)
+    double diff = gen_eval(args[1]) * delta;
+    if (input < context->output - diff)
     {
-        input = context->output - limit;
+        input = context->output - diff;
     }
-    else if (input > context->output + limit)
+    else if (input > context->output + diff)
     {
-        input = context->output + limit;
+        input = context->output + diff;
     }
     context->output = input;
     return input;
 }
 
-Func *limit(Func *input, Func *limit)
+Func *limit(Func *input, Func *diff)
 {
-    return func_create(NULL, limit_eval, NULL, sizeof(LimitContext), NULL, 2, input, limit);
+    return func_create(NULL, limit_eval, NULL, sizeof(LimitContext), NULL, 2, input, diff);
 }
+
+#define limit_(_input, _diff) (limit(_input, cons(_diff)))
 
 void test_limit()
 {
@@ -59,4 +61,4 @@ void test_limit()
     assert(fabs(gen_eval(g) - 0.100000) < epsilon);
 }
 
-#endif // COMPOSER_LIMIT_H
+#endif // CSYNTH_LIMIT_H

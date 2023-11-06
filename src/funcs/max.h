@@ -3,8 +3,8 @@
 //
 // `max(...)` returns the maximum of the input functions.
 //
-#ifndef COMPOSER_MAX_H
-#define COMPOSER_MAX_H
+#ifndef CSYNTH_MAX_H
+#define CSYNTH_MAX_H
 
 #include <assert.h>
 #include <float.h>
@@ -36,7 +36,8 @@ Func *max_args(int count, ...)
     return func;
 }
 
-#define max(...) max_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__)
+#define max(...) (max_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
+#define max_(_input, _min) (max(_input, cons(_min)))
 
 void test_max()
 {
@@ -46,4 +47,4 @@ void test_max()
     assert(gen_eval(gen_create(max(cons(1)), .1)) == 1.0);
 }
 
-#endif // COMPOSER_MAX_H
+#endif // CSYNTH_MAX_H

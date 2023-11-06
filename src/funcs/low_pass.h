@@ -3,8 +3,8 @@
 //
 // `low_pass(input, frequency)` with input and frequency functions.
 //
-#ifndef COMPOSER_LOW_PASS_H
-#define COMPOSER_LOW_PASS_H
+#ifndef CSYNTH_LOW_PASS_H
+#define CSYNTH_LOW_PASS_H
 
 #include <assert.h>
 #include <math.h>
@@ -33,6 +33,8 @@ Func *low_pass(Func *input, Func *frequency)
     return func_create(NULL, low_pass_eval, NULL, sizeof(LowPassContext), NULL, 2, input, frequency);
 }
 
+#define low_pass_(_input, _frequency) (low_pass(_input, cons(_frequency)))
+
 void test_low_pass()
 {
     func t = low_pass(cons(1), cons(10));
@@ -52,4 +54,4 @@ void test_low_pass()
     assert(fabs(gen_eval(g) - 1.000000) < epsilon);
 }
 
-#endif // COMPOSER_LOW_PASS_H
+#endif // CSYNTH_LOW_PASS_H

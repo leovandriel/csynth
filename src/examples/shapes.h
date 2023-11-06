@@ -3,11 +3,11 @@
 func shapes()
 {
     func all = comp(
-        mul(sine(A4), _(.5)), _(0.3), ZERO, _(0.2),
-        mul(triangle(A4), _(.5)), _(0.3), ZERO, _(0.2),
-        mul(square(A4), _(.25)), _(0.3), ZERO, _(0.2),
-        mul(saw(A4), _(.25)), _(0.3), ZERO, _(0.2));
-    func looped = loop(all, _(2));
-    func scaled = mul(looped, _(.1));
+        mul_(sine(A4), .5), _(0.3), ZERO, _(0.2),
+        mul_(triangle(A4), .5), _(0.3), ZERO, _(0.2),
+        mul_(square(A4), .25), _(0.3), ZERO, _(0.2),
+        mul_(saw(A4), .25), _(0.3), ZERO, _(0.2));
+    func looped = loop_(all, 2);
+    func scaled = mul_(looped, .1);
     return scaled;
 }

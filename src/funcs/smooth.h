@@ -6,8 +6,8 @@
 //   between edge1 and edge2 and 0 before edge0 and after edge3
 // - hump_ - Take double arguments instead of functions
 //
-#ifndef COMPOSER_SMOOTH_H
-#define COMPOSER_SMOOTH_H
+#ifndef CSYNTH_SMOOTH_H
+#define CSYNTH_SMOOTH_H
 
 #include <assert.h>
 #include <math.h>
@@ -48,8 +48,9 @@ Func *smooth(Func *edge0, Func *edge1)
     return func_create(NULL, smooth_eval, NULL, sizeof(SmoothContext), NULL, 2, edge0, edge1);
 }
 
-#define hump(_edge0, _edge1, _edge2, _edge3) mul(smooth(_edge0, _edge1), add(ONE, neg(smooth(_edge2, _edge3))))
-#define hump_(_edge0, _edge1, _edge2, _edge3) hump(cons(_edge0), cons(_edge1), cons(_edge2), cons(_edge3))
+#define smooth_(_edge0, _edge1) ((cons(_edge0), cons(_edge1)))
+#define hump(_edge0, _edge1, _edge2, _edge3) (mul(smooth(_edge0, _edge1), add(ONE, neg(smooth(_edge2, _edge3)))))
+#define hump_(_edge0, _edge1, _edge2, _edge3) (hump(cons(_edge0), cons(_edge1), cons(_edge2), cons(_edge3)))
 
 void test_smooth()
 {
@@ -68,4 +69,4 @@ void test_smooth()
     assert(fabs(gen_eval(g) - 1.000000) < epsilon);
 }
 
-#endif // COMPOSER_SMOOTH_H
+#endif // CSYNTH_SMOOTH_H

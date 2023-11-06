@@ -3,8 +3,8 @@
 //
 // `saw(frequency)` returns a sawtooth wave with the given frequency.
 //
-#ifndef COMPOSER_SAW_H
-#define COMPOSER_SAW_H
+#ifndef CSYNTH_SAW_H
+#define CSYNTH_SAW_H
 
 #include <assert.h>
 #include <math.h>
@@ -35,6 +35,8 @@ Func *saw(Func *frequency)
     return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, 1, frequency);
 }
 
+#define saw_(_frequency) (saw(cons(_frequency)))
+
 void test_saw()
 {
     func t = saw(cons(1));
@@ -53,4 +55,4 @@ void test_saw()
     assert(fabs(gen_eval(g) - -0.0) < epsilon);
 }
 
-#endif // COMPOSER_SAW_H
+#endif // CSYNTH_SAW_H

@@ -3,8 +3,8 @@
 //
 // `loop(input, duration)` loops the input function every duration (a function).
 //
-#ifndef COMPOSER_LOOP_H
-#define COMPOSER_LOOP_H
+#ifndef CSYNTH_LOOP_H
+#define CSYNTH_LOOP_H
 
 #include <assert.h>
 #include <math.h>
@@ -37,6 +37,8 @@ Func *loop(Func *input, Func *duration)
     return func_create(NULL, loop_eval, NULL, sizeof(LoopContext), NULL, 2, input, duration);
 }
 
+#define loop_(_input, _duration) (loop(_input, cons(_duration)))
+
 void test_loop()
 {
     func t = loop(step(cons(0.3)), cons(0.5));
@@ -56,4 +58,4 @@ void test_loop()
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);
 }
 
-#endif // COMPOSER_LOOP_H
+#endif // CSYNTH_LOOP_H

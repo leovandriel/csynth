@@ -3,8 +3,8 @@
 //
 // `mul(a, b)` returns the product of a list of functions.
 //
-#ifndef COMPOSER_MUL_H
-#define COMPOSER_MUL_H
+#ifndef CSYNTH_MUL_H
+#define CSYNTH_MUL_H
 
 #include <assert.h>
 #include <stdarg.h>
@@ -31,7 +31,8 @@ Func *mul_args(int count, ...)
     return func;
 }
 
-#define mul(...) mul_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__)
+#define mul(...) (mul_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
+#define mul_(_input, _factor) (mul(_input, cons(_factor)))
 
 void test_mul()
 {
@@ -40,4 +41,4 @@ void test_mul()
     assert(gen_eval(gen_create(mul(cons(1)), .1)) == 1.0);
 }
 
-#endif // COMPOSER_MUL_H
+#endif // CSYNTH_MUL_H

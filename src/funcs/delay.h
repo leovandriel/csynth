@@ -4,8 +4,8 @@
 // `delay(input, duration)` waits duration (a function) seconds before it starts
 // sampling the input function.
 //
-#ifndef COMPOSER_DELAY_H
-#define COMPOSER_DELAY_H
+#ifndef CSYNTH_DELAY_H
+#define CSYNTH_DELAY_H
 
 #include <assert.h>
 #include <math.h>
@@ -37,7 +37,9 @@ Func *delay(Func *input, Func *duration)
     return func_create(NULL, delay_eval, NULL, sizeof(DelayContext), NULL, 2, input, duration);
 }
 
-#define skip(input, duration) delay(input, neg(duration))
+#define delay_(_input, _frequency) (delay(_input, cons(_frequency)))
+#define skip(_input, _duration) (delay(_input, neg(_duration)))
+#define skip_(_input, _duration) (skip(_input, cons(_duration)))
 
 void test_delay()
 {
@@ -60,4 +62,4 @@ void test_delay()
     assert(fabs(gen_eval(g) - 1.000000) < epsilon);
 }
 
-#endif // COMPOSER_DELAY_H
+#endif // CSYNTH_DELAY_H

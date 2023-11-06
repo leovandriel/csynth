@@ -3,8 +3,8 @@
 //
 // `sine(frequency)` returns a sine wave with the given frequency.
 //
-#ifndef COMPOSER_SINE_H
-#define COMPOSER_SINE_H
+#ifndef CSYNTH_SINE_H
+#define CSYNTH_SINE_H
 
 #include <assert.h>
 #include <math.h>
@@ -38,6 +38,8 @@ Func *sine(Func *frequency)
     return func_create(NULL, sine_eval, NULL, sizeof(SineContext), &initial, 1, frequency);
 }
 
+#define sine_(_frequency) (sine(cons(_frequency)))
+
 void test_sine()
 {
     func t = sine(cons(1));
@@ -58,4 +60,4 @@ void test_sine()
     assert(fabs(gen_eval(g) - 0.951057) < epsilon);
 }
 
-#endif // COMPOSER_SINE_H
+#endif // CSYNTH_SINE_H

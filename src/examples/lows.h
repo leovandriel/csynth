@@ -13,7 +13,7 @@ func lows()
         inputs[i * 2 + 1] = _(1);
     }
     func composition = comp_rel_array(80, inputs);
-    func looped = loop(composition, _(40));
-    func scaled = mul(looped, _(.1));
+    func looped = loop_(composition, 40);
+    func scaled = mul_(looped, .1);
     return scaled;
 }

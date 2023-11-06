@@ -3,8 +3,8 @@
 //
 // `inv(value)` returns 1 / value.
 //
-#ifndef COMPOSER_INV_H
-#define COMPOSER_INV_H
+#ifndef CSYNTH_INV_H
+#define CSYNTH_INV_H
 
 #include <assert.h>
 #include <math.h>
@@ -29,7 +29,8 @@ Func *inv(Func *value)
     return func_create(NULL, inv_eval, NULL, 0, NULL, 1, value);
 }
 
-#define div(a, b) mul(a, inv(b))
+#define div(_a, _b) (mul(_a, inv(_b)))
+#define div_(_a, _b) (div(_a, cons(_b)))
 
 void test_inv()
 {
@@ -37,4 +38,4 @@ void test_inv()
     assert(gen_eval(gen_create(inv(cons(-2)), .1)) == -0.5);
 }
 
-#endif // COMPOSER_INV_H
+#endif // CSYNTH_INV_H

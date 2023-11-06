@@ -3,8 +3,8 @@
 //
 // This is the heart of the library.
 //
-#ifndef COMPOSER_FUNC_H
-#define COMPOSER_FUNC_H
+#ifndef CSYNTH_FUNC_H
+#define CSYNTH_FUNC_H
 
 #include <stdarg.h>
 #include <stdlib.h>
@@ -178,4 +178,4 @@ void gen_reset(Gen *gen)
     }
 }
 
-#endif // COMPOSER_FUNC_H
+#endif // CSYNTH_FUNC_H

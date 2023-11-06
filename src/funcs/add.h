@@ -3,8 +3,8 @@
 //
 // `add(...)` returns the sum of a list of functions.
 //
-#ifndef COMPOSER_ADD_H
-#define COMPOSER_ADD_H
+#ifndef CSYNTH_ADD_H
+#define CSYNTH_ADD_H
 
 #include <assert.h>
 #include <stdarg.h>
@@ -31,7 +31,8 @@ Func *add_args(int count, ...)
     return func;
 }
 
-#define add(...) add_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__)
+#define add(...) (add_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
+#define add_(_input, _diff) (add(_input, cons(_diff)))
 
 void test_add()
 {
@@ -40,4 +41,4 @@ void test_add()
     assert(gen_eval(gen_create(add(cons(1)), .1)) == 1.0);
 }
 
-#endif // COMPOSER_ADD_H
+#endif // CSYNTH_ADD_H

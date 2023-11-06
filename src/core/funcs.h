@@ -1,8 +1,8 @@
 //
 // funcs.h - A single include file for all the functions.
 //
-#ifndef COMPOSER_FUNCS_H
-#define COMPOSER_FUNCS_H
+#ifndef CSYNTH_FUNCS_H
+#define CSYNTH_FUNCS_H
 
 #include "../funcs/add.h"
 #include "../funcs/adsr.h"
@@ -33,4 +33,4 @@
 #include "../funcs/timer.h"
 #include "../funcs/triangle.h"
 
-#endif // COMPOSER_FUNCS_H
+#endif // CSYNTH_FUNCS_H

@@ -3,8 +3,8 @@
 //
 // `logger(input, count)` with count the maximum number of log to be logged.
 //
-#ifndef COMPOSER_LOGGER_H
-#define COMPOSER_LOGGER_H
+#ifndef CSYNTH_LOGGER_H
+#define CSYNTH_LOGGER_H
 
 #include <assert.h>
 #include <stdio.h>
@@ -102,4 +102,4 @@ void test_logger()
 {
 }
 
-#endif // COMPOSER_LOGGER_H
+#endif // CSYNTH_LOGGER_H

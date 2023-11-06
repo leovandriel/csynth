@@ -48,7 +48,7 @@ Next we add the note in a 1.5 second loop:
 ```c
 func tone = sine(A4);
 func note = mul(tone, block_(0, .3));
-func looped = loop(note, _(1.5));
+func looped = loop_(note, 1.5);
 play(looped, 4);
 ```
 
@@ -58,8 +58,8 @@ clipping:
 ```c
 func tone = sine(A4);
 func note = mul(tone, block_(0, .3), _(.5));
-func looped = loop(note, _(1.5));
-func revved = reverb(looped, _(.4), _(.2));
+func looped = loop_(note, 1.5);
+func revved = reverb_(looped, .4, .2);
 play(revved, 6);
 ```
 

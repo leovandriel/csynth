@@ -1,8 +1,8 @@
 //
 // writer.h - Samples a function and writes the result to a WAV file.
 //
-#ifndef COMPOSER_WRITER_H
-#define COMPOSER_WRITER_H
+#ifndef CSYNTH_WRITER_H
+#define CSYNTH_WRITER_H
 
 #include <stdlib.h>
 #include <string.h>
@@ -82,4 +82,4 @@ void write_stdout(Func *root, double duration)
     write(root, duration, stdout);
 }
 
-#endif // COMPOSER_WRITER_H
+#endif // CSYNTH_WRITER_H

@@ -3,8 +3,8 @@
 //
 // `noise()` returns a random value in [-1, 1].
 //
-#ifndef COMPOSER_NOISE_H
-#define COMPOSER_NOISE_H
+#ifndef CSYNTH_NOISE_H
+#define CSYNTH_NOISE_H
 
 #include <assert.h>
 #include <stdlib.h>
@@ -30,4 +30,4 @@ void test_noise()
     }
 }
 
-#endif // COMPOSER_NOISE_H
+#endif // CSYNTH_NOISE_H

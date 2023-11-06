@@ -3,8 +3,8 @@
 //
 // `square(frequency)` returns a square wave with the given frequency.
 //
-#ifndef COMPOSER_SQUARE_H
-#define COMPOSER_SQUARE_H
+#ifndef CSYNTH_SQUARE_H
+#define CSYNTH_SQUARE_H
 
 #include <assert.h>
 #include <math.h>
@@ -39,6 +39,8 @@ Func *square(Func *frequency)
     return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, 1, frequency);
 }
 
+#define square_(_frequency) ((cons(_frequency)))
+
 void test_square()
 {
     func t = square(cons(1));
@@ -58,4 +60,4 @@ void test_square()
     assert(fabs(gen_eval(g) - 1.0) < epsilon);
 }
 
-#endif // COMPOSER_SQUARE_H
+#endif // CSYNTH_SQUARE_H

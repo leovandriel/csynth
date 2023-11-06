@@ -5,8 +5,8 @@
 // - clamp(value, min, max) - Ensure value is clipped to [min, max]
 // - clamp_ - Take double arguments instead of functions
 //
-#ifndef COMPOSER_MIN_H
-#define COMPOSER_MIN_H
+#ifndef CSYNTH_MIN_H
+#define CSYNTH_MIN_H
 
 #include <assert.h>
 #include <float.h>
@@ -39,9 +39,10 @@ Func *min_args(int count, ...)
     return func;
 }
 
-#define min(...) min_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__)
-#define clamp(_value, _min, _max) min(max(_value, _min), _max)
-#define clamp_(_value, _min, _max) clamp(_value, cons(_min), cons(_max))
+#define min(...) (min_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
+#define min_(_input, _max) (min(_input, cons(_max)))
+#define clamp(_value, _min, _max) (min(max(_value, _min), _max))
+#define clamp_(_value, _min, _max) (clamp(_value, cons(_min), cons(_max)))
 
 void test_min()
 {
@@ -51,4 +52,4 @@ void test_min()
     assert(gen_eval(gen_create(min(cons(1)), .1)) == 1.0);
 }
 
-#endif // COMPOSER_MIN_H
+#endif // CSYNTH_MIN_H

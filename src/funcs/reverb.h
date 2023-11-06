@@ -3,8 +3,8 @@
 //
 // `reverb(input, interval, decay)` returns a reverberated version of input.
 //
-#ifndef COMPOSER_REVERB_H
-#define COMPOSER_REVERB_H
+#ifndef CSYNTH_REVERB_H
+#define CSYNTH_REVERB_H
 
 #include <assert.h>
 #include <math.h>
@@ -65,6 +65,8 @@ Func *reverb(Func *input, Func *interval, Func *decay)
     return func_create(NULL, reverb_eval, reverb_free, sizeof(ReverbContext), NULL, 3, input, interval, decay);
 }
 
+#define reverb_(_input, _interval, _decay) (reverb(_input, cons(_interval), cons(_decay)))
+
 void test_reverb()
 {
     func t = reverb(cons(1), cons(.2), cons(.5));
@@ -84,4 +86,4 @@ void test_reverb()
     assert(fabs(gen_eval(g) - 1.937500) < epsilon);
 }
 
-#endif // COMPOSER_REVERB_H
+#endif // CSYNTH_REVERB_H

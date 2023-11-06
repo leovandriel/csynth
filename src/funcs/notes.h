@@ -3,8 +3,8 @@
 //
 // The contents of this file can be generated using `print_notes_h`.
 //
-#ifndef COMPOSER_NOTES_H
-#define COMPOSER_NOTES_H
+#ifndef CSYNTH_NOTES_H
+#define CSYNTH_NOTES_H
 
 #include <assert.h>
 #include <math.h>
@@ -220,4 +220,4 @@ void test_notes()
     assert(fabs(gen_eval(gen_create(G10, .1)) - 25087.707903) < epsilon);
 }
 
-#endif // COMPOSER_NOTES_H
+#endif // CSYNTH_NOTES_H

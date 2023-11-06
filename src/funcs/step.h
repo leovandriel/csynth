@@ -5,8 +5,8 @@
 // - block(edge0, edge1) - A block function, which is 1 between edge0 and edge1
 // - block_ - Take double arguments instead of functions
 //
-#ifndef COMPOSER_STEP_H
-#define COMPOSER_STEP_H
+#ifndef CSYNTH_STEP_H
+#define CSYNTH_STEP_H
 
 #include <assert.h>
 #include <math.h>
@@ -33,8 +33,9 @@ Func *step(Func *edge)
     return func_create(NULL, step_eval, NULL, sizeof(StepContext), NULL, 1, edge);
 }
 
-#define block(_edge0, _edge1) mul(step(_edge0), add(ONE, neg(step(_edge1))))
-#define block_(_edge0, _edge1) block(cons(_edge0), cons(_edge1))
+#define step_(_edge) ((cons(_edge)))
+#define block(_edge0, _edge1) (mul(step(_edge0), add(ONE, neg(step(_edge1)))))
+#define block_(_edge0, _edge1) (block(cons(_edge0), cons(_edge1)))
 
 void test_step()
 {
@@ -54,4 +55,4 @@ void test_step()
     assert(fabs(gen_eval(g) - 1.0) < epsilon);
 }
 
-#endif // COMPOSER_STEP_H
+#endif // CSYNTH_STEP_H

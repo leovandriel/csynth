@@ -3,8 +3,8 @@
 //
 // `high_pass(input, frequency)` with input and frequency functions.
 //
-#ifndef COMPOSER_HIGH_PASS_H
-#define COMPOSER_HIGH_PASS_H
+#ifndef CSYNTH_HIGH_PASS_H
+#define CSYNTH_HIGH_PASS_H
 
 #include <assert.h>
 #include <math.h>
@@ -35,6 +35,8 @@ Func *high_pass(Func *input, Func *frequency)
     return func_create(NULL, high_pass_eval, NULL, sizeof(HighPassContext), NULL, 2, input, frequency);
 }
 
+#define high_pass_(_input, _frequency) (high_pass(_input, cons(_frequency)))
+
 void test_high_pass()
 {
     func t = high_pass(cons(1), cons(10));
@@ -54,4 +56,4 @@ void test_high_pass()
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);
 }
 
-#endif // COMPOSER_HIGH_PASS_H
+#endif // CSYNTH_HIGH_PASS_H

@@ -3,8 +3,8 @@
 //
 // `print(text, input)` prints a string the first time input is non-zero
 //
-#ifndef COMPOSER_PRINT_H
-#define COMPOSER_PRINT_H
+#ifndef CSYNTH_PRINT_H
+#define CSYNTH_PRINT_H
 
 #include <assert.h>
 #include <stdio.h>
@@ -43,4 +43,4 @@ void test_print()
 {
 }
 
-#endif // COMPOSER_PRINT_H
+#endif // CSYNTH_PRINT_H

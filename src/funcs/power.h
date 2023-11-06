@@ -3,8 +3,8 @@
 //
 // `power(a, b)` returns a ** b.
 //
-#ifndef COMPOSER_POWER_H
-#define COMPOSER_POWER_H
+#ifndef CSYNTH_POWER_H
+#define CSYNTH_POWER_H
 
 #include <assert.h>
 #include <math.h>
@@ -24,6 +24,8 @@ Func *power(Func *a, Func *b)
     return func_create(NULL, power_eval, NULL, 0, NULL, 2, a, b);
 }
 
+#define power_(_input, _exponent) (power(_input, cons(_exponent)))
+
 void test_power()
 {
     assert(gen_eval(gen_create(power(cons(1), cons(1)), .1)) == 1.0);
@@ -32,4 +34,4 @@ void test_power()
     assert(gen_eval(gen_create(power(cons(2), cons(2)), .1)) == 4.0);
 }
 
-#endif // COMPOSER_POWER_H
+#endif // CSYNTH_POWER_H

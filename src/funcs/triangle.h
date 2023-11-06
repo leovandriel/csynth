@@ -3,8 +3,8 @@
 //
 // `triangle(frequency)` returns a triangle wave with the given frequency.
 //
-#ifndef COMPOSER_TRIANGLE_H
-#define COMPOSER_TRIANGLE_H
+#ifndef CSYNTH_TRIANGLE_H
+#define CSYNTH_TRIANGLE_H
 
 #include <assert.h>
 #include <math.h>
@@ -45,6 +45,8 @@ Func *triangle(Func *frequency)
     return func_create(NULL, triangle_eval, NULL, sizeof(TriangleContext), &initial, 1, frequency);
 }
 
+#define triangle_(_frequency) (triangle(cons(_frequency)))
+
 void test_triangle()
 {
     func t = triangle(cons(1));
@@ -64,4 +66,4 @@ void test_triangle()
     assert(fabs(gen_eval(g) - 0.4) < epsilon);
 }
 
-#endif // COMPOSER_TRIANGLE_H
+#endif // CSYNTH_TRIANGLE_H

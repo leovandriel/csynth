@@ -3,8 +3,8 @@
 //
 // `neg(value)` returns -value.
 //
-#ifndef COMPOSER_NEG_H
-#define COMPOSER_NEG_H
+#ifndef CSYNTH_NEG_H
+#define CSYNTH_NEG_H
 
 #include <assert.h>
 
@@ -22,7 +22,8 @@ Func *neg(Func *value)
     return func_create(NULL, neg_eval, NULL, 0, NULL, 1, value);
 }
 
-#define sub(a, b) add(a, neg(b))
+#define sub(_a, _b) (add(_a, neg(_b)))
+#define sub_(_a, _b) (sub(_a, cons(_b)))
 
 void test_neg()
 {
@@ -30,4 +31,4 @@ void test_neg()
     assert(gen_eval(gen_create(neg(cons(-2)), .1)) == 2.0);
 }
 
-#endif // COMPOSER_NEG_H
+#endif // CSYNTH_NEG_H

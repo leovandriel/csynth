@@ -22,7 +22,7 @@ func beats()
         mul(sine(A2), hump_(0, 0.05, 1.95, 2), _(8)), _(2),
         mul(sine(E2), hump_(0, 0.05, 1.95, 2), _(8)), _(2));
     func composition = add(base_line, hat_line, low_line);
-    func looped = loop(composition, _(8));
-    func scaled = mul(looped, _(.1));
+    func looped = loop_(composition, 8);
+    func scaled = mul_(looped, .1);
     return scaled;
 }

@@ -3,8 +3,8 @@
 //
 // `karplus_strong(frequency, decay)`
 //
-#ifndef COMPOSER_KARPLUS_STRONG_H
-#define COMPOSER_KARPLUS_STRONG_H
+#ifndef CSYNTH_KARPLUS_STRONG_H
+#define CSYNTH_KARPLUS_STRONG_H
 
 #include <assert.h>
 #include <math.h>
@@ -68,6 +68,8 @@ Func *karplus_strong(Func *frequency, Func *decay)
     return func_create(NULL, karplus_strong_eval, karplus_strong_free, sizeof(KarplusStrongContext), NULL, 2, frequency, decay);
 }
 
+#define karplus_strong_(_frequency, _decay) (karplus_strong(cons(_frequency), cons(_decay)))
+
 void test_karplus_strong()
 {
     srand(0);
@@ -88,4 +90,4 @@ void test_karplus_strong()
     assert(fabs(gen_eval(g) - -0.251595) < epsilon);
 }
 
-#endif // COMPOSER_KARPLUS_STRONG_H
+#endif // CSYNTH_KARPLUS_STRONG_H

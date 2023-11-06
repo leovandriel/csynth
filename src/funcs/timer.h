@@ -3,8 +3,8 @@
 //
 // `timer()` returns accumulated time deltas
 //
-#ifndef COMPOSER_TIMER_H
-#define COMPOSER_TIMER_H
+#ifndef CSYNTH_TIMER_H
+#define CSYNTH_TIMER_H
 
 #include <assert.h>
 #include <math.h>
@@ -41,4 +41,4 @@ void test_timer()
     assert(fabs(gen_eval(g) - 0.4) < epsilon);
 }
 
-#endif // COMPOSER_TIMER_H
+#endif // CSYNTH_TIMER_H

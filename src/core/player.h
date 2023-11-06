@@ -1,8 +1,8 @@
 //
 // player.h - Samples a function and plays it using PortAudio.
 //
-#ifndef COMPOSER_PLAYER_H
-#define COMPOSER_PLAYER_H
+#ifndef CSYNTH_PLAYER_H
+#define CSYNTH_PLAYER_H
 
 #include <portaudio.h>
 #include <stdio.h>
@@ -59,4 +59,4 @@ int play(Func *root, double duration)
     return 0;
 }
 
-#endif // COMPOSER_PLAYER_H
+#endif // CSYNTH_PLAYER_H

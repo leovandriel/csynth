@@ -4,8 +4,8 @@
 // `adsr(attack, decay, sustain, release, duration)`
 // - adsr_ - Take double arguments instead of functions
 //
-#ifndef COMPOSER_ADSR_H
-#define COMPOSER_ADSR_H
+#ifndef CSYNTH_ADSR_H
+#define CSYNTH_ADSR_H
 
 #include <assert.h>
 #include <math.h>
@@ -52,7 +52,7 @@ Func *adsr(Func *attack, Func *decay, Func *sustain, Func *release, Func *durati
     return func_create(NULL, adsr_eval, NULL, sizeof(AdsrContext), NULL, 5, attack, decay, sustain, release, duration);
 }
 
-#define adsr_(_attack, _decay, _sustain, _release, _duration) adsr(cons(_attack), cons(_decay), cons(_sustain), cons(_release), cons(_duration))
+#define adsr_(_attack, _decay, _sustain, _release, _duration) (adsr(cons(_attack), cons(_decay), cons(_sustain), cons(_release), cons(_duration)))
 
 void test_adsr()
 {
@@ -76,4 +76,4 @@ void test_adsr()
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);
 }
 
-#endif // COMPOSER_ADSR_H
+#endif // CSYNTH_ADSR_H

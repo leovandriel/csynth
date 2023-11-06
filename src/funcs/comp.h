@@ -10,8 +10,8 @@
 // - rel: Each duration is relative, specifying the duration of a single
 //   function.
 //
-#ifndef COMPOSER_COMP_H
-#define COMPOSER_COMP_H
+#ifndef CSYNTH_COMP_H
+#define CSYNTH_COMP_H
 
 #include <assert.h>
 #include <math.h>
@@ -64,7 +64,7 @@ Func *comp_abs_args(int count, ...)
     return func;
 }
 
-#define comp_abs(...) comp_abs_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__)
+#define comp_abs(...) (comp_abs_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
 
 Func *comp_rel_args(int count, ...)
 {
@@ -79,8 +79,8 @@ Func *comp_rel_args(int count, ...)
     return func;
 }
 
-#define comp_rel(...) comp_rel_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__)
-#define comp(...) comp_rel(__VA_ARGS__)
+#define comp_rel(...) (comp_rel_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
+#define comp(...) (comp_rel(__VA_ARGS__))
 
 Func *comp_abs_array(int count, Func **args)
 {
@@ -116,4 +116,4 @@ void test_comp()
     assert(fabs(gen_eval(g) - 0.0) < epsilon);
 }
 
-#endif // COMPOSER_COMP_H
+#endif // CSYNTH_COMP_H
