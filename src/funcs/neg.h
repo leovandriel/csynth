@@ -9,7 +9,7 @@
 #include <assert.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 double neg_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
@@ -23,12 +23,12 @@ Func *neg(Func *value)
 }
 
 #define sub(_a, _b) (add(_a, neg(_b)))
-#define sub_(_a, _b) (sub(_a, cons(_b)))
+#define sub_(_a, _b) (sub(_a, const_(_b)))
 
 void test_neg()
 {
-    assert(gen_eval(gen_create(neg(cons(1)), .1)) == -1.0);
-    assert(gen_eval(gen_create(neg(cons(-2)), .1)) == 2.0);
+    assert(gen_eval(gen_create(neg(const_(1)), .1)) == -1.0);
+    assert(gen_eval(gen_create(neg(const_(-2)), .1)) == 2.0);
 }
 
 #endif // CSYNTH_NEG_H

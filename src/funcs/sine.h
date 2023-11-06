@@ -10,7 +10,7 @@
 #include <math.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 typedef struct
 {
@@ -38,11 +38,11 @@ Func *sine(Func *frequency)
     return func_create(NULL, sine_eval, NULL, sizeof(SineContext), &initial, 1, frequency);
 }
 
-#define sine_(_frequency) (sine(cons(_frequency)))
+#define sine_(_frequency) (sine(const_(_frequency)))
 
 void test_sine()
 {
-    func t = sine(cons(1));
+    func t = sine(const_(1));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-5;
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);

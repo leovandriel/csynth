@@ -7,7 +7,7 @@
 #include "../funcs/add.h"
 #include "../funcs/adsr.h"
 #include "../funcs/comp.h"
-#include "../funcs/cons.h"
+#include "../funcs/const.h"
 #include "../funcs/delay.h"
 #include "../funcs/high_pass.h"
 #include "../funcs/inv.h"

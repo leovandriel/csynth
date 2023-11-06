@@ -10,7 +10,7 @@
 #include <math.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 typedef struct
 {
@@ -45,11 +45,11 @@ Func *triangle(Func *frequency)
     return func_create(NULL, triangle_eval, NULL, sizeof(TriangleContext), &initial, 1, frequency);
 }
 
-#define triangle_(_frequency) (triangle(cons(_frequency)))
+#define triangle_(_frequency) (triangle(const_(_frequency)))
 
 void test_triangle()
 {
-    func t = triangle(cons(1));
+    func t = triangle(const_(1));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 0.0) < epsilon);

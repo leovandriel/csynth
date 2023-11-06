@@ -10,7 +10,7 @@
 #include <stdarg.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 double mul_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
@@ -32,13 +32,13 @@ Func *mul_args(int count, ...)
 }
 
 #define mul(...) (mul_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
-#define mul_(_input, _factor) (mul(_input, cons(_factor)))
+#define mul_(_input, _factor) (mul(_input, const_(_factor)))
 
 void test_mul()
 {
-    assert(gen_eval(gen_create(mul(cons(1), cons(1)), .1)) == 1.0);
-    assert(gen_eval(gen_create(mul(cons(1), cons(2), cons(3)), .1)) == 6.0);
-    assert(gen_eval(gen_create(mul(cons(1)), .1)) == 1.0);
+    assert(gen_eval(gen_create(mul(const_(1), const_(1)), .1)) == 1.0);
+    assert(gen_eval(gen_create(mul(const_(1), const_(2), const_(3)), .1)) == 6.0);
+    assert(gen_eval(gen_create(mul(const_(1)), .1)) == 1.0);
 }
 
 #endif // CSYNTH_MUL_H

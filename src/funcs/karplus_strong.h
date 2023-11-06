@@ -10,7 +10,7 @@
 #include <math.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 typedef struct
 {
@@ -68,12 +68,12 @@ Func *karplus_strong(Func *frequency, Func *decay)
     return func_create(NULL, karplus_strong_eval, karplus_strong_free, sizeof(KarplusStrongContext), NULL, 2, frequency, decay);
 }
 
-#define karplus_strong_(_frequency, _decay) (karplus_strong(cons(_frequency), cons(_decay)))
+#define karplus_strong_(_frequency, _decay) (karplus_strong(const_(_frequency), const_(_decay)))
 
 void test_karplus_strong()
 {
     srand(0);
-    func t = karplus_strong(cons(2), cons(0.5));
+    func t = karplus_strong(const_(2), const_(0.5));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-4;
     assert(fabs(gen_eval(g) - -0.647648) < epsilon);

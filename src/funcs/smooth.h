@@ -13,7 +13,7 @@
 #include <math.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 typedef struct
 {
@@ -48,13 +48,13 @@ Func *smooth(Func *edge0, Func *edge1)
     return func_create(NULL, smooth_eval, NULL, sizeof(SmoothContext), NULL, 2, edge0, edge1);
 }
 
-#define smooth_(_edge0, _edge1) ((cons(_edge0), cons(_edge1)))
+#define smooth_(_edge0, _edge1) ((const_(_edge0), const_(_edge1)))
 #define hump(_edge0, _edge1, _edge2, _edge3) (mul(smooth(_edge0, _edge1), add(ONE, neg(smooth(_edge2, _edge3)))))
-#define hump_(_edge0, _edge1, _edge2, _edge3) (hump(cons(_edge0), cons(_edge1), cons(_edge2), cons(_edge3)))
+#define hump_(_edge0, _edge1, _edge2, _edge3) (hump(const_(_edge0), const_(_edge1), const_(_edge2), const_(_edge3)))
 
 void test_smooth()
 {
-    func t = smooth(cons(0.3), cons(0.7));
+    func t = smooth(const_(0.3), const_(0.7));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-4;
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);

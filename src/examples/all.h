@@ -8,11 +8,11 @@
 func all_examples()
 {
     func examples = comp(
-        print("beep boop", beep_boop()), cons(8),
-        print("beats", beats()), cons(8),
-        print("shapes", shapes()), cons(8),
-        print("beep boop increase", beep_boop_increase()), cons(8),
-        print("lows", lows()), cons(30),
-        print("filters", filters()), cons(30));
+        print("beep boop", beep_boop()), _(8),
+        print("beats", beats()), _(8),
+        print("shapes", shapes()), _(8),
+        print("beep boop increase", beep_boop_increase()), _(8),
+        print("lows", lows()), _(30),
+        print("filters", filters()), _(30));
     return examples;
 }

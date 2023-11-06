@@ -10,7 +10,7 @@
 #include <math.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 typedef struct
 {
@@ -33,11 +33,11 @@ Func *low_pass(Func *input, Func *frequency)
     return func_create(NULL, low_pass_eval, NULL, sizeof(LowPassContext), NULL, 2, input, frequency);
 }
 
-#define low_pass_(_input, _frequency) (low_pass(_input, cons(_frequency)))
+#define low_pass_(_input, _frequency) (low_pass(_input, const_(_frequency)))
 
 void test_low_pass()
 {
-    func t = low_pass(cons(1), cons(10));
+    func t = low_pass(const_(1), const_(10));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-4;
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);

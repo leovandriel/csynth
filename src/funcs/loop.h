@@ -10,7 +10,7 @@
 #include <math.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 #include "./step.h"
 
 typedef struct
@@ -37,11 +37,11 @@ Func *loop(Func *input, Func *duration)
     return func_create(NULL, loop_eval, NULL, sizeof(LoopContext), NULL, 2, input, duration);
 }
 
-#define loop_(_input, _duration) (loop(_input, cons(_duration)))
+#define loop_(_input, _duration) (loop(_input, const_(_duration)))
 
 void test_loop()
 {
-    func t = loop(step(cons(0.3)), cons(0.5));
+    func t = loop(step(const_(0.3)), const_(0.5));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);

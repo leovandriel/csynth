@@ -13,7 +13,7 @@
 #include <stdarg.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 #include "./max.h"
 
 double min_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
@@ -40,16 +40,16 @@ Func *min_args(int count, ...)
 }
 
 #define min(...) (min_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
-#define min_(_input, _max) (min(_input, cons(_max)))
+#define min_(_input, _max) (min(_input, const_(_max)))
 #define clamp(_value, _min, _max) (min(max(_value, _min), _max))
-#define clamp_(_value, _min, _max) (clamp(_value, cons(_min), cons(_max)))
+#define clamp_(_value, _min, _max) (clamp(_value, const_(_min), const_(_max)))
 
 void test_min()
 {
-    assert(gen_eval(gen_create(min(cons(1), cons(2)), .1)) == 1.0);
-    assert(gen_eval(gen_create(min(cons(2), cons(1)), .1)) == 1.0);
-    assert(gen_eval(gen_create(min(cons(4), cons(2), cons(3)), .1)) == 2.0);
-    assert(gen_eval(gen_create(min(cons(1)), .1)) == 1.0);
+    assert(gen_eval(gen_create(min(const_(1), const_(2)), .1)) == 1.0);
+    assert(gen_eval(gen_create(min(const_(2), const_(1)), .1)) == 1.0);
+    assert(gen_eval(gen_create(min(const_(4), const_(2), const_(3)), .1)) == 2.0);
+    assert(gen_eval(gen_create(min(const_(1)), .1)) == 1.0);
 }
 
 #endif // CSYNTH_MIN_H

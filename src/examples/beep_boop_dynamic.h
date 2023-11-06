@@ -43,12 +43,12 @@ func beep_boop_fast()
 
 func beep_boop_wobble()
 {
-    func wobble = add_(mul_(sine(_(1)), .1), 1);
+    func wobble = add_(mul_(sine_(1), .1), 1);
     return beep_boop_dynamic(wobble, wobble);
 }
 
 func beep_boop_increase()
 {
-    func increase = add(mul(timer(), _(.2)), _(.5));
+    func increase = add_(mul_(timer(), .2), .5);
     return beep_boop_dynamic(increase, increase);
 }

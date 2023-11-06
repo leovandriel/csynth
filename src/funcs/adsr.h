@@ -11,7 +11,7 @@
 #include <math.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 typedef struct
 {
@@ -52,7 +52,7 @@ Func *adsr(Func *attack, Func *decay, Func *sustain, Func *release, Func *durati
     return func_create(NULL, adsr_eval, NULL, sizeof(AdsrContext), NULL, 5, attack, decay, sustain, release, duration);
 }
 
-#define adsr_(_attack, _decay, _sustain, _release, _duration) (adsr(cons(_attack), cons(_decay), cons(_sustain), cons(_release), cons(_duration)))
+#define adsr_(_attack, _decay, _sustain, _release, _duration) (adsr(const_(_attack), const_(_decay), const_(_sustain), const_(_release), const_(_duration)))
 
 void test_adsr()
 {

@@ -10,7 +10,7 @@
 #include <assert.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 #include "./square.h"
 
 typedef struct
@@ -40,11 +40,11 @@ Func *limit(Func *input, Func *diff)
     return func_create(NULL, limit_eval, NULL, sizeof(LimitContext), NULL, 2, input, diff);
 }
 
-#define limit_(_input, _diff) (limit(_input, cons(_diff)))
+#define limit_(_input, _diff) (limit(_input, const_(_diff)))
 
 void test_limit()
 {
-    func t = limit(square(cons(1)), cons(3));
+    func t = limit(square(const_(1)), const_(3));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 0.300000) < epsilon);

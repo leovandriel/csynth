@@ -12,7 +12,7 @@
 #include <math.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 typedef struct
 {
@@ -33,13 +33,13 @@ Func *step(Func *edge)
     return func_create(NULL, step_eval, NULL, sizeof(StepContext), NULL, 1, edge);
 }
 
-#define step_(_edge) ((cons(_edge)))
+#define step_(_edge) ((const_(_edge)))
 #define block(_edge0, _edge1) (mul(step(_edge0), add(ONE, neg(step(_edge1)))))
-#define block_(_edge0, _edge1) (block(cons(_edge0), cons(_edge1)))
+#define block_(_edge0, _edge1) (block(const_(_edge0), const_(_edge1)))
 
 void test_step()
 {
-    func t = step(cons(0.5));
+    func t = step(const_(0.5));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 0.0) < epsilon);

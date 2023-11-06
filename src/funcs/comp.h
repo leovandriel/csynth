@@ -18,7 +18,7 @@
 #include <stdarg.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 typedef struct
 {
@@ -102,7 +102,7 @@ Func *comp_rel_array(int count, Func **args)
 
 void test_comp()
 {
-    func t = comp(cons(1), cons(0.2), cons(-1), cons(0.3));
+    func t = comp(const_(1), const_(0.2), const_(-1), const_(0.3));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 1.0) < epsilon);

@@ -10,7 +10,7 @@
 #include <math.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 static const double DIVISION_EPSILON = 1e-9;
 
@@ -30,12 +30,12 @@ Func *inv(Func *value)
 }
 
 #define div(_a, _b) (mul(_a, inv(_b)))
-#define div_(_a, _b) (div(_a, cons(_b)))
+#define div_(_a, _b) (div(_a, const_(_b)))
 
 void test_inv()
 {
-    assert(gen_eval(gen_create(inv(cons(1)), .1)) == 1.0);
-    assert(gen_eval(gen_create(inv(cons(-2)), .1)) == -0.5);
+    assert(gen_eval(gen_create(inv(const_(1)), .1)) == 1.0);
+    assert(gen_eval(gen_create(inv(const_(-2)), .1)) == -0.5);
 }
 
 #endif // CSYNTH_INV_H

@@ -10,7 +10,7 @@
 #include <math.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 typedef struct
 {
@@ -39,11 +39,11 @@ Func *square(Func *frequency)
     return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, 1, frequency);
 }
 
-#define square_(_frequency) ((cons(_frequency)))
+#define square_(_frequency) ((const_(_frequency)))
 
 void test_square()
 {
-    func t = square(cons(1));
+    func t = square(const_(1));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 1.0) < epsilon);

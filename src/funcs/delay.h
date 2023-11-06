@@ -11,7 +11,7 @@
 #include <math.h>
 
 #include "../core/func.h"
-#include "./cons.h"
+#include "./const.h"
 
 typedef struct
 {
@@ -37,13 +37,13 @@ Func *delay(Func *input, Func *duration)
     return func_create(NULL, delay_eval, NULL, sizeof(DelayContext), NULL, 2, input, duration);
 }
 
-#define delay_(_input, _frequency) (delay(_input, cons(_frequency)))
+#define delay_(_input, _frequency) (delay(_input, const_(_frequency)))
 #define skip(_input, _duration) (delay(_input, neg(_duration)))
-#define skip_(_input, _duration) (skip(_input, cons(_duration)))
+#define skip_(_input, _duration) (skip(_input, const_(_duration)))
 
 void test_delay()
 {
-    func t = delay(cons(1), cons(0.5));
+    func t = delay(const_(1), const_(0.5));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);
