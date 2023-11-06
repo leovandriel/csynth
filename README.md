@@ -23,36 +23,57 @@ instruments, and compositions.
 
 Let's start simple. To play a 440 Hz sine wave for two seconds, run:
 
-    play(sine(A4), 2);
+```c
+play(sine(A4), 2);
+```
 
-The `A4` is 440, `sine` generates a sine wave, and `play` samples the sine
-function for 2 seconds to the speakers.
+The `A4` is 440, `sine` generates a sine wave at given frequency, and `play`
+samples the sine function for 2 seconds to the speakers.
 
 Next we add a block envelope to make this into a 0.3 second note:
 
-    func tone = sine(A4);
-    func note = mul(tone, block_(0, .3));
-    play(note, 2);
+```c
+func tone = sine(A4);
+func note = mul(tone, block_(0, .3));
+play(note, 2);
+```
 
 This adds `block`, which is value 1 for time in interval [0, 0.3] and 0
 elsewhere. Then `mul` simply multiplies the tone with the envelope, resulting in
 a .3 second A4 note. By default all functions take functions as arguments. The
-underscore (`_`) indicates that the function takes a number.
+underscore `_` indicates that the function takes a number.
 
-Next we add the note in a one-second loop:
+Next we add the note in a 1.5 second loop:
 
-    func tone = sine(A4);
-    func note = mul(tone, block_(0, .3));
-    func looped = loop(note, _(1));
-    play(looped, 4);
+```c
+func tone = sine(A4);
+func note = mul(tone, block_(0, .3));
+func looped = loop(note, _(1.5));
+play(looped, 4);
+```
 
-To add some reverb:
+Finally we add reverb (interval .4s, decay .2) and scale the output to prevent
+clipping:
 
-    func tone = sine(A4);
-    func note = mul(tone, block_(0, .3));
-    func looped = loop(note, _(1));
-    func reverbed = reverb(looped, _(.4), _(.2));
-    play(reverbed, 6);
+```c
+func tone = sine(A4);
+func note = mul(tone, block_(0, .3));
+func looped = loop(note, _(1.5));
+func revved = reverb(looped, _(.4), _(.2));
+func scaled = mul(revved, _(.5));
+play(scaled, 6);
+```
+
+You can hear the result in
+[example.mp3](https://github.com/leovandriel/csynth/raw/main/output/example.mp3).
+
+All available functions are listed in the [funcs](src/funcs) folder.
+
+## FAQ
+
+*Why C?*
+
+Because it didn't seem like a good idea.
 
 ## License
 
