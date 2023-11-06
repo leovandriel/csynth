@@ -1,8 +1,13 @@
 //
 // adsr.h - ADSR envelope
 //
-// `adsr(attack, decay, sustain, release, duration)`
-// - adsr_ - Take double arguments instead of functions
+// `adsr(attack, decay, sustain, release, duration)` with:
+// - `attack` - Attack time
+// - `decay` - Decay time
+// - `sustain` - Sustain level [0, 1]
+// - `release` - Release time
+// - `duration` - The full duration of the envelope (attach + decay + sustain +
+//   release)
 //
 #ifndef CSYNTH_ADSR_H
 #define CSYNTH_ADSR_H
@@ -31,17 +36,17 @@ double adsr_eval(Gen **args, __attribute__((unused)) int count, double delta, vo
     {
         output = context->time / attack;
     }
-    else if (context->time < (attack + decay))
+    else if (context->time < attack + decay)
     {
-        output = 1.0 - (context->time - attack) / decay * (1.0 - sustain);
+        output = 1.0 - (context->time - attack) * (1.0 - sustain) / decay;
     }
-    else if (context->time < duration)
+    else if (context->time < duration - release)
     {
         output = sustain;
     }
-    else if (context->time < (duration + release))
+    else if (context->time < duration)
     {
-        output = sustain * (1.0 - (context->time - duration) / release);
+        output = (duration - context->time) * sustain / release;
     }
     context->time += delta;
     return output;
@@ -56,7 +61,7 @@ Func *adsr(Func *attack, Func *decay, Func *sustain, Func *release, Func *durati
 
 void test_adsr()
 {
-    func t = adsr_(0.01, 0.1, 0.7, 0.2, 1.0);
+    func t = adsr_(0.01, 0.1, 0.7, 0.2, 1.2);
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);
