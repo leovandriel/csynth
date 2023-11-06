@@ -48,8 +48,10 @@ Func *smooth(Func *edge0, Func *edge1)
     return func_create(NULL, smooth_eval, NULL, sizeof(SmoothContext), NULL, 2, edge0, edge1);
 }
 
-#define smooth_(_edge0, _edge1) ((const_(_edge0), const_(_edge1)))
-#define hump(_edge0, _edge1, _edge2, _edge3) (mul(smooth(_edge0, _edge1), add(ONE, neg(smooth(_edge2, _edge3)))))
+#define smooth_inv(_edge0, _edge1) (sub(ONE, smooth(_edge0, _edge1)))
+#define smooth_(_edge0, _edge1) (smooth(const_(_edge0), const_(_edge1)))
+#define smooth_inv_(_edge0, _edge1) (smooth_inv(const_(_edge0), const_(_edge1)))
+#define hump(_edge0, _edge1, _edge2, _edge3) (mul(smooth(_edge0, _edge1), smooth_inv(_edge2, _edge3)))
 #define hump_(_edge0, _edge1, _edge2, _edge3) (hump(const_(_edge0), const_(_edge1), const_(_edge2), const_(_edge3)))
 
 void test_smooth()

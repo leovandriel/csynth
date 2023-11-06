@@ -33,8 +33,10 @@ Func *step(Func *edge)
     return func_create(NULL, step_eval, NULL, sizeof(StepContext), NULL, 1, edge);
 }
 
-#define step_(_edge) ((const_(_edge)))
-#define block(_edge0, _edge1) (mul(step(_edge0), add(ONE, neg(step(_edge1)))))
+#define step_inv(_edge) (sub(ONE, step(_edge)))
+#define step_(_edge) (step(const_(_edge)))
+#define step_inv_(_edge) (step_inv(const_(_edge)))
+#define block(_edge0, _edge1) (mul(step(_edge0), step_inv(_edge1)))
 #define block_(_edge0, _edge1) (block(const_(_edge0), const_(_edge1)))
 
 void test_step()
