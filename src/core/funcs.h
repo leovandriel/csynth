@@ -11,6 +11,7 @@
 #include "../funcs/delay.h"
 #include "../funcs/high_pass.h"
 #include "../funcs/inv.h"
+#include "../funcs/karplus_strong.h"
 #include "../funcs/limit.h"
 #include "../funcs/logger.h"
 #include "../funcs/loop.h"

@@ -52,16 +52,15 @@ func looped = loop(note, _(1.5));
 play(looped, 4);
 ```
 
-Finally we add reverb (interval .4s, decay .2) and scale the output to prevent
+Finally we add reverb (interval .4s, decay .2) and scale the note to prevent
 clipping:
 
 ```c
 func tone = sine(A4);
-func note = mul(tone, block_(0, .3));
+func note = mul(tone, block_(0, .3), _(.5));
 func looped = loop(note, _(1.5));
 func revved = reverb(looped, _(.4), _(.2));
-func scaled = mul(revved, _(.5));
-play(scaled, 6);
+play(revved, 6);
 ```
 
 You can hear the result in
