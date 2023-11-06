@@ -12,11 +12,11 @@ Play examples with PortAudio:
 
     ./play.sh
 
-Generate examples to WAV file (replace `player` with wav player):
+Samples examples into a WAV file (replace `player` with wav player):
 
     ./write.sh && player output/run.wav
 
-## How it works
+## Example
 
 To create music in CSynth, we nest basic (mathematical) functions into sounds,
 instruments, and compositions.
@@ -27,10 +27,10 @@ Let's start simple. To play a 440 Hz sine wave for two seconds, run:
 play(sine(A4), 2);
 ```
 
-The `A4` is 440, `sine` generates a sine wave at given frequency, and `play`
+The `A4` is 440, `sine` generates a sine wave at the given frequency, and `play`
 samples the sine function for 2 seconds to the speakers.
 
-Next we add a block envelope to make this into a 0.3 second note:
+Next, we add a block envelope to make this into a 0.3 second note:
 
 ```c
 func tone = sine(A4);
@@ -40,10 +40,10 @@ play(note, 2);
 
 This adds `block`, which is value 1 for time in interval [0, 0.3] and 0
 elsewhere. Then `mul` simply multiplies the tone with the envelope, resulting in
-a .3 second A4 note. By default all functions take functions as arguments. The
+a .3 second A4 note. By default, all functions take functions as arguments. The
 underscore `_` indicates that the function takes a number.
 
-Next we add the note in a 1.5 second loop:
+Next, we add the note in a 1.5 second loop:
 
 ```c
 func tone = sine(A4);
@@ -52,7 +52,7 @@ func looped = loop_(note, 1.5);
 play(looped, 4);
 ```
 
-Finally we add reverb (interval .4s, decay .2) and scale the note to prevent
+Finally, we add reverb (interval .4s, decay .2) and scale the note to prevent
 clipping:
 
 ```c
@@ -67,6 +67,23 @@ You can hear the result in
 [example.mp3](https://github.com/leovandriel/csynth/raw/main/output/example.mp3).
 
 All available functions are listed in the [funcs](src/funcs) folder.
+
+## How it works
+
+The `func` is the primary building block. Almost all functions take another
+functions as input. These inputs can represent a signal that they transform
+(e.g. `input` in `loop()`) or a parameter that is used for generating a signal
+(e.g. `frequency` in `sine()`). To CSynth there is no difference.
+
+By nesting functions, we can create a acyclic graph of functions. When this is
+fed into the `player` or `writer`, we traverse the graph and turn it into a tree
+of generators (`Gen`), together with a sample rate (as a time `delta`). The root
+generator then recursively samples the tree.
+
+This creation of generators allows functions to be reused during composition,
+i.e. to be a acyclic graph instead of a strict tree.
+
+All of the above logic is defined in [func.h](src/core/func.h).
 
 ## FAQ
 
