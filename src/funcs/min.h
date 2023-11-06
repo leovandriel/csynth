@@ -44,6 +44,11 @@ Func *min_args(int count, ...)
 #define clamp(_value, _min, _max) (min(max(_value, _min), _max))
 #define clamp_(_value, _min, _max) (clamp(_value, const_(_min), const_(_max)))
 
+Func *min_array(int count, Func **args)
+{
+    return func_create_array(NULL, min_eval, NULL, 0, NULL, count, args);
+}
+
 void test_min()
 {
     assert(gen_eval(gen_create(min(const_(1), const_(2)), .1)) == 1.0);

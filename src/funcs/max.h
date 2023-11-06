@@ -39,6 +39,11 @@ Func *max_args(int count, ...)
 #define max(...) (max_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
 #define max_(_input, _min) (max(_input, const_(_min)))
 
+Func *max_array(int count, Func **args)
+{
+    return func_create_array(NULL, max_eval, NULL, 0, NULL, count, args);
+}
+
 void test_max()
 {
     assert(gen_eval(gen_create(max(const_(1), const_(2)), .1)) == 2.0);

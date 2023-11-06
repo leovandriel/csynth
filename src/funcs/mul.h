@@ -34,6 +34,11 @@ Func *mul_args(int count, ...)
 #define mul(...) (mul_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
 #define mul_(_input, _factor) (mul(_input, const_(_factor)))
 
+Func *mul_array(int count, Func **args)
+{
+    return func_create_array(NULL, mul_eval, NULL, 0, NULL, count, args);
+}
+
 void test_mul()
 {
     assert(gen_eval(gen_create(mul(const_(1), const_(1)), .1)) == 1.0);

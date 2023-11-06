@@ -34,6 +34,11 @@ Func *add_args(int count, ...)
 #define add(...) (add_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
 #define add_(_input, _diff) (add(_input, const_(_diff)))
 
+Func *add_array(int count, Func **args)
+{
+    return func_create_array(NULL, add_eval, NULL, 0, NULL, count, args);
+}
+
 void test_add()
 {
     assert(gen_eval(gen_create(add(const_(1), const_(1)), .1)) == 2.0);
