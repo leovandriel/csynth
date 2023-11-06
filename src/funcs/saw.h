@@ -6,7 +6,11 @@
 #ifndef COMPOSER_SAW_H
 #define COMPOSER_SAW_H
 
+#include <assert.h>
+#include <math.h>
+
 #include "../core/func.h"
+#include "./cons.h"
 
 typedef struct
 {
@@ -17,17 +21,36 @@ double saw_eval(Gen **args, __attribute__((unused)) int count, double delta, voi
 {
     SawContext *context = (SawContext *)_context;
     double frequency = gen_eval(args[0]);
+    double output = context->output;
     context->output += 2.0 * frequency * delta;
     if (context->output > 1.0)
     {
         context->output -= 2.0;
     }
-    return context->output;
+    return output;
 }
 
 Func *saw(Func *frequency)
 {
     return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, 1, frequency);
+}
+
+void test_saw()
+{
+    func t = saw(cons(1));
+    Gen *g = gen_create(t, 0.1);
+    double epsilon = 1e-9;
+    assert(fabs(gen_eval(g) - 0.0) < epsilon);
+    assert(fabs(gen_eval(g) - 0.2) < epsilon);
+    assert(fabs(gen_eval(g) - 0.4) < epsilon);
+    assert(fabs(gen_eval(g) - 0.6) < epsilon);
+    assert(fabs(gen_eval(g) - 0.8) < epsilon);
+    assert(fabs(gen_eval(g) - 1.0) < epsilon);
+    assert(fabs(gen_eval(g) - -0.8) < epsilon);
+    assert(fabs(gen_eval(g) - -0.6) < epsilon);
+    assert(fabs(gen_eval(g) - -0.4) < epsilon);
+    assert(fabs(gen_eval(g) - -0.2) < epsilon);
+    assert(fabs(gen_eval(g) - -0.0) < epsilon);
 }
 
 #endif // COMPOSER_SAW_H

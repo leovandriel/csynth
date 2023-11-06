@@ -13,10 +13,12 @@
 #ifndef COMPOSER_COMP_H
 #define COMPOSER_COMP_H
 
+#include <assert.h>
 #include <math.h>
 #include <stdarg.h>
 
 #include "../core/func.h"
+#include "./cons.h"
 
 typedef struct
 {
@@ -96,6 +98,22 @@ Func *comp_rel_array(int count, Func **args)
         .index = -1,
     };
     return func_create_array(NULL, comp_eval, NULL, sizeof(CompContext), &context, count, args);
+}
+
+void test_comp()
+{
+    func t = comp(cons(1), cons(0.2), cons(-1), cons(0.3));
+    Gen *g = gen_create(t, 0.1);
+    double epsilon = 1e-9;
+    assert(fabs(gen_eval(g) - 1.0) < epsilon);
+    assert(fabs(gen_eval(g) - 1.0) < epsilon);
+    assert(fabs(gen_eval(g) - -1.0) < epsilon);
+    assert(fabs(gen_eval(g) - -1.0) < epsilon);
+    assert(fabs(gen_eval(g) - -1.0) < epsilon);
+    assert(fabs(gen_eval(g) - 0.0) < epsilon);
+    assert(fabs(gen_eval(g) - 0.0) < epsilon);
+    assert(fabs(gen_eval(g) - 0.0) < epsilon);
+    assert(fabs(gen_eval(g) - 0.0) < epsilon);
 }
 
 #endif // COMPOSER_COMP_H

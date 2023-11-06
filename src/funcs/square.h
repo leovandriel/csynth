@@ -6,9 +6,11 @@
 #ifndef COMPOSER_SQUARE_H
 #define COMPOSER_SQUARE_H
 
+#include <assert.h>
 #include <math.h>
 
 #include "../core/func.h"
+#include "./cons.h"
 
 typedef struct
 {
@@ -35,6 +37,25 @@ Func *square(Func *frequency)
         .output = 1.0,
     };
     return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, 1, frequency);
+}
+
+void test_square()
+{
+    func t = square(cons(1));
+    Gen *g = gen_create(t, 0.1);
+    double epsilon = 1e-9;
+    assert(fabs(gen_eval(g) - 1.0) < epsilon);
+    assert(fabs(gen_eval(g) - 1.0) < epsilon);
+    assert(fabs(gen_eval(g) - 1.0) < epsilon);
+    assert(fabs(gen_eval(g) - 1.0) < epsilon);
+    assert(fabs(gen_eval(g) - 1.0) < epsilon);
+    assert(fabs(gen_eval(g) - -1.0) < epsilon);
+    assert(fabs(gen_eval(g) - -1.0) < epsilon);
+    assert(fabs(gen_eval(g) - -1.0) < epsilon);
+    assert(fabs(gen_eval(g) - -1.0) < epsilon);
+    assert(fabs(gen_eval(g) - -1.0) < epsilon);
+    assert(fabs(gen_eval(g) - 1.0) < epsilon);
+    assert(fabs(gen_eval(g) - 1.0) < epsilon);
 }
 
 #endif // COMPOSER_SQUARE_H

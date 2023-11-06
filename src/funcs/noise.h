@@ -6,6 +6,7 @@
 #ifndef COMPOSER_NOISE_H
 #define COMPOSER_NOISE_H
 
+#include <assert.h>
 #include <stdlib.h>
 
 #include "../core/func.h"
@@ -18,6 +19,15 @@ double noise_eval(__attribute__((unused)) Gen **args, __attribute__((unused)) in
 Func *noise()
 {
     return func_create(NULL, noise_eval, NULL, 0, NULL, 0);
+}
+
+void test_noise()
+{
+    for (int i = 0; i < 100; i++)
+    {
+        double v = gen_eval(gen_create(noise(), .1));
+        assert(v < 1.0 && v > -1.0);
+    }
 }
 
 #endif // COMPOSER_NOISE_H

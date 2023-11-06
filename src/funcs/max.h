@@ -6,10 +6,12 @@
 #ifndef COMPOSER_MAX_H
 #define COMPOSER_MAX_H
 
+#include <assert.h>
 #include <float.h>
 #include <stdarg.h>
 
 #include "../core/func.h"
+#include "./cons.h"
 
 double max_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
@@ -35,5 +37,13 @@ Func *max_args(int count, ...)
 }
 
 #define max(...) max_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__)
+
+void test_max()
+{
+    assert(gen_eval(gen_create(max(cons(1), cons(2)), .1)) == 2.0);
+    assert(gen_eval(gen_create(max(cons(2), cons(1)), .1)) == 2.0);
+    assert(gen_eval(gen_create(max(cons(4), cons(2), cons(3)), .1)) == 4.0);
+    assert(gen_eval(gen_create(max(cons(1)), .1)) == 1.0);
+}
 
 #endif // COMPOSER_MAX_H

@@ -6,11 +6,13 @@
 #ifndef COMPOSER_REVERB_H
 #define COMPOSER_REVERB_H
 
+#include <assert.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "../core/func.h"
+#include "./cons.h"
 
 typedef struct
 {
@@ -61,6 +63,25 @@ void reverb_free(void *_context)
 Func *reverb(Func *input, Func *interval, Func *decay)
 {
     return func_create(NULL, reverb_eval, reverb_free, sizeof(ReverbContext), NULL, 3, input, interval, decay);
+}
+
+void test_reverb()
+{
+    func t = reverb(cons(1), cons(.2), cons(.5));
+    Gen *g = gen_create(t, 0.1);
+    double epsilon = 1e-4;
+    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.500000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.500000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.750000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.750000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.875000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.875000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.937500) < epsilon);
+    assert(fabs(gen_eval(g) - 1.937500) < epsilon);
 }
 
 #endif // COMPOSER_REVERB_H

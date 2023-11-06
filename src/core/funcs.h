@@ -8,7 +8,6 @@
 #include "../funcs/comp.h"
 #include "../funcs/cons.h"
 #include "../funcs/delay.h"
-#include "../funcs/helpers.h"
 #include "../funcs/high_pass.h"
 #include "../funcs/inv.h"
 #include "../funcs/limit.h"

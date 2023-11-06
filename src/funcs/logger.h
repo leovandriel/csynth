@@ -6,6 +6,7 @@
 #ifndef COMPOSER_LOGGER_H
 #define COMPOSER_LOGGER_H
 
+#include <assert.h>
 #include <stdio.h>
 
 #include "../core/func.h"
@@ -95,6 +96,10 @@ Func *logger(Func *input, unsigned long count)
 Func *log1k(Func *input)
 {
     return logger(input, 1000);
+}
+
+void test_logger()
+{
 }
 
 #endif // COMPOSER_LOGGER_H

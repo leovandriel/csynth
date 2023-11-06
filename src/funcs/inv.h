@@ -6,7 +6,11 @@
 #ifndef COMPOSER_INV_H
 #define COMPOSER_INV_H
 
+#include <assert.h>
+#include <math.h>
+
 #include "../core/func.h"
+#include "./cons.h"
 
 static const double DIVISION_EPSILON = 1e-9;
 
@@ -26,5 +30,11 @@ Func *inv(Func *value)
 }
 
 #define div(a, b) mul(a, inv(b))
+
+void test_inv()
+{
+    assert(gen_eval(gen_create(inv(cons(1)), .1)) == 1.0);
+    assert(gen_eval(gen_create(inv(cons(-2)), .1)) == -0.5);
+}
 
 #endif // COMPOSER_INV_H

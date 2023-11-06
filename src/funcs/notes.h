@@ -6,6 +6,12 @@
 #ifndef COMPOSER_NOTES_H
 #define COMPOSER_NOTES_H
 
+#include <assert.h>
+#include <math.h>
+#include <stdio.h>
+
+#include "./cons.h"
+
 #define C0 cons(440 * pow(2, -57 / 12.0))  // 16.35
 #define Cs0 cons(440 * pow(2, -56 / 12.0)) // 17.32
 #define Db0 cons(440 * pow(2, -56 / 12.0)) // 17.32
@@ -206,6 +212,12 @@ void print_notes_h(void)
         double freq = 440 * pow(2, index / 12.0);
         printf("#define %s%d cons(440 * pow(2, %d / 12.0)) // %.2f\n", note, octave, index, freq);
     }
+}
+
+void test_notes()
+{
+    double epsilon = 1e-4;
+    assert(fabs(gen_eval(gen_create(G10, .1)) - 25087.707903) < epsilon);
 }
 
 #endif // COMPOSER_NOTES_H

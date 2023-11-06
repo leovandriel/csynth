@@ -7,9 +7,11 @@
 #ifndef COMPOSER_DELAY_H
 #define COMPOSER_DELAY_H
 
+#include <assert.h>
 #include <math.h>
 
 #include "../core/func.h"
+#include "./cons.h"
 
 typedef struct
 {
@@ -36,5 +38,26 @@ Func *delay(Func *input, Func *duration)
 }
 
 #define skip(input, duration) delay(input, neg(duration))
+
+void test_delay()
+{
+    func t = delay(cons(1), cons(0.5));
+    Gen *g = gen_create(t, 0.1);
+    double epsilon = 1e-9;
+    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
+    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
+}
 
 #endif // COMPOSER_DELAY_H
