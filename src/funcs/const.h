@@ -36,7 +36,7 @@ Func *const_(double value)
     return func_create(NULL, const_eval, NULL, sizeof(ConstContext), &initial, 0);
 }
 
-#define _(...) (const_(__VA_ARGS__))
+#define _(_value) (const_(_value))
 #define ZERO (const_(0.0))
 #define ONE (const_(1.0))
 

@@ -22,7 +22,7 @@ double low_pass_eval(Gen **args, __attribute__((unused)) int count, double delta
     LowPassContext *context = (LowPassContext *)_context;
     double input = gen_eval(args[0]);
     double frequency = gen_eval(args[1]);
-    double factor = 1 / (delta * frequency * 2.0 * M_PI) + 1.0;
+    double factor = 1 / (2.0 * M_PI * frequency * delta) + 1.0;
     double output = context->output;
     context->output = context->output + (input - context->output) / factor;
     return output;
