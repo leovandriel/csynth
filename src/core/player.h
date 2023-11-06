@@ -14,11 +14,11 @@
 #define OUTPUT_CHANNELS 1
 #define FRAMES_PER_BUFFER 256
 
-static int callback(__attribute__((unused)) const void *argBuffer, void *outputBuffer, unsigned long framesPerBuffer, __attribute__((unused)) const PaStreamCallbackTimeInfo *timeInfo, __attribute__((unused)) PaStreamCallbackFlags statusFlags, void *userData)
+static int callback(__attribute__((unused)) const void *args, void *buffer, unsigned long count, __attribute__((unused)) const PaStreamCallbackTimeInfo *info, __attribute__((unused)) PaStreamCallbackFlags flags, void *data)
 {
-    Gen *gen = (Gen *)userData;
-    float *out = (float *)outputBuffer;
-    for (unsigned long frame = 0; frame < framesPerBuffer; frame++)
+    Gen *gen = (Gen *)data;
+    float *out = (float *)buffer;
+    for (unsigned long frame = 0; frame < count; frame++)
     {
         double output = gen_eval(gen);
         *out++ = (float)(output > 1.0 ? 1.0 : output < -1.0 ? -1.0
