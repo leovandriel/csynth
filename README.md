@@ -1,3 +1,5 @@
+<img src="logo.jpg" width="25%" height="25%" align="right" alt="CSynth logo">
+
 # CSynth
 
 *A simple synth in C.*
@@ -8,11 +10,11 @@ Made by someone who knows nothing about synths.
 
 Play examples with PortAudio:
 
-    ./run_play.sh
+    ./play.sh
 
 Generate examples to WAV file (replace `player` with wav player):
 
-    ./run_write.sh && player output/run.wav
+    ./write.sh && player output/run.wav
 
 ## How it works
 
