@@ -71,7 +71,7 @@ double logger_eval(Gen **args, __attribute__((unused)) int count, double delta, 
         char buffer[100];
         snprintf(buffer, 100, "%f", frequency);
         const char *freq = frequency >= 0 ? buffer : "";
-        printf("index: %lu  time: %f  value: %f  delta: %f  dir: %c %s %s\n", context->index, time, input, delta, dir, pass, freq);
+        fprintf(stderr, "index: %lu  time: %f  value: %f  delta: %f  dir: %c %s %s\n", context->index, time, input, delta, dir, pass, freq);
         context->dir = dir;
         context->output = input;
         context->index += 1;

@@ -31,7 +31,7 @@ typedef struct
     uint32_t data_size;
 } FileHeader;
 
-void write_file(Func *root, double duration, const char *filename)
+void write(Func *root, double duration, FILE *file)
 {
     size_t count = duration * SAMPLE_RATE;
     FileHeader header = {0};
@@ -48,7 +48,6 @@ void write_file(Func *root, double duration, const char *filename)
     header.bits_sample = BITS_SAMPLE;
     strncpy(header.data_chunk, "data", 4);
     header.data_size = count * BITS_SAMPLE * OUTPUT_CHANNELS / 8;
-    FILE *file = fopen(filename, "wb");
     fwrite(&header, sizeof(header), 1, file);
     Gen *gen = gen_create(root, 1.0 / SAMPLE_RATE);
     int16_t buffer[BUFFER_SIZE];
@@ -69,12 +68,18 @@ void write_file(Func *root, double duration, const char *filename)
         fwrite(buffer, sizeof(uint16_t), i, file);
     }
     gen_free(gen);
+}
+
+void write_file(Func *root, double duration, const char *filename)
+{
+    FILE *file = fopen(filename, "wb");
+    write(root, duration, file);
     fclose(file);
 }
 
-void write(Func *root, double duration)
+void write_stdout(Func *root, double duration)
 {
-    write_file(root, duration, "output/run.wav");
+    write(root, duration, stdout);
 }
 
 #endif // COMPOSER_WRITER_H

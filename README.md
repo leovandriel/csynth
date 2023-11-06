@@ -6,9 +6,13 @@ Made by someone who knows nothing about synths.
 
 ## Usage
 
-Run (replace `afplay` with wav player):
+Play examples with PortAudio:
 
-    ./run.sh && afplay output/run.wav
+    ./run_play.sh
+
+Generate examples to WAV file (replace `player` with wav player):
+
+    ./run_write.sh && player output/run.wav
 
 ## License
 

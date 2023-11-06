@@ -21,6 +21,7 @@
 #include "../funcs/noise.h"
 #include "../funcs/notes.h"
 #include "../funcs/power.h"
+#include "../funcs/print.h"
 #include "../funcs/reverb.h"
 #include "../funcs/saw.h"
 #include "../funcs/sine.h"

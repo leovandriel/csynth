@@ -202,7 +202,7 @@
 
 static const char *note_names[] = {"C", "Cs", "Db", "D", "Ds", "Eb", "E", "F", "Fs", "Gb", "G", "Gs", "Ab", "A", "As", "Bb", "B"};
 
-void print_notes_h(void)
+void print_notes_h()
 {
     for (int i = 0; i < 17 * 11; i++)
     {
@@ -210,7 +210,7 @@ void print_notes_h(void)
         int octave = i / 17;
         int index = round((i + 4) * 12.0 / 17 - 59.95);
         double freq = 440 * pow(2, index / 12.0);
-        printf("#define %s%d cons(440 * pow(2, %d / 12.0)) // %.2f\n", note, octave, index, freq);
+        fprintf(stderr, "#define %s%d cons(440 * pow(2, %d / 12.0)) // %.2f\n", note, octave, index, freq);
     }
 }
 
