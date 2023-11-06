@@ -5,6 +5,7 @@
 #define COMPOSER_FUNCS_H
 
 #include "../funcs/add.h"
+#include "../funcs/adsr.h"
 #include "../funcs/comp.h"
 #include "../funcs/cons.h"
 #include "../funcs/delay.h"
