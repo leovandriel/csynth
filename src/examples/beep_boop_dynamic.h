@@ -10,7 +10,7 @@ func P(func f)
 
 func T(double f)
 {
-    return division(_(f), g_speed);
+    return mul(_(f), inv(g_speed));
 }
 
 func beep_boop_dynamic(func pitch, func speed)

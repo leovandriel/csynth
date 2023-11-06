@@ -14,7 +14,7 @@
 #define COMPOSER_HELPERS_H
 
 #include "cons.h"
-#include "minus.h"
+#include "neg.h"
 #include "mul.h"
 #include "smooth.h"
 #include "step.h"
@@ -25,10 +25,10 @@
 #define clamp(_value, _min, _max) min(max(_value, _min), _max)
 #define clamp_(_value, _min, _max) clamp(_value, cons(_min), cons(_max))
 
-#define block(_edge0, _edge1) mul(step(_edge0), minus(ONE, step(_edge1)))
+#define block(_edge0, _edge1) mul(step(_edge0), add(ONE, neg(step(_edge1))))
 #define block_(_edge0, _edge1) block(cons(_edge0), cons(_edge1))
 
-#define hump(_edge0, _edge1, _edge2, _edge3) mul(smooth(_edge0, _edge1), minus(ONE, smooth(_edge2, _edge3)))
+#define hump(_edge0, _edge1, _edge2, _edge3) mul(smooth(_edge0, _edge1), add(ONE, neg(smooth(_edge2, _edge3))))
 #define hump_(_edge0, _edge1, _edge2, _edge3) hump(cons(_edge0), cons(_edge1), cons(_edge2), cons(_edge3))
 
 #endif // COMPOSER_HELPERS_H

@@ -21,9 +21,10 @@ double delay_eval(Gen **args, __attribute__((unused)) int count, double delta, v
     DelayContext *context = (DelayContext *)_context;
     double span = gen_eval(args[1]);
     double output = 0.0;
-    if (context->time >= span)
+    while (context->time >= span)
     {
         output = gen_eval(args[0]);
+        context->time -= delta;
     }
     context->time += delta;
     return output;
@@ -33,5 +34,7 @@ Func *delay(Func *input, Func *duration)
 {
     return func_create(NULL, delay_eval, NULL, sizeof(DelayContext), NULL, 2, input, duration);
 }
+
+#define skip(input, duration) delay(input, neg(duration))
 
 #endif // COMPOSER_DELAY_H
