@@ -18,7 +18,7 @@ typedef struct
     double output;
 } HighPassContext;
 
-double high_pass_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double high_pass_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     HighPassContext *context = (HighPassContext *)_context;
     double input = gen_eval(args[0]);
@@ -35,11 +35,11 @@ Func *high_pass(Func *input, Func *frequency)
     return func_create(NULL, high_pass_eval, NULL, sizeof(HighPassContext), NULL, 2, input, frequency);
 }
 
-#define high_pass_(_input, _frequency) (high_pass(_input, const_(_frequency)))
+Func *high_pass_(Func *input, double frequency) { return high_pass(input, const_(frequency)); }
 
 void test_high_pass()
 {
-    func t = high_pass(const_(1), const_(10));
+    Func *t = high_pass(const_(1), const_(10));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-4;
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);

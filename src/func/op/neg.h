@@ -10,8 +10,10 @@
 
 #include "../../core/func.h"
 #include "../gen/const.h"
+#include "../op/add.h"
+#include "../op/neg.h"
 
-double neg_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double neg_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double output = gen_eval(args[0]);
     return -output;
@@ -22,8 +24,8 @@ Func *neg(Func *value)
     return func_create(NULL, neg_eval, NULL, 0, NULL, 1, value);
 }
 
-#define sub(_a, _b) (add(_a, neg(_b)))
-#define sub_(_a, _b) (sub(_a, const_(_b)))
+Func *sub(Func *a, Func *b) { return add(a, neg(b)); }
+Func *sub_(Func *a, double b) { return sub(a, const_(b)); }
 
 void test_neg()
 {

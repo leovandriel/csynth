@@ -12,18 +12,18 @@
 
 #include "../../core/func.h"
 
-static const double EPSILON = 1e-9;
+static const double PRINT_EPSILON = 1e-9;
 
 typedef struct
 {
     const char *text;
 } PrintContext;
 
-double print_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
+static double print_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
 {
     PrintContext *context = (PrintContext *)_context;
     double output = gen_eval(args[0]);
-    if (fabs(output) > EPSILON && context->text != NULL)
+    if (fabs(output) > PRINT_EPSILON && context->text != NULL)
     {
         fprintf(stderr, "%s\n", context->text);
         context->text = NULL;

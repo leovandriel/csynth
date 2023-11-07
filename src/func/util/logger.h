@@ -24,7 +24,7 @@ typedef struct
     unsigned long index;
 } LoggerContext;
 
-double logger_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double logger_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     LoggerContext *context = (LoggerContext *)_context;
     double input = gen_eval(args[0]);

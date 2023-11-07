@@ -11,7 +11,7 @@
 
 #include "../../core/func.h"
 
-double noise_eval(__attribute__((unused)) Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double noise_eval(__attribute__((unused)) Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     return 2.0 * rand() / RAND_MAX - 1.0;
 }

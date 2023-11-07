@@ -1,37 +1,37 @@
 #include "../core/funcs.h"
 
-func strum(const func *c, int count, double span, double decay)
+static func strum(const double *c, int count, double span, double decay)
 {
     func notes[10];
     for (int i = 0; i < count; i++)
     {
-        func f = karplus_strong(c[i], _(decay));
-        f = low_pass(f, c[i]);
+        func f = karplus_strong_(c[i], decay);
+        f = low_pass_(f, c[i]);
         f = delay_(f, span * (span < 0 ? i - count : i));
         notes[i] = f;
     }
     return add_array(count, notes);
 }
 
-func pluck(func _frequency)
+static func pluck(func _frequency)
 {
-    func f = add_(div_(sine(div_(_frequency, 4)), 100), 1);
+    func f = add_(dvd_(sine(dvd_(_frequency, 4)), 100), 1);
     f = mul(_frequency, f);
     f = karplus_strong(f, _(.5));
     f = low_pass(f, _frequency);
     return f;
 }
 
-#define slow(_chord) (strum((func[]){_chord}, sizeof((func[]){_chord}) / sizeof(func), .1, .3))
-#define down(_chord) (strum((func[]){_chord}, sizeof((func[]){_chord}) / sizeof(func), .01, .5))
-#define up(_chord) (strum((func[]){_chord}, sizeof((func[]){_chord}) / sizeof(func), -.01, .5))
+#define slow(_chord) (strum(_chord, sizeof(_chord) / sizeof(func), .1, .3))
+#define down(_chord) (strum(_chord, sizeof(_chord) / sizeof(func), .01, .5))
+#define up(_chord) (strum(_chord, sizeof(_chord) / sizeof(func), -.01, .5))
 
-#define Dm A2, D3, A3, D3, F4
-#define F C3, F3, A3, C4
-#define G G2, B2, D3, G3, B3, G4
-#define Am A2, E3, A3, C4, E4
+static const double Dm[] = {A2_, D3_, A3_, D3_, F4_};
+static const double F[] = {C3_, F3_, A3_, C4_};
+static const double G[] = {G2_, B2_, D3_, G3_, B3_, G4_};
+static const double Am[] = {A2_, E3_, A3_, C4_, E4_};
 
-func t(int index)
+static func t(int index)
 {
     return _(0.25 * index + (0.01 * rand() / RAND_MAX));
 }

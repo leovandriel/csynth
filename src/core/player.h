@@ -9,10 +9,10 @@
 
 #include "func.h"
 
-#define SAMPLE_RATE 44100
-#define INPUT_CHANNELS 0
-#define OUTPUT_CHANNELS 1
-#define FRAMES_PER_BUFFER 256
+static const int SAMPLE_RATE = 44100;
+static const int INPUT_CHANNELS = 0;
+static const int OUTPUT_CHANNELS = 1;
+static const int FRAMES_PER_BUFFER = 256;
 
 static int player_callback(__attribute__((unused)) const void *args, void *buffer, unsigned long count, __attribute__((unused)) const PaStreamCallbackTimeInfo *info, __attribute__((unused)) PaStreamCallbackFlags flags, void *data)
 {
@@ -27,7 +27,7 @@ static int player_callback(__attribute__((unused)) const void *args, void *buffe
     return 0;
 }
 
-int error(PaError err)
+static int error(PaError err)
 {
     fprintf(stderr, "Error %d: %s\n", err, Pa_GetErrorText(err));
     Pa_Terminate();

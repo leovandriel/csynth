@@ -16,7 +16,7 @@ typedef struct
     double time;
 } TimerContext;
 
-double timer_eval(__attribute__((unused)) Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double timer_eval(__attribute__((unused)) Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     TimerContext *context = (TimerContext *)_context;
     double output = context->time;
@@ -31,7 +31,7 @@ Func *timer()
 
 void test_timer()
 {
-    func t = timer();
+    Func *t = timer();
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 0.0) < epsilon);

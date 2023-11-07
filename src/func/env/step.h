@@ -13,13 +13,16 @@
 
 #include "../../core/func.h"
 #include "../gen/const.h"
+#include "../op/mul.h"
+#include "../op/neg.h"
+#include "../env/step.h"
 
 typedef struct
 {
     double time;
 } StepContext;
 
-double step_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double step_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     StepContext *context = (StepContext *)_context;
     double edge = gen_eval(args[0]);
@@ -33,15 +36,15 @@ Func *step(Func *edge)
     return func_create(NULL, step_eval, NULL, sizeof(StepContext), NULL, 1, edge);
 }
 
-#define step_inv(_edge) (sub(ONE, step(_edge)))
-#define step_(_edge) (step(const_(_edge)))
-#define step_inv_(_edge) (step_inv(const_(_edge)))
-#define block(_edge0, _edge1) (mul(step(_edge0), step_inv(_edge1)))
-#define block_(_edge0, _edge1) (block(const_(_edge0), const_(_edge1)))
+Func *step_inv(Func *edge) { return sub(ONE, step(edge)); }
+Func *step_(double edge) { return step(const_(edge)); }
+Func *step_inv_(double edge) { return step_inv(const_(edge)); }
+Func *block(Func *edge0, Func *edge1) { return mul(step(edge0), step_inv(edge1)); }
+Func *block_(double edge0, double edge1) { return block(const_(edge0), const_(edge1)); }
 
 void test_step()
 {
-    func t = step(const_(0.5));
+    Func *t = step(const_(0.5));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 0.0) < epsilon);

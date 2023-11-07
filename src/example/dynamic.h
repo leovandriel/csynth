@@ -3,17 +3,17 @@
 static func g_pitch = NULL;
 static func g_speed = NULL;
 
-func P(func f)
+static func P(func f)
 {
     return mul(f, g_pitch);
 }
 
-func T(double f)
+static func T(double f)
 {
-    return div(_(f), g_speed);
+    return dvd(_(f), g_speed);
 }
 
-func beep_boop_dynamic(func pitch, func speed)
+static func beep_boop_dynamic(func pitch, func speed)
 {
     g_pitch = pitch;
     g_speed = speed;

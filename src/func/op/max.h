@@ -13,7 +13,7 @@
 #include "../../core/func.h"
 #include "../gen/const.h"
 
-double max_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double max_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double max = -FLT_MAX;
     for (int i = 0; i < count; i++)
@@ -37,7 +37,11 @@ Func *max_args(int count, ...)
 }
 
 #define max(...) (max_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
-#define max_(_input, _min) (max(_input, const_(_min)))
+
+Func *max_(Func *input, double min)
+{
+    return max(input, const_(min));
+}
 
 Func *max_array(int count, Func **args)
 {

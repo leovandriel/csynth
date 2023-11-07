@@ -19,7 +19,7 @@ typedef struct
     void *context;
 } CallbackContext;
 
-double callback_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
+static double callback_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
 {
     CallbackContext *context = (CallbackContext *)_context;
     return context->callback(args, count, delta, context->context);
@@ -39,7 +39,7 @@ Func *callback_args(double (*callback)(Gen **, int, double, void *), void *conte
 
 #define callback(_callback, _context, ...) (callback_args(_callback, _context, (sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
 
-double test_callback_add(Gen **args, int count, double delta, void *context)
+static double test_callback_add(Gen **args, int count, double delta, void *context)
 {
     assert(count == 2);
     assert(delta == 0.1);
@@ -50,7 +50,7 @@ double test_callback_add(Gen **args, int count, double delta, void *context)
 void test_callback()
 {
     int context = 2;
-    func t = callback(test_callback_add, &context, _(3), _(4));
+    Func *t = callback(test_callback_add, &context, const_(3), const_(4));
     Gen *g = gen_create(t, 0.1);
     assert(gen_eval(g) == 7);
 }

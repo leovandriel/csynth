@@ -17,7 +17,7 @@ typedef struct
     double output;
 } LowPassContext;
 
-double low_pass_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double low_pass_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     LowPassContext *context = (LowPassContext *)_context;
     double input = gen_eval(args[0]);
@@ -33,11 +33,11 @@ Func *low_pass(Func *input, Func *frequency)
     return func_create(NULL, low_pass_eval, NULL, sizeof(LowPassContext), NULL, 2, input, frequency);
 }
 
-#define low_pass_(_input, _frequency) (low_pass(_input, const_(_frequency)))
+Func *low_pass_(Func *input, double frequency) { return low_pass(input, const_(frequency)); }
 
 void test_low_pass()
 {
-    func t = low_pass(const_(1), const_(10));
+    Func *t = low_pass(const_(1), const_(10));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-4;
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);

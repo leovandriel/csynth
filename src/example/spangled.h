@@ -2,7 +2,7 @@
 
 double speed = 0.4;
 
-func A(func frequency, int duration)
+static func A(func frequency, int duration)
 {
     double d = speed * duration;
     func f = saw(frequency);
@@ -12,17 +12,17 @@ func A(func frequency, int duration)
     return f;
 }
 
-func B(func frequency, int duration)
+static func B(func frequency, int duration)
 {
     double d = speed * duration;
     func f = add(
         mul(sine(mul_(frequency, 2)), _(0.2)),
-        mul(sine(div_(frequency, 2)), _(0.2)));
+        mul(sine(dvd_(frequency, 2)), _(0.2)));
     f = mul(f, block_(0, d));
     return add(f, A(frequency, duration));
 }
 
-func C(func frequency, int duration)
+static func C(func frequency, int duration)
 {
     double d = speed * duration;
     func f = karplus_strong(frequency, _(0.5));

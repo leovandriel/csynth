@@ -12,13 +12,14 @@
 
 #include "../../core/func.h"
 #include "../gen/const.h"
+#include "../op/neg.h"
 
 typedef struct
 {
     double time;
 } DelayContext;
 
-double delay_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double delay_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     DelayContext *context = (DelayContext *)_context;
     double span = gen_eval(args[1]);
@@ -37,13 +38,13 @@ Func *delay(Func *input, Func *duration)
     return func_create(NULL, delay_eval, NULL, sizeof(DelayContext), NULL, 2, input, duration);
 }
 
-#define delay_(_input, _frequency) (delay(_input, const_(_frequency)))
-#define skip(_input, _duration) (delay(_input, neg(_duration)))
-#define skip_(_input, _duration) (skip(_input, const_(_duration)))
+Func *delay_(Func *input, double frequency) { return delay(input, const_(frequency)); }
+Func *skip(Func *input, Func *duration) { return delay(input, neg(duration)); }
+Func *skip_(Func *input, double duration) { return skip(input, const_(duration)); }
 
 void test_delay()
 {
-    func t = delay(const_(1), const_(0.5));
+    Func *t = delay(const_(1), const_(0.5));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);

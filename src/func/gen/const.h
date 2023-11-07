@@ -22,7 +22,7 @@ typedef struct
     double value;
 } ConstContext;
 
-double const_eval(__attribute__((unused)) Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
+static double const_eval(__attribute__((unused)) Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
 {
     ConstContext *context = (ConstContext *)_context;
     return context->value;
@@ -36,7 +36,7 @@ Func *const_(double value)
     return func_create(NULL, const_eval, NULL, sizeof(ConstContext), &initial, 0);
 }
 
-#define _(_value) (const_(_value))
+Func *_(double value) { return const_(value); }
 #define ZERO (const_(0.0))
 #define ONE (const_(1.0))
 

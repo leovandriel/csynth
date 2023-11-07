@@ -18,7 +18,7 @@ typedef struct
     double output;
 } SquareContext;
 
-double square_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double square_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     SquareContext *context = (SquareContext *)_context;
     double span = 1.0 / (gen_eval(args[0]) * 2.0);
@@ -39,11 +39,11 @@ Func *square(Func *frequency)
     return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, 1, frequency);
 }
 
-#define square_(_frequency) ((const_(_frequency)))
+Func *square_(double frequency) { return square(const_(frequency)); }
 
 void test_square()
 {
-    func t = square(const_(1));
+    Func *t = square(const_(1));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 1.0) < epsilon);

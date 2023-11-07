@@ -19,7 +19,7 @@ typedef struct
     unsigned long index;
 } KarplusStrongContext;
 
-double karplus_strong_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double karplus_strong_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     KarplusStrongContext *context = (KarplusStrongContext *)_context;
     double frequency = gen_eval(args[0]);
@@ -45,12 +45,12 @@ Func *karplus_strong(Func *frequency, Func *decay)
     return func_create(NULL, karplus_strong_eval, karplus_strong_free, sizeof(KarplusStrongContext), NULL, 2, frequency, decay);
 }
 
-#define karplus_strong_(_frequency, _decay) (karplus_strong(const_(_frequency), const_(_decay)))
+Func *karplus_strong_(double frequency, double decay) { return karplus_strong(const_(frequency), const_(decay)); }
 
 void test_karplus_strong()
 {
     srand(0);
-    func t = karplus_strong(const_(2), const_(0.5));
+    Func *t = karplus_strong(const_(2), const_(0.5));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-4;
     assert(fabs(gen_eval(g) - -0.647648) < epsilon);

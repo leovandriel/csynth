@@ -12,7 +12,7 @@
 #include "../../core/func.h"
 #include "../gen/const.h"
 
-double power_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double power_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double a = gen_eval(args[0]);
     double b = gen_eval(args[1]);
@@ -24,7 +24,7 @@ Func *power(Func *a, Func *b)
     return func_create(NULL, power_eval, NULL, 0, NULL, 2, a, b);
 }
 
-#define power_(_input, _exponent) (power(_input, const_(_exponent)))
+Func *power_(Func *input, double exponent) { return power(input, const_(exponent)); }
 
 void test_power()
 {

@@ -18,7 +18,7 @@ typedef struct
     double direction;
 } TriangleContext;
 
-double triangle_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double triangle_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     TriangleContext *context = (TriangleContext *)_context;
     double frequency = gen_eval(args[0]);
@@ -45,11 +45,11 @@ Func *triangle(Func *frequency)
     return func_create(NULL, triangle_eval, NULL, sizeof(TriangleContext), &initial, 1, frequency);
 }
 
-#define triangle_(_frequency) (triangle(const_(_frequency)))
+Func *triangle_(double frequency) { return triangle(const_(frequency)); }
 
 void test_triangle()
 {
-    func t = triangle(const_(1));
+    Func *t = triangle(const_(1));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 0.0) < epsilon);

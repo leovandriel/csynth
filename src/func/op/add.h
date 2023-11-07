@@ -12,7 +12,7 @@
 #include "../../core/func.h"
 #include "../gen/const.h"
 
-double add_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double add_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double sum = 0;
     for (int i = 0; i < count; i++)
@@ -32,7 +32,11 @@ Func *add_args(int count, ...)
 }
 
 #define add(...) (add_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
-#define add_(_input, _diff) (add(_input, const_(_diff)))
+
+Func *add_(Func *input, double diff)
+{
+    return add(input, const_(diff));
+}
 
 Func *add_array(int count, Func **args)
 {

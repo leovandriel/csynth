@@ -17,7 +17,7 @@ typedef struct
     double output;
 } SawContext;
 
-double saw_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double saw_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     SawContext *context = (SawContext *)_context;
     double frequency = gen_eval(args[0]);
@@ -35,11 +35,11 @@ Func *saw(Func *frequency)
     return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, 1, frequency);
 }
 
-#define saw_(_frequency) (saw(const_(_frequency)))
+Func *saw_(double frequency) { return saw(const_(frequency)); }
 
 void test_saw()
 {
-    func t = saw(const_(1));
+    Func *t = saw(const_(1));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 0.0) < epsilon);

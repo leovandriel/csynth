@@ -18,7 +18,7 @@ typedef struct
     double x1, x2, y1, y2;
 } ResonantContext;
 
-double resonant_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double resonant_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     ResonantContext *context = (ResonantContext *)_context;
     double input = gen_eval(args[0]);
@@ -44,11 +44,11 @@ Func *resonant(Func *input, Func *frequency, Func *q_factor)
     return func_create(NULL, resonant_eval, NULL, sizeof(ResonantContext), NULL, 3, input, frequency, q_factor);
 }
 
-#define resonant_(_input, _frequency, _q_factor) (resonant(_input, const_(_frequency), const_(_q_factor)))
+Func *resonant_(Func *input, double frequency, double q_factor) { return resonant(input, const_(frequency), const_(q_factor)); }
 
 void test_resonant()
 {
-    func t = resonant(square_(1), const_(2), const_(1));
+    Func *t = resonant(square_(1), const_(2), const_(1));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-4;
     assert(fabs(gen_eval(g) - 1.000000) < epsilon);
@@ -56,13 +56,13 @@ void test_resonant()
     assert(fabs(gen_eval(g) - 0.914052) < epsilon);
     assert(fabs(gen_eval(g) - 0.206840) < epsilon);
     assert(fabs(gen_eval(g) - 0.417969) < epsilon);
-    assert(fabs(gen_eval(g) - 0.471604) < epsilon);
-    assert(fabs(gen_eval(g) - 0.346325) < epsilon);
-    assert(fabs(gen_eval(g) - 0.444596) < epsilon);
-    assert(fabs(gen_eval(g) - 0.397086) < epsilon);
-    assert(fabs(gen_eval(g) - 0.406653) < epsilon);
-    assert(fabs(gen_eval(g) - 0.414580) < epsilon);
-    assert(fabs(gen_eval(g) - 0.403755) < epsilon);
+    assert(fabs(gen_eval(g) - -1.528396) < epsilon);
+    assert(fabs(gen_eval(g) - 1.057219) < epsilon);
+    assert(fabs(gen_eval(g) - -1.383508) < epsilon);
+    assert(fabs(gen_eval(g) - -0.016595) < epsilon);
+    assert(fabs(gen_eval(g) - -0.429285) < epsilon);
+    assert(fabs(gen_eval(g) - 1.471372) < epsilon);
+    assert(fabs(gen_eval(g) - -0.999788) < epsilon);
 }
 
 #endif // CSYNTH_RESONANT_H

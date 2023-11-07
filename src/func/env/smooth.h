@@ -14,13 +14,16 @@
 
 #include "../../core/func.h"
 #include "../gen/const.h"
+#include "../op/mul.h"
+#include "../op/add.h"
+#include "../op/neg.h"
 
 typedef struct
 {
     double time;
 } SmoothContext;
 
-double smooth_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double smooth_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     SmoothContext *context = (SmoothContext *)_context;
     double edge0 = gen_eval(args[0]);
@@ -48,15 +51,15 @@ Func *smooth(Func *edge0, Func *edge1)
     return func_create(NULL, smooth_eval, NULL, sizeof(SmoothContext), NULL, 2, edge0, edge1);
 }
 
-#define smooth_inv(_edge0, _edge1) (sub(ONE, smooth(_edge0, _edge1)))
-#define smooth_(_edge0, _edge1) (smooth(const_(_edge0), const_(_edge1)))
-#define smooth_inv_(_edge0, _edge1) (smooth_inv(const_(_edge0), const_(_edge1)))
-#define hump(_edge0, _edge1, _edge2, _edge3) (mul(smooth(_edge0, _edge1), smooth_inv(_edge2, _edge3)))
-#define hump_(_edge0, _edge1, _edge2, _edge3) (hump(const_(_edge0), const_(_edge1), const_(_edge2), const_(_edge3)))
+Func *smooth_inv(Func *edge0, Func *edge1) { return sub(ONE, smooth(edge0, edge1)); }
+Func *smooth_(double edge0, double edge1) { return smooth(const_(edge0), const_(edge1)); }
+Func *smooth_inv_(double edge0, double edge1) { return smooth_inv(const_(edge0), const_(edge1)); }
+Func *hump(Func *edge0, Func *edge1, Func *edge2, Func *edge3) { return mul(smooth(edge0, edge1), smooth_inv(edge2, edge3)); }
+Func *hump_(double edge0, double edge1, double edge2, double edge3) { return hump(const_(edge0), const_(edge1), const_(edge2), const_(edge3)); }
 
 void test_smooth()
 {
-    func t = smooth(const_(0.3), const_(0.7));
+    Func *t = smooth(const_(0.3), const_(0.7));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-4;
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);

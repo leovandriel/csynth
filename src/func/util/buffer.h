@@ -22,7 +22,7 @@ void buffer_init(Buffer *buffer, unsigned long size)
     buffer->size = size;
 }
 
-unsigned long buffer_resize_from_zero(Buffer *buffer, unsigned long size, double (*fill)(unsigned long))
+static unsigned long buffer_resize_from_zero(Buffer *buffer, unsigned long size, double (*fill)(unsigned long))
 {
     buffer->samples = (double *)calloc(size, sizeof(double));
     if (fill != NULL)
@@ -37,7 +37,7 @@ unsigned long buffer_resize_from_zero(Buffer *buffer, unsigned long size, double
     return 0;
 }
 
-unsigned long buffer_resize_to_zero(Buffer *buffer)
+static unsigned long buffer_resize_to_zero(Buffer *buffer)
 {
     free(buffer->samples);
     buffer->samples = NULL;
@@ -46,7 +46,7 @@ unsigned long buffer_resize_to_zero(Buffer *buffer)
     return 0;
 }
 
-unsigned long buffer_resize_up(Buffer *buffer, unsigned long size, unsigned long index, double (*fill)(unsigned long))
+static unsigned long buffer_resize_up(Buffer *buffer, unsigned long size, unsigned long index, double (*fill)(unsigned long))
 {
     if (size > buffer->max)
     {
@@ -72,7 +72,7 @@ unsigned long buffer_resize_up(Buffer *buffer, unsigned long size, unsigned long
     return index;
 }
 
-unsigned long buffer_resize_down(Buffer *buffer, unsigned long size, unsigned long index)
+static unsigned long buffer_resize_down(Buffer *buffer, unsigned long size, unsigned long index)
 {
     if (index < size)
     {
@@ -139,7 +139,7 @@ double fill_inc(unsigned long index)
     return index;
 }
 
-void test_same()
+static void test_same()
 {
     Buffer buffer;
     buffer_init(&buffer, 2);
@@ -153,7 +153,7 @@ void test_same()
     assert(buffer.samples[1] == 2);
 }
 
-void test_from_zero()
+static void test_from_zero()
 {
     Buffer buffer;
     buffer_init(&buffer, 0);
@@ -166,7 +166,7 @@ void test_from_zero()
     buffer_free(&buffer);
 }
 
-void test_to_zero()
+static void test_to_zero()
 {
     Buffer buffer;
     buffer_init(&buffer, 2);
@@ -179,7 +179,7 @@ void test_to_zero()
     buffer_free(&buffer);
 }
 
-void test_up()
+static void test_up()
 {
     for (unsigned long i = 0; i < 2; i++)
     {
@@ -200,7 +200,7 @@ void test_up()
     }
 }
 
-void test_down()
+static void test_down()
 {
     for (unsigned long i = 0; i < 4; i++)
     {

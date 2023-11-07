@@ -11,15 +11,16 @@
 
 #include "../../core/func.h"
 #include "../gen/const.h"
+#include "../op/mul.h"
 
-static const double DIVISION_EPSILON = 1e-9;
+static const double INV_EPSILON = 1e-9;
 
-double inv_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double inv_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double value = gen_eval(args[0]);
-    if (fabs(value) < DIVISION_EPSILON)
+    if (fabs(value) < INV_EPSILON)
     {
-        value = value >= 0 ? DIVISION_EPSILON : -DIVISION_EPSILON;
+        value = value >= 0 ? INV_EPSILON : -INV_EPSILON;
     }
     return 1.0 / value;
 }
@@ -29,8 +30,8 @@ Func *inv(Func *value)
     return func_create(NULL, inv_eval, NULL, 0, NULL, 1, value);
 }
 
-#define div(_a, _b) (mul(_a, inv(_b)))
-#define div_(_a, _b) (div(_a, const_(_b)))
+Func *dvd(Func *a, Func *b) { return mul(a, inv(b)); }
+Func *dvd_(Func *a, double b) { return dvd(a, const_(b)); }
 
 void test_inv()
 {

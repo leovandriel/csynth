@@ -27,7 +27,7 @@ typedef struct
     unsigned long counter;
 } CompContext;
 
-double comp_eval_abs(Gen **args, int count, double delta, void *_context)
+static double comp_eval_abs(Gen **args, int count, double delta, void *_context)
 {
     CompContext *context = (CompContext *)_context;
     double output = 0.0;
@@ -44,7 +44,7 @@ double comp_eval_abs(Gen **args, int count, double delta, void *_context)
     return output;
 }
 
-double comp_eval_rel(Gen **args, int count, double delta, void *_context)
+static double comp_eval_rel(Gen **args, int count, double delta, void *_context)
 {
     CompContext *context = (CompContext *)_context;
     double offset = 0.0;
@@ -62,11 +62,13 @@ double comp_eval_rel(Gen **args, int count, double delta, void *_context)
     return output;
 }
 
-double comp_eval_seq(Gen **args, int count, __attribute__((unused)) double delta, void *_context)
+static const double COMP_EPSILON = 1e-9;
+
+static double comp_eval_seq(Gen **args, int count, __attribute__((unused)) double delta, void *_context)
 {
     CompContext *context = (CompContext *)_context;
     double output = gen_eval(args[context->index]);
-    if (fabs(output) < 1e-9)
+    if (fabs(output) < COMP_EPSILON)
     {
         context->counter++;
     }
@@ -130,7 +132,7 @@ Func *comp_seq_array(int count, Func **args)
 
 void test_comp()
 {
-    func t = comp_rel(const_(1), const_(0.2), const_(-1), const_(0.3));
+    Func *t = comp_rel(const_(1), const_(0.2), const_(-1), const_(0.3));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 1.0) < epsilon);

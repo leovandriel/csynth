@@ -12,7 +12,7 @@
 #include "../../core/func.h"
 #include "../gen/const.h"
 
-double mul_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double mul_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double output = 1.0;
     for (int i = 0; i < count; i++)
@@ -32,7 +32,11 @@ Func *mul_args(int count, ...)
 }
 
 #define mul(...) (mul_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
-#define mul_(_input, _factor) (mul(_input, const_(_factor)))
+
+Func *mul_(Func *input, double factor)
+{
+    return mul(input, const_(factor));
+}
 
 Func *mul_array(int count, Func **args)
 {

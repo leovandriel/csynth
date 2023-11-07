@@ -10,10 +10,10 @@
 
 #include "func.h"
 
-#define SAMPLE_RATE 44100
-#define OUTPUT_CHANNELS 1
-#define BITS_SAMPLE 16
-#define BUFFER_SIZE 4096
+static const int SAMPLE_RATE = 44100;
+static const int OUTPUT_CHANNELS = 1;
+static const int BITS_SAMPLE = 16;
+static const int BUFFER_SIZE = 4096;
 
 typedef struct
 {

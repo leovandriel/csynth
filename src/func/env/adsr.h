@@ -23,7 +23,7 @@ typedef struct
     double time;
 } AdsrContext;
 
-double adsr_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double adsr_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     AdsrContext *context = (AdsrContext *)_context;
     double attack = gen_eval(args[0]);
@@ -57,11 +57,11 @@ Func *adsr(Func *attack, Func *decay, Func *sustain, Func *release, Func *durati
     return func_create(NULL, adsr_eval, NULL, sizeof(AdsrContext), NULL, 5, attack, decay, sustain, release, duration);
 }
 
-#define adsr_(_attack, _decay, _sustain, _release, _duration) (adsr(const_(_attack), const_(_decay), const_(_sustain), const_(_release), const_(_duration)))
+Func *adsr_(double attack, double decay, double sustain, double release, double duration) { return adsr(const_(attack), const_(decay), const_(sustain), const_(release), const_(duration)); }
 
 void test_adsr()
 {
-    func t = adsr_(0.01, 0.1, 0.7, 0.2, 1.2);
+    Func *t = adsr_(0.01, 0.1, 0.7, 0.2, 1.2);
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-9;
     assert(fabs(gen_eval(g) - 0.000000) < epsilon);

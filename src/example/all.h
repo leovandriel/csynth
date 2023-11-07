@@ -11,7 +11,7 @@
     if (name == NULL || strcmp(name, #_name) == 0) \
     {                                              \
         array[index++] = print(#_name, _name());   \
-        array[index++] = _(_duration);             \
+        array[index++] = const_(_duration);        \
         *length += _duration;                      \
     }
 

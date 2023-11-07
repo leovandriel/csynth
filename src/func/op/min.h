@@ -16,7 +16,7 @@
 #include "../gen/const.h"
 #include "./max.h"
 
-double min_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double min_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double min = FLT_MAX;
     for (int i = 0; i < count; i++)
@@ -40,9 +40,13 @@ Func *min_args(int count, ...)
 }
 
 #define min(...) (min_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
-#define min_(_input, _max) (min(_input, const_(_max)))
-#define clamp(_value, _min, _max) (min(max(_value, _min), _max))
-#define clamp_(_value, _min, _max) (clamp(_value, const_(_min), const_(_max)))
+
+Func *min_(Func *input, double max)
+{
+    return min(input, const_(max));
+}
+Func *clamp(Func *value, Func *min, Func *max) { return min(max(value, min), max); }
+Func *clamp_(Func *value, double min, double max) { return clamp(value, const_(min), const_(max)); }
 
 Func *min_array(int count, Func **args)
 {
