@@ -14,9 +14,9 @@
 #include <math.h>
 
 #include "../../core/func.h"
+#include "../../util/buffer.h"
 #include "../gen/const.h"
 #include "../gen/sine.h"
-#include "../util/buffer.h"
 
 typedef struct
 {

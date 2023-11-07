@@ -1,4 +1,4 @@
-#include "../core/funcs.h"
+#include "../func/all.h"
 
 double speed = 0.4;
 

@@ -1,4 +1,4 @@
-#include "../core/funcs.h"
+#include "../func/all.h"
 
 static func g_pitch = NULL;
 static func g_speed = NULL;

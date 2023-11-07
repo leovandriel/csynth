@@ -1,5 +1,5 @@
 #include "./example/all.h"
-#include "./core/writer.h"
+#include "./util/writer.h"
 
 int main(int argc, char **argv)
 {

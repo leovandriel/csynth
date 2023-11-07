@@ -12,8 +12,8 @@
 #include <string.h>
 
 #include "../../core/func.h"
+#include "../../util/buffer.h"
 #include "../gen/const.h"
-#include "../util/buffer.h"
 
 typedef struct
 {

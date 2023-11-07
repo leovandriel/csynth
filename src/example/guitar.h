@@ -1,4 +1,4 @@
-#include "../core/funcs.h"
+#include "../func/all.h"
 
 static func strum(const double *c, int count, double span, double decay)
 {

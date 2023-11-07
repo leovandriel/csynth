@@ -1,8 +1,8 @@
 //
-// funcs.h - A single include file for all the functions.
+// all.h - A single include file for all the functions.
 //
-#ifndef CSYNTH_FUNCS_H
-#define CSYNTH_FUNCS_H
+#ifndef CSYNTH_FUNC_ALL_H
+#define CSYNTH_FUNC_ALL_H
 
 #include "../func/comp/comp.h"
 #include "../func/effect/continuous.h"
@@ -37,8 +37,8 @@
 #include "../func/util/logger.h"
 #include "../func/util/print.h"
 
-void test_funcs()
+void test_all()
 {
 }
 
-#endif // CSYNTH_FUNCS_H
+#endif // CSYNTH_FUNC_ALL_H

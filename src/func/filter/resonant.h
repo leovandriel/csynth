@@ -1,7 +1,7 @@
 //
-// resonate.h - Second-order second-order IIR filter
+// resonant.h - Second-order second-order IIR filter
 //
-// `resonate(input, frequency, q_factor)`
+// `resonant(input, frequency, q_factor)`
 //
 #ifndef CSYNTH_RESONANT_H
 #define CSYNTH_RESONANT_H
