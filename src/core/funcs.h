@@ -32,6 +32,7 @@
 #include "../func/op/mul.h"
 #include "../func/op/neg.h"
 #include "../func/op/power.h"
+#include "../func/util/callback.h"
 #include "../func/util/logger.h"
 #include "../func/util/print.h"
 
