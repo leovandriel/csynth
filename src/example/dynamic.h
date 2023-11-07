@@ -1,22 +1,10 @@
 #include "../func/all.h"
 
-static func g_pitch = NULL;
-static func g_speed = NULL;
-
-static func P(func f)
-{
-    return mul(f, g_pitch);
-}
-
-static func T(double f)
-{
-    return dvd(_(f), g_speed);
-}
+#define P(_f) (mul(_f, pitch))
+#define T(_f) (dvd(_(_f), speed))
 
 static func beep_boop_dynamic(func pitch, func speed)
 {
-    g_pitch = pitch;
-    g_speed = speed;
     func high = sine(P(A4));
     func low = mul_(saw(P(A2)), .5);
     func beep = mul(high, block(T(0), T(.1)));
