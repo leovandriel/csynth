@@ -13,7 +13,6 @@ func all_examples()
         print("shapes", shapes()), _(8),
         print("guitar", guitar()), _(24),
         print("lows", lows()), _(30),
-        print("filters", filters()), _(30),
-        print("beep boop increase", beep_boop_increase()), _(8));
+        print("filters", filters()), _(30));
     return examples;
 }
