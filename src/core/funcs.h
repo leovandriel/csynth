@@ -11,6 +11,7 @@
 #include "../func/env/adsr.h"
 #include "../func/env/smooth.h"
 #include "../func/env/step.h"
+#include "../func/filter/chorus.h"
 #include "../func/filter/high_pass.h"
 #include "../func/filter/limit.h"
 #include "../func/filter/low_pass.h"
