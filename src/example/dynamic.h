@@ -10,7 +10,7 @@ func P(func f)
 
 func T(double f)
 {
-    return mul(_(f), inv(g_speed));
+    return div(_(f), g_speed);
 }
 
 func beep_boop_dynamic(func pitch, func speed)
@@ -29,26 +29,20 @@ func beep_boop_dynamic(func pitch, func speed)
     return scaled;
 }
 
-func beep_boop_slow()
+func wobble_both()
 {
-    return beep_boop_dynamic(_(.5), _(.5));
-}
-
-func beep_boop_fast()
-{
-    return beep_boop_dynamic(_(2), _(2));
-}
-
-// TODO: fix the reverb buffer resize
-
-func beep_boop_wobble()
-{
-    func wobble = add_(mul_(sine_(1), .1), 1);
+    func wobble = continuous(add_(mul_(sine_(.1), .1), 1));
     return beep_boop_dynamic(wobble, wobble);
 }
 
-func beep_boop_increase()
+func increase_pitch()
 {
-    func increase = add_(mul_(timer(), .2), .5);
-    return beep_boop_dynamic(increase, increase);
+    func increase = continuous(add_(mul_(timer(), .5), .01));
+    return beep_boop_dynamic(increase, ONE);
+}
+
+func increase_speed()
+{
+    func increase = continuous(add_(mul_(timer(), .5), .01));
+    return beep_boop_dynamic(ONE, increase);
 }
