@@ -14,7 +14,7 @@ Play examples with PortAudio:
 
 Samples examples into a WAV file (replace `player` with wav player):
 
-    ./write.sh && player output/run.wav
+    ./write.sh && player output/example.wav
 
 ## Example
 
