@@ -11,14 +11,18 @@
 
 #include "../../core/func.h"
 #include "../gen/const.h"
+#include "../util/buffer.h"
 
 typedef struct
 {
-    double *buffer;
-    unsigned long size;
+    Buffer buffer;
     unsigned long index;
-    unsigned long max;
 } KarplusStrongContext;
+
+double rand_fill()
+{
+    return 2.0 * rand() / RAND_MAX - 1.0;
+}
 
 double karplus_strong_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
@@ -26,30 +30,11 @@ double karplus_strong_eval(Gen **args, __attribute__((unused)) int count, double
     double frequency = gen_eval(args[0]);
     unsigned long size = round(1.0 / (delta * frequency));
     double decay = pow(gen_eval(args[1]), 1.0 / size);
-    if (size != context->size)
-    {
-        if (context->buffer == NULL)
-        {
-            context->buffer = (double *)calloc(size, sizeof(double));
-            for (unsigned long i = 0; i < size; i++)
-            {
-                context->buffer[i] = 2.0 * rand() / RAND_MAX - 1.0;
-            }
-            context->max = size;
-        }
-        else if (size > context->max)
-        {
-            unsigned long max = size * 2;
-            context->buffer = (double *)realloc(context->buffer, max * sizeof(double));
-            memset(context->buffer + context->max, 0, (max - context->max) * sizeof(double));
-            // TODO: shift the contents of the buffer
-            context->max = max;
-        }
-        context->size = size;
-    }
+    buffer_resize(&context->buffer, size, rand_fill);
     unsigned long next = (context->index + 1) % size;
-    context->buffer[context->index] = 0.5 * (context->buffer[context->index] + context->buffer[next]) * decay;
-    double output = context->buffer[context->index];
+    double *buffer = context->buffer.samples;
+    buffer[context->index] = 0.5 * (buffer[context->index] + buffer[next]) * decay;
+    double output = buffer[context->index];
     context->index = next;
     return output;
 }
@@ -57,10 +42,7 @@ double karplus_strong_eval(Gen **args, __attribute__((unused)) int count, double
 void karplus_strong_free(void *_context)
 {
     KarplusStrongContext *context = (KarplusStrongContext *)_context;
-    if (context->buffer != NULL)
-    {
-        free(context->buffer);
-    }
+    buffer_free(&context->buffer);
 }
 
 Func *karplus_strong(Func *frequency, Func *decay)

@@ -4,7 +4,6 @@
 #include "./filters.h"
 #include "./lows.h"
 #include "./guitar.h"
-#include "./beep_boop_dynamic.h"
 
 func all_examples()
 {
