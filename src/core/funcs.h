@@ -5,6 +5,7 @@
 #define CSYNTH_FUNCS_H
 
 #include "../func/comp/comp.h"
+#include "../func/effect/continuous.h"
 #include "../func/effect/delay.h"
 #include "../func/effect/loop.h"
 #include "../func/effect/reverb.h"

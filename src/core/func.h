@@ -141,11 +141,8 @@ void gen_free(Gen *gen)
         }
         free(gen->args);
     }
-    if (gen->context != NULL)
-    {
-        free(gen->context);
-    }
-    if (gen->reset != NULL && func->init != NULL)
+    free(gen->context);
+    if (func->init != NULL)
     {
         free(gen->reset);
     }
@@ -158,9 +155,18 @@ double gen_eval(Gen *gen)
     return func->eval(gen->args, func->count, gen->delta, gen->context);
 }
 
+double continuous_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *_context)
+{
+    return gen_eval(args[0]);
+}
+
 void gen_reset(Gen *gen)
 {
     Func *func = gen->func;
+    if (func->eval == continuous_eval)
+    {
+        return;
+    }
     for (int i = 0; i < func->count; i++)
     {
         gen_reset(gen->args[i]);
