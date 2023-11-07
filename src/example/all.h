@@ -1,10 +1,11 @@
-#include "./beep_boop.h"
 #include "./beats.h"
-#include "./shapes.h"
+#include "./beep_boop.h"
+#include "./dynamic.h"
+#include "./example.h"
+#include "./filters.h"
 #include "./guitar.h"
 #include "./lows.h"
-#include "./filters.h"
-#include "./dynamic.h"
+#include "./shapes.h"
 #include "./spangled.h"
 
 #define EXAMPLE_CASE(_name, _duration)             \
@@ -29,6 +30,7 @@ func all_examples(const char *name, double *length)
     EXAMPLE_CASE(increase_speed, 10)
     EXAMPLE_CASE(wobble_both, 10)
     EXAMPLE_CASE(spangled, 78)
+    EXAMPLE_CASE(example, 6)
     func examples = comp_rel_array(index, array);
     return examples;
 }

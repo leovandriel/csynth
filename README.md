@@ -64,9 +64,11 @@ play(revved, 6);
 ```
 
 You can hear the result in
-[example.mp3](https://github.com/leovandriel/csynth/raw/main/output/example.mp3).
+[example.mp3](https://github.com/leovandriel/csynth/raw/main/output/example.mp3) or by running:
 
-All available functions are listed in the [funcs](src/funcs) folder.
+    ./play.sh example
+
+All available functions are listed in the [func](src/func) folder.
 
 ## How it works
 
