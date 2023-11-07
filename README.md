@@ -4,8 +4,6 @@
 
 *A simple synth in C.*
 
-Made by someone who knows nothing about synths.
-
 ## Usage
 
 Play examples with PortAudio:
@@ -64,11 +62,16 @@ play(revved, 6);
 ```
 
 You can hear the result in
-[example.mp3](https://github.com/leovandriel/csynth/raw/main/output/example.mp3) or by running:
+[example.mp3](https://github.com/leovandriel/csynth/raw/main/output/example.mp3)
+or by running:
 
     ./play.sh example
 
-All available functions are listed in the [func](src/func) folder.
+To see more of what you can do with CSynth, take a look at the
+[example](src/example) folder.
+
+To learn more about available functions, take a look at the [func](src/func)
+folder.
 
 ## How it works
 
@@ -86,6 +89,16 @@ This creation of generators allows functions to be reused during composition,
 i.e. to be a acyclic graph instead of a strict tree.
 
 All of the above logic is defined in [func.h](src/core/func.h).
+
+## Development
+
+To run tests:
+
+    ./test.sh
+
+Example run specific test:
+
+    ./test.sh sine
 
 ## FAQ
 
