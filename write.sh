@@ -2,5 +2,5 @@
 
 set -e
 
-gcc src/write.c -o bin/run -Wall -Wextra -O3
-./bin/run > output/run.wav
+gcc src/write.c -o bin/write -Wall -Wextra -O3
+./bin/write > output/run.wav
