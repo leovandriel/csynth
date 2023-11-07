@@ -23,6 +23,8 @@
 typedef struct
 {
     double time;
+    unsigned long index;
+    unsigned long counter;
 } CompContext;
 
 double comp_eval_abs(Gen **args, int count, double delta, void *_context)
@@ -60,6 +62,26 @@ double comp_eval_rel(Gen **args, int count, double delta, void *_context)
     return output;
 }
 
+double comp_eval_seq(Gen **args, int count, __attribute__((unused)) double delta, void *_context)
+{
+    CompContext *context = (CompContext *)_context;
+    double output = gen_eval(args[context->index]);
+    if (fabs(output) < 1e-9)
+    {
+        context->counter++;
+    }
+    else
+    {
+        context->counter = 0;
+    }
+    if (context->counter > 100 && (int)context->index < count - 1)
+    {
+        context->index++;
+        context->counter = 0;
+    }
+    return output;
+}
+
 Func *comp_abs_args(int count, ...)
 {
     va_list valist;
@@ -78,8 +100,18 @@ Func *comp_rel_args(int count, ...)
     return func;
 }
 
+Func *comp_seq_args(int count, ...)
+{
+    va_list valist;
+    va_start(valist, count);
+    Func *func = func_create_va(NULL, comp_eval_seq, NULL, sizeof(CompContext), NULL, count, valist);
+    va_end(valist);
+    return func;
+}
+
 #define comp_abs(...) (comp_abs_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
 #define comp_rel(...) (comp_rel_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
+#define comp_seq(...) (comp_seq_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
 
 Func *comp_abs_array(int count, Func **args)
 {
@@ -89,6 +121,11 @@ Func *comp_abs_array(int count, Func **args)
 Func *comp_rel_array(int count, Func **args)
 {
     return func_create_array(NULL, comp_eval_rel, NULL, sizeof(CompContext), NULL, count, args);
+}
+
+Func *comp_seq_array(int count, Func **args)
+{
+    return func_create_array(NULL, comp_eval_seq, NULL, sizeof(CompContext), NULL, count, args);
 }
 
 void test_comp()
