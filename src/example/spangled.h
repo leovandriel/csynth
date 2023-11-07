@@ -22,13 +22,20 @@ static func B(func frequency, int duration)
     return add(f, A(frequency, duration));
 }
 
+double distortion(double x, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+{
+    return fmin(fmax(tanh(x * 10), -0.3), 0.3);
+}
+
 static func C(func frequency, int duration)
 {
     double d = speed * duration;
-    func f = karplus_strong(frequency, _(0.5));
+    func f = karplus_strong(frequency, _(0.8));
     f = low_pass(f, frequency);
     f = mul(f, block_(0, d));
-    return add(f, B(frequency, duration));
+    f = callback_filter(f, distortion, NULL);
+    f = mul_(f, 0.1);
+    return add(f, A(frequency, duration));
 }
 
 func spangled()

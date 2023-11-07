@@ -19,25 +19,65 @@ typedef struct
     void *context;
 } CallbackContext;
 
-static double callback_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
+static double callback_func_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
 {
     CallbackContext *context = (CallbackContext *)_context;
     return context->callback(args, count, delta, context->context);
 }
 
-Func *callback_args(double (*callback)(Gen **, int, double, void *), void *context, int count, ...)
+Func *callback_func_args(double (*callback)(Gen **, int, double, void *), void *context, int count, ...)
 {
     CallbackContext initial = (CallbackContext){
         .callback = callback,
         .context = context};
     va_list valist;
     va_start(valist, count);
-    Func *func = func_create_va(NULL, callback_eval, NULL, sizeof(CallbackContext), &initial, count, valist);
+    Func *func = func_create_va(NULL, callback_func_eval, NULL, sizeof(CallbackContext), &initial, count, valist);
     va_end(valist);
     return func;
 }
 
-#define callback(_callback, _context, ...) (callback_args(_callback, _context, (sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
+#define callback_func(_callback, _context, ...) (callback_func_args(_callback, _context, (sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
+
+typedef struct
+{
+    double (*callback)(double, double, void *);
+    void *context;
+} FilterCallbackContext;
+
+static double callback_filter_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
+{
+    FilterCallbackContext *context = (FilterCallbackContext *)_context;
+    return context->callback(gen_eval(args[0]), delta, context->context);
+}
+
+Func *callback_filter(Func *input, double (*callback)(double, double, void *), void *context)
+{
+    FilterCallbackContext initial = (FilterCallbackContext){
+        .callback = callback,
+        .context = context};
+    return func_create(NULL, callback_filter_eval, NULL, sizeof(FilterCallbackContext), &initial, 1, input);
+}
+
+typedef struct
+{
+    double (*callback)(double, void *);
+    void *context;
+} GenCallbackContext;
+
+static double callback_gen_eval(__attribute__((unused)) Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
+{
+    GenCallbackContext *context = (GenCallbackContext *)_context;
+    return context->callback(delta, context->context);
+}
+
+Func *callback_gen(__attribute__((unused)) Func *input, double (*callback)(double, void *), void *context)
+{
+    GenCallbackContext initial = (GenCallbackContext){
+        .callback = callback,
+        .context = context};
+    return func_create(NULL, callback_gen_eval, NULL, sizeof(GenCallbackContext), &initial, 0);
+}
 
 static double test_callback_add(Gen **args, int count, double delta, void *context)
 {
@@ -50,7 +90,7 @@ static double test_callback_add(Gen **args, int count, double delta, void *conte
 void test_callback()
 {
     int context = 2;
-    Func *t = callback(test_callback_add, &context, const_(3), const_(4));
+    Func *t = callback_func(test_callback_add, &context, const_(3), const_(4));
     Gen *g = gen_create(t, 0.1);
     assert(gen_eval(g) == 7);
 }
