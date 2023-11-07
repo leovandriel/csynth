@@ -13,14 +13,14 @@
 
 typedef struct
 {
-    double output;
+    double time;
 } TimerContext;
 
 double timer_eval(__attribute__((unused)) Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     TimerContext *context = (TimerContext *)_context;
-    double output = context->output;
-    context->output += delta;
+    double output = context->time;
+    context->time += delta;
     return output;
 }
 

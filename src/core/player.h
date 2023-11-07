@@ -14,7 +14,7 @@
 #define OUTPUT_CHANNELS 1
 #define FRAMES_PER_BUFFER 256
 
-static int callback(__attribute__((unused)) const void *args, void *buffer, unsigned long count, __attribute__((unused)) const PaStreamCallbackTimeInfo *info, __attribute__((unused)) PaStreamCallbackFlags flags, void *data)
+static int player_callback(__attribute__((unused)) const void *args, void *buffer, unsigned long count, __attribute__((unused)) const PaStreamCallbackTimeInfo *info, __attribute__((unused)) PaStreamCallbackFlags flags, void *data)
 {
     Gen *gen = (Gen *)data;
     float *out = (float *)buffer;
@@ -41,7 +41,7 @@ int play(Func *root, double duration)
         return error(err);
     Gen *gen = gen_create(root, 1.0 / SAMPLE_RATE);
     PaStream *stream;
-    err = Pa_OpenDefaultStream(&stream, INPUT_CHANNELS, OUTPUT_CHANNELS, paFloat32, SAMPLE_RATE, FRAMES_PER_BUFFER, callback, gen);
+    err = Pa_OpenDefaultStream(&stream, INPUT_CHANNELS, OUTPUT_CHANNELS, paFloat32, SAMPLE_RATE, FRAMES_PER_BUFFER, player_callback, gen);
     if (err != paNoError)
         return error(err);
     err = Pa_StartStream(stream);
