@@ -14,7 +14,7 @@
 #include "../func/filter/high_pass.h"
 #include "../func/filter/limit.h"
 #include "../func/filter/low_pass.h"
-#include "../func/filter/resonate.h"
+#include "../func/filter/resonant.h"
 #include "../func/gen/const.h"
 #include "../func/gen/karplus_strong.h"
 #include "../func/gen/noise.h"
