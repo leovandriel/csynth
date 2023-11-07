@@ -19,18 +19,13 @@ typedef struct
     unsigned long index;
 } KarplusStrongContext;
 
-double rand_fill()
-{
-    return 2.0 * rand() / RAND_MAX - 1.0;
-}
-
 double karplus_strong_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
 {
     KarplusStrongContext *context = (KarplusStrongContext *)_context;
     double frequency = gen_eval(args[0]);
     unsigned long size = round(1.0 / (delta * frequency));
     double decay = pow(gen_eval(args[1]), 1.0 / size);
-    buffer_resize(&context->buffer, size, rand_fill);
+    context->index = buffer_resize(&context->buffer, size, context->index, fill_rand_1_1);
     unsigned long next = (context->index + 1) % size;
     double *buffer = context->buffer.samples;
     buffer[context->index] = 0.5 * (buffer[context->index] + buffer[next]) * decay;

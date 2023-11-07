@@ -27,7 +27,7 @@ double reverb_eval(Gen **args, __attribute__((unused)) int count, double delta, 
     double input = gen_eval(args[0]);
     unsigned long size = round(gen_eval(args[1]) / delta);
     double decay = gen_eval(args[2]);
-    buffer_resize(&context->buffer, size, NULL);
+    context->index = buffer_resize(&context->buffer, size, context->index, NULL);
     double *buffer = context->buffer.samples;
     double output = buffer[context->index];
     buffer[context->index] = buffer[context->index] * decay + input;

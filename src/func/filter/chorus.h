@@ -37,7 +37,7 @@ double chorus_eval(Gen **args, __attribute__((unused)) int count, double delta, 
     unsigned long offset = round(depth / delta * modulation + size * 0.5);
     // unsigned long offset = round(depth / delta * (modulation + 1) * 0.5);
     unsigned long index = (context->index + size - offset) % size;
-    buffer_resize(&context->buffer, size, NULL);
+    context->index = buffer_resize(&context->buffer, size, context->index, NULL);
     double *buffer = context->buffer.samples;
     double output = 0.5 * (input + buffer[index]);
     buffer[context->index] = input;
