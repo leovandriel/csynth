@@ -1,8 +1,10 @@
 #include "./example/all.h"
 #include "./core/player.h"
 
-int main()
+int main(int argc, char **argv)
 {
-    play(all_examples(), 100);
+    const char *name = argc > 1 ? argv[1] : NULL;
+    double length = 0;
+    play(all_examples(name, &length), length);
     return 0;
 }

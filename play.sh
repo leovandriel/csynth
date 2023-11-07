@@ -3,4 +3,4 @@
 set -e
 
 gcc src/play.c -o bin/play -Wall -Wextra -O3 -lportaudio
-./bin/play
+./bin/play $1
