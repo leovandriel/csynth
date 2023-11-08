@@ -12,7 +12,7 @@
 #include "../../core/func.h"
 #include "../gen/const.h"
 
-static double add_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double add_eval(int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double sum = 0;
     for (int i = 0; i < count; i++)

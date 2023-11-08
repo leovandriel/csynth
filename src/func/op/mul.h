@@ -12,7 +12,7 @@
 #include "../../core/func.h"
 #include "../gen/const.h"
 
-static double mul_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double mul_eval(int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double output = 1.0;
     for (int i = 0; i < count; i++)

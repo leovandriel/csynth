@@ -21,7 +21,7 @@ typedef struct
     unsigned long index;
 } ReverbContext;
 
-static double reverb_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
+static double reverb_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
 {
     ReverbContext *context = (ReverbContext *)context_;
     double input = gen_eval(args[0]);

@@ -19,7 +19,7 @@ typedef struct
     const char *text;
 } PrintContext;
 
-static double print_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *context_)
+static double print_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     PrintContext *context = (PrintContext *)context_;
     double output = gen_eval(args[0]);

@@ -15,17 +15,17 @@
 
 typedef struct
 {
-    double (*callback)(Gen **, int, double, void *);
+    double (*callback)(int, Gen **, double, void *);
     void *context;
 } CallbackContext;
 
-static double callback_func_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *context_)
+static double callback_func_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     CallbackContext *context = (CallbackContext *)context_;
-    return context->callback(args, count, delta, context->context);
+    return context->callback(count, args, delta, context->context);
 }
 
-Func *callback_func_args(double (*callback)(Gen **, int, double, void *), void *context, int count, ...)
+Func *callback_func_args(double (*callback)(int, Gen **, double, void *), void *context, int count, ...)
 {
     CallbackContext initial = (CallbackContext){
         .callback = callback,
@@ -45,7 +45,7 @@ typedef struct
     void *context;
 } FilterCallbackContext;
 
-static double callback_filter_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *context_)
+static double callback_filter_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     FilterCallbackContext *context = (FilterCallbackContext *)context_;
     return context->callback(gen_eval(args[0]), delta, context->context);
@@ -65,7 +65,7 @@ typedef struct
     void *context;
 } GenCallbackContext;
 
-static double callback_gen_eval(__attribute__((unused)) Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *context_)
+static double callback_gen_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     GenCallbackContext *context = (GenCallbackContext *)context_;
     return context->callback(delta, context->context);
@@ -79,7 +79,7 @@ Func *callback_gen(__attribute__((unused)) Func *input, double (*callback)(doubl
     return func_create(NULL, callback_gen_eval, NULL, sizeof(GenCallbackContext), &initial, 0);
 }
 
-static double test_callback_add(Gen **args, int count, double delta, void *context)
+static double test_callback_add(int count, Gen **args, double delta, void *context)
 {
     assert(count == 2);
     assert(delta == 0.1);

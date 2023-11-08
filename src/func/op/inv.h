@@ -17,7 +17,7 @@
 
 static const double INV_EPSILON = 1e-9;
 
-static double inv_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double inv_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double value = gen_eval(args[0]);
     if (fabs(value) < INV_EPSILON)

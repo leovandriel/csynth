@@ -16,7 +16,7 @@
 #include "../gen/const.h"
 #include "./max.h"
 
-static double min_eval(Gen **args, int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double min_eval(int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double min = FLT_MAX;
     for (int i = 0; i < count; i++)

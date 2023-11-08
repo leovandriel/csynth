@@ -14,8 +14,8 @@ typedef struct Func Func;
 typedef Func *func;
 typedef struct Gen Gen;
 
-typedef double (*eval_cb)(Gen **args, int count, double delta, void *context);
-typedef void (*init_cb)(Gen **args, int count, double delta, void *context);
+typedef double (*eval_cb)(int count, Gen **args, double delta, void *context);
+typedef void (*init_cb)(int count, Gen **args, double delta, void *context);
 typedef void (*free_cb)(void *context);
 
 // Represents a function (R -> Rn) that takes one or more inputs and outputs a single value.
@@ -109,7 +109,7 @@ Gen *gen_create(Func *func, double delta)
     }
     if (func->init != NULL)
     {
-        func->init(args, func->count, delta, context);
+        func->init(func->count, args, delta, context);
         if (context != NULL && reset != NULL)
         {
             memcpy(reset, context, func->size);
@@ -152,10 +152,10 @@ void gen_free(Gen *gen)
 double gen_eval(Gen *gen)
 {
     Func *func = gen->func;
-    return func->eval(gen->args, func->count, gen->delta, gen->context);
+    return func->eval(func->count, gen->args, gen->delta, gen->context);
 }
 
-double continuous_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+double continuous_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     return gen_eval(args[0]);
 }

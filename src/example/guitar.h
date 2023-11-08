@@ -1,6 +1,6 @@
 #include "../func/all.h"
 
-static func strum(const double *c, int count, double span, double decay)
+static func strum(int count, const double *c, double span, double decay)
 {
     func notes[10];
     for (int i = 0; i < count; i++)
@@ -21,9 +21,9 @@ static func pluck(func frequency)
     return f;
 }
 
-#define slow(_chord) (strum(_chord, sizeof(_chord) / sizeof(func), .1, .3))
-#define down(_chord) (strum(_chord, sizeof(_chord) / sizeof(func), .01, .5))
-#define up(_chord) (strum(_chord, sizeof(_chord) / sizeof(func), -.01, .5))
+#define slow(_chord) (strum(sizeof(_chord) / sizeof(func), _chord, .1, .3))
+#define down(_chord) (strum(sizeof(_chord) / sizeof(func), _chord, .01, .5))
+#define up(_chord) (strum(sizeof(_chord) / sizeof(func), _chord, -.01, .5))
 
 static const double Dm[] = {A2_, D3_, A3_, D3_, F4_};
 static const double F[] = {C3_, F3_, A3_, C4_};

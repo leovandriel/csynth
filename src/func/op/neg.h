@@ -14,7 +14,7 @@
 #include "../op/neg.h"
 #include "../op/mul.h"
 
-static double neg_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double neg_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double output = gen_eval(args[0]);
     return -output;

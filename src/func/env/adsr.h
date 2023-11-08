@@ -23,7 +23,7 @@ typedef struct
     double time;
 } AdsrContext;
 
-static double adsr_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
+static double adsr_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
 {
     AdsrContext *context = (AdsrContext *)context_;
     double attack = gen_eval(args[0]);

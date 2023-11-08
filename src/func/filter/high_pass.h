@@ -18,7 +18,7 @@ typedef struct
     double output;
 } HighPassContext;
 
-static double high_pass_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
+static double high_pass_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
 {
     HighPassContext *context = (HighPassContext *)context_;
     double input = gen_eval(args[0]);
