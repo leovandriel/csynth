@@ -2,7 +2,7 @@
 
 double speed = 0.4;
 
-static func A(func frequency, int duration)
+static func A(func frequency, double duration)
 {
     double d = speed * duration;
     func f = saw(frequency);
@@ -12,7 +12,7 @@ static func A(func frequency, int duration)
     return f;
 }
 
-static func B(func frequency, int duration)
+static func B(func frequency, double duration)
 {
     double d = speed * duration;
     func f = add(
@@ -22,18 +22,18 @@ static func B(func frequency, int duration)
     return add(f, A(frequency, duration));
 }
 
-double distortion(double x, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+double tanh_distort(double x, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     return fmin(fmax(tanh(x * 10), -0.3), 0.3);
 }
 
-static func C(func frequency, int duration)
+static func C(func frequency, double duration)
 {
     double d = speed * duration;
     func f = karplus_strong(frequency, _(0.8));
     f = low_pass(f, frequency);
     f = mul(f, block_(0, d));
-    f = callback_filter(f, distortion, NULL);
+    f = callback_filter(f, tanh_distort, NULL);
     f = mul_(f, 0.1);
     return add(f, A(frequency, duration));
 }
@@ -41,14 +41,14 @@ static func C(func frequency, int duration)
 func spangled()
 {
     func f1 = comp_seq(
-        A(G4, 1),
-        A(E4, 1),
+        A(G4, 1.5),
+        A(E4, .5),
         A(C4, 2),
         A(E4, 2),
         A(G4, 2),
         A(C5, 4),
-        A(E5, 1),
-        A(D5, 1),
+        A(E5, 1.5),
+        A(D5, .5),
         A(C5, 2),
         A(E4, 2),
         A(Fs4, 2),
@@ -68,14 +68,14 @@ func spangled()
         A(C4, 2));
 
     func f2 = comp_seq(
-        B(G4, 1),
-        B(E4, 1),
+        B(G4, 1.5),
+        B(E4, .5),
         B(C4, 2),
         B(E4, 2),
         B(G4, 2),
         B(C5, 4),
-        B(E5, 1),
-        B(D5, 1),
+        B(E5, 1.5),
+        B(D5, .5),
         B(C5, 2),
         B(E4, 2),
         B(Fs4, 2),
@@ -112,8 +112,8 @@ func spangled()
         C(D5, 1),
         C(C5, 2),
         C(B4, 4),
-        C(A4, 1),
-        C(B4, 1),
+        C(A4, 1.5),
+        C(B4, .5),
         C(C5, 2),
         C(E4, 2),
         C(Fs4, 2),

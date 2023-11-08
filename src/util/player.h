@@ -21,8 +21,7 @@ static int player_callback(__attribute__((unused)) const void *args, void *buffe
     for (unsigned long frame = 0; frame < count; frame++)
     {
         double output = gen_eval(gen);
-        *out++ = (float)(output > 1.0 ? 1.0 : output < -1.0 ? -1.0
-                                                            : output);
+        *out++ = output > 1.0 ? 1.0 : (output < -1.0 ? -1.0 : output);
     }
     return 0;
 }
@@ -57,10 +56,6 @@ int play(Func *root, double duration)
     Pa_Terminate();
     gen_free(gen);
     return 0;
-}
-
-void test_player()
-{
 }
 
 #endif // CSYNTH_PLAYER_H
