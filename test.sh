@@ -18,6 +18,11 @@ find ./src -regex "$pattern" -not -path "./src/example/*" -print0 | while read -
     echo -n "."
 done
 
-rm ./src/test.c
 
-printf "\r\e[KAll tests passed\n"
+if [ -f ./src/test.c ]; then
+    rm ./src/test.c
+    printf "\r\e[KAll tests passed\n"
+else
+    echo "No tests found for pattern: $1"
+    exit -1
+fi
