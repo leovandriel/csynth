@@ -27,9 +27,9 @@ typedef struct
     unsigned long counter;
 } CompContext;
 
-static double comp_eval_abs(Gen **args, int count, double delta, void *_context)
+static double comp_eval_abs(Gen **args, int count, double delta, void *context_)
 {
-    CompContext *context = (CompContext *)_context;
+    CompContext *context = (CompContext *)context_;
     double output = 0.0;
     for (int index = count / 2 - 1; index >= 0; index--)
     {
@@ -44,9 +44,9 @@ static double comp_eval_abs(Gen **args, int count, double delta, void *_context)
     return output;
 }
 
-static double comp_eval_rel(Gen **args, int count, double delta, void *_context)
+static double comp_eval_rel(Gen **args, int count, double delta, void *context_)
 {
-    CompContext *context = (CompContext *)_context;
+    CompContext *context = (CompContext *)context_;
     double offset = 0.0;
     double output = 0.0;
     for (int index = 0; index < count / 2; index++)
@@ -64,9 +64,9 @@ static double comp_eval_rel(Gen **args, int count, double delta, void *_context)
 
 static const double COMP_EPSILON = 1e-9;
 
-static double comp_eval_seq(Gen **args, int count, __attribute__((unused)) double delta, void *_context)
+static double comp_eval_seq(Gen **args, int count, __attribute__((unused)) double delta, void *context_)
 {
-    CompContext *context = (CompContext *)_context;
+    CompContext *context = (CompContext *)context_;
     double output = gen_eval(args[context->index]);
     if (fabs(output) < COMP_EPSILON)
     {

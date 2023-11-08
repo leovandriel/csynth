@@ -26,9 +26,9 @@ typedef struct
     unsigned long index;
 } ChorusContext;
 
-static double chorus_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double chorus_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
 {
-    ChorusContext *context = (ChorusContext *)_context;
+    ChorusContext *context = (ChorusContext *)context_;
     double input = gen_eval(args[0]);
     double modulation = gen_eval(args[1]);
     double delay = gen_eval(args[2]);
@@ -45,9 +45,9 @@ static double chorus_eval(Gen **args, __attribute__((unused)) int count, double 
     return output;
 }
 
-static void chorus_free(void *_context)
+static void chorus_free(void *context_)
 {
-    ChorusContext *context = (ChorusContext *)_context;
+    ChorusContext *context = (ChorusContext *)context_;
     buffer_free(&context->buffer);
 }
 

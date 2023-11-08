@@ -19,9 +19,9 @@ typedef struct
     double time;
 } DelayContext;
 
-static double delay_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double delay_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
 {
-    DelayContext *context = (DelayContext *)_context;
+    DelayContext *context = (DelayContext *)context_;
     double span = gen_eval(args[1]);
     double output = 0.0;
     while (context->time >= span)

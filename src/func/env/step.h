@@ -22,9 +22,9 @@ typedef struct
     double time;
 } StepContext;
 
-static double step_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double step_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
 {
-    StepContext *context = (StepContext *)_context;
+    StepContext *context = (StepContext *)context_;
     double edge = gen_eval(args[0]);
     double value = context->time < edge ? 0.0 : 1.0;
     context->time += delta;

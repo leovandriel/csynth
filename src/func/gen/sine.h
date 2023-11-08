@@ -18,9 +18,9 @@ typedef struct
     double direction;
 } SineContext;
 
-static double sine_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double sine_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
 {
-    SineContext *context = (SineContext *)_context;
+    SineContext *context = (SineContext *)context_;
     double frequency = gen_eval(args[0]);
     double factor = 2.0 * M_PI * frequency * delta;
     double next = asin(context->output) * context->direction + factor;

@@ -23,9 +23,9 @@ typedef struct
     double time;
 } SmoothContext;
 
-static double smooth_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double smooth_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
 {
-    SmoothContext *context = (SmoothContext *)_context;
+    SmoothContext *context = (SmoothContext *)context_;
     double edge0 = gen_eval(args[0]);
     double edge1 = gen_eval(args[1]);
     if (context->time <= edge0)

@@ -17,9 +17,9 @@ typedef struct
     double output;
 } SawContext;
 
-static double saw_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double saw_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
 {
-    SawContext *context = (SawContext *)_context;
+    SawContext *context = (SawContext *)context_;
     double frequency = gen_eval(args[0]);
     double output = context->output;
     context->output += 2.0 * frequency * delta;

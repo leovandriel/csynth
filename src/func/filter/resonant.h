@@ -18,9 +18,9 @@ typedef struct
     double x1, x2, y1, y2;
 } ResonantContext;
 
-static double resonant_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double resonant_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
 {
-    ResonantContext *context = (ResonantContext *)_context;
+    ResonantContext *context = (ResonantContext *)context_;
     double input = gen_eval(args[0]);
     double frequency = gen_eval(args[1]);
     double q_factor = gen_eval(args[2]);

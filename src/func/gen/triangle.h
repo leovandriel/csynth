@@ -18,9 +18,9 @@ typedef struct
     double direction;
 } TriangleContext;
 
-static double triangle_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double triangle_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
 {
-    TriangleContext *context = (TriangleContext *)_context;
+    TriangleContext *context = (TriangleContext *)context_;
     double frequency = gen_eval(args[0]);
     double output = context->last;
     context->last += context->direction * frequency * delta;

@@ -19,9 +19,9 @@ typedef struct
     unsigned long index;
 } KarplusStrongContext;
 
-static double karplus_strong_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double karplus_strong_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
 {
-    KarplusStrongContext *context = (KarplusStrongContext *)_context;
+    KarplusStrongContext *context = (KarplusStrongContext *)context_;
     double frequency = gen_eval(args[0]);
     unsigned long size = round(1.0 / (delta * frequency));
     double decay = pow(gen_eval(args[1]), 1.0 / size);
@@ -34,9 +34,9 @@ static double karplus_strong_eval(Gen **args, __attribute__((unused)) int count,
     return output;
 }
 
-void karplus_strong_free(void *_context)
+void karplus_strong_free(void *context_)
 {
-    KarplusStrongContext *context = (KarplusStrongContext *)_context;
+    KarplusStrongContext *context = (KarplusStrongContext *)context_;
     buffer_free(&context->buffer);
 }
 

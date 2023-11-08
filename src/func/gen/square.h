@@ -18,9 +18,9 @@ typedef struct
     double output;
 } SquareContext;
 
-static double square_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double square_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
 {
-    SquareContext *context = (SquareContext *)_context;
+    SquareContext *context = (SquareContext *)context_;
     double span = 1.0 / (gen_eval(args[0]) * 2.0);
     if (context->time >= span)
     {

@@ -19,9 +19,9 @@ typedef struct
     void *context;
 } CallbackContext;
 
-static double callback_func_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
+static double callback_func_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *context_)
 {
-    CallbackContext *context = (CallbackContext *)_context;
+    CallbackContext *context = (CallbackContext *)context_;
     return context->callback(args, count, delta, context->context);
 }
 
@@ -45,9 +45,9 @@ typedef struct
     void *context;
 } FilterCallbackContext;
 
-static double callback_filter_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
+static double callback_filter_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *context_)
 {
-    FilterCallbackContext *context = (FilterCallbackContext *)_context;
+    FilterCallbackContext *context = (FilterCallbackContext *)context_;
     return context->callback(gen_eval(args[0]), delta, context->context);
 }
 
@@ -65,9 +65,9 @@ typedef struct
     void *context;
 } GenCallbackContext;
 
-static double callback_gen_eval(__attribute__((unused)) Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *_context)
+static double callback_gen_eval(__attribute__((unused)) Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, void *context_)
 {
-    GenCallbackContext *context = (GenCallbackContext *)_context;
+    GenCallbackContext *context = (GenCallbackContext *)context_;
     return context->callback(delta, context->context);
 }
 

@@ -21,9 +21,9 @@ typedef struct
     unsigned long index;
 } ReverbContext;
 
-static double reverb_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double reverb_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
 {
-    ReverbContext *context = (ReverbContext *)_context;
+    ReverbContext *context = (ReverbContext *)context_;
     double input = gen_eval(args[0]);
     unsigned long size = round(gen_eval(args[1]) / delta);
     double decay = gen_eval(args[2]);
@@ -35,9 +35,9 @@ static double reverb_eval(Gen **args, __attribute__((unused)) int count, double 
     return output;
 }
 
-static void reverb_free(void *_context)
+static void reverb_free(void *context_)
 {
-    ReverbContext *context = (ReverbContext *)_context;
+    ReverbContext *context = (ReverbContext *)context_;
     buffer_free(&context->buffer);
 }
 

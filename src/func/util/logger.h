@@ -24,9 +24,9 @@ typedef struct
     unsigned long index;
 } LoggerContext;
 
-static double logger_eval(Gen **args, __attribute__((unused)) int count, double delta, void *_context)
+static double logger_eval(Gen **args, __attribute__((unused)) int count, double delta, void *context_)
 {
-    LoggerContext *context = (LoggerContext *)_context;
+    LoggerContext *context = (LoggerContext *)context_;
     double input = gen_eval(args[0]);
     int dir_up = context->index > 0 && context->output < input;
     int dir_down = context->index > 0 && context->output > input;

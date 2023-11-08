@@ -155,7 +155,7 @@ double gen_eval(Gen *gen)
     return func->eval(gen->args, func->count, gen->delta, gen->context);
 }
 
-double continuous_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *_context)
+double continuous_eval(Gen **args, __attribute__((unused)) int count, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     return gen_eval(args[0]);
 }
