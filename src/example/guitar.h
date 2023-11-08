@@ -13,12 +13,11 @@ static func strum(const double *c, int count, double span, double decay)
     return add_array(count, notes);
 }
 
-static func pluck(func _frequency)
+static func pluck(func frequency)
 {
-    func f = add_(dvd_(sine(dvd_(_frequency, 4)), 100), 1);
-    f = mul(_frequency, f);
-    f = karplus_strong(f, _(.5));
-    f = low_pass(f, _frequency);
+    func f = karplus_strong(frequency, _(.6));
+    f = clamp_(mul_(f, 10), -1, 1);
+    f = low_pass(f, dvd_(frequency, 2));
     return f;
 }
 
