@@ -10,6 +10,8 @@ if [ $# -eq 1 ]; then
     pattern=".*$1.*\\.h"
 fi
 
+rm -f ./src/test.c
+
 find ./src -regex "$pattern" -not -path "./src/example/*" -not -name "player.h" -print0 | while read -d $'\0' file; do
     name=$(basename "$file" .h)
     printf "#include \".$file\"\\nint main() { test_$name(); return 0; }" > ./src/test.c

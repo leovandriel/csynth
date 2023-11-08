@@ -6,6 +6,7 @@
 #include "./guitar.h"
 #include "./lows.h"
 #include "./shapes.h"
+#include "./simple_fm.h"
 #include "./spangled.h"
 
 #define EXAMPLE_CASE(_name, _duration)             \
@@ -24,6 +25,7 @@ func all_examples(const char *name, double *length)
     EXAMPLE_CASE(beats, 8)
     EXAMPLE_CASE(shapes, 8)
     EXAMPLE_CASE(guitar, 24)
+    EXAMPLE_CASE(simple_fm, 20)
     EXAMPLE_CASE(lows, 20)
     EXAMPLE_CASE(filters, 20)
     EXAMPLE_CASE(increase_pitch, 10)
