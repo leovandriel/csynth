@@ -13,9 +13,6 @@
 
 #include "../../core/func.h"
 #include "../gen/const.h"
-#include "../op/mul.h"
-#include "../op/neg.h"
-#include "../env/step.h"
 
 typedef struct
 {
@@ -36,11 +33,7 @@ Func *step(Func *edge)
     return func_create(NULL, step_eval, NULL, sizeof(StepContext), NULL, 1, edge);
 }
 
-Func *step_inv(Func *edge) { return sub(ONE, step(edge)); }
 Func *step_(double edge) { return step(const_(edge)); }
-Func *step_inv_(double edge) { return step_inv(const_(edge)); }
-Func *block(Func *edge0, Func *edge1) { return mul(step(edge0), step_inv(edge1)); }
-Func *block_(double edge0, double edge1) { return block(const_(edge0), const_(edge1)); }
 
 void test_step()
 {

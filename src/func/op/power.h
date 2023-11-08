@@ -26,10 +26,6 @@ Func *power(Func *a, Func *b)
 
 Func *power_(Func *input, double exponent) { return power(input, const_(exponent)); }
 
-Func *sq(Func *input) { return power(input, const_(2)); }
-Func *sqr(Func *input) { return power(input, const_(0.5)); }
-Func *expo(Func *input) { return power(const_(M_E), input); }
-
 void test_power()
 {
     assert(gen_eval(gen_create(power(const_(1), const_(1)), .1)) == 1.0);

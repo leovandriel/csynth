@@ -11,9 +11,6 @@
 
 #include "../../core/func.h"
 #include "../gen/const.h"
-#include "../op/mul.h"
-#include "../op/add.h"
-#include "../op/neg.h"
 
 static const double INV_EPSILON = 1e-9;
 
@@ -31,13 +28,6 @@ Func *inv(Func *value)
 {
     return func_create(NULL, inv_eval, NULL, 0, NULL, 1, value);
 }
-
-Func *dvd(Func *a, Func *b) { return mul(a, inv(b)); }
-Func *dvd_(Func *a, double b) { return dvd(a, const_(b)); }
-
-Func *kr(Func *f) { return dvd_(add_(f, 1), 2); }
-Func *kr_range(Func *f, Func *min, Func *max) { return add(mul(kr(f), sub(max, min)), min); }
-Func *kr_range_(Func *f, double min, double max) { return add(mul(kr(f), sub(const_(max), const_(min))), const_(min)); }
 
 void test_inv()
 {

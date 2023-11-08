@@ -14,9 +14,6 @@
 
 #include "../../core/func.h"
 #include "../gen/const.h"
-#include "../op/mul.h"
-#include "../op/add.h"
-#include "../op/neg.h"
 
 typedef struct
 {
@@ -51,11 +48,7 @@ Func *smooth(Func *edge0, Func *edge1)
     return func_create(NULL, smooth_eval, NULL, sizeof(SmoothContext), NULL, 2, edge0, edge1);
 }
 
-Func *smooth_inv(Func *edge0, Func *edge1) { return sub(ONE, smooth(edge0, edge1)); }
 Func *smooth_(double edge0, double edge1) { return smooth(const_(edge0), const_(edge1)); }
-Func *smooth_inv_(double edge0, double edge1) { return smooth_inv(const_(edge0), const_(edge1)); }
-Func *hump(Func *edge0, Func *edge1, Func *edge2, Func *edge3) { return mul(smooth(edge0, edge1), smooth_inv(edge2, edge3)); }
-Func *hump_(double edge0, double edge1, double edge2, double edge3) { return hump(const_(edge0), const_(edge1), const_(edge2), const_(edge3)); }
 
 void test_smooth()
 {

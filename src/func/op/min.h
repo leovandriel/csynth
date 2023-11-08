@@ -14,7 +14,6 @@
 
 #include "../../core/func.h"
 #include "../gen/const.h"
-#include "./max.h"
 
 static double min_eval(int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
@@ -45,8 +44,6 @@ Func *min_(Func *input, double max)
 {
     return min(input, const_(max));
 }
-Func *clamp(Func *value, Func *min, Func *max) { return min(max(value, min), max); }
-Func *clamp_(Func *value, double min, double max) { return clamp(value, const_(min), const_(max)); }
 
 Func *min_array(int count, Func **args)
 {
