@@ -1,5 +1,6 @@
 #include "./beats.h"
 #include "./beep_boop.h"
+#include "./drummer.h"
 #include "./dynamic.h"
 #include "./example.h"
 #include "./filters.h"
@@ -26,6 +27,7 @@ func all_examples(const char *name, double *length)
     EXAMPLE_CASE(shapes, 8)
     EXAMPLE_CASE(guitar, 24)
     EXAMPLE_CASE(simple_fm, 20)
+    EXAMPLE_CASE(drummer, 20)
     EXAMPLE_CASE(lows, 20)
     EXAMPLE_CASE(filters, 20)
     EXAMPLE_CASE(increase_pitch, 10)
