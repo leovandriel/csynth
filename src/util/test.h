@@ -31,7 +31,7 @@
         double __a = (_a), __b = (_b);                                   \
         if (!double_equal(__a, __b))                                     \
         {                                                                \
-            printf("assert(fabs(%.20f - %.20f) < EPSILON)\n", __a, __b); \
+            printf("assert(fabs(%.16f - %.16f) < EPSILON)\n", __a, __b); \
         }                                                                \
         assert(double_equal(__a, __b));                                  \
     } while (0)
