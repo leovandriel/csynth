@@ -49,22 +49,22 @@ Func *karplus_strong_(double frequency, double decay) { return karplus_strong(co
 
 void test_karplus_strong()
 {
-    srand(0);
+    rand_seed(0);
     Func *t = karplus_strong(const_(2), const_(0.5));
     Gen *g = gen_create(t, 0.1);
     double epsilon = 1e-4;
-    assert(fabs(gen_eval(g) - -0.647648) < epsilon);
-    assert(fabs(gen_eval(g) - -0.525283) < epsilon);
-    assert(fabs(gen_eval(g) - -0.176033) < epsilon);
-    assert(fabs(gen_eval(g) - -0.450578) < epsilon);
-    assert(fabs(gen_eval(g) - -0.658184) < epsilon);
-    assert(fabs(gen_eval(g) - -0.510548) < epsilon);
-    assert(fabs(gen_eval(g) - -0.305265) < epsilon);
-    assert(fabs(gen_eval(g) - -0.272748) < epsilon);
-    assert(fabs(gen_eval(g) - -0.482617) < epsilon);
-    assert(fabs(gen_eval(g) - -0.508720) < epsilon);
-    assert(fabs(gen_eval(g) - -0.355103) < epsilon);
-    assert(fabs(gen_eval(g) - -0.251595) < epsilon);
+    assert(fabs(gen_eval(g) - -0.288641) < epsilon);
+    assert(fabs(gen_eval(g) - 0.491219) < epsilon);
+    assert(fabs(gen_eval(g) - 0.419562) < epsilon);
+    assert(fabs(gen_eval(g) - 0.424176) < epsilon);
+    assert(fabs(gen_eval(g) - 0.277973) < epsilon);
+    assert(fabs(gen_eval(g) - 0.088177) < epsilon);
+    assert(fabs(gen_eval(g) - 0.396440) < epsilon);
+    assert(fabs(gen_eval(g) - 0.367258) < epsilon);
+    assert(fabs(gen_eval(g) - 0.305628) < epsilon);
+    assert(fabs(gen_eval(g) - 0.159376) < epsilon);
+    assert(fabs(gen_eval(g) - 0.210942) < epsilon);
+    assert(fabs(gen_eval(g) - 0.332419) < epsilon);
 }
 
 #endif // CSYNTH_KARPLUS_STRONG_H

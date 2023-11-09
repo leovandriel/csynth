@@ -8,6 +8,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "./rand.h"
+
 typedef struct
 {
     double *samples;
@@ -126,12 +128,12 @@ void buffer_free(Buffer *buffer)
 
 double fill_rand_0_1(__attribute__((unused)) unsigned long index)
 {
-    return rand() / RAND_MAX;
+    return rand_double();
 }
 
 double fill_rand_1_1(__attribute__((unused)) unsigned long index)
 {
-    return 2.0 * rand() / RAND_MAX - 1.0;
+    return 2.0 * rand_double() - 1.0;
 }
 
 double fill_inc(unsigned long index)

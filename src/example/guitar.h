@@ -32,7 +32,7 @@ static const double Am[] = {A2_, E3_, A3_, C4_, E4_};
 
 static func t(int index)
 {
-    return _(0.25 * index + (0.01 * rand() / RAND_MAX));
+    return _(0.25 * index + (0.01 * rand_double()));
 }
 
 func guitar()
