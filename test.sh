@@ -15,7 +15,7 @@ rm -f ./src/test.c
 find ./src -regex "$pattern" -not -path "./src/example/*" -not -name "player.h" -print0 | while read -d $'\0' file; do
     name=$(basename "$file" .h)
     printf "#include \".$file\"\\nint main() { test_$name(); return 0; }" > ./src/test.c
-    gcc ./src/test.c -o bin/test -Wall -Wextra
+    gcc ./src/test.c -o bin/test -Wall -Wextra -lm
     ./bin/test
     echo -n "."
 done

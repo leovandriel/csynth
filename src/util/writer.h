@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>
 
 #include "../core/func.h"
 
@@ -36,10 +37,10 @@ void write(Func *root, double duration, FILE *file)
 {
     size_t count = duration * SAMPLE_RATE;
     FileHeader header = {0};
-    strncpy(header.riff_type, "RIFF", 4);
+    memcpy(header.riff_type, "RIFF", 4);
     header.file_size = count * BITS_SAMPLE * OUTPUT_CHANNELS / 8 + (sizeof(header) - 8);
-    strncpy(header.file_type, "WAVE", 4);
-    strncpy(header.format_mark, "fmt ", 4);
+    memcpy(header.file_type, "WAVE", 4);
+    memcpy(header.format_mark, "fmt ", 4);
     header.format_size = 16;
     header.format_type = 1;
     header.num_channels = OUTPUT_CHANNELS;
@@ -47,7 +48,7 @@ void write(Func *root, double duration, FILE *file)
     header.byte_rate = SAMPLE_RATE * BITS_SAMPLE * OUTPUT_CHANNELS / 8;
     header.block_align = BITS_SAMPLE * OUTPUT_CHANNELS / 8;
     header.bits_sample = BITS_SAMPLE;
-    strncpy(header.data_chunk, "data", 4);
+    memcpy(header.data_chunk, "data", 4);
     header.data_size = count * BITS_SAMPLE * OUTPUT_CHANNELS / 8;
     fwrite(&header, sizeof(header), 1, file);
     Gen *gen = gen_create(root, 1.0 / SAMPLE_RATE);
