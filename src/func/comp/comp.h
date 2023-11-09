@@ -13,7 +13,6 @@
 #ifndef CSYNTH_COMP_H
 #define CSYNTH_COMP_H
 
-#include <math.h>
 #include <stdarg.h>
 
 #include "../../util/test.h"
@@ -66,7 +65,7 @@ static double comp_eval_seq(int count, Gen **args, __attribute__((unused)) doubl
 {
     CompContext *context = (CompContext *)context_;
     double output = gen_eval(args[context->index]);
-    if (fabs(output) < EPSILON)
+    if (output < EPSILON && output > -EPSILON)
     {
         context->counter++;
     }

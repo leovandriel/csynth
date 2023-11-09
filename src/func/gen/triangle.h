@@ -6,8 +6,6 @@
 #ifndef CSYNTH_TRIANGLE_H
 #define CSYNTH_TRIANGLE_H
 
-#include <math.h>
-
 #include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"

@@ -6,8 +6,6 @@
 #ifndef CSYNTH_TIMER_H
 #define CSYNTH_TIMER_H
 
-#include <math.h>
-
 #include "../../util/test.h"
 #include "../../core/func.h"
 

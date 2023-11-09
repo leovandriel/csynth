@@ -4,8 +4,6 @@
 #ifndef CSYNTH_OPS_H
 #define CSYNTH_OPS_H
 
-#include <math.h>
-
 #include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"

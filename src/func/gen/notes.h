@@ -6,9 +6,9 @@
 #ifndef CSYNTH_NOTES_H
 #define CSYNTH_NOTES_H
 
-#include <math.h>
 #include <stdio.h>
 
+#include "../../util/math.h"
 #include "../../util/test.h"
 #include "../gen/const.h"
 
@@ -363,7 +363,7 @@ void print_notes_h()
     {
         const char *note = note_names[i % 17];
         int octave = i / 17;
-        int index = round((i + 4) * 12.0 / 17 - 59.95);
+        int index = (int)((i + 4) * 12.0 / 17 - 59.45);
         double freq = 440 * pow(2, index / 12.0);
         int prec = 20 - log10(freq);
         fprintf(stderr, "static const double %s%d_ = %.*f; // 440 * pow(2, %d / 12.0)\n", note, octave, prec, freq, index);

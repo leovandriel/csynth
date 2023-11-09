@@ -6,9 +6,8 @@
 #ifndef CSYNTH_POWER_H
 #define CSYNTH_POWER_H
 
-#include <math.h>
-
 #include "../../util/test.h"
+#include "../../util/math.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 

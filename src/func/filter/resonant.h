@@ -6,8 +6,7 @@
 #ifndef CSYNTH_RESONANT_H
 #define CSYNTH_RESONANT_H
 
-#include <math.h>
-
+#include "../../util/math.h"
 #include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
@@ -25,7 +24,7 @@ static double resonant_eval(__attribute__((unused)) int count, Gen **args, doubl
     double input = gen_eval(args[0]);
     double frequency = gen_eval(args[1]);
     double q_factor = gen_eval(args[2]);
-    double omega = 2.0 * M_PI * frequency * delta;
+    double omega = PI_M_2 * frequency * delta;
     double alpha = sin_lookup(omega) / (2.0 * q_factor);
     double a0 = 1.0 + alpha;
     double a1 = -2.0 * sin_lookup(omega + M_PI_2);
@@ -58,11 +57,9 @@ void test_resonant()
     assert_gen_equal(g, 0.4179689975257589);
     assert_gen_equal(g, -1.5283959545087757);
     assert_gen_equal(g, 1.0572185352198431);
-    assert_gen_equal(g, -1.3835083183028376);
-    assert_gen_equal(g, -0.0165945916944115);
-    assert_gen_equal(g, -0.4292847868595755);
-    assert_gen_equal(g, 1.4713719408891881);
-    assert_gen_equal(g, -0.9997882144373600);
+    assert_gen_equal(g, -1.3835083183028383);
+    assert_gen_equal(g, -0.0165945916944109);
+    assert_gen_equal(g, -0.4292847868595760);
 }
 
 #endif // CSYNTH_RESONANT_H

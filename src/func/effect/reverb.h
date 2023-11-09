@@ -6,7 +6,6 @@
 #ifndef CSYNTH_REVERB_H
 #define CSYNTH_REVERB_H
 
-#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -25,7 +24,7 @@ static double reverb_eval(__attribute__((unused)) int count, Gen **args, double 
 {
     ReverbContext *context = (ReverbContext *)context_;
     double input = gen_eval(args[0]);
-    unsigned long size = round(gen_eval(args[1]) / delta);
+    unsigned long size = (unsigned long)(gen_eval(args[1]) / delta + 0.5);
     double decay = gen_eval(args[2]);
     context->index = buffer_resize(&context->buffer, size, context->index, NULL);
     double *buffer = context->buffer.samples;

@@ -6,8 +6,6 @@
 #ifndef CSYNTH_LOOP_H
 #define CSYNTH_LOOP_H
 
-#include <math.h>
-
 #include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"

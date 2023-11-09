@@ -7,7 +7,6 @@
 #define CSYNTH_CALLBACK_H
 
 #include <stdio.h>
-#include <math.h>
 
 #include "../../util/test.h"
 #include "../../core/func.h"

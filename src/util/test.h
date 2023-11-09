@@ -7,12 +7,11 @@
 
 #include <assert.h>
 #include <stdio.h>
-#include <math.h>
 
 #include "../core/func.h"
 
 #define long_equal(_a, _b) ((_a) == (_b))
-#define double_equal(_a, _b) (fabs((_a) - (_b)) < EPSILON)
+#define double_equal(_a, _b) ((_a) - (_b) < EPSILON && (_b) - (_a) < EPSILON)
 #define double_range(_a, _b, _c) ((_a) >= (_b) && (_a) <= (_c))
 
 #define assert_long_equal(_a, _b)                     \
@@ -25,15 +24,15 @@
         }                                             \
         assert(long_equal(__a, __b));                 \
     } while (0)
-#define assert_double_equal(_a, _b)                                      \
-    do                                                                   \
-    {                                                                    \
-        double __a = (_a), __b = (_b);                                   \
-        if (!double_equal(__a, __b))                                     \
-        {                                                                \
-            printf("assert(fabs(%.16f - %.16f) < EPSILON)\n", __a, __b); \
-        }                                                                \
-        assert(double_equal(__a, __b));                                  \
+#define assert_double_equal(_a, _b)                                     \
+    do                                                                  \
+    {                                                                   \
+        double __a = (_a), __b = (_b);                                  \
+        if (!double_equal(__a, __b))                                    \
+        {                                                               \
+            printf("assert(abs(%.16f - %.16f) < EPSILON)\n", __a, __b); \
+        }                                                               \
+        assert(double_equal(__a, __b));                                 \
     } while (0)
 #define assert_double_range(_a, _b, _c)                                               \
     do                                                                                \

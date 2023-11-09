@@ -10,8 +10,6 @@
 #ifndef CSYNTH_CHORUS_H
 #define CSYNTH_CHORUS_H
 
-#include <math.h>
-
 #include "../../util/test.h"
 #include "../../core/func.h"
 #include "../../util/buffer.h"
@@ -33,9 +31,9 @@ static double chorus_eval(__attribute__((unused)) int count, Gen **args, double 
     double modulation = gen_eval(args[1]);
     double delay = gen_eval(args[2]);
     double depth = gen_eval(args[3]);
-    unsigned long size = ceil(delay / delta);
-    unsigned long offset = round(depth / delta * modulation + size * 0.5);
-    // unsigned long offset = round(depth / delta * (modulation + 1) * 0.5);
+    unsigned long size = (unsigned long)(delay / delta + 0.5);
+    unsigned long offset = (unsigned long)(depth / delta * modulation + size * 0.5 + 0.5);
+    // unsigned long offset = (unsigned long)(depth / delta * (modulation + 1) * 0.5 + 0.5);
     unsigned long index = (context->index + size - offset) % size;
     context->index = buffer_resize(&context->buffer, size, context->index, NULL);
     double *buffer = context->buffer.samples;

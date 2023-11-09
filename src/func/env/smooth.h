@@ -9,8 +9,6 @@
 #ifndef CSYNTH_SMOOTH_H
 #define CSYNTH_SMOOTH_H
 
-#include <math.h>
-
 #include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"

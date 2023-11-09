@@ -6,8 +6,6 @@
 #ifndef CSYNTH_INV_H
 #define CSYNTH_INV_H
 
-#include <math.h>
-
 #include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
@@ -15,7 +13,7 @@
 static double inv_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double value = gen_eval(args[0]);
-    if (fabs(value) < EPSILON)
+    if (value < EPSILON && value > -EPSILON)
     {
         value = value >= 0 ? EPSILON : -EPSILON;
     }

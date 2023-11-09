@@ -6,8 +6,6 @@
 #ifndef CSYNTH_SQUARE_H
 #define CSYNTH_SQUARE_H
 
-#include <math.h>
-
 #include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"

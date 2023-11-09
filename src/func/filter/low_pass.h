@@ -6,8 +6,7 @@
 #ifndef CSYNTH_LOW_PASS_H
 #define CSYNTH_LOW_PASS_H
 
-#include <math.h>
-
+#include "../../util/math.h"
 #include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
@@ -22,7 +21,7 @@ static double low_pass_eval(__attribute__((unused)) int count, Gen **args, doubl
     LowPassContext *context = (LowPassContext *)context_;
     double input = gen_eval(args[0]);
     double frequency = gen_eval(args[1]);
-    double factor = 1 / (2.0 * M_PI * frequency * delta) + 1.0;
+    double factor = 1 / (PI_M_2 * frequency * delta) + 1.0;
     double output = context->output;
     context->output = context->output + (input - context->output) / factor;
     return output;

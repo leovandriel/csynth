@@ -6,8 +6,7 @@
 #ifndef CSYNTH_KARPLUS_STRONG_H
 #define CSYNTH_KARPLUS_STRONG_H
 
-#include <math.h>
-
+#include "../../util/math.h"
 #include "../../util/test.h"
 #include "../../core/func.h"
 #include "../../util/buffer.h"
@@ -23,7 +22,7 @@ static double karplus_strong_eval(__attribute__((unused)) int count, Gen **args,
 {
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
     double frequency = gen_eval(args[0]);
-    unsigned long size = round(1.0 / (delta * frequency));
+    unsigned long size = (unsigned long)(1.0 / (delta * frequency) + 0.5);
     double decay = pow(gen_eval(args[1]), 1.0 / size);
     context->index = buffer_resize(&context->buffer, size, context->index, fill_rand_1_1);
     unsigned long next = (context->index + 1) % size;
