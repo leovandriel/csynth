@@ -8,9 +8,9 @@
 #ifndef CSYNTH_STEP_H
 #define CSYNTH_STEP_H
 
-#include <assert.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -39,18 +39,17 @@ void test_step()
 {
     Func *t = step(const_(0.5));
     Gen *g = gen_create(t, 0.1);
-    double epsilon = 1e-9;
-    assert(fabs(gen_eval(g) - 0.0) < epsilon);
-    assert(fabs(gen_eval(g) - 0.0) < epsilon);
-    assert(fabs(gen_eval(g) - 0.0) < epsilon);
-    assert(fabs(gen_eval(g) - 0.0) < epsilon);
-    assert(fabs(gen_eval(g) - 0.0) < epsilon);
-    assert(fabs(gen_eval(g) - 1.0) < epsilon);
-    assert(fabs(gen_eval(g) - 1.0) < epsilon);
-    assert(fabs(gen_eval(g) - 1.0) < epsilon);
-    assert(fabs(gen_eval(g) - 1.0) < epsilon);
-    assert(fabs(gen_eval(g) - 1.0) < epsilon);
-    assert(fabs(gen_eval(g) - 1.0) < epsilon);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 1.0);
+    assert_gen_equal(g, 1.0);
+    assert_gen_equal(g, 1.0);
+    assert_gen_equal(g, 1.0);
+    assert_gen_equal(g, 1.0);
+    assert_gen_equal(g, 1.0);
 }
 
 #endif // CSYNTH_STEP_H

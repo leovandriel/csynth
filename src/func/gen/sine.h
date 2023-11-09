@@ -6,9 +6,9 @@
 #ifndef CSYNTH_SINE_H
 #define CSYNTH_SINE_H
 
-#include <assert.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -44,20 +44,18 @@ void test_sine()
 {
     Func *t = sine(const_(1));
     Gen *g = gen_create(t, 0.1);
-    double epsilon = 1e-5;
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.587785) < epsilon);
-    assert(fabs(gen_eval(g) - 0.951057) < epsilon);
-    assert(fabs(gen_eval(g) - 0.951057) < epsilon);
-    assert(fabs(gen_eval(g) - 0.587785) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - -0.587785) < epsilon);
-    assert(fabs(gen_eval(g) - -0.951057) < epsilon);
-    assert(fabs(gen_eval(g) - -0.951057) < epsilon);
-    assert(fabs(gen_eval(g) - -0.587785) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.587785) < epsilon);
-    assert(fabs(gen_eval(g) - 0.951057) < epsilon);
+    assert_gen_equal(g, 0.0000000000000000);
+    assert_gen_equal(g, 0.5877852522924731);
+    assert_gen_equal(g, 0.9510565162951535);
+    assert_gen_equal(g, 0.9510565162951536);
+    assert_gen_equal(g, 0.5877852522924732);
+    assert_gen_equal(g, 0.0000000000000002);
+    assert_gen_equal(g, -0.5877852522924729);
+    assert_gen_equal(g, -0.9510565162951535);
+    assert_gen_equal(g, -0.9510565162951536);
+    assert_gen_equal(g, -0.5877852522924732);
+    assert_gen_equal(g, -0.0000000000000002);
+    assert_gen_equal(g, 0.5877852522924729);
 }
 
 #endif // CSYNTH_SINE_H

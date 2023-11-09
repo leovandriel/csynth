@@ -1,13 +1,12 @@
 //
 // continuous.h - Prevents its input from being reset
 //
-// `continuous(input)` 
+// `continuous(input)`
 //
 #ifndef CSYNTH_CONTINUOUS_H
 #define CSYNTH_CONTINUOUS_H
 
-#include <assert.h>
-
+#include "../../util/test.h"
 #include "../../core/func.h"
 
 Func *continuous(Func *input)

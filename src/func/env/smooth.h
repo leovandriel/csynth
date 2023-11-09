@@ -9,9 +9,9 @@
 #ifndef CSYNTH_SMOOTH_H
 #define CSYNTH_SMOOTH_H
 
-#include <assert.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -54,17 +54,16 @@ void test_smooth()
 {
     Func *t = smooth(const_(0.3), const_(0.7));
     Gen *g = gen_create(t, 0.1);
-    double epsilon = 1e-4;
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.156250) < epsilon);
-    assert(fabs(gen_eval(g) - 0.500000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.843750) < epsilon);
-    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
+    assert_gen_equal(g, 0.000000);
+    assert_gen_equal(g, 0.000000);
+    assert_gen_equal(g, 0.000000);
+    assert_gen_equal(g, 0.000000);
+    assert_gen_equal(g, 0.156250);
+    assert_gen_equal(g, 0.500000);
+    assert_gen_equal(g, 0.843750);
+    assert_gen_equal(g, 1.000000);
+    assert_gen_equal(g, 1.000000);
+    assert_gen_equal(g, 1.000000);
 }
 
 #endif // CSYNTH_SMOOTH_H

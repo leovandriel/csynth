@@ -9,6 +9,9 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
+#include <float.h>
+
+static const double EPSILON = DBL_EPSILON * 2;
 
 typedef struct Func Func;
 typedef Func *func;

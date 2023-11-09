@@ -8,10 +8,10 @@
 #ifndef CSYNTH_MIN_H
 #define CSYNTH_MIN_H
 
-#include <assert.h>
 #include <float.h>
 #include <stdarg.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -52,10 +52,10 @@ Func *min_array(int count, Func **args)
 
 void test_min()
 {
-    assert(gen_eval(gen_create(min(const_(1), const_(2)), .1)) == 1.0);
-    assert(gen_eval(gen_create(min(const_(2), const_(1)), .1)) == 1.0);
-    assert(gen_eval(gen_create(min(const_(4), const_(2), const_(3)), .1)) == 2.0);
-    assert(gen_eval(gen_create(min(const_(1)), .1)) == 1.0);
+    assert_gen_equal(gen_create(min(const_(1), const_(2)), .1), 1.0);
+    assert_gen_equal(gen_create(min(const_(2), const_(1)), .1), 1.0);
+    assert_gen_equal(gen_create(min(const_(4), const_(2), const_(3)), .1), 2.0);
+    assert_gen_equal(gen_create(min(const_(1)), .1), 1.0);
 }
 
 #endif // CSYNTH_MIN_H

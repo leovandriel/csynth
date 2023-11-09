@@ -6,9 +6,9 @@
 #ifndef CSYNTH_HIGH_PASS_H
 #define CSYNTH_HIGH_PASS_H
 
-#include <assert.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -41,19 +41,18 @@ void test_high_pass()
 {
     Func *t = high_pass(const_(1), const_(10));
     Gen *g = gen_create(t, 0.1);
-    double epsilon = 1e-4;
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.137303) < epsilon);
-    assert(fabs(gen_eval(g) - 0.018852) < epsilon);
-    assert(fabs(gen_eval(g) - 0.002588) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000355) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000049) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000007) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000001) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
+    assert_gen_equal(g, 0.0000000000000000);
+    assert_gen_equal(g, 0.1373025616984130);
+    assert_gen_equal(g, 0.0188519934489465);
+    assert_gen_equal(g, 0.0025884269936620);
+    assert_gen_equal(g, 0.0003553976569991);
+    assert_gen_equal(g, 0.0000487970087276);
+    assert_gen_equal(g, 0.0000066999543015);
+    assert_gen_equal(g, 0.0000009199208889);
+    assert_gen_equal(g, 0.0000001263074946);
+    assert_gen_equal(g, 0.0000000173423426);
+    assert_gen_equal(g, 0.0000000023811481);
+    assert_gen_equal(g, 0.0000000003269377);
 }
 
 #endif // CSYNTH_HIGH_PASS_H

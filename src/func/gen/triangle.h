@@ -6,9 +6,9 @@
 #ifndef CSYNTH_TRIANGLE_H
 #define CSYNTH_TRIANGLE_H
 
-#include <assert.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -51,19 +51,18 @@ void test_triangle()
 {
     Func *t = triangle(const_(1));
     Gen *g = gen_create(t, 0.1);
-    double epsilon = 1e-9;
-    assert(fabs(gen_eval(g) - 0.0) < epsilon);
-    assert(fabs(gen_eval(g) - 0.4) < epsilon);
-    assert(fabs(gen_eval(g) - 0.8) < epsilon);
-    assert(fabs(gen_eval(g) - 0.8) < epsilon);
-    assert(fabs(gen_eval(g) - 0.4) < epsilon);
-    assert(fabs(gen_eval(g) - -0.0) < epsilon);
-    assert(fabs(gen_eval(g) - -0.4) < epsilon);
-    assert(fabs(gen_eval(g) - -0.8) < epsilon);
-    assert(fabs(gen_eval(g) - -0.8) < epsilon);
-    assert(fabs(gen_eval(g) - -0.4) < epsilon);
-    assert(fabs(gen_eval(g) - 0.0) < epsilon);
-    assert(fabs(gen_eval(g) - 0.4) < epsilon);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.4);
+    assert_gen_equal(g, 0.8);
+    assert_gen_equal(g, 0.8);
+    assert_gen_equal(g, 0.4);
+    assert_gen_equal(g, -0.0);
+    assert_gen_equal(g, -0.4);
+    assert_gen_equal(g, -0.8);
+    assert_gen_equal(g, -0.8);
+    assert_gen_equal(g, -0.4);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.4);
 }
 
 #endif // CSYNTH_TRIANGLE_H

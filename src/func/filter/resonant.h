@@ -6,9 +6,9 @@
 #ifndef CSYNTH_RESONANT_H
 #define CSYNTH_RESONANT_H
 
-#include <assert.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 #include "../gen/square.h"
@@ -50,19 +50,18 @@ void test_resonant()
 {
     Func *t = resonant(square_(1), const_(2), const_(1));
     Gen *g = gen_create(t, 0.1);
-    double epsilon = 1e-4;
-    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
-    assert(fabs(gen_eval(g) - -0.355447) < epsilon);
-    assert(fabs(gen_eval(g) - 0.914052) < epsilon);
-    assert(fabs(gen_eval(g) - 0.206840) < epsilon);
-    assert(fabs(gen_eval(g) - 0.417969) < epsilon);
-    assert(fabs(gen_eval(g) - -1.528396) < epsilon);
-    assert(fabs(gen_eval(g) - 1.057219) < epsilon);
-    assert(fabs(gen_eval(g) - -1.383508) < epsilon);
-    assert(fabs(gen_eval(g) - -0.016595) < epsilon);
-    assert(fabs(gen_eval(g) - -0.429285) < epsilon);
-    assert(fabs(gen_eval(g) - 1.471372) < epsilon);
-    assert(fabs(gen_eval(g) - -0.999788) < epsilon);
+    assert_gen_equal(g, 1.0000000000000000);
+    assert_gen_equal(g, -0.3554467621723904);
+    assert_gen_equal(g, 0.9140520393842109);
+    assert_gen_equal(g, 0.2068404594181049);
+    assert_gen_equal(g, 0.4179689937741932);
+    assert_gen_equal(g, -1.5283959570284307);
+    assert_gen_equal(g, 1.0572185263015355);
+    assert_gen_equal(g, -1.3835082994633345);
+    assert_gen_equal(g, -0.0165946039882036);
+    assert_gen_equal(g, -0.4292847808124329);
+    assert_gen_equal(g, 1.4713719443499036);
+    assert_gen_equal(g, -0.9997882077581405);
 }
 
 #endif // CSYNTH_RESONANT_H

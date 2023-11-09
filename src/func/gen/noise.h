@@ -6,9 +6,9 @@
 #ifndef CSYNTH_NOISE_H
 #define CSYNTH_NOISE_H
 
-#include <assert.h>
 #include <stdlib.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../../util/rand.h"
 
@@ -26,8 +26,7 @@ void test_noise()
 {
     for (int i = 0; i < 100; i++)
     {
-        double v = gen_eval(gen_create(noise(), .1));
-        assert(v < 1.0 && v > -1.0);
+        assert_gen_range(gen_create(noise(), .1), -1.0, 1.0);
     }
 }
 

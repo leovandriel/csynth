@@ -6,9 +6,9 @@
 #ifndef CSYNTH_LOOP_H
 #define CSYNTH_LOOP_H
 
-#include <assert.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 #include "../env/step.h"
@@ -43,19 +43,18 @@ void test_loop()
 {
     Func *t = loop(step(const_(0.3)), const_(0.5));
     Gen *g = gen_create(t, 0.1);
-    double epsilon = 1e-9;
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 1.0);
+    assert_gen_equal(g, 1.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 1.0);
+    assert_gen_equal(g, 1.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
 }
 
 #endif // CSYNTH_LOOP_H

@@ -6,13 +6,11 @@
 #ifndef CSYNTH_PRINT_H
 #define CSYNTH_PRINT_H
 
-#include <assert.h>
 #include <stdio.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
-
-static const double PRINT_EPSILON = 1e-9;
 
 typedef struct
 {
@@ -23,7 +21,7 @@ static double print_eval(__attribute__((unused)) int count, Gen **args, __attrib
 {
     PrintContext *context = (PrintContext *)context_;
     double output = gen_eval(args[0]);
-    if (fabs(output) > PRINT_EPSILON && context->text != NULL)
+    if (fabs(output) > EPSILON && context->text != NULL)
     {
         fprintf(stderr, "%s\n", context->text);
         context->text = NULL;

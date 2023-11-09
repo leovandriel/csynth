@@ -4,8 +4,9 @@
 #ifndef CSYNTH_RAND_H
 #define CSYNTH_RAND_H
 
-#include <assert.h>
 #include <limits.h>
+
+#include "./test.h"
 
 static unsigned long rand_state = 1082269761;
 

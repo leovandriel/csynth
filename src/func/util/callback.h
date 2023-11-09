@@ -6,10 +6,10 @@
 #ifndef CSYNTH_CALLBACK_H
 #define CSYNTH_CALLBACK_H
 
-#include <assert.h>
 #include <stdio.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -81,9 +81,9 @@ Func *callback_gen(__attribute__((unused)) Func *input, double (*callback)(doubl
 
 static double test_callback_add(int count, Gen **args, double delta, void *context)
 {
-    assert(count == 2);
-    assert(delta == 0.1);
-    assert(*(int *)context == 2);
+    assert_long_equal(count, 2);
+    assert_double_equal(delta, 0.1);
+    assert_long_equal(*(int *)context, 2);
     return gen_eval(args[0]) + gen_eval(args[1]);
 }
 
@@ -92,7 +92,7 @@ void test_callback()
     int context = 2;
     Func *t = callback_func(test_callback_add, &context, const_(3), const_(4));
     Gen *g = gen_create(t, 0.1);
-    assert(gen_eval(g) == 7);
+    assert_gen_equal(g, 7);
 }
 
 #endif // CSYNTH_CALLBACK_H

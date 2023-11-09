@@ -6,9 +6,9 @@
 #ifndef CSYNTH_LOGGER_H
 #define CSYNTH_LOGGER_H
 
-#include <assert.h>
 #include <stdio.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 
 typedef struct

@@ -6,9 +6,9 @@
 #ifndef CSYNTH_KARPLUS_STRONG_H
 #define CSYNTH_KARPLUS_STRONG_H
 
-#include <assert.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../../util/buffer.h"
 #include "../gen/const.h"
@@ -52,19 +52,18 @@ void test_karplus_strong()
     rand_seed(0);
     Func *t = karplus_strong(const_(2), const_(0.5));
     Gen *g = gen_create(t, 0.1);
-    double epsilon = 1e-4;
-    assert(fabs(gen_eval(g) - -0.288641) < epsilon);
-    assert(fabs(gen_eval(g) - 0.491219) < epsilon);
-    assert(fabs(gen_eval(g) - 0.419562) < epsilon);
-    assert(fabs(gen_eval(g) - 0.424176) < epsilon);
-    assert(fabs(gen_eval(g) - 0.277973) < epsilon);
-    assert(fabs(gen_eval(g) - 0.088177) < epsilon);
-    assert(fabs(gen_eval(g) - 0.396440) < epsilon);
-    assert(fabs(gen_eval(g) - 0.367258) < epsilon);
-    assert(fabs(gen_eval(g) - 0.305628) < epsilon);
-    assert(fabs(gen_eval(g) - 0.159376) < epsilon);
-    assert(fabs(gen_eval(g) - 0.210942) < epsilon);
-    assert(fabs(gen_eval(g) - 0.332419) < epsilon);
+    assert_gen_equal(g, -0.2886412523525353);
+    assert_gen_equal(g, 0.4912185886479782);
+    assert_gen_equal(g, 0.4195619192984845);
+    assert_gen_equal(g, 0.4241761877148519);
+    assert_gen_equal(g, 0.2779732095631874);
+    assert_gen_equal(g, 0.0881769071115131);
+    assert_gen_equal(g, 0.3964402421159615);
+    assert_gen_equal(g, 0.3672583421674327);
+    assert_gen_equal(g, 0.3056282766592155);
+    assert_gen_equal(g, 0.1593760951610511);
+    assert_gen_equal(g, 0.2109418661214700);
+    assert_gen_equal(g, 0.3324191163681807);
 }
 
 #endif // CSYNTH_KARPLUS_STRONG_H

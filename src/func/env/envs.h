@@ -4,8 +4,7 @@
 #ifndef CSYNTH_ENVS_H
 #define CSYNTH_ENVS_H
 
-#include <assert.h>
-
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 #include "../op/power.h"

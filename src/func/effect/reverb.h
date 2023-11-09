@@ -6,11 +6,11 @@
 #ifndef CSYNTH_REVERB_H
 #define CSYNTH_REVERB_H
 
-#include <assert.h>
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../../util/buffer.h"
 #include "../gen/const.h"
@@ -52,19 +52,18 @@ void test_reverb()
 {
     Func *t = reverb(const_(1), const_(.2), const_(.5));
     Gen *g = gen_create(t, 0.1);
-    double epsilon = 1e-4;
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.500000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.500000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.750000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.750000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.875000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.875000) < epsilon);
-    assert(fabs(gen_eval(g) - 1.937500) < epsilon);
-    assert(fabs(gen_eval(g) - 1.937500) < epsilon);
+    assert_gen_equal(g, 0.00000);
+    assert_gen_equal(g, 0.00000);
+    assert_gen_equal(g, 1.00000);
+    assert_gen_equal(g, 1.00000);
+    assert_gen_equal(g, 1.50000);
+    assert_gen_equal(g, 1.50000);
+    assert_gen_equal(g, 1.75000);
+    assert_gen_equal(g, 1.75000);
+    assert_gen_equal(g, 1.87500);
+    assert_gen_equal(g, 1.87500);
+    assert_gen_equal(g, 1.93750);
+    assert_gen_equal(g, 1.93750);
 }
 
 #endif // CSYNTH_REVERB_H

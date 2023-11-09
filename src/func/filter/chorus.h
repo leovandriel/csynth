@@ -10,9 +10,9 @@
 #ifndef CSYNTH_CHORUS_H
 #define CSYNTH_CHORUS_H
 
-#include <assert.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../../util/buffer.h"
 #include "../gen/const.h"
@@ -62,9 +62,8 @@ void test_chorus()
 {
     Func *t = chorus_(sine_(10), sine_(.2), 0.2, 0.2);
     Gen *g = gen_create(t, 0.1);
-    double epsilon = 1e-4;
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
-    assert(fabs(gen_eval(g) - 0.000000) < epsilon);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
 }
 
 #endif // CSYNTH_CHORUS_H

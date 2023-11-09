@@ -13,10 +13,10 @@
 #ifndef CSYNTH_COMP_H
 #define CSYNTH_COMP_H
 
-#include <assert.h>
 #include <math.h>
 #include <stdarg.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -62,13 +62,11 @@ static double comp_eval_rel(int count, Gen **args, double delta, void *context_)
     return output;
 }
 
-static const double COMP_EPSILON = 1e-9;
-
 static double comp_eval_seq(int count, Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     CompContext *context = (CompContext *)context_;
     double output = gen_eval(args[context->index]);
-    if (fabs(output) < COMP_EPSILON)
+    if (fabs(output) < EPSILON)
     {
         context->counter++;
     }
@@ -134,16 +132,15 @@ void test_comp()
 {
     Func *t = comp_rel(const_(1), const_(0.2), const_(-1), const_(0.3));
     Gen *g = gen_create(t, 0.1);
-    double epsilon = 1e-9;
-    assert(fabs(gen_eval(g) - 1.0) < epsilon);
-    assert(fabs(gen_eval(g) - 1.0) < epsilon);
-    assert(fabs(gen_eval(g) - -1.0) < epsilon);
-    assert(fabs(gen_eval(g) - -1.0) < epsilon);
-    assert(fabs(gen_eval(g) - -1.0) < epsilon);
-    assert(fabs(gen_eval(g) - 0.0) < epsilon);
-    assert(fabs(gen_eval(g) - 0.0) < epsilon);
-    assert(fabs(gen_eval(g) - 0.0) < epsilon);
-    assert(fabs(gen_eval(g) - 0.0) < epsilon);
+    assert_gen_equal(g, 1.0);
+    assert_gen_equal(g, 1.0);
+    assert_gen_equal(g, -1.0);
+    assert_gen_equal(g, -1.0);
+    assert_gen_equal(g, -1.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.0);
 }
 
 #endif // CSYNTH_COMP_H

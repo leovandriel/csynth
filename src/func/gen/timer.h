@@ -6,9 +6,9 @@
 #ifndef CSYNTH_TIMER_H
 #define CSYNTH_TIMER_H
 
-#include <assert.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 
 typedef struct
@@ -33,12 +33,11 @@ void test_timer()
 {
     Func *t = timer();
     Gen *g = gen_create(t, 0.1);
-    double epsilon = 1e-9;
-    assert(fabs(gen_eval(g) - 0.0) < epsilon);
-    assert(fabs(gen_eval(g) - 0.1) < epsilon);
-    assert(fabs(gen_eval(g) - 0.2) < epsilon);
-    assert(fabs(gen_eval(g) - 0.3) < epsilon);
-    assert(fabs(gen_eval(g) - 0.4) < epsilon);
+    assert_gen_equal(g, 0.0);
+    assert_gen_equal(g, 0.1);
+    assert_gen_equal(g, 0.2);
+    assert_gen_equal(g, 0.3);
+    assert_gen_equal(g, 0.4);
 }
 
 #endif // CSYNTH_TIMER_H

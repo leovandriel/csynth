@@ -6,8 +6,7 @@
 #ifndef CSYNTH_NEG_H
 #define CSYNTH_NEG_H
 
-#include <assert.h>
-
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -24,8 +23,8 @@ Func *neg(Func *value)
 
 void test_neg()
 {
-    assert(gen_eval(gen_create(neg(const_(1)), .1)) == -1.0);
-    assert(gen_eval(gen_create(neg(const_(-2)), .1)) == 2.0);
+    assert_gen_equal(gen_create(neg(const_(1)), .1), -1.0);
+    assert_gen_equal(gen_create(neg(const_(-2)), .1), 2.0);
 }
 
 #endif // CSYNTH_NEG_H

@@ -13,8 +13,7 @@
 #ifndef CSYNTH_CONST_H
 #define CSYNTH_CONST_H
 
-#include <assert.h>
-
+#include "../../util/test.h"
 #include "../../core/func.h"
 
 typedef struct
@@ -42,8 +41,8 @@ Func *_(double value) { return const_(value); }
 
 void test_const()
 {
-    assert(gen_eval(gen_create(const_(1), .1)) == 1.0);
-    assert(gen_eval(gen_create(const_(-2), .1)) == -2.0);
+    assert_gen_equal(gen_create(const_(1), .1), 1.0);
+    assert_gen_equal(gen_create(const_(-2), .1), -2.0);
 }
 
 #endif // CSYNTH_CONST_H

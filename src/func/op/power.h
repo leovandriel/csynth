@@ -6,9 +6,9 @@
 #ifndef CSYNTH_POWER_H
 #define CSYNTH_POWER_H
 
-#include <assert.h>
 #include <math.h>
 
+#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -28,10 +28,10 @@ Func *power_(Func *input, double exponent) { return power(input, const_(exponent
 
 void test_power()
 {
-    assert(gen_eval(gen_create(power(const_(1), const_(1)), .1)) == 1.0);
-    assert(gen_eval(gen_create(power(const_(1), const_(2)), .1)) == 1.0);
-    assert(gen_eval(gen_create(power(const_(2), const_(1)), .1)) == 2.0);
-    assert(gen_eval(gen_create(power(const_(2), const_(2)), .1)) == 4.0);
+    assert_gen_equal(gen_create(power(const_(1), const_(1)), .1), 1.0);
+    assert_gen_equal(gen_create(power(const_(1), const_(2)), .1), 1.0);
+    assert_gen_equal(gen_create(power(const_(2), const_(1)), .1), 2.0);
+    assert_gen_equal(gen_create(power(const_(2), const_(2)), .1), 4.0);
 }
 
 #endif // CSYNTH_POWER_H
