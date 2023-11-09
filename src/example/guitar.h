@@ -30,7 +30,7 @@ static const double F[] = {C3_, F3_, A3_, C4_};
 static const double G[] = {G2_, B2_, D3_, G3_, B3_, G4_};
 static const double Am[] = {A2_, E3_, A3_, C4_, E4_};
 
-static func t(int index)
+static func t(double index)
 {
     return _(0.25 * index + (0.01 * rand_double()));
 }
@@ -45,7 +45,7 @@ func guitar()
         t(0), pluck(D5),
         t(1), pluck(E5),
         t(2), pluck(D5),
-        t(3), pluck(A4));
+        t(3), mul(pluck(A4), smooth_inv(t(1), t(1.5))));
 
     func guitar1 = comp_abs(
         t(0), g1,

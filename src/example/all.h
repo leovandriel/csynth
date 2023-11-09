@@ -21,8 +21,8 @@ func all_examples(const char *name, double *length)
     EXAMPLE_CASE(simple_fm, 5)
     EXAMPLE_CASE(drummer, 10)
     EXAMPLE_CASE(guitar, 24)
-    EXAMPLE_CASE(increase_pitch, 10)
-    EXAMPLE_CASE(increase_speed, 10)
+    EXAMPLE_CASE(modulate_pitch, 10)
+    EXAMPLE_CASE(modulate_speed, 10)
     EXAMPLE_CASE(example, 6)
     func examples = comp_rel_array(index, array);
     return examples;

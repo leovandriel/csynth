@@ -23,14 +23,14 @@ func wobble_both()
     return beep_boop_dynamic(wobble, wobble);
 }
 
-func increase_pitch()
+func modulate_pitch()
 {
-    func increase = continuous(add_(mul_(timer(), .5), .01));
-    return beep_boop_dynamic(increase, ONE);
+    func modulate = continuous(add_(mul_(timer(), .5), .01));
+    return beep_boop_dynamic(modulate, ONE);
 }
 
-func increase_speed()
+func modulate_speed()
 {
-    func increase = continuous(add_(mul_(timer(), .5), .01));
-    return beep_boop_dynamic(ONE, increase);
+    func modulate = continuous(add_(mul_(timer(), .5), .01));
+    return beep_boop_dynamic(ONE, modulate);
 }
