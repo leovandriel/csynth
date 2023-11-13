@@ -8,11 +8,11 @@
 
 Play examples with PortAudio:
 
-    ./play.sh
+    ./play.c
 
 Samples examples into a WAV file (replace `player` with wav player):
 
-    ./write.sh && player output/example.wav
+    ./write.c && player output/example.wav
 
 ## Example
 
@@ -65,7 +65,7 @@ You can hear the result in
 [example.mp3](https://github.com/leovandriel/csynth/raw/main/output/example.mp3)
 or by running:
 
-    ./play.sh example
+    ./play.c example
 
 To see more of what you can do with CSynth, take a look at the
 [example](src/example) folder.
