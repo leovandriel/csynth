@@ -14,6 +14,11 @@ Samples examples into a WAV file (replace `player` with wav player):
 
     ./write.c && player output/example.wav
 
+## PortAudio
+
+PortAudio is only needed for running `play.c`. To install PortAudio on Mac:
+`brew install portaudio`.
+
 ## Example
 
 To create music in CSynth, we nest basic (mathematical) functions into sounds,
