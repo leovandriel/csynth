@@ -28,10 +28,18 @@ static double print_eval(__attribute__((unused)) int count, Gen **args, __attrib
     return output;
 }
 
+void print_free(void *context_)
+{
+    PrintContext *context = (PrintContext *)context_;
+    free((char *)context->text);
+}
+
 Func *print(const char *text, Func *input)
 {
+    char *copy = malloc(strlen(text) + 1);
+    strcpy(copy, text);
     PrintContext initial = (PrintContext){
-        .text = text,
+        .text = copy,
     };
     return func_create(NULL, print_eval, NULL, sizeof(PrintContext), &initial, 1, input);
 }
