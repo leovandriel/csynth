@@ -7,13 +7,13 @@
 #include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
-#include "../op/mul.h"
-#include "../op/add.h"
-#include "../op/inv.h"
-#include "../op/neg.h"
-#include "../op/min.h"
-#include "../op/max.h"
-#include "../op/power.h"
+#include "./mul.h"
+#include "./add.h"
+#include "./inv.h"
+#include "./neg.h"
+#include "./min.h"
+#include "./max.h"
+#include "./power.h"
 
 Func *dvd(Func *a, Func *b) { return mul(a, inv(b)); }
 Func *dvd_(Func *a, double b) { return dvd(a, const_(b)); }

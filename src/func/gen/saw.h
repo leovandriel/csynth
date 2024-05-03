@@ -8,7 +8,7 @@
 
 #include "../../util/test.h"
 #include "../../core/func.h"
-#include "../gen/const.h"
+#include "./const.h"
 
 typedef struct
 {

@@ -10,7 +10,7 @@
 
 #include "../../util/math.h"
 #include "../../util/test.h"
-#include "../gen/const.h"
+#include "./const.h"
 
 static const double C0_ = 16.351597831287413953;  // 440 * pow(2, -57 / 12.0)
 static const double Cs0_ = 17.323914436054504762; // 440 * pow(2, -56 / 12.0)

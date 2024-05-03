@@ -10,7 +10,7 @@
 #include "../../util/test.h"
 #include "../../core/func.h"
 #include "../../util/buffer.h"
-#include "../gen/const.h"
+#include "./const.h"
 
 typedef struct
 {

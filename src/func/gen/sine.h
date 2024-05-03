@@ -9,8 +9,8 @@
 #include "../../util/math.h"
 #include "../../util/test.h"
 #include "../../core/func.h"
-#include "../gen/const.h"
-#include "../gen/timer.h"
+#include "./const.h"
+#include "./timer.h"
 
 typedef struct
 {

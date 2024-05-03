@@ -11,8 +11,8 @@
 #include "../op/neg.h"
 #include "../op/ops.h"
 #include "../op/inv.h"
-#include "../env/step.h"
-#include "../env/smooth.h"
+#include "./step.h"
+#include "./smooth.h"
 #include "../gen/timer.h"
 
 Func *decay(Func *decay) { return expo(dvd(neg(timer()), decay)); }
