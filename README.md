@@ -2,29 +2,27 @@
 
 # CSynth
 
-*A simple synth in C.*
+_A simple synth in C._
 
 ## Usage
 
-Play examples with PortAudio:
+CSynth is a header-only library. Most functionality is accessible through
+`src/func/all.h`.
 
-    ./play.c
+To get started, check out the [examples](examples) folder, e.g. by running:
 
-Samples examples into a WAV file (replace `player` with wav player):
+    ./examples/beep.c
 
-    ./write.c && player output/example.wav
+This requires GCC and [PortAudio](https://www.portaudio.com/) binaries to be
+installed. You can also use CSynth without PortAudio; simply replace `play(..)`
+with `write(..)` to write to a WAV file.
 
-## PortAudio
+## Tutorial
 
-PortAudio is only needed for running `play.c`. To install PortAudio on Mac:
-`brew install portaudio`.
+To create music in CSynth, you combine basic (mathematical) functions to create
+sounds, instruments, and compositions. Let's create a single note with reverb.
 
-## Example
-
-To create music in CSynth, we nest basic (mathematical) functions into sounds,
-instruments, and compositions.
-
-Let's start simple. To play a 440 Hz sine wave for two seconds, run:
+Start by playing a 440 Hz sine wave for two seconds:
 
 ```c
 play(sine(A4), 2);
@@ -33,7 +31,7 @@ play(sine(A4), 2);
 The `A4` is 440, `sine` generates a sine wave at the given frequency, and `play`
 samples the sine function for 2 seconds to the speakers.
 
-Next, we add a block envelope to make this into a 0.3 second note:
+Next, add a block envelope to make this into a 0.3 second note:
 
 ```c
 func tone = sine(A4);
@@ -46,7 +44,7 @@ elsewhere. Then `mul` simply multiplies the tone with the envelope, resulting in
 a .3 second A4 note. By default, all functions take functions as arguments. The
 underscore `_` indicates that the function takes a number.
 
-Next, we add the note in a 1.5 second loop:
+Next, add the note in a 1.5 second loop:
 
 ```c
 func tone = sine(A4);
@@ -55,7 +53,7 @@ func looped = loop_(note, 1.5);
 play(looped, 4);
 ```
 
-Finally, we add reverb (interval .4s, decay .2) and scale the note to prevent
+Finally, add reverb (interval .4s, decay .2) and scale the note to prevent
 clipping:
 
 ```c
@@ -66,28 +64,30 @@ func revved = reverb_(looped, .4, .2);
 play(revved, 6);
 ```
 
-You can hear the result in
+You can listen to the result in
 [example.mp3](https://github.com/leovandriel/csynth/raw/main/output/example.mp3)
 or by running:
 
-    ./play.c example
+    ./examples/beep.c
 
 To see more of what you can do with CSynth, take a look at the
-[example](src/example) folder.
+[examples](examples).
 
 To learn more about available functions, take a look at the [func](src/func)
 folder.
 
 ## How it works
 
-The `func` is the primary building block. Almost all functions take another
-functions as input. These inputs can represent a signal that they transform
-(e.g. `input` in `loop()`) or a parameter that is used for generating a signal
-(e.g. `frequency` in `sine()`). To CSynth there is no difference.
+The `func` is the primary building block, representing a function that outputs
+amplitude over time. Almost all functions take another functions as input,
+allowing the creation of complex sounds from primitives like sine waves and
+envelopes. These inputs can represent a signal that they transform (e.g. `input`
+in `loop()`) or a parameter that is used for generating a signal (e.g.
+`frequency` in `sine()`). To CSynth there is no difference.
 
-By nesting functions, we can create a acyclic graph of functions. When this is
-fed into the `player` or `writer`, we traverse the graph and turn it into a tree
-of generators (`Gen`), together with a sample rate (as a time `delta`). The root
+By nesting functions, you can create a acyclic graph of functions. When this is
+fed into the `player` or `writer`, traverse the graph and turn it into a tree of
+generators (`Gen`), together with a sample rate (as a time `delta`). The root
 generator then recursively samples the tree.
 
 This creation of generators allows functions to be reused during composition,
@@ -99,15 +99,15 @@ All of the above logic is defined in [func.h](src/core/func.h).
 
 To run tests:
 
-    ./test.sh
+    ./test
 
 Example run specific test:
 
-    ./test.sh sine
+    ./test sine
 
 ## FAQ
 
-*Why C?*
+_Why C?_
 
 Because it didn't seem like a good idea.
 
