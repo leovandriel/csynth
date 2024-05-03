@@ -1,4 +1,6 @@
-#include "../func/all.h"
+//usr/bin/gcc "$0" -o bin/spangled -Wall -Wextra -O3 -lm -lportaudio && ./bin/spangled "$@"; exit $?
+#include "../src/func/all.h"
+#include "../src/util/player.h"
 
 double speed = 0.4;
 
@@ -38,7 +40,7 @@ static func C(func frequency, double duration)
     return add(f, A(frequency, duration));
 }
 
-func spangled()
+int main()
 {
     func f1 = comp_seq(
         A(G4, 1.5),
@@ -147,6 +149,6 @@ func spangled()
         C(D5, 2),
         C(C5, 4));
     func f = comp_rel(f1, _(48.5 * speed), f2, _(48.5 * speed), f3, _(98 * speed));
-    f = reverb_(f, 0.1, 0.5);
-    return f;
+    func spangled = reverb_(f, 0.1, 0.5);
+    return play(spangled, 80);
 }

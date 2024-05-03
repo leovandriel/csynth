@@ -1,6 +1,8 @@
-#include "../func/all.h"
+//usr/bin/gcc "$0" -o bin/sin_saw -Wall -Wextra -O3 -lm -lportaudio && ./bin/sin_saw "$@"; exit $?
+#include "../src/func/all.h"
+#include "../src/util/player.h"
 
-func beep_boop()
+int main()
 {
     func high = sine(A4);
     func low = mul_(saw(A2), .5);
@@ -11,5 +13,5 @@ func beep_boop()
     func looped = loop_(melody, 1.6);
     func echoed = reverb_(looped, .2, .5);
     func scaled = mul_(echoed, .1);
-    return scaled;
+    return play(scaled, 8);
 }

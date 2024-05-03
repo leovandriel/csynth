@@ -1,4 +1,6 @@
-#include "../func/all.h"
+//usr/bin/gcc "$0" -o bin/guitar -Wall -Wextra -O3 -lm -lportaudio && ./bin/guitar "$@"; exit $?
+#include "../src/func/all.h"
+#include "../src/util/player.h"
 
 static func strum(int count, const double *c, double span, double decay)
 {
@@ -35,7 +37,7 @@ static func t(double index)
     return _(0.25 * index + (0.01 * rand_double()));
 }
 
-func guitar()
+int main()
 {
     func g0 = comp_abs(
         t(0), slow(Am),
@@ -83,7 +85,8 @@ func guitar()
         t(36), g2,
         t(52), g3);
 
-    return comp_abs(
+    func guitar = comp_abs(
         t(0), g0,
         t(18), add(guitar1, guitar2));
+    return play(guitar, 24);
 }
