@@ -4,10 +4,8 @@
 #ifndef CSYNTH_ENVS_H
 #define CSYNTH_ENVS_H
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
-#include "../op/power.h"
 #include "../op/neg.h"
 #include "../op/ops.h"
 #include "../op/inv.h"
@@ -32,9 +30,5 @@ Func *smooth_inv_(double edge0, double edge1) { return smooth_inv(const_(edge0),
 
 Func *hump(Func *edge0, Func *edge1, Func *edge2, Func *edge3) { return mul(smooth(edge0, edge1), smooth_inv(edge2, edge3)); }
 Func *hump_(double edge0, double edge1, double edge2, double edge3) { return hump(const_(edge0), const_(edge1), const_(edge2), const_(edge3)); }
-
-void test_envs()
-{
-}
 
 #endif // CSYNTH_ENVS_H

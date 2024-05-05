@@ -1,14 +1,10 @@
 //
 // test.h - Testing utilties
 //
-//
-#ifndef CSYNTH_TEST_H
-#define CSYNTH_TEST_H
-
 #include <assert.h>
 #include <stdio.h>
 
-#include "../core/func.h"
+#include "../../src/core/func.h"
 
 #define long_equal(_a, _b) ((_a) == (_b))
 #define double_equal(_a, _b) ((_a) - (_b) < EPSILON && (_b) - (_a) < EPSILON)
@@ -61,5 +57,3 @@ void print_assert_gen_equal(Gen *g)
 void test_test()
 {
 }
-
-#endif // CSYNTH_TEST_H

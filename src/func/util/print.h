@@ -8,7 +8,6 @@
 
 #include <stdio.h>
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 
 typedef struct
@@ -42,10 +41,6 @@ Func *print(const char *text, Func *input)
         .text = copy,
     };
     return func_create(NULL, print_eval, NULL, sizeof(PrintContext), &initial, 1, input);
-}
-
-void test_print()
-{
 }
 
 #endif // CSYNTH_PRINT_H

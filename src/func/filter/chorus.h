@@ -10,11 +10,9 @@
 #ifndef CSYNTH_CHORUS_H
 #define CSYNTH_CHORUS_H
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../../util/buffer.h"
 #include "../gen/const.h"
-#include "../gen/sine.h"
 
 typedef struct
 {
@@ -55,13 +53,5 @@ Func *chorus(Func *input, Func *modulation, Func *delay, Func *depth)
 }
 
 Func *chorus_(Func *input, Func *modulation, double delay, double depth) { return chorus(input, modulation, const_(delay), const_(depth)); }
-
-void test_chorus()
-{
-    Func *t = chorus_(sine_(10), sine_(.2), 0.2, 0.2);
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-}
 
 #endif // CSYNTH_CHORUS_H

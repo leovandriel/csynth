@@ -6,7 +6,6 @@
 #ifndef CSYNTH_TIMER_H
 #define CSYNTH_TIMER_H
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 
 typedef struct
@@ -25,17 +24,6 @@ static double timer_eval(__attribute__((unused)) int count, __attribute__((unuse
 Func *timer()
 {
     return func_create(NULL, timer_eval, NULL, sizeof(TimerContext), NULL, 0);
-}
-
-void test_timer()
-{
-    Func *t = timer();
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.1);
-    assert_gen_equal(g, 0.2);
-    assert_gen_equal(g, 0.3);
-    assert_gen_equal(g, 0.4);
 }
 
 #endif // CSYNTH_TIMER_H

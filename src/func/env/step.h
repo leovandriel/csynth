@@ -8,7 +8,6 @@
 #ifndef CSYNTH_STEP_H
 #define CSYNTH_STEP_H
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -32,22 +31,5 @@ Func *step(Func *edge)
 }
 
 Func *step_(double edge) { return step(const_(edge)); }
-
-void test_step()
-{
-    Func *t = step(const_(0.5));
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-}
 
 #endif // CSYNTH_STEP_H

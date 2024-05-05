@@ -6,7 +6,6 @@
 #ifndef CSYNTH_SAW_H
 #define CSYNTH_SAW_H
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 #include "./const.h"
 
@@ -34,22 +33,5 @@ Func *saw(Func *frequency)
 }
 
 Func *saw_(double frequency) { return saw(const_(frequency)); }
-
-void test_saw()
-{
-    Func *t = saw(const_(1));
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.2);
-    assert_gen_equal(g, 0.4);
-    assert_gen_equal(g, 0.6);
-    assert_gen_equal(g, 0.8);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, -0.8);
-    assert_gen_equal(g, -0.6);
-    assert_gen_equal(g, -0.4);
-    assert_gen_equal(g, -0.2);
-    assert_gen_equal(g, -0.0);
-}
 
 #endif // CSYNTH_SAW_H

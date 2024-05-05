@@ -15,9 +15,7 @@
 
 #include <stdarg.h>
 
-#include "../../util/test.h"
 #include "../../core/func.h"
-#include "../gen/const.h"
 
 typedef struct
 {
@@ -125,21 +123,6 @@ Func *comp_rel_array(int count, Func **args)
 Func *comp_seq_array(int count, Func **args)
 {
     return func_create_array(NULL, comp_eval_seq, NULL, sizeof(CompContext), NULL, count, args);
-}
-
-void test_comp()
-{
-    Func *t = comp_rel(const_(1), const_(0.2), const_(-1), const_(0.3));
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
 }
 
 #endif // CSYNTH_COMP_H

@@ -10,19 +10,19 @@ if [ $# -eq 1 ]; then
     pattern=".*$1.*\\.h"
 fi
 
-rm -f ./src/test.c
+rm -f ./tests/test.c
 
-find ./src -regex "$pattern" -not -path "./src/example/*" -not -name "player.h" -print0 | while read -d $'\0' file; do
+find ./tests -regex "$pattern" -print0 | while read -d $'\0' file; do
     name=$(basename "$file" .h)
-    printf "#include \".$file\"\\nint main() { test_$name(); return 0; }" > ./src/test.c
-    gcc ./src/test.c -o bin/test -Wall -Wextra -lm
+    printf "#include \".$file\"\\nint main() { test_$name(); return 0; }" > ./tests/test.c
+    gcc ./tests/test.c -o bin/test -Wall -Wextra -lm
     ./bin/test
     echo -n "."
 done
 
 
-if [ -f ./src/test.c ]; then
-    rm ./src/test.c
+if [ -f ./tests/test.c ]; then
+    rm ./tests/test.c
     printf "\r\e[KAll tests passed\n"
 else
     echo "No tests found for pattern: $1"

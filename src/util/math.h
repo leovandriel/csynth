@@ -8,8 +8,6 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include "./test.h"
-
 static const double PI_M_2 = M_PI * 2;
 
 static double *sin_table = NULL;
@@ -47,20 +45,6 @@ double sin_lookup(double phase)
     {
         return sign * sin_table[lower];
     }
-}
-
-void test_sin()
-{
-    for (double x = -2; x < 2; x += .1)
-    {
-        double phase = x * PI_M_2;
-        assert_double_range(sin_lookup(phase), sin(phase) + -1e-7, sin(phase) + 1e-7);
-    }
-}
-
-void test_math()
-{
-    test_sin();
 }
 
 #endif // CSYNTH_MATH_H

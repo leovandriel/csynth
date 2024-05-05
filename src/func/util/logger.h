@@ -8,7 +8,6 @@
 
 #include <stdio.h>
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 
 typedef struct
@@ -106,10 +105,6 @@ Func *log1k(Func *input)
 Func *log10sec(Func *input)
 {
     return logger(input, 10, 4410);
-}
-
-void test_logger()
-{
 }
 
 #endif // CSYNTH_LOGGER_H

@@ -7,7 +7,6 @@
 #ifndef CSYNTH_DELAY_H
 #define CSYNTH_DELAY_H
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 #include "../op/neg.h"
@@ -39,25 +38,5 @@ Func *delay(Func *input, Func *duration)
 Func *delay_(Func *input, double frequency) { return delay(input, const_(frequency)); }
 Func *skip(Func *input, Func *duration) { return delay(input, neg(duration)); }
 Func *skip_(Func *input, double duration) { return skip(input, const_(duration)); }
-
-void test_delay()
-{
-    Func *t = delay(const_(1), const_(0.5));
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-}
 
 #endif // CSYNTH_DELAY_H

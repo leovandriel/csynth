@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../../util/buffer.h"
 #include "../gen/const.h"
@@ -46,23 +45,5 @@ Func *reverb(Func *input, Func *interval, Func *decay)
 }
 
 Func *reverb_(Func *input, double interval, double decay) { return reverb(input, const_(interval), const_(decay)); }
-
-void test_reverb()
-{
-    Func *t = reverb(const_(1), const_(.2), const_(.5));
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 0.00000);
-    assert_gen_equal(g, 0.00000);
-    assert_gen_equal(g, 1.00000);
-    assert_gen_equal(g, 1.00000);
-    assert_gen_equal(g, 1.50000);
-    assert_gen_equal(g, 1.50000);
-    assert_gen_equal(g, 1.75000);
-    assert_gen_equal(g, 1.75000);
-    assert_gen_equal(g, 1.87500);
-    assert_gen_equal(g, 1.87500);
-    assert_gen_equal(g, 1.93750);
-    assert_gen_equal(g, 1.93750);
-}
 
 #endif // CSYNTH_REVERB_H

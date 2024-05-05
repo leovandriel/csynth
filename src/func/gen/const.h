@@ -13,7 +13,6 @@
 #ifndef CSYNTH_CONST_H
 #define CSYNTH_CONST_H
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 
 typedef struct
@@ -38,11 +37,5 @@ Func *const_(double value)
 Func *_(double value) { return const_(value); }
 #define ZERO (const_(0.0))
 #define ONE (const_(1.0))
-
-void test_const()
-{
-    assert_gen_equal(gen_create(const_(1), .1), 1.0);
-    assert_gen_equal(gen_create(const_(-2), .1), -2.0);
-}
 
 #endif // CSYNTH_CONST_H

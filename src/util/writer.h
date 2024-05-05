@@ -84,8 +84,4 @@ void write_stdout(Func *root, double duration)
     write(root, duration, stdout);
 }
 
-void test_writer()
-{
-}
-
 #endif // CSYNTH_WRITER_H

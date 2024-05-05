@@ -6,10 +6,8 @@
 #ifndef CSYNTH_LOOP_H
 #define CSYNTH_LOOP_H
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
-#include "../env/step.h"
 
 typedef struct
 {
@@ -36,23 +34,5 @@ Func *loop(Func *input, Func *duration)
 }
 
 Func *loop_(Func *input, double duration) { return loop(input, const_(duration)); }
-
-void test_loop()
-{
-    Func *t = loop(step(const_(0.3)), const_(0.5));
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-}
 
 #endif // CSYNTH_LOOP_H

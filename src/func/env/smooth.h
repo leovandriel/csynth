@@ -9,7 +9,6 @@
 #ifndef CSYNTH_SMOOTH_H
 #define CSYNTH_SMOOTH_H
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -47,21 +46,5 @@ Func *smooth(Func *edge0, Func *edge1)
 }
 
 Func *smooth_(double edge0, double edge1) { return smooth(const_(edge0), const_(edge1)); }
-
-void test_smooth()
-{
-    Func *t = smooth(const_(0.3), const_(0.7));
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 0.000000);
-    assert_gen_equal(g, 0.000000);
-    assert_gen_equal(g, 0.000000);
-    assert_gen_equal(g, 0.000000);
-    assert_gen_equal(g, 0.156250);
-    assert_gen_equal(g, 0.500000);
-    assert_gen_equal(g, 0.843750);
-    assert_gen_equal(g, 1.000000);
-    assert_gen_equal(g, 1.000000);
-    assert_gen_equal(g, 1.000000);
-}
 
 #endif // CSYNTH_SMOOTH_H

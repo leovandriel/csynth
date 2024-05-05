@@ -39,8 +39,4 @@
 #include "./util/logger.h"
 #include "./util/print.h"
 
-void test_all()
-{
-}
-
 #endif // CSYNTH_FUNC_ALL_H

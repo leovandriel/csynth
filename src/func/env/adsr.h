@@ -12,7 +12,6 @@
 #ifndef CSYNTH_ADSR_H
 #define CSYNTH_ADSR_H
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 
@@ -56,26 +55,5 @@ Func *adsr(Func *attack, Func *decay, Func *sustain, Func *release, Func *durati
 }
 
 Func *adsr_(double attack, double decay, double sustain, double release, double duration) { return adsr(const_(attack), const_(decay), const_(sustain), const_(release), const_(duration)); }
-
-void test_adsr()
-{
-    Func *t = adsr_(0.01, 0.1, 0.7, 0.2, 1.2);
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 0.000);
-    assert_gen_equal(g, 0.730);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.350);
-    assert_gen_equal(g, 0.000);
-    assert_gen_equal(g, 0.000);
-    assert_gen_equal(g, 0.000);
-}
 
 #endif // CSYNTH_ADSR_H

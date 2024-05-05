@@ -6,7 +6,6 @@
 #ifndef CSYNTH_SQUARE_H
 #define CSYNTH_SQUARE_H
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 #include "./const.h"
 
@@ -38,23 +37,5 @@ Func *square(Func *frequency)
 }
 
 Func *square_(double frequency) { return square(const_(frequency)); }
-
-void test_square()
-{
-    Func *t = square(const_(1));
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-}
 
 #endif // CSYNTH_SQUARE_H

@@ -1,5 +1,5 @@
 //
-// notes.h - Note constants for 11 octaves.
+// notes.h - Note constants for 10 octaves.
 //
 // The contents of this file can be generated using `print_notes_h`.
 //
@@ -9,7 +9,6 @@
 #include <stdio.h>
 
 #include "../../util/math.h"
-#include "../../util/test.h"
 #include "./const.h"
 
 static const double C0_ = 16.351597831287413953;  // 440 * pow(2, -57 / 12.0)
@@ -374,11 +373,6 @@ void print_notes_h()
         int octave = i / 17;
         fprintf(stderr, "#define %s%d (const_(%s%d_))\n", note, octave, note, octave);
     }
-}
-
-void test_notes()
-{
-    assert_gen_equal(gen_create(G9, .1), G9_);
 }
 
 #endif // CSYNTH_NOTES_H

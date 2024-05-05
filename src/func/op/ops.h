@@ -4,7 +4,6 @@
 #ifndef CSYNTH_OPS_H
 #define CSYNTH_OPS_H
 
-#include "../../util/test.h"
 #include "../../core/func.h"
 #include "../gen/const.h"
 #include "./mul.h"
@@ -33,9 +32,5 @@ Func *ar(Func *a) { return sub_(mul_(a, 2), 1); }
 Func *kr(Func *f) { return dvd_(add_(f, 1), 2); }
 Func *kr_range(Func *f, Func *min, Func *max) { return add(mul(kr(f), sub(max, min)), min); }
 Func *kr_range_(Func *f, double min, double max) { return add(mul(kr(f), sub(const_(max), const_(min))), const_(min)); }
-
-void test_ops()
-{
-}
 
 #endif // CSYNTH_OPS_H
