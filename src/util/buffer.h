@@ -128,12 +128,12 @@ void buffer_free(Buffer *buffer)
 
 double fill_rand_0_1(__attribute__((unused)) unsigned long index)
 {
-    return rand_double();
+    return rand_range(0, 1);
 }
 
 double fill_rand_1_1(__attribute__((unused)) unsigned long index)
 {
-    return 2.0 * rand_double() - 1.0;
+    return rand_range(-1, 1);
 }
 
 double fill_inc(unsigned long index)

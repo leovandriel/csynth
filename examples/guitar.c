@@ -34,7 +34,7 @@ static const double Am[] = {A2_, E3_, A3_, C4_, E4_};
 
 static func t(double index)
 {
-    return _(0.25 * index + (0.01 * rand_double()));
+    return _(0.25 * index + rand_range(0, 0.01));
 }
 
 int main()
