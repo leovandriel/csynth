@@ -1,4 +1,4 @@
-#include "../../../src/func/env/adsr.h"
+#include "../../../src/func/envelope/adsr.h"
 #include "../../util/test.h"
 
 void test_adsr()

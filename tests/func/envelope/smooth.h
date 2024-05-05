@@ -1,4 +1,4 @@
-#include "../../../src/func/env/smooth.h"
+#include "../../../src/func/envelope/smooth.h"
 #include "../../util/test.h"
 
 void test_smooth()

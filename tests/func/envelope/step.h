@@ -1,4 +1,4 @@
-#include "../../../src/func/env/step.h"
+#include "../../../src/func/envelope/step.h"
 #include "../../util/test.h"
 
 void test_step()
