@@ -19,7 +19,7 @@ with `write(..)` to write to a WAV file.
 
 ## Tutorial
 
-To create music in CSynth, you combine basic (mathematical) functions to create
+To create music in CSynth, combine basic (mathematical) functions to create
 sounds, instruments, and compositions. Let's create a single note with reverb.
 
 Start by playing a 440 Hz sine wave for two seconds:
@@ -64,7 +64,7 @@ func revved = reverb_(looped, .4, .2);
 play(revved, 6);
 ```
 
-You can listen to the result in
+Listen to the result in
 [example.mp3](https://github.com/leovandriel/csynth/raw/main/output/example.mp3)
 or by running:
 
