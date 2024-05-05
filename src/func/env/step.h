@@ -27,7 +27,7 @@ static double step_eval(__attribute__((unused)) int count, Gen **args, double de
 
 Func *step(Func *edge)
 {
-    return func_create(NULL, step_eval, NULL, sizeof(StepContext), NULL, 1, edge);
+    return func_create(NULL, step_eval, NULL, sizeof(StepContext), NULL, FUNC_FLAG_DEFAULT, 1, edge);
 }
 
 Func *step_(double edge) { return step(const_(edge)); }

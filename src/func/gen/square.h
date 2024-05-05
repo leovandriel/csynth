@@ -33,7 +33,7 @@ Func *square(Func *frequency)
     SquareContext initial = (SquareContext){
         .output = 1.0,
     };
-    return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, 1, frequency);
+    return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, FUNC_FLAG_DEFAULT, 1, frequency);
 }
 
 Func *square_(double frequency) { return square(const_(frequency)); }

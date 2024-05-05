@@ -18,7 +18,7 @@ static double noise_eval(__attribute__((unused)) int count, __attribute__((unuse
 
 Func *noise()
 {
-    return func_create(NULL, noise_eval, NULL, 0, NULL, 0);
+    return func_create(NULL, noise_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, 0);
 }
 
 #endif // CSYNTH_NOISE_H

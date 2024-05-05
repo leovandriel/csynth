@@ -40,7 +40,7 @@ Func *print(const char *text, Func *input)
     PrintContext initial = (PrintContext){
         .text = copy,
     };
-    return func_create(NULL, print_eval, NULL, sizeof(PrintContext), &initial, 1, input);
+    return func_create(NULL, print_eval, NULL, sizeof(PrintContext), &initial, FUNC_FLAG_DEFAULT, 1, input);
 }
 
 #endif // CSYNTH_PRINT_H

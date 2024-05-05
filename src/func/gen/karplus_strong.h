@@ -40,7 +40,7 @@ void karplus_strong_free(void *context_)
 
 Func *karplus_strong(Func *frequency, Func *decay)
 {
-    return func_create(NULL, karplus_strong_eval, karplus_strong_free, sizeof(KarplusStrongContext), NULL, 2, frequency, decay);
+    return func_create(NULL, karplus_strong_eval, karplus_strong_free, sizeof(KarplusStrongContext), NULL, FUNC_FLAG_DEFAULT, 2, frequency, decay);
 }
 
 Func *karplus_strong_(double frequency, double decay) { return karplus_strong(const_(frequency), const_(decay)); }

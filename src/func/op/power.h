@@ -19,7 +19,7 @@ static double power_eval(__attribute__((unused)) int count, Gen **args, __attrib
 
 Func *power(Func *a, Func *b)
 {
-    return func_create(NULL, power_eval, NULL, 0, NULL, 2, a, b);
+    return func_create(NULL, power_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, 2, a, b);
 }
 
 Func *power_(Func *input, double exponent) { return power(input, const_(exponent)); }

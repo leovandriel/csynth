@@ -83,7 +83,7 @@ Func *comp_abs_args(int count, ...)
 {
     va_list valist;
     va_start(valist, count);
-    Func *func = func_create_va(NULL, comp_eval_abs, NULL, sizeof(CompContext), NULL, count, valist);
+    Func *func = func_create_va(NULL, comp_eval_abs, NULL, sizeof(CompContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);
     return func;
 }
@@ -92,7 +92,7 @@ Func *comp_rel_args(int count, ...)
 {
     va_list valist;
     va_start(valist, count);
-    Func *func = func_create_va(NULL, comp_eval_rel, NULL, sizeof(CompContext), NULL, count, valist);
+    Func *func = func_create_va(NULL, comp_eval_rel, NULL, sizeof(CompContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);
     return func;
 }
@@ -101,7 +101,7 @@ Func *comp_seq_args(int count, ...)
 {
     va_list valist;
     va_start(valist, count);
-    Func *func = func_create_va(NULL, comp_eval_seq, NULL, sizeof(CompContext), NULL, count, valist);
+    Func *func = func_create_va(NULL, comp_eval_seq, NULL, sizeof(CompContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);
     return func;
 }
@@ -112,17 +112,17 @@ Func *comp_seq_args(int count, ...)
 
 Func *comp_abs_array(int count, Func **args)
 {
-    return func_create_array(NULL, comp_eval_abs, NULL, sizeof(CompContext), NULL, count, args);
+    return func_create_array(NULL, comp_eval_abs, NULL, sizeof(CompContext), NULL, FUNC_FLAG_DEFAULT, count, args);
 }
 
 Func *comp_rel_array(int count, Func **args)
 {
-    return func_create_array(NULL, comp_eval_rel, NULL, sizeof(CompContext), NULL, count, args);
+    return func_create_array(NULL, comp_eval_rel, NULL, sizeof(CompContext), NULL, FUNC_FLAG_DEFAULT, count, args);
 }
 
 Func *comp_seq_array(int count, Func **args)
 {
-    return func_create_array(NULL, comp_eval_seq, NULL, sizeof(CompContext), NULL, count, args);
+    return func_create_array(NULL, comp_eval_seq, NULL, sizeof(CompContext), NULL, FUNC_FLAG_DEFAULT, count, args);
 }
 
 #endif // CSYNTH_COMP_H

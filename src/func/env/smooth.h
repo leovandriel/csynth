@@ -42,7 +42,7 @@ static double smooth_eval(__attribute__((unused)) int count, Gen **args, double 
 
 Func *smooth(Func *edge0, Func *edge1)
 {
-    return func_create(NULL, smooth_eval, NULL, sizeof(SmoothContext), NULL, 2, edge0, edge1);
+    return func_create(NULL, smooth_eval, NULL, sizeof(SmoothContext), NULL, FUNC_FLAG_DEFAULT, 2, edge0, edge1);
 }
 
 Func *smooth_(double edge0, double edge1) { return smooth(const_(edge0), const_(edge1)); }

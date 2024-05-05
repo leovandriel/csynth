@@ -49,7 +49,7 @@ static void chorus_free(void *context_)
 
 Func *chorus(Func *input, Func *modulation, Func *delay, Func *depth)
 {
-    return func_create(NULL, chorus_eval, chorus_free, sizeof(ChorusContext), NULL, 4, input, modulation, delay, depth);
+    return func_create(NULL, chorus_eval, chorus_free, sizeof(ChorusContext), NULL, FUNC_FLAG_DEFAULT, 4, input, modulation, delay, depth);
 }
 
 Func *chorus_(Func *input, Func *modulation, double delay, double depth) { return chorus(input, modulation, const_(delay), const_(depth)); }

@@ -20,7 +20,7 @@ static double inv_eval(__attribute__((unused)) int count, Gen **args, __attribut
 
 Func *inv(Func *value)
 {
-    return func_create(NULL, inv_eval, NULL, 0, NULL, 1, value);
+    return func_create(NULL, inv_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, 1, value);
 }
 
 #endif // CSYNTH_INV_H

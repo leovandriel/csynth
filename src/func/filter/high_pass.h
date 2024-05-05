@@ -30,7 +30,7 @@ static double high_pass_eval(__attribute__((unused)) int count, Gen **args, doub
 
 Func *high_pass(Func *input, Func *frequency)
 {
-    return func_create(NULL, high_pass_eval, NULL, sizeof(HighPassContext), NULL, 2, input, frequency);
+    return func_create(NULL, high_pass_eval, NULL, sizeof(HighPassContext), NULL, FUNC_FLAG_DEFAULT, 2, input, frequency);
 }
 
 Func *high_pass_(Func *input, double frequency) { return high_pass(input, const_(frequency)); }

@@ -28,7 +28,7 @@ static double low_pass_eval(__attribute__((unused)) int count, Gen **args, doubl
 
 Func *low_pass(Func *input, Func *frequency)
 {
-    return func_create(NULL, low_pass_eval, NULL, sizeof(LowPassContext), NULL, 2, input, frequency);
+    return func_create(NULL, low_pass_eval, NULL, sizeof(LowPassContext), NULL, FUNC_FLAG_DEFAULT, 2, input, frequency);
 }
 
 Func *low_pass_(Func *input, double frequency) { return low_pass(input, const_(frequency)); }

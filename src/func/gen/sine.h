@@ -33,7 +33,7 @@ static double sine_eval(__attribute__((unused)) int count, Gen **args, double de
 
 Func *sine(Func *frequency)
 {
-    return func_create(NULL, sine_eval, NULL, sizeof(SineContext), NULL, 1, frequency);
+    return func_create(NULL, sine_eval, NULL, sizeof(SineContext), NULL, FUNC_FLAG_DEFAULT, 1, frequency);
 }
 
 Func *sine_(double frequency) { return sine(const_(frequency)); }

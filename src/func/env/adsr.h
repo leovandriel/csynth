@@ -51,7 +51,7 @@ static double adsr_eval(__attribute__((unused)) int count, Gen **args, double de
 
 Func *adsr(Func *attack, Func *decay, Func *sustain, Func *release, Func *duration)
 {
-    return func_create(NULL, adsr_eval, NULL, sizeof(AdsrContext), NULL, 5, attack, decay, sustain, release, duration);
+    return func_create(NULL, adsr_eval, NULL, sizeof(AdsrContext), NULL, FUNC_FLAG_DEFAULT, 5, attack, decay, sustain, release, duration);
 }
 
 Func *adsr_(double attack, double decay, double sustain, double release, double duration) { return adsr(const_(attack), const_(decay), const_(sustain), const_(release), const_(duration)); }

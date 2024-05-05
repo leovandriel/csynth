@@ -25,7 +25,7 @@ Func *mul_args(int count, ...)
 {
     va_list valist;
     va_start(valist, count);
-    Func *func = func_create_va(NULL, mul_eval, NULL, 0, NULL, count, valist);
+    Func *func = func_create_va(NULL, mul_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);
     return func;
 }
@@ -39,7 +39,7 @@ Func *mul_(Func *input, double factor)
 
 Func *mul_array(int count, Func **args)
 {
-    return func_create_array(NULL, mul_eval, NULL, 0, NULL, count, args);
+    return func_create_array(NULL, mul_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, count, args);
 }
 
 #endif // CSYNTH_MUL_H

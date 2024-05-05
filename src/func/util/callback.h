@@ -30,7 +30,7 @@ Func *callback_func_args(double (*callback)(int, Gen **, double, void *), void *
         .context = context};
     va_list valist;
     va_start(valist, count);
-    Func *func = func_create_va(NULL, callback_func_eval, NULL, sizeof(CallbackContext), &initial, count, valist);
+    Func *func = func_create_va(NULL, callback_func_eval, NULL, sizeof(CallbackContext), &initial, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);
     return func;
 }
@@ -54,7 +54,7 @@ Func *callback_filter(Func *input, double (*callback)(double, double, void *), v
     FilterCallbackContext initial = (FilterCallbackContext){
         .callback = callback,
         .context = context};
-    return func_create(NULL, callback_filter_eval, NULL, sizeof(FilterCallbackContext), &initial, 1, input);
+    return func_create(NULL, callback_filter_eval, NULL, sizeof(FilterCallbackContext), &initial, FUNC_FLAG_DEFAULT, 1, input);
 }
 
 typedef struct
@@ -74,7 +74,7 @@ Func *callback_gen(__attribute__((unused)) Func *input, double (*callback)(doubl
     GenCallbackContext initial = (GenCallbackContext){
         .callback = callback,
         .context = context};
-    return func_create(NULL, callback_gen_eval, NULL, sizeof(GenCallbackContext), &initial, 0);
+    return func_create(NULL, callback_gen_eval, NULL, sizeof(GenCallbackContext), &initial, FUNC_FLAG_DEFAULT, 0);
 }
 
 #endif // CSYNTH_CALLBACK_H

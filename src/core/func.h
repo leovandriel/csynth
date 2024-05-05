@@ -21,6 +21,9 @@ typedef double (*eval_cb)(int count, Gen **args, double delta, void *context);
 typedef void (*init_cb)(int count, Gen **args, double delta, void *context);
 typedef void (*free_cb)(void *context);
 
+#define FUNC_FLAG_DEFAULT (0)
+#define FUNC_FLAG_NO_RESET (1 << 1)
+
 // Represents a function (R -> Rn) that takes one or more inputs and outputs a single value.
 struct Func
 {
@@ -31,6 +34,7 @@ struct Func
     init_cb init;
     eval_cb eval;
     free_cb free;
+    unsigned int flags;
 };
 
 struct Gen
@@ -42,7 +46,7 @@ struct Gen
     void *reset;
 };
 
-Func *func_create_int(init_cb init, eval_cb eval, free_cb free, size_t size, void *blank, int count)
+Func *func_create_int(init_cb init, eval_cb eval, free_cb free, size_t size, void *blank, int count, unsigned int flags)
 {
     void *initial = size > 0 && blank != NULL ? calloc(1, size) : NULL;
     if (initial != NULL && blank != NULL)
@@ -59,20 +63,21 @@ Func *func_create_int(init_cb init, eval_cb eval, free_cb free, size_t size, voi
         .init = init,
         .eval = eval,
         .free = free,
+        .flags = flags,
     };
     return func;
 }
 
-Func *func_create_array(init_cb init, eval_cb eval, free_cb free, size_t size, void *context, int count, Func **args)
+Func *func_create_array(init_cb init, eval_cb eval, free_cb free, size_t size, void *context, unsigned int flags, int count, Func **args)
 {
-    Func *func = func_create_int(init, eval, free, size, context, count);
+    Func *func = func_create_int(init, eval, free, size, context, count, flags);
     memcpy(func->args, args, count * sizeof(Func *));
     return func;
 }
 
-Func *func_create_va(init_cb init, eval_cb eval, free_cb free, size_t size, void *context, int count, va_list valist)
+Func *func_create_va(init_cb init, eval_cb eval, free_cb free, size_t size, void *context, unsigned int flags, int count, va_list valist)
 {
-    Func *func = func_create_int(init, eval, free, size, context, count);
+    Func *func = func_create_int(init, eval, free, size, context, count, flags);
     for (int i = 0; i < count; i++)
     {
         func->args[i] = va_arg(valist, Func *);
@@ -80,11 +85,11 @@ Func *func_create_va(init_cb init, eval_cb eval, free_cb free, size_t size, void
     return func;
 }
 
-Func *func_create(init_cb init, eval_cb eval, free_cb free, size_t size, void *context, int count, ...)
+Func *func_create(init_cb init, eval_cb eval, free_cb free, size_t size, void *context, unsigned int flags, int count, ...)
 {
     va_list valist;
     va_start(valist, count);
-    Func *func = func_create_va(init, eval, free, size, context, count, valist);
+    Func *func = func_create_va(init, eval, free, size, context, flags, count, valist);
     va_end(valist);
     return func;
 }
@@ -158,15 +163,10 @@ double gen_eval(Gen *gen)
     return func->eval(func->count, gen->args, gen->delta, gen->context);
 }
 
-double continuous_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
-{
-    return gen_eval(args[0]);
-}
-
 void gen_reset(Gen *gen)
 {
     Func *func = gen->func;
-    if (func->eval == continuous_eval)
+    if (func->flags & FUNC_FLAG_NO_RESET)
     {
         return;
     }

@@ -29,7 +29,7 @@ static double saw_eval(__attribute__((unused)) int count, Gen **args, double del
 
 Func *saw(Func *frequency)
 {
-    return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, 1, frequency);
+    return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, FUNC_FLAG_DEFAULT, 1, frequency);
 }
 
 Func *saw_(double frequency) { return saw(const_(frequency)); }
