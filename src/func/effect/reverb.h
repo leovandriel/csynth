@@ -1,7 +1,7 @@
 //
 // reverb.h - Reverb function
 //
-// `reverb(input, interval, decay)` returns a reverberated version of input.
+// `reverb(input, interval, decay)` returns a reverberated input.
 //
 #ifndef CSYNTH_REVERB_H
 #define CSYNTH_REVERB_H

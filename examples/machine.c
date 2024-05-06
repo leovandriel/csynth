@@ -4,13 +4,13 @@
 
 int main()
 {
-    func snare = mul(noise(), decay_(.05));
-    func bdrum = mul(sine(linear_(60, 30, 1)), decay_(.05), _(3));
-    func hihat = mul(high_pass_(noise(), 20000), decay_(.05));
+    func snare = mul(uniform(), decay_(.05));
+    func bdrum = mul(sine(linear(C1, C0, ONE)), decay_(.4), _(3));
+    func hihat = mul(high_pass_(uniform(), 20000), decay_(.05));
     func patterns = add(
-        pattern_("  .   .   .   . ", snare, .25),
-        pattern_(".    .  .    .  ", bdrum, .25),
-        pattern_("................", hihat, .25));
+        pattern_("................", hihat, .25, .001),
+        pattern_("  .   .   .   . ", snare, .25, .001),
+        pattern_(".    .  .    .  ", bdrum, .25, .001));
     func machine = mul_(loop_(patterns, 4), .4);
     return play(machine, 8);
 }

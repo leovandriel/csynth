@@ -6,6 +6,8 @@
 
 #include <limits.h>
 
+#include "../util/math.h"
+
 #define RAND_STATE_INIT 1082269761
 
 static unsigned long rand_state_int = RAND_STATE_INIT;
@@ -24,9 +26,19 @@ unsigned long rand_unsigned_long()
     return rand_state_int;
 }
 
+double rand_uniform()
+{
+    return rand_unsigned_long() / (double)ULONG_MAX;
+}
+
 double rand_range(double a, double b)
 {
-    return (b - a) * (rand_unsigned_long() / (double)ULONG_MAX) + a;
+    return (b - a) * rand_uniform() + a;
+}
+
+double rand_gauss(double mu, double sigma)
+{
+    return sigma * sqrt(-2.0 * log(rand_uniform())) * cos(rand_uniform() * PI_M_2) + mu;
 }
 
 void rand_seed(unsigned long seed)

@@ -4,6 +4,8 @@
 #ifndef CSYNTH_DEF_H
 #define CSYNTH_DEF_H
 
+#include <stddef.h>
+
 typedef struct Func Func;
 typedef Func *func;
 typedef struct Gen Gen;
