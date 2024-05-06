@@ -35,7 +35,5 @@ Func *const_(double value)
 }
 
 Func *_(double value) { return const_(value); }
-#define ZERO (const_(0.0))
-#define ONE (const_(1.0))
 
 #endif // CSYNTH_CONST_H

@@ -6,10 +6,7 @@
 #ifndef CSYNTH_CALLBACK_H
 #define CSYNTH_CALLBACK_H
 
-#include <stdio.h>
-
 #include "../../core/func.h"
-#include "../gen/const.h"
 
 typedef struct
 {

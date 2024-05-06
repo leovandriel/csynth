@@ -6,7 +6,8 @@
 #ifndef CSYNTH_KARPLUS_STRONG_H
 #define CSYNTH_KARPLUS_STRONG_H
 
-#include "../../util/math.h"
+#include <math.h>
+
 #include "../../core/func.h"
 #include "../../util/buffer.h"
 #include "./const.h"

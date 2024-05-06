@@ -36,7 +36,5 @@ Func *delay(Func *input, Func *duration)
 }
 
 Func *delay_(Func *input, double frequency) { return delay(input, const_(frequency)); }
-Func *skip(Func *input, Func *duration) { return delay(input, neg(duration)); }
-Func *skip_(Func *input, double duration) { return skip(input, const_(duration)); }
 
 #endif // CSYNTH_DELAY_H

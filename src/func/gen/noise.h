@@ -6,8 +6,6 @@
 #ifndef CSYNTH_NOISE_H
 #define CSYNTH_NOISE_H
 
-#include <stdlib.h>
-
 #include "../../core/func.h"
 #include "../../util/rand.h"
 

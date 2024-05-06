@@ -5,8 +5,7 @@
 #define CSYNTH_FILTERS_H
 
 #include "../../core/func.h"
-#include "../op/min.h"
-#include "../op/max.h"
+#include "../op/ops.h"
 
 Func *distort(Func *f, Func *multiplier) { return clamp_(mul(f, multiplier), -1, 1); }
 Func *distort_(Func *f, double multiplier) { return clamp_(mul_(f, multiplier), -1, 1); }

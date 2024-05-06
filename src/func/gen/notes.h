@@ -1,14 +1,11 @@
 //
 // notes.h - Note constants for 10 octaves.
 //
-// The contents of this file can be generated using `print_notes_h`.
+// The contents of this file can be generated using `utils/notes.c`.
 //
 #ifndef CSYNTH_NOTES_H
 #define CSYNTH_NOTES_H
 
-#include <stdio.h>
-
-#include "../../util/math.h"
 #include "./const.h"
 
 static const double C0_ = 16.351597831287413953;  // 440 * pow(2, -57 / 12.0)
@@ -352,27 +349,5 @@ static const double B9_ = 15804.265640195975720;  // 440 * pow(2, 62 / 12.0)
 #define As9 (const_(As9_))
 #define Bb9 (const_(Bb9_))
 #define B9 (const_(B9_))
-
-static const char *note_names[] = {"C", "Cs", "Db", "D", "Ds", "Eb", "E", "F", "Fs", "Gb", "G", "Gs", "Ab", "A", "As", "Bb", "B"};
-
-void print_notes_h()
-{
-    int octaves = 10;
-    for (int i = 0; i < 17 * octaves; i++)
-    {
-        const char *note = note_names[i % 17];
-        int octave = i / 17;
-        int index = (int)((i + 4) * 12.0 / 17 - 59.45);
-        double freq = 440 * pow(2, index / 12.0);
-        int prec = 20 - log10(freq);
-        fprintf(stderr, "static const double %s%d_ = %.*f; // 440 * pow(2, %d / 12.0)\n", note, octave, prec, freq, index);
-    }
-    for (int i = 0; i < 17 * octaves; i++)
-    {
-        const char *note = note_names[i % 17];
-        int octave = i / 17;
-        fprintf(stderr, "#define %s%d (const_(%s%d_))\n", note, octave, note, octave);
-    }
-}
 
 #endif // CSYNTH_NOTES_H

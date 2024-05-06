@@ -6,6 +6,7 @@
 
 #include "../../core/func.h"
 #include "../gen/const.h"
+#include "../gen/gens.h"
 #include "../op/neg.h"
 #include "../op/ops.h"
 #include "../op/inv.h"

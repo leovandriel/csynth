@@ -6,8 +6,8 @@
 #ifndef CSYNTH_SINE_H
 #define CSYNTH_SINE_H
 
-#include "../../util/math.h"
 #include "../../core/func.h"
+#include "../../util/math.h"
 #include "./const.h"
 
 typedef struct

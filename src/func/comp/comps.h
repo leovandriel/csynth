@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 #include "../../core/func.h"
-#include "../gen/const.h"
+#include "../gen/gens.h"
 #include "./comp.h"
 
 Func *pattern(const char *string, Func *f, Func *duration)

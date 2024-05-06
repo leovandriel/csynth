@@ -6,8 +6,8 @@
 #ifndef CSYNTH_RESONANT_H
 #define CSYNTH_RESONANT_H
 
-#include "../../util/math.h"
 #include "../../core/func.h"
+#include "../../util/math.h"
 #include "../gen/const.h"
 
 typedef struct

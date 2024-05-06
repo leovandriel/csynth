@@ -6,8 +6,8 @@
 #ifndef CSYNTH_HIGH_PASS_H
 #define CSYNTH_HIGH_PASS_H
 
-#include "../../util/math.h"
 #include "../../core/func.h"
+#include "../../util/math.h"
 #include "../gen/const.h"
 
 typedef struct
