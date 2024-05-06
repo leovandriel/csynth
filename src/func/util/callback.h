@@ -1,5 +1,5 @@
 //
-// callback.h - Func that is defined by a regular function.
+// callback.h - Func that is defined by a C function.
 //
 // `callback(input, function, context)`
 //

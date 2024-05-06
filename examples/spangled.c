@@ -18,15 +18,10 @@ static func B(func frequency, double duration)
 {
     double d = speed * duration;
     func f = add(
-        mul(sine(mul_(frequency, 2)), _(0.2)),
-        mul(sine(dvd_(frequency, 2)), _(0.2)));
+        mul_(sine(mul_(frequency, 2)), 0.2),
+        mul_(sine(dvd_(frequency, 2)), 0.2));
     f = mul(f, block_(0, d));
     return add(f, A(frequency, duration));
-}
-
-double tanh_distort(double x, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
-{
-    return fmin(fmax(tanh(x * 10), -0.3), 0.3);
 }
 
 static func C(func frequency, double duration)
@@ -35,8 +30,8 @@ static func C(func frequency, double duration)
     func f = karplus_strong(frequency, _(0.8));
     f = low_pass(f, frequency);
     f = mul(f, block_(0, d));
-    f = callback_filter(f, tanh_distort, NULL);
-    f = mul_(f, 0.1);
+    f = distort_(f, 30);
+    f = mul_(f, 0.05);
     return add(f, A(frequency, duration));
 }
 

@@ -17,8 +17,6 @@
 typedef struct
 {
     Buffer buffer;
-    // unsigned long index;
-
     unsigned long index;
 } ChorusContext;
 

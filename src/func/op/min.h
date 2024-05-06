@@ -2,8 +2,6 @@
 // min.h - Min function
 //
 // `min(...)` returns the minimum of the input functions.
-// - clamp(value, min, max) - Ensure value is clipped to [min, max]
-// - clamp_ - Take double arguments instead of functions
 //
 #ifndef CSYNTH_MIN_H
 #define CSYNTH_MIN_H
