@@ -8,6 +8,7 @@
 #define CSYNTH_OPS_H
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 #include "../gen/const.h"
 #include "./mul.h"
 #include "./add.h"

@@ -16,6 +16,7 @@
 #include <stdarg.h>
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 
 typedef struct
 {

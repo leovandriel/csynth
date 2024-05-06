@@ -5,6 +5,7 @@
 #define CSYNTH_FILTERS_H
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 #include "../op/ops.h"
 
 Func *distort(Func *f, Func *multiplier) { return clamp_(mul(f, multiplier), -1, 1); }

@@ -7,6 +7,7 @@
 #define CSYNTH_LOOP_H
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 #include "../gen/const.h"
 
 typedef struct

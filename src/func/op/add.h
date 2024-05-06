@@ -9,6 +9,7 @@
 #include <stdarg.h>
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 #include "../gen/const.h"
 
 static double add_eval(int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)

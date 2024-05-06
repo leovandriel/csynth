@@ -7,6 +7,7 @@
 #define CSYNTH_NOISE_H
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 #include "../../util/rand.h"
 
 static double noise_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)

@@ -13,6 +13,7 @@
 #define CSYNTH_CONTINUOUS_H
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 
 double continuous_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {

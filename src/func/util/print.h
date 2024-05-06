@@ -9,6 +9,7 @@
 #include <stdio.h>
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 
 typedef struct
 {

@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 #include "../../util/buffer.h"
 #include "../gen/const.h"
 

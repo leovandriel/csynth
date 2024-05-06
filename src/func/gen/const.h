@@ -14,6 +14,7 @@
 #define CSYNTH_CONST_H
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 
 typedef struct
 {

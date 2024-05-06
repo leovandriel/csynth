@@ -7,6 +7,7 @@
 #define CSYNTH_SAW_H
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 #include "./const.h"
 
 typedef struct

@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 #include "../core/func.h"
+#include "../core/gen.h"
 
 static const int SAMPLE_RATE = 44100;
 static const int INPUT_CHANNELS = 0;

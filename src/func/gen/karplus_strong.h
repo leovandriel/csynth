@@ -9,6 +9,7 @@
 #include <math.h>
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 #include "../../util/buffer.h"
 #include "./const.h"
 

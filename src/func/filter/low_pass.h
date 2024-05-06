@@ -7,6 +7,7 @@
 #define CSYNTH_LOW_PASS_H
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 #include "../../util/math.h"
 #include "../gen/const.h"
 

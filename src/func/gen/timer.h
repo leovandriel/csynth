@@ -7,6 +7,7 @@
 #define CSYNTH_TIMER_H
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 
 typedef struct
 {

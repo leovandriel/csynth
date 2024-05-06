@@ -7,6 +7,7 @@
 #define CSYNTH_NEG_H
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 
 static double neg_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {

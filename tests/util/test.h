@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "../../src/core/func.h"
+#include "../../src/core/gen.h"
 
 #define long_equal(_a, _b) ((_a) == (_b))
 #define double_equal(_a, _b) ((_a) - (_b) < EPSILON && (_b) - (_a) < EPSILON)

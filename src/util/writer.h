@@ -10,6 +10,7 @@
 #include <stdint.h>
 
 #include "../core/func.h"
+#include "../core/gen.h"
 
 static const int SAMPLE_RATE = 44100;
 static const int OUTPUT_CHANNELS = 1;

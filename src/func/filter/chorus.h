@@ -11,6 +11,7 @@
 #define CSYNTH_CHORUS_H
 
 #include "../../core/func.h"
+#include "../../core/gen.h"
 #include "../../util/buffer.h"
 #include "../gen/const.h"
 
