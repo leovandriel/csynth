@@ -9,13 +9,9 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "../core/func.h"
-#include "../core/gen.h"
+#include "./sampler.h"
 
-static const int SAMPLE_RATE = 44100;
-static const int OUTPUT_CHANNELS = 1;
-static const int BITS_SAMPLE = 16;
-static const int BUFFER_SIZE = 4096;
+static const int WRITER_BUFFER_SIZE = 4096;
 
 typedef struct
 {
@@ -34,55 +30,69 @@ typedef struct
     uint32_t data_size;
 } FileHeader;
 
-void write(Func *root, double duration, FILE *file)
+#define FH_SIZE(field) (sizeof((FileHeader){0}.field))
+static const size_t WRITER_HEADER_SIZE = sizeof(FileHeader) - FH_SIZE(riff_type) - FH_SIZE(file_size);
+static const size_t WRITER_FORMAT_SIZE = FH_SIZE(format_type) + FH_SIZE(num_channels) + FH_SIZE(sample_rate) + FH_SIZE(byte_rate) + FH_SIZE(block_align) + FH_SIZE(bits_sample);
+
+int write_array(int count, Func **roots, double duration, FILE *file)
 {
-    size_t count = duration * SAMPLE_RATE;
+    uint32_t sample_count = duration * SAMPLER_RATE;
+    uint32_t data_size = sizeof(sample_t) * count * sample_count;
     FileHeader header = {0};
     memcpy(header.riff_type, "RIFF", 4);
-    header.file_size = count * BITS_SAMPLE * OUTPUT_CHANNELS / 8 + (sizeof(header) - 8);
+    header.file_size = WRITER_HEADER_SIZE + data_size;
     memcpy(header.file_type, "WAVE", 4);
     memcpy(header.format_mark, "fmt ", 4);
-    header.format_size = 16;
-    header.format_type = 1;
-    header.num_channels = OUTPUT_CHANNELS;
-    header.sample_rate = SAMPLE_RATE;
-    header.byte_rate = SAMPLE_RATE * BITS_SAMPLE * OUTPUT_CHANNELS / 8;
-    header.block_align = BITS_SAMPLE * OUTPUT_CHANNELS / 8;
-    header.bits_sample = BITS_SAMPLE;
+    header.format_size = WRITER_FORMAT_SIZE;
+    header.format_type = 1; // PCM
+    header.num_channels = count;
+    header.sample_rate = SAMPLER_RATE;
+    header.byte_rate = sizeof(sample_t) * count * SAMPLER_RATE;
+    header.block_align = sizeof(sample_t) * count;
+    header.bits_sample = sizeof(sample_t) * 8;
     memcpy(header.data_chunk, "data", 4);
-    header.data_size = count * BITS_SAMPLE * OUTPUT_CHANNELS / 8;
+    header.data_size = data_size;
     fwrite(&header, sizeof(header), 1, file);
-    Gen *gen = gen_create(root, 1.0 / SAMPLE_RATE);
-    int16_t buffer[BUFFER_SIZE];
-    int i = 0;
-    for (size_t index = 0; index < count; index++)
+    Sampler *sampler = sampler_create(count, roots);
+    sample_t buffer[WRITER_BUFFER_SIZE];
+    uint32_t buffer_samples = WRITER_BUFFER_SIZE / count;
+    while (sample_count)
     {
-        double output = gen_eval(gen);
-        double clip = output > 1.0 ? 1.0 : (output < -1.0 ? -1.0 : output);
-        buffer[i++] = clip * 32767;
-        if (i == BUFFER_SIZE)
-        {
-            fwrite(buffer, sizeof(uint16_t), BUFFER_SIZE, file);
-            i = 0;
-        }
+        unsigned long samples = buffer_samples < sample_count ? buffer_samples : sample_count;
+        sampler_sample(sampler, samples, buffer);
+        fwrite(buffer, sizeof(sample_t), samples * count, file);
+        sample_count -= samples;
     }
-    if (i > 0)
-    {
-        fwrite(buffer, sizeof(uint16_t), i, file);
-    }
-    gen_free(gen);
+    sampler_free(sampler);
+    return 0;
 }
 
-void write_file(Func *root, double duration, const char *filename)
+int write(Func *root, double duration, FILE *file)
+{
+    return write_array(1, (Func *[]){root}, duration, file);
+}
+
+int write_stereo(Func *left, Func *right, double duration, FILE *file)
+{
+    return write_array(2, (Func *[]){left, right}, duration, file);
+}
+
+int write_file_array(int count, Func **roots, double duration, const char *filename)
 {
     FILE *file = fopen(filename, "wb");
-    write(root, duration, file);
+    int result = write_array(count, roots, duration, file);
     fclose(file);
+    return result;
 }
 
-void write_stdout(Func *root, double duration)
+int write_file(Func *root, double duration, const char *filename)
 {
-    write(root, duration, stdout);
+    return write_file_array(1, (Func *[]){root}, duration, filename);
+}
+
+int write_file_stereo(Func *left, Func *right, double duration, const char *filename)
+{
+    return write_file_array(2, (Func *[]){left, right}, duration, filename);
 }
 
 #endif // CSYNTH_WRITER_H
