@@ -16,14 +16,14 @@
 #include "./neg.h"
 #include "./min.h"
 #include "./max.h"
-#include "./power.h"
+#include "./pow.h"
 
 Func *dvd(Func *a, Func *b) { return mul(a, inv(b)); }
 Func *dvd_(Func *a, double b) { return dvd(a, const_(b)); }
 
-Func *sq(Func *input) { return power(input, const_(2)); }
-Func *sqr(Func *input) { return power(input, const_(0.5)); }
-Func *expo(Func *input) { return power(const_(M_E), input); }
+Func *sq(Func *input) { return pow_op(input, const_(2)); }
+Func *sqr(Func *input) { return pow_op(input, const_(0.5)); }
+Func *expo(Func *input) { return pow_op(const_(M_E), input); }
 
 Func *clamp(Func *value, Func *min, Func *max) { return min(max(value, min), max); }
 Func *clamp_(Func *value, double min, double max) { return clamp(value, const_(min), const_(max)); }
