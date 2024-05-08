@@ -34,7 +34,9 @@ typedef struct
 static const size_t WRITER_HEADER_SIZE = sizeof(FileHeader) - FH_SIZE(riff_type) - FH_SIZE(file_size);
 static const size_t WRITER_FORMAT_SIZE = FH_SIZE(format_type) + FH_SIZE(num_channels) + FH_SIZE(sample_rate) + FH_SIZE(byte_rate) + FH_SIZE(block_align) + FH_SIZE(bits_sample);
 
-int write_array(int count, Func **roots, double duration, FILE *file)
+typedef int (*writer_callback)(size_t size, void *buffer, void *context);
+
+int write_array(int count, Func **roots, double duration, writer_callback callback, void *context)
 {
     uint32_t sample_count = duration * SAMPLER_RATE;
     uint32_t data_size = sizeof(sample_t) * count * sample_count;
@@ -52,35 +54,35 @@ int write_array(int count, Func **roots, double duration, FILE *file)
     header.bits_sample = sizeof(sample_t) * 8;
     memcpy(header.data_chunk, "data", 4);
     header.data_size = data_size;
-    fwrite(&header, sizeof(header), 1, file);
+    int result = callback(sizeof(header), &header, context);
     Sampler *sampler = sampler_create(count, roots);
     sample_t buffer[WRITER_BUFFER_SIZE];
     uint32_t buffer_samples = WRITER_BUFFER_SIZE / count;
-    while (sample_count)
+    while (sample_count && !result)
     {
         unsigned long samples = buffer_samples < sample_count ? buffer_samples : sample_count;
         sampler_sample(sampler, samples, buffer);
-        fwrite(buffer, sizeof(sample_t), samples * count, file);
+        result = callback(sizeof(sample_t) * count * samples, buffer, context);
+        if (result)
+        {
+            return result;
+        }
         sample_count -= samples;
     }
     sampler_free(sampler);
+    return result;
+}
+
+int write_file_callback(size_t size, void *buffer, void *context)
+{
+    fwrite(buffer, 1, size, (FILE *)context);
     return 0;
-}
-
-int write(Func *root, double duration, FILE *file)
-{
-    return write_array(1, (Func *[]){root}, duration, file);
-}
-
-int write_stereo(Func *left, Func *right, double duration, FILE *file)
-{
-    return write_array(2, (Func *[]){left, right}, duration, file);
 }
 
 int write_file_array(int count, Func **roots, double duration, const char *filename)
 {
     FILE *file = fopen(filename, "wb");
-    int result = write_array(count, roots, duration, file);
+    int result = write_array(count, roots, duration, write_file_callback, file);
     fclose(file);
     return result;
 }
