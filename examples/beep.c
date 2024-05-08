@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/basic -Wall -Wextra -O3 -lm -lportaudio && ./bin/basic "$@"; exit $?
+//usr/bin/gcc "$0" -o bin/beep -Wall -Wextra -O3 -lm -lportaudio && ./bin/beep "$@"; exit $?
 #include "../src/func/all.h"
 #include "../src/util/player.h"
 
