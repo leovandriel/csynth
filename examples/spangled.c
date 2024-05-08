@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/spangled -Wall -Wextra -O3 -lm -lportaudio && ./bin/spangled "$@"; exit $?
 #include "../src/func/all.h"
-#include "../src/util/player.h"
+#include "../src/util/writer.h"
 
 double speed = 0.4;
 
@@ -145,5 +145,7 @@ int main()
         C(C5, 4));
     func f = comp_rel(f1, _(48.5 * speed), f2, _(48.5 * speed), f3, _(98 * speed));
     func spangled = reverb_(f, 0.1, 0.5);
-    return play(spangled, 80);
+    const char *filename = "output/spangled.wav";
+    printf("Writing to %s\n", filename);
+    return write_file(spangled, 80, filename);
 }

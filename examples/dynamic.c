@@ -38,5 +38,5 @@ int main()
         modulate_pitch(), _(10),
         modulate_speed(), _(10),
         wobble_both(), _(10));
-    return play(dynamic, 30);
+    return play(dynamic);
 }

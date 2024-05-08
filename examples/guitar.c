@@ -88,5 +88,7 @@ int main()
     func guitar = comp_abs(
         t(0), g0,
         t(18), add(guitar1, guitar2));
-    return play(guitar, 24);
+    const char *filename = "output/guitar.wav";
+    printf("Writing to %s\n", filename);
+    return write_file(guitar, 24, filename);
 }

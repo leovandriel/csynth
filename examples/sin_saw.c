@@ -13,5 +13,5 @@ int main()
     func looped = loop_(melody, 1.6);
     func echoed = reverb_(looped, .2, .5);
     func scaled = mul_(echoed, .1);
-    return play(scaled, 8);
+    return play(scaled);
 }

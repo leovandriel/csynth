@@ -22,10 +22,10 @@ with `write(..)` to write to a WAV file.
 To create music in CSynth, combine basic (mathematical) functions to create
 sounds, instruments, and compositions. Let's create a single note with reverb.
 
-Start by playing a 440 Hz sine wave for two seconds:
+Start by playing a 440 Hz sine wave (and stop by pressing Esc):
 
 ```c
-play(sine(A4), 2);
+play(sine(A4));
 ```
 
 The `A4` constant represents a 440 Hz, `sine` generates a sine wave at that
@@ -36,7 +36,7 @@ Next, add a block envelope to make this into a 0.3 second note:
 ```c
 func tone = sine(A4);
 func note = mul(tone, block_(0, .3));
-play(note, 2);
+play(note);
 ```
 
 This adds `block`, which is value 1 for time in interval [0, 0.3] and 0
@@ -50,7 +50,7 @@ Next, add the note in a 1.5 second loop:
 func tone = sine(A4);
 func note = mul(tone, block_(0, .3));
 func looped = loop_(note, 1.5);
-play(looped, 4);
+play(looped);
 ```
 
 Finally, add reverb (interval .4s, decay .2) and scale the note to prevent
@@ -61,7 +61,7 @@ func tone = sine(A4);
 func note = mul(tone, block_(0, .3), _(.5));
 func looped = loop_(note, 1.5);
 func revved = reverb_(looped, .4, .2);
-play(revved, 6);
+play(revved);
 ```
 
 Listen to the result in

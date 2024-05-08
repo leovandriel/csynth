@@ -9,5 +9,5 @@ int main()
                     mul_(sine(kr_range_(sine_(3), 100, 2e3)), .3),
                     mul_(sine(kr_range_(sine_(1), 100, 2e3)), .3)),
                 .5);
-    return play(simple_fm, 8);
+    return play(simple_fm);
 }

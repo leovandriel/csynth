@@ -12,5 +12,5 @@ int main()
         pattern_("  .   .   .   . ", snare, .25, .001),
         pattern_(".    .  .    .  ", bdrum, .25, .001));
     func machine = mul_(loop_(patterns, 4), .4);
-    return play(machine, 8);
+    return play(machine);
 }
