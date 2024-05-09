@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 #include "./sampler.h"
-#include "./keyboard.h"
+#include "./term.h"
 
 static int player_callback(__attribute__((unused)) const void *input, void *output_, unsigned long count, __attribute__((unused)) const PaStreamCallbackTimeInfo *info, __attribute__((unused)) PaStreamCallbackFlags flags, void *data)
 {
@@ -67,7 +67,7 @@ int play_array(int count, Func **roots)
     err = Pa_StartStream(stream);
     if (err != paNoError)
         return player_error(err);
-    keyboard_loop();
+    term_loop();
     err = Pa_CloseStream(stream);
     if (err != paNoError)
         return player_error(err);

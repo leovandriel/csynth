@@ -23,5 +23,5 @@ int main()
         mul(hihat, ear(add_(angle, 180))),
         mul(snare, ear(add_(angle, 300))),
         mul(bdrum, ear(add_(angle, 60))));
-    return play_stereo(left, right, 16);
+    return play_stereo(left, right);
 }
