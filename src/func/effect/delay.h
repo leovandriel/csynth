@@ -36,6 +36,6 @@ Func *delay(Func *input, Func *duration)
     return func_create(NULL, delay_eval, NULL, sizeof(DelayContext), NULL, FUNC_FLAG_DEFAULT, 2, input, duration);
 }
 
-Func *delay_(Func *input, double frequency) { return delay(input, const_(frequency)); }
+Func *delay_(Func *input, double duration) { return delay(input, const_(duration)); }
 
 #endif // CSYNTH_DELAY_H
