@@ -39,23 +39,23 @@ static func t(double index)
 
 int main()
 {
-    func g0 = comp_abs(
+    func g0 = seq_abs(
         t(0), slow(Am),
         t(8), slow(Am));
 
-    func g1 = comp_abs(
+    func g1 = seq_abs(
         t(0), pluck(D5),
         t(1), pluck(E5),
         t(2), pluck(D5),
         t(3), mul(pluck(A4), smooth_inv(t(1), t(1.5))));
 
-    func guitar1 = comp_abs(
+    func guitar1 = seq_abs(
         t(0), g1,
         t(16), g1,
         t(32), g1,
         t(48), g1);
 
-    func g2 = comp_abs(
+    func g2 = seq_abs(
         t(0), down(F),
         t(3), up(F),
         t(4), down(F),
@@ -66,7 +66,7 @@ int main()
         t(12), down(G),
         t(14), down(G));
 
-    func g3 = comp_abs(
+    func g3 = seq_abs(
         t(0), down(Am),
         t(3), up(Am),
         t(4), down(Am),
@@ -79,13 +79,13 @@ int main()
         t(14), down(G),
         t(15), down(G));
 
-    func guitar2 = comp_abs(
+    func guitar2 = seq_abs(
         t(4), g2,
         t(20), g3,
         t(36), g2,
         t(52), g3);
 
-    func guitar = comp_abs(
+    func guitar = seq_abs(
         t(0), g0,
         t(18), add(guitar1, guitar2));
     const char *filename = "output/guitar.wav";

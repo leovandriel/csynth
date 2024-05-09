@@ -4,8 +4,8 @@
 #ifndef CSYNTH_FUNC_ALL_H
 #define CSYNTH_FUNC_ALL_H
 
-#include "./comp/comp.h"
 #include "./comp/comps.h"
+#include "./comp/seq.h"
 #include "./control/mute.h"
 #include "./control/pause.h"
 #include "./control/press.h"

@@ -34,7 +34,7 @@ func modulate_speed()
 
 int main()
 {
-    func dynamic = comp_rel(
+    func dynamic = seq_rel(
         modulate_pitch(), _(10),
         modulate_speed(), _(10),
         wobble_both(), _(10));

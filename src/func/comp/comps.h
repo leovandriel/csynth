@@ -11,7 +11,7 @@
 #include "../op/mul.h"
 #include "../op/add.h"
 #include "../../util/rand.h"
-#include "./comp.h"
+#include "./seq.h"
 
 Func *pattern(const char *string, Func *f, Func *duration, Func *timing)
 {
@@ -26,7 +26,7 @@ Func *pattern(const char *string, Func *f, Func *duration, Func *timing)
             array[index++] = f;
         }
     }
-    Func *func = comp_abs_array(index, array);
+    Func *func = seq_abs_array(index, array);
     free(array);
     return func;
 }

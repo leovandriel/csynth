@@ -37,7 +37,7 @@ static func C(func frequency, double duration)
 
 int main()
 {
-    func f1 = comp_seq(
+    func f1 = seq_seq(
         A(G4, 1.5),
         A(E4, .5),
         A(C4, 2),
@@ -64,7 +64,7 @@ int main()
         A(E4, 2),
         A(C4, 2));
 
-    func f2 = comp_seq(
+    func f2 = seq_seq(
         B(G4, 1.5),
         B(E4, .5),
         B(C4, 2),
@@ -91,7 +91,7 @@ int main()
         B(E4, 2),
         B(C4, 2));
 
-    func f3 = comp_seq(
+    func f3 = seq_seq(
         C(E5, 1),
         C(E5, 1),
         C(E5, 2),
@@ -143,7 +143,7 @@ int main()
         C(F5, 1),
         C(D5, 2),
         C(C5, 4));
-    func f = comp_rel(f1, _(48.5 * speed), f2, _(48.5 * speed), f3, _(98 * speed));
+    func f = seq_rel(f1, _(48.5 * speed), f2, _(48.5 * speed), f3, _(98 * speed));
     func spangled = reverb_(f, 0.1, 0.5);
     const char *filename = "output/spangled.wav";
     printf("Writing to %s\n", filename);
