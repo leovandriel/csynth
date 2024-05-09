@@ -23,30 +23,38 @@ static int player_error(PaError err)
     return 1;
 }
 
-int player_keyboard_callback(KeyboardCommand command, void *context)
+int player_play_pause(PaStream *stream)
 {
-    PaStream *stream = (PaStream *)context;
-    if (command == KeyboardCommandPlay)
+    if (Pa_IsStreamStopped(stream))
     {
         PaError err = Pa_StartStream(stream);
         if (err != paNoError)
             return player_error(err);
     }
-    else if (command == KeyboardCommandPause)
+    else
     {
         PaError err = Pa_StopStream(stream);
         if (err != paNoError)
             return player_error(err);
-    } else {
-        fprintf(stderr, "Unknown command %d\n", command);
-        return 1;
+    }
+    return 0;
+}
+
+int player_event_listener(EventType type, void *event, void *context)
+{
+    if (type == EventTypeKey)
+    {
+        int key = *(int *)event;
+        if (key == ' ')
+        {
+            return player_play_pause((PaStream *)context);
+        }
     }
     return 0;
 }
 
 int play_array(int count, Func **roots)
 {
-    Keyboard *keyboard = keyboard_create();
     PaError err = Pa_Initialize();
     if (err != paNoError)
         return player_error(err);
@@ -55,14 +63,16 @@ int play_array(int count, Func **roots)
     err = Pa_OpenDefaultStream(&stream, 0, count, paInt16, SAMPLER_RATE, paFramesPerBufferUnspecified, player_callback, sampler);
     if (err != paNoError)
         return player_error(err);
-    keyboard_set_callback(keyboard, player_keyboard_callback, stream);
-    keyboard_loop(keyboard);
+    event_add_listener(player_event_listener, stream);
+    err = Pa_StartStream(stream);
+    if (err != paNoError)
+        return player_error(err);
+    keyboard_loop();
     err = Pa_CloseStream(stream);
     if (err != paNoError)
         return player_error(err);
     Pa_Terminate();
     sampler_free(sampler);
-    keyboard_free(keyboard);
     return 0;
 }
 
