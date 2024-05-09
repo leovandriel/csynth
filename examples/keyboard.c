@@ -33,7 +33,11 @@ int main()
         press('n', note(A4)),
         press('j', note(Bb4)),
         press('m', note(B4)),
-        press(',', note(C5)));
-    printf("Usage: [zsxdcvgbhnjm,] guitar, [q] hihat, [w] snare, [e] bdrum, [QWE] loop on/off\r");
-    return play(mul_(add(loops, drums, guitar), .4));
+        press(',', note(C5)),
+        press('l', note(Cs5)),
+        press('.', note(D5)),
+        press(';', note(Eb5)),
+        press('/', note(E5)));
+    printf(" Usage: [zsxdcvgbhnjm] guitar, [q] hihat, [w] snare, [e] bdrum, [QWE] loop on/off, [Esc] exit\r");
+    return play(add(mul_(loops, 0.5), drums, guitar));
 }
