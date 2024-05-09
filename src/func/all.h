@@ -10,6 +10,7 @@
 #include "./effect/delay.h"
 #include "./effect/effects.h"
 #include "./effect/loop.h"
+#include "./effect/press.h"
 #include "./effect/reverb.h"
 #include "./envelope/adsr.h"
 #include "./envelope/envelopes.h"
