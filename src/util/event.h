@@ -12,6 +12,7 @@ typedef enum
 {
     EventTypeNone = 0,
     EventTypeKey = 1,
+    EventTypeState = 2,
 } EventType;
 
 typedef int (*event_listener)(EventType type, void *event, void *context);
@@ -30,53 +31,47 @@ typedef struct
 
 EventListenerList event_listener_list = {0};
 
-void event_extend_list(EventListenerList *list)
+void *event_add_listener(event_listener listener, void *context)
 {
-    int capacity = list->capacity ? list->capacity * 2 : 16;
-    EventListener **listeners = (EventListener **)calloc(capacity, sizeof(EventListener *));
-    memcpy(listeners, list->listeners, list->capacity * sizeof(EventListener *));
-    free(list->listeners);
-    list->listeners = listeners;
-    list->capacity = capacity;
-}
-
-EventListener *event_add_listener(event_listener listener, void *context)
-{
-    if (event_listener_list.size == event_listener_list.capacity)
+    EventListenerList *list = &event_listener_list;
+    if (list->size == list->capacity)
     {
-        event_extend_list(&event_listener_list);
+        list->capacity = list->capacity ? list->capacity * 2 : 16;
+        list->listeners = (EventListener **)realloc(list->listeners, list->capacity * sizeof(EventListener *));
     }
-    EventListener *event_listener = (EventListener *)calloc(1, sizeof(EventListener));
-    event_listener->listener = listener;
-    event_listener->context = context;
-    event_listener_list.listeners[event_listener_list.size++] = event_listener;
-    return event_listener;
+    EventListener *handle = (EventListener *)calloc(1, sizeof(EventListener));
+    handle->listener = listener;
+    handle->context = context;
+    list->listeners[list->size++] = handle;
+    return handle;
 }
 
-void event_remove_listener(EventListener *listener)
+void event_remove_listener(void *handle)
 {
+    EventListenerList *list = &event_listener_list;
     int index = 0;
-    for (; index < event_listener_list.size; index++)
+    for (; index < list->size; index++)
     {
-        if (event_listener_list.listeners[index] == listener)
+        if (list->listeners[index] == handle)
         {
             break;
         }
     }
-    if (index == event_listener_list.size)
+    if (index == list->size)
     {
         fprintf(stderr, "event_remove_listener: listener not found\n");
         return;
     }
-    event_listener_list.listeners[index] = event_listener_list.listeners[event_listener_list.size-- - 1];
-    free(listener);
+    list->listeners[index] = list->listeners[list->size-- - 1];
+    free(handle);
 }
 
 int event_broadcast(EventType type, void *event)
 {
-    for (int i = 0; i < event_listener_list.size; i++)
+    EventListenerList *list = &event_listener_list;
+    for (int i = 0; i < list->size; i++)
     {
-        EventListener *listener = event_listener_list.listeners[i];
+        EventListener *listener = list->listeners[i];
         int err = listener->listener(type, event, listener->context);
         if (err)
             return err;

@@ -7,6 +7,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../util/key_event.h"
+#include "../../util/state_event.h"
 
 typedef struct
 {
@@ -35,8 +36,16 @@ int pause_listener(int key, void *context_)
     {
         context->paused = !context->paused;
         context->reset = context->play_reset;
+        state_event_broadcast(context->key, StateEventTypeBool, &context->paused);
     }
     return 0;
+}
+
+void pause_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+{
+    PauseContext *context = (PauseContext *)context_;
+    state_event_broadcast(context->key, StateEventTypeBool, &context->paused);
+    key_event_add(&context->parent);
 }
 
 Func *pause_play_(int key, Func *func, int play_reset, int paused)
@@ -47,7 +56,7 @@ Func *pause_play_(int key, Func *func, int play_reset, int paused)
         .play_reset = play_reset,
         .paused = paused,
     };
-    return func_create(key_event_init, pause_eval, key_event_free, sizeof(PauseContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
+    return func_create(pause_init, pause_eval, key_event_free, sizeof(PauseContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
 }
 
 Func *pause_play(int key, Func *func)

@@ -6,10 +6,10 @@
 
 #include "./comp/comps.h"
 #include "./comp/seq.h"
+#include "./control/knob.h"
 #include "./control/mute.h"
 #include "./control/pause.h"
 #include "./control/press.h"
-#include "./control/knob.h"
 #include "./effect/continuous.h"
 #include "./effect/delay.h"
 #include "./effect/effects.h"

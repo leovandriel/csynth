@@ -8,7 +8,7 @@
 #include <termios.h>
 #include <signal.h>
 
-#include "./event.h"
+#include "./key_event.h"
 
 static volatile int term_signal = 0;
 
@@ -48,7 +48,7 @@ int term_loop()
             if (key == '[')
             {
                 key = getchar() + ('\033' << 16) + ('[' << 8);
-                err = event_broadcast(EventTypeKey, &key);
+                err = key_event_broadcast(key);
             }
             else
             {
@@ -57,7 +57,7 @@ int term_loop()
         }
         else if (key > 0)
         {
-            err = event_broadcast(EventTypeKey, &key);
+            err = key_event_broadcast(key);
         }
         else
         {

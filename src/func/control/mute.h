@@ -7,6 +7,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../util/key_event.h"
+#include "../../util/state_event.h"
 
 typedef struct
 {
@@ -28,8 +29,16 @@ int mute_listener(int key, void *context_)
     if (key == context->key)
     {
         context->muted = !context->muted;
+        state_event_broadcast(context->key, StateEventTypeBoolInv, &context->muted);
     }
     return 0;
+}
+
+void mute_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+{
+    MuteContext *context = (MuteContext *)context_;
+    state_event_broadcast(context->key, StateEventTypeBoolInv, &context->muted);
+    key_event_add(&context->parent);
 }
 
 Func *mute_(int key, Func *func, int muted)
@@ -39,7 +48,7 @@ Func *mute_(int key, Func *func, int muted)
         .key = key,
         .muted = muted,
     };
-    return func_create(key_event_init, mute_eval, key_event_free, sizeof(MuteContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
+    return func_create(mute_init, mute_eval, key_event_free, sizeof(MuteContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
 }
 
 Func *mute(int key, Func *func)

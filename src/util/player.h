@@ -9,6 +9,7 @@
 
 #include "./sampler.h"
 #include "./term.h"
+#include "./display.h"
 
 static int player_callback(__attribute__((unused)) const void *input, void *output_, unsigned long count, __attribute__((unused)) const PaStreamCallbackTimeInfo *info, __attribute__((unused)) PaStreamCallbackFlags flags, void *data)
 {
@@ -25,18 +26,24 @@ static int player_error(PaError err)
 
 int player_play_pause(PaStream *stream)
 {
-    if (Pa_IsStreamStopped(stream))
+    int paused = Pa_IsStreamStopped(stream);
+    if (paused == 1)
     {
         PaError err = Pa_StartStream(stream);
         if (err != paNoError)
             return player_error(err);
     }
-    else
+    else if (paused == 0)
     {
         PaError err = Pa_StopStream(stream);
         if (err != paNoError)
             return player_error(err);
     }
+    else
+    {
+        return paused;
+    }
+    state_event_broadcast(' ', StateEventTypeBool, &paused);
     return 0;
 }
 
@@ -58,19 +65,23 @@ int play_array(int count, Func **roots)
     PaError err = Pa_Initialize();
     if (err != paNoError)
         return player_error(err);
+    display_show();
+    state_event_broadcast(' ', StateEventTypeBoolInv, NULL);
     Sampler *sampler = sampler_create(count, roots);
     PaStream *stream;
     err = Pa_OpenDefaultStream(&stream, 0, count, paInt16, SAMPLER_RATE, paFramesPerBufferUnspecified, player_callback, sampler);
     if (err != paNoError)
         return player_error(err);
-    event_add_listener(player_event_listener, stream);
     err = Pa_StartStream(stream);
     if (err != paNoError)
         return player_error(err);
+    void *handler = event_add_listener(player_event_listener, stream);
     term_loop();
+    event_remove_listener(handler);
     err = Pa_CloseStream(stream);
     if (err != paNoError)
         return player_error(err);
+    display_hide();
     Pa_Terminate();
     sampler_free(sampler);
     return 0;

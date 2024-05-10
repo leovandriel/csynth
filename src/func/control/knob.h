@@ -11,6 +11,7 @@
 #include "../gen/const.h"
 
 #include "../../util/key_event.h"
+#include "../../util/state_event.h"
 
 typedef struct
 {
@@ -33,9 +34,10 @@ static double knob_eval(__attribute__((unused)) int count, __attribute__((unused
 int knob_listener(int key, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
-    if (key == context->key)
+    if (key == context->key && !context->active)
     {
         context->active = 1;
+        state_event_broadcast(context->key, StateEventTypeSelected, &context->active);
     }
     else if (context->active && key == KEY_EVENT_UP)
     {
@@ -51,6 +53,7 @@ int knob_listener(int key, void *context_)
         {
             context->value = context->max;
         }
+        state_event_broadcast(context->key, StateEventTypeDouble, &context->value);
     }
     else if (context->active && key == KEY_EVENT_DOWN)
     {
@@ -66,12 +69,21 @@ int knob_listener(int key, void *context_)
         {
             context->value = context->min;
         }
+        state_event_broadcast(context->key, StateEventTypeDouble, &context->value);
     }
     else
     {
         context->active = 0;
+        state_event_broadcast(context->key, StateEventTypeSelected, &context->active);
     }
     return 0;
+}
+
+void knob_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+{
+    KnobContext *context = (KnobContext *)context_;
+    state_event_broadcast(context->key, StateEventTypeDouble, &context->value);
+    key_event_add(&context->parent);
 }
 
 Func *knob_range(int key, double value, double step, double min, double max, int rel)
@@ -85,7 +97,7 @@ Func *knob_range(int key, double value, double step, double min, double max, int
         .max = max,
         .rel = rel,
     };
-    return func_create(key_event_init, knob_eval, key_event_free, sizeof(KnobContext), &initial, FUNC_FLAG_NO_RESET, 0);
+    return func_create(knob_init, knob_eval, key_event_free, sizeof(KnobContext), &initial, FUNC_FLAG_NO_RESET, 0);
 }
 
 Func *knob(int key, double value, double delta)

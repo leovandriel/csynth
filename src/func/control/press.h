@@ -7,12 +7,13 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../util/key_event.h"
+#include "../../util/state_event.h"
 
 typedef struct
 {
     KeyEventContext parent;
     int key;
-    int active;
+    int pressed;
     int reset;
 } PressContext;
 
@@ -24,7 +25,7 @@ static double press_eval(__attribute__((unused)) int count, __attribute__((unuse
         gen_reset(args[0]);
         context->reset = 0;
     }
-    return context->active ? gen_eval(args[0]) : 0;
+    return context->pressed ? gen_eval(args[0]) : 0;
 }
 
 int press_listener(int key, void *context_)
@@ -32,10 +33,18 @@ int press_listener(int key, void *context_)
     PressContext *context = (PressContext *)context_;
     if (key == context->key)
     {
-        context->active = 1;
+        context->pressed = 1;
         context->reset = 1;
+        state_event_broadcast(context->key, StateEventTypeTrigger, &context->pressed);
     }
     return 0;
+}
+
+void press_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+{
+    PressContext *context = (PressContext *)context_;
+    state_event_broadcast(context->key, StateEventTypeTrigger, &context->pressed);
+    key_event_add(&context->parent);
 }
 
 Func *press(int key, Func *func)
@@ -44,7 +53,7 @@ Func *press(int key, Func *func)
         .parent = {.key_listener = press_listener},
         .key = key,
     };
-    return func_create(key_event_init, press_eval, key_event_free, sizeof(PressContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
+    return func_create(press_init, press_eval, key_event_free, sizeof(PressContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
 }
 
 #endif // CSYNTH_PRESS_H

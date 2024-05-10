@@ -1,6 +1,7 @@
 //usr/bin/gcc "$0" -o bin/keyboard -Wall -Wextra -O3 -lm -lportaudio && ./bin/keyboard "$@"; exit $?
 #include "../src/func/all.h"
 #include "../src/util/player.h"
+#include "../src/util/display.h"
 
 func note(func frequency)
 {
@@ -39,6 +40,10 @@ int main()
         press('.', note(D5)),
         press(';', note(Eb5)),
         press('/', note(E5)));
-    printf(" Usage: [zsxdcvgbhnjm] guitar, [q] hihat, [w] snare, [e] bdrum, [QWE] loop on/off, [Esc] exit\r");
+    display_add_label(' ', "play");
+    display_add_label('1', "1:tempo");
+    display_add_label('Q', "Q:hihat");
+    display_add_label('W', "W:snare");
+    display_add_label('E', "E:bdrum");
     return play(add(mul_(loops, 0.5), drums, guitar));
 }
