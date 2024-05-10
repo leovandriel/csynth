@@ -11,7 +11,7 @@
 typedef struct
 {
     KeyEventContext parent;
-    char key;
+    int key;
     int paused;
     int reset;
     int play_reset;
@@ -39,7 +39,7 @@ int pause_listener(int key, void *context_)
     return 0;
 }
 
-Func *pause_play_(char key, Func *func, int play_reset, int paused)
+Func *pause_play_(int key, Func *func, int play_reset, int paused)
 {
     PauseContext initial = (PauseContext){
         .parent = {.key_listener = pause_listener},
@@ -50,22 +50,22 @@ Func *pause_play_(char key, Func *func, int play_reset, int paused)
     return func_create(key_event_init, pause_eval, key_event_free, sizeof(PauseContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
 }
 
-Func *pause_play(char key, Func *func)
+Func *pause_play(int key, Func *func)
 {
     return pause_play_(key, func, 0, 0);
 }
 
-Func *play_pause(char key, Func *func)
+Func *play_pause(int key, Func *func)
 {
     return pause_play_(key, func, 0, 1);
 }
 
-Func *pause_reset(char key, Func *func)
+Func *pause_reset(int key, Func *func)
 {
     return pause_play_(key, func, 1, 0);
 }
 
-Func *reset_pause(char key, Func *func)
+Func *reset_pause(int key, Func *func)
 {
     return pause_play_(key, func, 1, 1);
 }

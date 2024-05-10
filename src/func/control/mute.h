@@ -11,7 +11,7 @@
 typedef struct
 {
     KeyEventContext parent;
-    char key;
+    int key;
     int muted;
 } MuteContext;
 
@@ -32,7 +32,7 @@ int mute_listener(int key, void *context_)
     return 0;
 }
 
-Func *mute_(char key, Func *func, int muted)
+Func *mute_(int key, Func *func, int muted)
 {
     MuteContext initial = (MuteContext){
         .parent = {.key_listener = mute_listener},
@@ -42,12 +42,12 @@ Func *mute_(char key, Func *func, int muted)
     return func_create(key_event_init, mute_eval, key_event_free, sizeof(MuteContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
 }
 
-Func *mute(char key, Func *func)
+Func *mute(int key, Func *func)
 {
     return mute_(key, func, 0);
 }
 
-Func *unmute(char key, Func *func)
+Func *unmute(int key, Func *func)
 {
     return mute_(key, func, 1);
 }

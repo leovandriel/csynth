@@ -11,7 +11,7 @@
 typedef struct
 {
     KeyEventContext parent;
-    char key;
+    int key;
     int active;
     int reset;
 } PressContext;
@@ -38,7 +38,7 @@ int press_listener(int key, void *context_)
     return 0;
 }
 
-Func *press(char key, Func *func)
+Func *press(int key, Func *func)
 {
     PressContext initial = (PressContext){
         .parent = {.key_listener = press_listener},

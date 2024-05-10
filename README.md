@@ -22,7 +22,7 @@ with `write(..)` to write to a WAV file.
 To create music in CSynth, combine basic (mathematical) functions to create
 sounds, instruments, and compositions. Let's create a single note with reverb.
 
-Start by playing a 440 Hz sine wave (and stop by pressing Esc):
+Start by playing a 440 Hz sine wave (and stop by pressing Ctrl-C):
 
 ```c
 play(sine(A4));
