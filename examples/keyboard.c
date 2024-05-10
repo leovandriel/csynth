@@ -12,10 +12,11 @@ int main()
     func hihat = mul(high_pass_(uniform(), 20000), decay_(.05));
     func snare = mul(uniform(), decay_(.05));
     func bdrum = mul(sine(linear_(60, 30, 1)), decay_(.05), _(3));
+    func tempo = knob_rel('1', .5, -.1);
     func loops = add(
-        mute('Q', loop_(hihat, .5)),
-        mute('W', loop_(delay_(snare, 1), 2)),
-        mute('E', loop_(bdrum, 2)));
+        mute('Q', loop(hihat, mul_(tempo, .5))),
+        mute('W', loop(delay(snare, mul_(tempo, 1)), mul_(tempo, 2))),
+        mute('E', loop(bdrum, mul_(tempo, 2))));
     func drums = add(
         press('q', hihat),
         press('w', snare),

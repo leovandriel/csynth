@@ -9,6 +9,9 @@
 
 typedef int (*key_event_listener)(int key, void *context);
 
+#define KEY_EVENT_UP 1792833
+#define KEY_EVENT_DOWN 1792834
+
 typedef struct
 {
     EventListener *listener;
