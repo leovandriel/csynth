@@ -20,6 +20,7 @@
 #include "./envelope/smooth.h"
 #include "./envelope/step.h"
 #include "./filter/chorus.h"
+#include "./filter/compressor.h"
 #include "./filter/filters.h"
 #include "./filter/high_pass.h"
 #include "./filter/limit.h"
