@@ -51,6 +51,14 @@ void display_add(int key)
     display_add_label(key, NULL);
 }
 
+void display_add_all(const char *keys)
+{
+    for (size_t i = 0; i < strlen(keys); i++)
+    {
+        display_add(keys[i]);
+    }
+}
+
 void display_set_value(DisplayElementList *list, int key, StateEventType type, void *value)
 {
     for (int i = 0; i < list->size; i++)
@@ -82,6 +90,44 @@ void display_set_value(DisplayElementList *list, int key, StateEventType type, v
     }
 }
 
+void display_render_label(DisplayElement *element)
+{
+    if (element->label)
+    {
+        printf(element->selected ? "{%s}" : " %s ", element->label);
+    }
+    else
+    {
+        printf(element->selected ? "{%c} " : " %c: ", element->key);
+    }
+}
+
+void display_render_element(DisplayElement *element)
+{
+    display_render_label(element);
+    switch (element->type)
+    {
+    case StateEventTypeNone:
+    case StateEventTypeSelected:
+        break;
+    case StateEventTypeBool:
+        printf("[%s] ", element->i ? "x" : " ");
+        break;
+    case StateEventTypeBoolInv:
+        printf("[%s] ", element->i ? " " : "x");
+        break;
+    case StateEventTypeTrigger:
+        printf("[%s] ", element->i ? "!" : "?");
+        break;
+    case StateEventTypeInt:
+        printf("[%d] ", element->i);
+        break;
+    case StateEventTypeDouble:
+        printf("[%.2f] ", element->d);
+        break;
+    }
+}
+
 void display_render(DisplayElementList *list)
 {
     if (list->size)
@@ -90,36 +136,7 @@ void display_render(DisplayElementList *list)
     }
     for (int i = 0; i < list->size; i++)
     {
-        DisplayElement *element = &list->elements[i];
-        if (element->label)
-        {
-            printf(element->selected ? "{%s}" : " %s ", element->label);
-        }
-        else
-        {
-            printf(element->selected ? "{%c} " : " %c: ", element->key);
-        }
-        switch (element->type)
-        {
-        case StateEventTypeNone:
-        case StateEventTypeSelected:
-            break;
-        case StateEventTypeBool:
-            printf("[%s] ", element->i ? "x" : " ");
-            break;
-        case StateEventTypeBoolInv:
-            printf("[%s] ", element->i ? " " : "x");
-            break;
-        case StateEventTypeTrigger:
-            printf("[%s] ", element->i ? "!" : "?");
-            break;
-        case StateEventTypeInt:
-            printf("[%d] ", element->i);
-            break;
-        case StateEventTypeDouble:
-            printf("[%.2f] ", element->d);
-            break;
-        }
+        display_render_element(&list->elements[i]);
     }
     if (list->size)
     {
