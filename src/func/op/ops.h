@@ -34,7 +34,11 @@ Func *sub_(Func *a, double b) { return sub(a, const_(b)); }
 Func *ar(Func *a) { return sub_(mul_(a, 2), 1); }
 
 Func *kr(Func *f) { return dvd_(add_(f, 1), 2); }
+Func *kr_affine(Func *f, Func *offset, Func *factor) {return add(mul(kr(f), factor), offset); }
+Func *kr_affine_(Func *f, double offset, double factor) { return kr_affine(f, const_(offset), const_(factor)); }
+Func *kr_scale(Func *f, Func *factor) { return mul(kr(f), factor); }
+Func *kr_scale_(Func *f, double factor) { return kr_scale(f, const_(factor)); }
 Func *kr_range(Func *f, Func *min, Func *max) { return add(mul(kr(f), sub(max, min)), min); }
-Func *kr_range_(Func *f, double min, double max) { return add(mul(kr(f), sub(const_(max), const_(min))), const_(min)); }
+Func *kr_range_(Func *f, double min, double max) { return kr_range(f, const_(min), const_(max)); }
 
 #endif // CSYNTH_OPS_H
