@@ -6,6 +6,8 @@
 
 #include "./const.h"
 
+typedef Func *(*gen_func)(Func *frequency);
+
 #define ZERO_ (0.0)
 #define ZERO (const_(ZERO_))
 

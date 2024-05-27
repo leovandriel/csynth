@@ -37,6 +37,7 @@
 #include "./gen/timer.h"
 #include "./gen/triangle.h"
 #include "./gen/uniform.h"
+#include "./gen/unison.h"
 #include "./op/add.h"
 #include "./op/inv.h"
 #include "./op/max.h"
