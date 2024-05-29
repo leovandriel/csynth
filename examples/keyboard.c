@@ -22,24 +22,7 @@ int main()
         press('q', hihat),
         press('w', snare),
         press('e', bdrum));
-    func guitar = add(
-        press('z', note(C4)),
-        press('s', note(Cs4)),
-        press('x', note(D4)),
-        press('d', note(Eb4)),
-        press('c', note(E4)),
-        press('v', note(F4)),
-        press('g', note(Fs4)),
-        press('b', note(G4)),
-        press('h', note(Ab4)),
-        press('n', note(A4)),
-        press('j', note(Bb4)),
-        press('m', note(B4)),
-        press(',', note(C5)),
-        press('l', note(Cs5)),
-        press('.', note(D5)),
-        press(';', note(Eb5)),
-        press('/', note(E5)));
+    func guitar = keyboard(press, note, C4);
     display_add_label(' ', "play");
     display_add_label('1', "1:tempo");
     display_add_label('Q', "Q:hihat");

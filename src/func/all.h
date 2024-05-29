@@ -6,6 +6,7 @@
 
 #include "./comp/comps.h"
 #include "./comp/seq.h"
+#include "./control/controls.h"
 #include "./control/knob.h"
 #include "./control/mute.h"
 #include "./control/pause.h"
