@@ -15,11 +15,13 @@
 #include "./smooth.h"
 #include "../gen/timer.h"
 
-Func *decay(Func *decay) { return expo(dvd(neg(timer()), decay)); }
+Func *decay(Func *factor) { return expo(dvd(neg(timer()), factor)); }
 Func *decay_(double factor) { return decay(const_(factor)); }
+Func *decay_from(Func *from, Func *to, Func *factor) { return add(mul(decay(factor), sub(from, to)), to); }
+Func *decay_from_(double from, double to, double factor) { return decay_from(const_(from), const_(to), const_(factor)); }
 
 Func *linear(Func *a, Func *b, Func *t) { return add(mul(timer(), dvd(sub(b, a), t)), a); }
-Func *linear_(double a, double b, double t) { return add(mul(timer(), dvd(sub(const_(b), const_(a)), const_(t))), const_(a)); }
+Func *linear_(double a, double b, double t) { return linear(const_(a), const_(b), const_(t)); }
 
 Func *step_inv(Func *edge) { return sub(ONE, step(edge)); }
 Func *step_inv_(double edge) { return step_inv(const_(edge)); }
