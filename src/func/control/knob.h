@@ -97,7 +97,7 @@ Func *knob_range(int key, double value, double step, double min, double max, int
         .max = max,
         .rel = rel,
     };
-    return func_create(knob_init, knob_eval, key_event_free, sizeof(KnobContext), &initial, FUNC_FLAG_NO_RESET, 0);
+    return func_create(knob_init, knob_eval, key_event_free, sizeof(KnobContext), &initial, FUNC_FLAG_SKIP_RESET, 0);
 }
 
 Func *knob(int key, double value, double delta)

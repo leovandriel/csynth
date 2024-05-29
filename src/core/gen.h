@@ -81,13 +81,17 @@ double gen_eval(Gen *gen)
 void gen_reset(Gen *gen)
 {
     Func *func = gen->func;
-    if (func->flags & FUNC_FLAG_NO_RESET)
+    if (func->flags & FUNC_FLAG_STOP_RESET)
     {
         return;
     }
     for (int i = 0; i < func->count; i++)
     {
         gen_reset(gen->args[i]);
+    }
+    if (func->flags & FUNC_FLAG_SKIP_RESET)
+    {
+        return;
     }
     if (gen->context != NULL)
     {
