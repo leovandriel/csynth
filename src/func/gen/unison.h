@@ -12,6 +12,7 @@
 #include "../../util/rand.h"
 #include "../op/mul.h"
 #include "../op/add.h"
+#include "../op/ops.h"
 
 Func *unison(Func *frequency, gen_func generator, int count, double detune)
 {
@@ -20,7 +21,7 @@ Func *unison(Func *frequency, gen_func generator, int count, double detune)
     {
         array[i] = generator(mul_(frequency, rand_range(1 - detune, 1 + detune)));
     }
-    Func *func = add_array(count, array);
+    Func *func = dvd_(add_array(count, array), count);
     free(array);
     return func;
 }
