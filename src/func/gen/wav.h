@@ -9,6 +9,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../util/reader.h"
+#include "../gen/const.h"
 
 typedef struct
 {
@@ -18,10 +19,11 @@ typedef struct
     double time;
 } WavContext;
 
-static double wav_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, double delta, void *context_)
+static double wav_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
 {
     WavContext *context = (WavContext *)context_;
-    sample_t sample = reader_sample(&context->samples, context->time, context->channel);
+    double factor = gen_eval(args[0]);
+    sample_t sample = reader_sample(&context->samples, context->time * factor, context->channel);
     double output = (double)sample / 32767;
     context->time += delta;
     return output;
@@ -39,18 +41,23 @@ void wav_free(void *context_)
     reader_free(&context->samples);
 }
 
-Func *wav_channel(const char *filename, int channel)
+Func *wav_channel(const char *filename, int channel, Func *factor)
 {
     WavContext initial = (WavContext){
         .filename = filename,
         .channel = channel,
     };
-    return func_create(wav_init, wav_eval, wav_free, sizeof(WavContext), &initial, FUNC_FLAG_DEFAULT, 0);
+    return func_create(wav_init, wav_eval, wav_free, sizeof(WavContext), &initial, FUNC_FLAG_DEFAULT, 1, factor);
+}
+
+Func *wav_channel_(const char *filename, int channel, double factor)
+{
+    return wav_channel(filename, channel, const_(factor));
 }
 
 Func *wav(const char *filename)
 {
-    return wav_channel(filename, 0);
+    return wav_channel_(filename, 0, 1);
 }
 
 #endif // CSYNTH_WAV_H

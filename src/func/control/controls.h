@@ -31,4 +31,9 @@ Func *keyboard(control_func control, gen_func generator, Func *frequency)
     return func;
 }
 
+Func *keyboard_(control_func control, gen_func generator, double frequency)
+{
+    return keyboard(control, generator, const_(frequency));
+}
+
 #endif // CSYNTH_CONTROLS_H
