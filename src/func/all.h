@@ -40,6 +40,7 @@
 #include "./gen/triangle.h"
 #include "./gen/uniform.h"
 #include "./gen/unison.h"
+#include "./gen/wav.h"
 #include "./op/add.h"
 #include "./op/inv.h"
 #include "./op/max.h"
