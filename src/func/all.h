@@ -11,6 +11,8 @@
 #include "./control/mute.h"
 #include "./control/pause.h"
 #include "./control/press.h"
+#include "./control/record.h"
+#include "./control/replay.h"
 #include "./control/selector.h"
 #include "./effect/continuous.h"
 #include "./effect/delay.h"

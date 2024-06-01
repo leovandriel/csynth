@@ -1,4 +1,4 @@
 bin/*
 output/*.wav
-output/*.txt
+output/*.rec
 tests/.test.c
