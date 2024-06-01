@@ -13,13 +13,13 @@ typedef struct
 {
     double *samples;
     unsigned long size;
-    unsigned long max;
+    unsigned long capacity;
 } Buffer;
 
 void buffer_init(Buffer *buffer, unsigned long size)
 {
     buffer->samples = (double *)calloc(size, sizeof(double));
-    buffer->max = size;
+    buffer->capacity = size;
     buffer->size = size;
 }
 
@@ -33,7 +33,7 @@ static unsigned long buffer_resize_from_zero(Buffer *buffer, unsigned long size,
             buffer->samples[i] = fill(i);
         }
     }
-    buffer->max = size;
+    buffer->capacity = size;
     buffer->size = size;
     return 0;
 }
@@ -42,18 +42,17 @@ static unsigned long buffer_resize_to_zero(Buffer *buffer)
 {
     free(buffer->samples);
     buffer->samples = NULL;
-    buffer->max = 0;
+    buffer->capacity = 0;
     buffer->size = 0;
     return 0;
 }
 
 static unsigned long buffer_resize_up(Buffer *buffer, unsigned long size, unsigned long index, double (*fill)(unsigned long))
 {
-    if (size > buffer->max)
+    if (size > buffer->capacity)
     {
-        unsigned long max = size * 2;
-        buffer->samples = (double *)realloc(buffer->samples, max * sizeof(double));
-        buffer->max = max;
+        buffer->capacity = size * 2;
+        buffer->samples = (double *)realloc(buffer->samples, buffer->capacity * sizeof(double));
     }
     unsigned long diff = size - buffer->size;
     unsigned long to = index + diff;

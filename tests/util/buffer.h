@@ -10,7 +10,7 @@ static void test_same()
     assert(buffer_resize(&buffer, 2, 3, fill_inc) == 3);
     assert(buffer.samples != NULL);
     assert(buffer.size == 2);
-    assert(buffer.max == 2);
+    assert(buffer.capacity == 2);
     assert(buffer.samples[0] == 1);
     assert(buffer.samples[1] == 2);
 }
@@ -22,7 +22,7 @@ static void test_from_zero()
     assert(buffer_resize(&buffer, 2, 3, fill_inc) == 0);
     assert(buffer.samples != NULL);
     assert(buffer.size == 2);
-    assert(buffer.max == 2);
+    assert(buffer.capacity == 2);
     assert(buffer.samples[0] == 0);
     assert(buffer.samples[1] == 1);
     buffer_free(&buffer);
@@ -37,7 +37,7 @@ static void test_to_zero()
     assert(buffer_resize(&buffer, 0, 3, fill_inc) == 0);
     assert(buffer.samples == NULL);
     assert(buffer.size == 0);
-    assert(buffer.max == 0);
+    assert(buffer.capacity == 0);
     buffer_free(&buffer);
 }
 
@@ -52,7 +52,7 @@ static void test_up()
         assert(buffer_resize(&buffer, 4, i, fill_inc) == i);
         assert(buffer.samples != NULL);
         assert(buffer.size == 4);
-        assert(buffer.max == 8);
+        assert(buffer.capacity == 8);
         double s[] = {0, 1, 1, 1, 1, 2, 2, 2};
         assert(buffer.samples[0] == s[i]);
         assert(buffer.samples[1] == s[i + 2]);
@@ -75,7 +75,7 @@ static void test_down()
         assert(buffer_resize(&buffer, 2, i, fill_inc) == i % 2);
         assert(buffer.samples != NULL);
         assert(buffer.size == 2);
-        assert(buffer.max == 4);
+        assert(buffer.capacity == 4);
         double s[] = {3, 1, 1, 3, 4, 4, 2, 2};
         assert(buffer.samples[0] == s[i]);
         assert(buffer.samples[1] == s[i + 4]);
