@@ -4,7 +4,7 @@
 #ifndef CSYNTH_DISPLAY_H
 #define CSYNTH_DISPLAY_H
 
-#include "./state_event.h"
+#include "../event/state_event.h"
 
 typedef struct
 {

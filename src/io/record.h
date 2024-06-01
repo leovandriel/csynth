@@ -8,8 +8,8 @@
 #include <stdio.h>
 #include <sys/time.h>
 
-#include "./event.h"
-#include "./key_event.h"
+#include "../event/event.h"
+#include "../event/key_event.h"
 
 typedef int (*record_callback)(int key, int time, void *context);
 

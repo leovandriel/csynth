@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/sin_saw -Wall -Wextra -O3 -lm -lportaudio && ./bin/sin_saw "$@"; exit $?
 #include "../src/func/all.h"
-#include "../src/util/player.h"
+#include "../src/io/player.h"
 
 int main()
 {

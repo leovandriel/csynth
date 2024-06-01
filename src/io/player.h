@@ -8,8 +8,8 @@
 #include <stdio.h>
 
 #include "./sampler.h"
-#include "./term.h"
-#include "./display.h"
+#include "../ui/term.h"
+#include "../ui/display.h"
 
 static int player_callback(__attribute__((unused)) const void *input, void *output_, unsigned long count, __attribute__((unused)) const PaStreamCallbackTimeInfo *info, __attribute__((unused)) PaStreamCallbackFlags flags, void *data)
 {

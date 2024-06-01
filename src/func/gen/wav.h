@@ -8,7 +8,7 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../util/reader.h"
+#include "../../io/reader.h"
 #include "../gen/const.h"
 
 typedef struct

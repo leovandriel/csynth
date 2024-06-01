@@ -6,8 +6,8 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../util/key_event.h"
-#include "../../util/state_event.h"
+#include "../../event/key_event.h"
+#include "../../event/state_event.h"
 
 typedef struct
 {

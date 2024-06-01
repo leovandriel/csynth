@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/stereo -Wall -Wextra -O3 -lm -lportaudio && ./bin/stereo "$@"; exit $?
 #include "../src/func/all.h"
-#include "../src/util/player.h"
+#include "../src/io/player.h"
 
 static float deg2rad = M_PI / 180;
 

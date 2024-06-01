@@ -10,8 +10,8 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-#include "../../util/key_event.h"
-#include "../../util/state_event.h"
+#include "../../event/key_event.h"
+#include "../../event/state_event.h"
 
 typedef struct
 {

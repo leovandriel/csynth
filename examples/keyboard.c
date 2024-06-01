@@ -1,7 +1,7 @@
 //usr/bin/gcc "$0" -o bin/keyboard -Wall -Wextra -O3 -lm -lportaudio && ./bin/keyboard "$@"; exit $?
 #include "../src/func/all.h"
-#include "../src/util/player.h"
-#include "../src/util/display.h"
+#include "../src/io/player.h"
+#include "../src/ui/display.h"
 
 func note(func frequency)
 {

@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/guitar -Wall -Wextra -O3 -lm -lportaudio && ./bin/guitar "$@"; exit $?
 #include "../src/func/all.h"
-#include "../src/util/writer.h"
+#include "../src/io/writer.h"
 
 static func strum(int count, const double *c, double span, double decay)
 {

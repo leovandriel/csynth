@@ -8,7 +8,7 @@
 #include <termios.h>
 #include <signal.h>
 
-#include "./key_event.h"
+#include "../event/key_event.h"
 
 static volatile int term_signal = 0;
 
