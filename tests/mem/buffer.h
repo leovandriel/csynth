@@ -1,5 +1,5 @@
-#include "../../src/util/buffer.h"
-#include "./test.h"
+#include "../../src/mem/buffer.h"
+#include "../util/test.h"
 
 static void test_same()
 {

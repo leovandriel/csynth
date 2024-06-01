@@ -7,7 +7,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "./rand.h"
+#include "../util/rand.h"
 
 typedef struct
 {

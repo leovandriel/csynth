@@ -7,7 +7,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../event/key_event.h"
-#include "../../util/key_list.h"
+#include "../../mem/key_list.h"
 
 typedef struct
 {

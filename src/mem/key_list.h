@@ -9,7 +9,7 @@
 #include <sys/time.h>
 
 #include "../event/event.h"
-#include "../util/list.h"
+#include "../mem/list.h"
 #include "../event/key_event.h"
 
 typedef struct
