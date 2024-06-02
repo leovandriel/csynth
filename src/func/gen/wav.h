@@ -9,6 +9,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../io/reader.h"
+#include "../../util/config.h"
 #include "../gen/const.h"
 
 typedef struct
@@ -61,6 +62,11 @@ Func *wav_filename_(const char *filename, int channel, double factor)
 Func *wav(const char *filename)
 {
     return wav_filename_(filename, 0, 1);
+}
+
+Func *wav_()
+{
+    return wav(config_default_rec_filename);
 }
 
 #endif // CSYNTH_WAV_H

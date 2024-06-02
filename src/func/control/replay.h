@@ -62,7 +62,7 @@ Func *replay(Func *func, const char *filename)
 
 Func *replay_(Func *func)
 {
-    return replay(func, const_default_rec_filename);
+    return replay(func, config_default_rec_filename);
 }
 
 #endif // CSYNTH_REPLAY_H

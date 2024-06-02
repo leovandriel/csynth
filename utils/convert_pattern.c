@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        const char *filename = argc >= 4 ? argv[3] : const_default_rec_filename;
+        const char *filename = argc >= 4 ? argv[3] : config_default_rec_filename;
         file = fopen(filename, "r");
         if (!file)
         {
