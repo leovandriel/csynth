@@ -12,9 +12,9 @@
 
 static const int WRITER_BUFFER_SIZE = 4096;
 
-typedef int (*writer_callback)(size_t size, void *buffer, void *context);
+// void write_header() {}
 
-int writer_write_callback(int channel_count, Func **roots, double duration, writer_callback callback, void *context)
+int writer_write_file(int channel_count, Func **roots, double duration, FILE *file)
 {
     uint32_t sample_count = duration * SAMPLER_RATE;
     uint32_t data_size = sizeof(sample_t) * channel_count * sample_count;
@@ -32,35 +32,36 @@ int writer_write_callback(int channel_count, Func **roots, double duration, writ
     header.bits_sample = sizeof(sample_t) * 8;
     memcpy(header.data_chunk, "data", 4);
     header.data_size = data_size;
-    int result = callback(sizeof(header), &header, context);
+    size_t count = fwrite(&header, sizeof(header), 1, file);
+    if (count != 1)
+    {
+        fprintf(stderr, "Failed to write header\n");
+        return -1;
+    }
     Sampler *sampler = sampler_create(channel_count, roots);
     sample_t buffer[WRITER_BUFFER_SIZE];
     uint32_t buffer_samples = WRITER_BUFFER_SIZE / channel_count;
-    while (sample_count && !result)
+    while (sample_count)
     {
         unsigned long samples = buffer_samples < sample_count ? buffer_samples : sample_count;
         sampler_sample(sampler, samples, buffer);
-        result = callback(sizeof(sample_t) * channel_count * samples, buffer, context);
-        if (result)
+        size_t count = fwrite(buffer, sizeof(sample_t), channel_count * samples, file);
+        if (count != channel_count * samples)
         {
-            return result;
+            fprintf(stderr, "Failed to write samples\n");
+            sampler_free(sampler);
+            return -1;
         }
         sample_count -= samples;
     }
     sampler_free(sampler);
-    return result;
-}
-
-int writer_file_callback(size_t size, void *buffer, void *context)
-{
-    fwrite(buffer, 1, size, (FILE *)context);
     return 0;
 }
 
 int writer_write_channels(int channel_count, Func **roots, double duration, const char *filename)
 {
     FILE *file = fopen(filename, "wb");
-    int result = writer_write_callback(channel_count, roots, duration, writer_file_callback, file);
+    int result = writer_write_file(channel_count, roots, duration, file);
     fclose(file);
     return result;
 }

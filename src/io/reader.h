@@ -18,16 +18,14 @@ typedef struct
     double duration;
 } ReaderSamples;
 
-typedef int (*reader_callback)(size_t size, void *buffer, void *context);
-
-int reader_read_callback(ReaderSamples *samples, reader_callback callback, void *context)
+int reader_read_file(ReaderSamples *samples, FILE *file)
 {
     WavHeader header = {0};
-    int err = callback(sizeof(header), &header, context);
-    if (err)
+    size_t count = fread(&header, sizeof(header), 1, file);
+    if (count != 1)
     {
         fprintf(stderr, "Unable to read WAV header\n");
-        return err;
+        return -1;
     }
     if (memcmp(header.riff_type, "RIFF", 4) || memcmp(header.file_type, "WAVE", 4) || memcmp(header.format_mark, "fmt ", 4) || header.format_type != 1 || memcmp(header.data_chunk, "data", 4))
     {
@@ -59,17 +57,18 @@ int reader_read_callback(ReaderSamples *samples, reader_callback callback, void 
     uint32_t sample_count = data_size / (sizeof(sample_t) * channel_count);
     double duration = sample_count / SAMPLER_RATE;
     sample_t *buffer = (sample_t *)calloc(sample_count * channel_count, sizeof(sample_t));
-    err = callback(sample_count * channel_count * sizeof(sample_t), buffer, context);
-    if (err)
+    count = fread(buffer, sizeof(sample_t), sample_count * channel_count, file);
+    if (count != sample_count * channel_count)
     {
         fprintf(stderr, "Unable to read WAV data\n");
         free(buffer);
-        return err;
+        return -1;
     }
     samples->buffer = buffer;
     samples->sample_count = sample_count;
     samples->channel_count = channel_count;
     samples->duration = duration;
+    free(buffer);
     return 0;
 }
 
@@ -88,16 +87,10 @@ void reader_free(ReaderSamples *samples)
     free(samples->buffer);
 }
 
-int reader_file_callback(size_t size, void *buffer, void *context)
-{
-    fread(buffer, size, 1, (FILE *)context);
-    return 0;
-}
-
-int reader_read_file(ReaderSamples *samples, const char *filename)
+int reader_read_filename(ReaderSamples *samples, const char *filename)
 {
     FILE *file = fopen(filename, "rb");
-    int result = reader_read_callback(samples, reader_file_callback, file);
+    int result = reader_read_file(samples, file);
     fclose(file);
     return result;
 }

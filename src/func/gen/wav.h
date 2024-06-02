@@ -46,7 +46,7 @@ Func *wav_samples_(ReaderSamples samples, int channel, double factor)
 Func *wav_filename(const char *filename, int channel, Func *factor)
 {
     ReaderSamples samples;
-    if (reader_read_file(&samples, filename))
+    if (reader_read_filename(&samples, filename))
     {
         return NULL;
     }
