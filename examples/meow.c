@@ -10,5 +10,5 @@ func meow(func factor)
 int main()
 {
     printf("keyboard keys: %s\n", keyboard_keys);
-    play(mul_(keyboard_(press, meow, 1), 0.4));
+    play(mul_(keyboard_(trigger, meow, 1), 0.4));
 }

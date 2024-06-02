@@ -19,10 +19,10 @@ int main()
         mute('W', loop(delay(snare, mul_(tempo, 1)), mul_(tempo, 2))),
         mute('E', loop(bdrum, mul_(tempo, 2))));
     func drums = add(
-        press('q', hihat),
-        press('w', snare),
-        press('e', bdrum));
-    func guitar = keyboard(press, note, C4);
+        trigger('q', hihat),
+        trigger('w', snare),
+        trigger('e', bdrum));
+    func guitar = keyboard(trigger, note, C4);
     display_add_label(' ', "play");
     display_add_label('1', "1:tempo");
     display_add_label('Q', "Q:hihat");
