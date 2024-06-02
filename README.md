@@ -65,7 +65,7 @@ play(revved);
 ```
 
 Listen to the result in
-[example.mp3](https://github.com/leovandriel/csynth/raw/main/output/example.mp3)
+[beep.mp3](https://github.com/leovandriel/csynth/raw/main/examples/beep.mp3)
 or by running:
 
     ./examples/beep.c

@@ -1,4 +1,3 @@
 bin/*
-output/*.wav
-output/*.rec
+output/*
 tests/.test.c
