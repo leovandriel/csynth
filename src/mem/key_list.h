@@ -22,29 +22,35 @@ typedef List KeyList;
 KeyList *key_list_alloc() { return list_alloc(sizeof(TimedKeyEvent)); }
 void key_list_free(KeyList *list) { list_free(list); }
 size_t key_list_len(KeyList *list) { return list_len(list); }
-void key_list_add(KeyList *list, TimedKeyEvent event) { list_add(list, &event); }
+int key_list_add(KeyList *list, TimedKeyEvent event) { return list_add(list, &event); }
 TimedKeyEvent key_list_get(KeyList *list, size_t index) { return *(TimedKeyEvent *)list_get(list, index); }
 
-void key_list_read_file(KeyList *list, FILE *file)
+int key_list_read_file(KeyList *list, FILE *file)
 {
     int key, stamp;
     while (fscanf(file, "%d %d\n", &key, &stamp) == 2)
     {
         TimedKeyEvent event = {.key = key, .time = stamp / 1000.0};
-        key_list_add(list, event);
+        int err = key_list_add(list, event);
+        if (err)
+        {
+            return err;
+        }
     }
+    return 0;
 }
 
-void key_list_read_filename(KeyList *list, const char *filename)
+int key_list_read_filename(KeyList *list, const char *filename)
 {
     FILE *file = fopen(filename, "r");
     if (!file)
     {
         fprintf(stderr, "record: failed to open file %s\n", filename);
-        return;
+        return -1;
     }
-    key_list_read_file(list, file);
+    int err = key_list_read_file(list, file);
     fclose(file);
+    return err;
 }
 
 int key_list_write_file(KeyList *list, FILE *file)

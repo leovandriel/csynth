@@ -8,6 +8,7 @@
 #include "../../core/gen.h"
 #include "../../event/key_event.h"
 #include "../../mem/key_list.h"
+#include "../../util/config.h"
 
 typedef struct
 {
@@ -63,6 +64,11 @@ Func *record(Func *func, const char *filename)
         .filename = filename,
     };
     return func_create(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
+}
+
+Func *record_(Func *func)
+{
+    return record(func, const_default_rec_filename);
 }
 
 #endif // CSYNTH_RECORD_H

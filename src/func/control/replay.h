@@ -8,6 +8,7 @@
 #include "../../core/gen.h"
 #include "../../event/key_event.h"
 #include "../../mem/key_list.h"
+#include "../../util/config.h"
 
 typedef struct
 {
@@ -57,6 +58,11 @@ Func *replay(Func *func, const char *filename)
         .filename = filename,
     };
     return func_create(replay_init, replay_eval, replay_free, sizeof(ReplayContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
+}
+
+Func *replay_(Func *func)
+{
+    return replay(func, const_default_rec_filename);
 }
 
 #endif // CSYNTH_REPLAY_H
