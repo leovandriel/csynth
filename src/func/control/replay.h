@@ -46,7 +46,7 @@ void replay_init(__attribute__((unused)) int count, __attribute__((unused)) Gen 
     key_list_read_filename(context->list, context->filename);
 }
 
-static void replay_free(void *context_)
+static void replay_free(__attribute__((unused)) int count, void *context_)
 {
     ReplayContext *context = (ReplayContext *)context_;
     key_list_free(context->list);

@@ -50,7 +50,7 @@ void track_init(__attribute__((unused)) int count, __attribute__((unused)) Gen *
     context->list = key_list_alloc();
 }
 
-static void track_free(void *context_)
+static void track_free(__attribute__((unused)) int count, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
     event_remove_listener(context->handle);

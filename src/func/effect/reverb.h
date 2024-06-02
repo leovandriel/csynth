@@ -34,7 +34,7 @@ static double reverb_eval(__attribute__((unused)) int count, Gen **args, double 
     return output;
 }
 
-static void reverb_free(void *context_)
+static void reverb_free(__attribute__((unused)) int count, void *context_)
 {
     ReverbContext *context = (ReverbContext *)context_;
     buffer_free(&context->buffer);

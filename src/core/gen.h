@@ -54,7 +54,7 @@ void gen_free(Gen *gen)
     Func *func = gen->func;
     if (func->free != NULL)
     {
-        func->free(gen->context);
+        func->free(func->count, gen->context);
     }
     if (gen->args != NULL)
     {

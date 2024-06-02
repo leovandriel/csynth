@@ -40,7 +40,7 @@ static double chorus_eval(__attribute__((unused)) int count, Gen **args, double 
     return output;
 }
 
-static void chorus_free(void *context_)
+static void chorus_free(__attribute__((unused)) int count, void *context_)
 {
     ChorusContext *context = (ChorusContext *)context_;
     buffer_free(&context->buffer);

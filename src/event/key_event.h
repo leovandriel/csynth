@@ -56,7 +56,7 @@ void key_event_init(__attribute__((unused)) int count, __attribute__((unused)) G
     key_event_add((KeyEventContext *)context);
 }
 
-void key_event_free(void *context)
+void key_event_free(__attribute__((unused)) int count, void *context)
 {
     key_event_remove((KeyEventContext *)context);
 }

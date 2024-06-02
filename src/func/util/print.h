@@ -28,7 +28,7 @@ static double print_eval(__attribute__((unused)) int count, Gen **args, __attrib
     return output;
 }
 
-void print_free(void *context_)
+void print_free(__attribute__((unused)) int count, void *context_)
 {
     PrintContext *context = (PrintContext *)context_;
     free((char *)context->text);
