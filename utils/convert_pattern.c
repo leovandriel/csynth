@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/cpattern -Wall -Wextra -O3 -lm && ./bin/cpattern "$@"; exit $?
 //
-//       Convert recordings to machine code.
+//  Convert recordings to pattern.
 //
 
 #include <math.h>
@@ -80,12 +80,27 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    printf("    func patterns = add(\n");
     for (size_t i = 0; keys[i]; i++)
     {
-        printf("\"");
+        if (i > 0)
+        {
+            printf(",\n");
+        }
+        printf("        pattern_(\"");
         write(list, step, keys[i], stdout);
-        printf("\"\n");
+        printf("\", actuate(");
+        if (keys[i] >= 32 && keys[i] <= 126)
+        {
+            printf("'%c'", keys[i]);
+        }
+        else
+        {
+            printf("%d", keys[i]);
+        }
+        printf("), %f, 0.001)", step);
     }
+    printf(");\n");
 
     if (file)
     {
