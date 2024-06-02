@@ -56,5 +56,6 @@
 #include "./util/callback.h"
 #include "./util/logger.h"
 #include "./util/print.h"
+#include "./util/record.h"
 
 #endif // CSYNTH_FUNC_ALL_H

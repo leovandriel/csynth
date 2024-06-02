@@ -7,36 +7,17 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "./sampler.h"
 #include "./wav_header.h"
 
 static const int WRITER_BUFFER_SIZE = 4096;
 
-// void write_header() {}
-
 int writer_write_file(int channel_count, Func **roots, double duration, FILE *file)
 {
     uint32_t sample_count = duration * SAMPLER_RATE;
-    uint32_t data_size = sizeof(sample_t) * channel_count * sample_count;
-    WavHeader header = {0};
-    memcpy(header.riff_type, "RIFF", 4);
-    header.file_size = WAV_HEADER_SIZE + data_size;
-    memcpy(header.file_type, "WAVE", 4);
-    memcpy(header.format_mark, "fmt ", 4);
-    header.format_size = WAV_HEADER_FORMAT_SIZE;
-    header.format_type = 1; // PCM
-    header.num_channels = channel_count;
-    header.sample_rate = SAMPLER_RATE;
-    header.byte_rate = sizeof(sample_t) * channel_count * SAMPLER_RATE;
-    header.block_align = sizeof(sample_t) * channel_count;
-    header.bits_sample = sizeof(sample_t) * 8;
-    memcpy(header.data_chunk, "data", 4);
-    header.data_size = data_size;
-    size_t count = fwrite(&header, sizeof(header), 1, file);
-    if (count != 1)
+    int err = wav_header_write(sample_count, channel_count, file);
+    if (err)
     {
-        fprintf(stderr, "Failed to write header\n");
-        return -1;
+        return err;
     }
     Sampler *sampler = sampler_create(channel_count, roots);
     sample_t buffer[WRITER_BUFFER_SIZE];

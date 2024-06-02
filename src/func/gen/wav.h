@@ -66,7 +66,7 @@ Func *wav(const char *filename)
 
 Func *wav_()
 {
-    return wav(config_default_rec_filename);
+    return wav(config_default_wav_filename);
 }
 
 #endif // CSYNTH_WAV_H
