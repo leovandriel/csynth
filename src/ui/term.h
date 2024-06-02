@@ -4,9 +4,9 @@
 #ifndef CSYNTH_TERM_H
 #define CSYNTH_TERM_H
 
+#include <signal.h>
 #include <stdio.h>
 #include <termios.h>
-#include <signal.h>
 
 #include "../event/key_event.h"
 

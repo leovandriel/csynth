@@ -8,12 +8,12 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 #include "../gen/gens.h"
+#include "../gen/timer.h"
+#include "../op/inv.h"
 #include "../op/neg.h"
 #include "../op/ops.h"
-#include "../op/inv.h"
-#include "./step.h"
 #include "./smooth.h"
-#include "../gen/timer.h"
+#include "./step.h"
 
 Func *decay(Func *factor) { return expo(dvd(neg(timer()), factor)); }
 Func *decay_(double factor) { return decay(const_(factor)); }

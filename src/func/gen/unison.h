@@ -8,11 +8,11 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "./gens.h"
 #include "../../util/rand.h"
-#include "../op/mul.h"
 #include "../op/add.h"
+#include "../op/mul.h"
 #include "../op/ops.h"
+#include "./gens.h"
 
 Func *unison(Func *frequency, gen_func generator, int count, double detune)
 {

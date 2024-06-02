@@ -4,8 +4,8 @@
 #ifndef CSYNTH_WAV_HEADER_H
 #define CSYNTH_WAV_HEADER_H
 
-#include <stdlib.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 typedef struct
 {

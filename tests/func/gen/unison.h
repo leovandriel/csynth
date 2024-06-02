@@ -1,5 +1,5 @@
-#include "../../../src/func/gen/unison.h"
 #include "../../../src/func/gen/saw.h"
+#include "../../../src/func/gen/unison.h"
 #include "../../util/test.h"
 
 void test_unison()

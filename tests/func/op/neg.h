@@ -1,5 +1,5 @@
-#include "../../../src/func/op/neg.h"
 #include "../../../src/func/gen/const.h"
+#include "../../../src/func/op/neg.h"
 #include "../../util/test.h"
 
 void test_neg()

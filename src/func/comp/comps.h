@@ -7,10 +7,10 @@
 #include <stdlib.h>
 
 #include "../../core/func.h"
-#include "../gen/gens.h"
-#include "../op/mul.h"
-#include "../op/add.h"
 #include "../../util/rand.h"
+#include "../gen/gens.h"
+#include "../op/add.h"
+#include "../op/mul.h"
 #include "./seq.h"
 
 Func *pattern(const char *string, Func *f, Func *duration, Func *timing)

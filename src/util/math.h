@@ -4,9 +4,9 @@
 #ifndef CSYNTH_MATH_H
 #define CSYNTH_MATH_H
 
+#include <math.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include <math.h>
 
 static const double PI_M_2 = M_PI * 2;
 

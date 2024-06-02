@@ -2,8 +2,8 @@
 //
 //  Generates contents for the `notes.h` file.
 //
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
 
 static const char *note_names[] = {"C", "Cs", "Db", "D", "Ds", "Eb", "E", "F", "Fs", "Gb", "G", "Gs", "Ab", "A", "As", "Bb", "B"};
 

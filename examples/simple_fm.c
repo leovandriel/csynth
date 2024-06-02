@@ -6,8 +6,8 @@
 int main()
 {
     func simple_fm = mul_(add(
-                    mul_(sine(kr_range_(sine_(3), 100, 2e3)), .3),
-                    mul_(sine(kr_range_(sine_(1), 100, 2e3)), .3)),
-                .5);
+                              mul_(sine(kr_range_(sine_(3), 100, 2e3)), .3),
+                              mul_(sine(kr_range_(sine_(1), 100, 2e3)), .3)),
+                          .5);
     return play(simple_fm);
 }

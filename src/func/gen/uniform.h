@@ -20,5 +20,4 @@ Func *uniform()
     return func_create(NULL, uniform_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, 0);
 }
 
-
 #endif // CSYNTH_UNIFORM_H

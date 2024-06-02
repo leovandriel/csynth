@@ -7,9 +7,9 @@
 #include <portaudio.h>
 #include <stdio.h>
 
-#include "./sampler.h"
-#include "../ui/term.h"
 #include "../ui/display.h"
+#include "../ui/term.h"
+#include "./sampler.h"
 
 static int player_callback(__attribute__((unused)) const void *input, void *output_, unsigned long count, __attribute__((unused)) const PaStreamCallbackTimeInfo *info, __attribute__((unused)) PaStreamCallbackFlags flags, void *data)
 {

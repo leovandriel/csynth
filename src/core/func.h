@@ -4,10 +4,10 @@
 #ifndef CSYNTH_FUNC_H
 #define CSYNTH_FUNC_H
 
+#include <float.h>
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
-#include <float.h>
 
 #include "./def.h"
 

@@ -4,8 +4,8 @@
 #ifndef CSYNTH_WRITER_H
 #define CSYNTH_WRITER_H
 
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "./sampler.h"
 #include "./wav_header.h"

@@ -7,10 +7,10 @@
 #include <math.h>
 
 #include "../../core/func.h"
+#include "../gen/gens.h"
+#include "../gen/notes.h"
 #include "../op/add.h"
 #include "../op/mul.h"
-#include "../gen/notes.h"
-#include "../gen/gens.h"
 
 typedef Func *(*control_func)(int key, Func *frequency);
 

@@ -4,8 +4,8 @@
 #ifndef CSYNTH_BUFFER_H
 #define CSYNTH_BUFFER_H
 
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../util/rand.h"
 

@@ -1,5 +1,5 @@
-#include "../../../src/func/op/inv.h"
 #include "../../../src/func/gen/const.h"
+#include "../../../src/func/op/inv.h"
 #include "../../util/test.h"
 
 void test_inv()

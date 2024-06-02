@@ -4,8 +4,8 @@
 #ifndef CSYNTH_READER_H
 #define CSYNTH_READER_H
 
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "./sampler.h"
 #include "./wav_header.h"

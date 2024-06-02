@@ -1,5 +1,5 @@
-#include "../../../src/func/util/callback.h"
 #include "../../../src/func/gen/const.h"
+#include "../../../src/func/util/callback.h"
 #include "../../util/test.h"
 
 static double test_callback_add(int count, Gen **args, double delta, void *context)

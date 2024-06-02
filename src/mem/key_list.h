@@ -4,13 +4,13 @@
 #ifndef CSYNTH_KEY_LIST_H
 #define CSYNTH_KEY_LIST_H
 
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 #include <sys/time.h>
 
 #include "../event/event.h"
-#include "../mem/list.h"
 #include "../event/key_event.h"
+#include "../mem/list.h"
 
 typedef struct
 {

@@ -10,12 +10,12 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../gen/const.h"
-#include "./mul.h"
 #include "./add.h"
 #include "./inv.h"
-#include "./neg.h"
-#include "./min.h"
 #include "./max.h"
+#include "./min.h"
+#include "./mul.h"
+#include "./neg.h"
 #include "./pow.h"
 
 Func *dvd(Func *a, Func *b) { return mul(a, inv(b)); }
@@ -34,7 +34,7 @@ Func *sub_(Func *a, double b) { return sub(a, const_(b)); }
 Func *ar(Func *a) { return sub_(mul_(a, 2), 1); }
 
 Func *kr(Func *f) { return dvd_(add_(f, 1), 2); }
-Func *kr_affine(Func *f, Func *offset, Func *factor) {return add(mul(kr(f), factor), offset); }
+Func *kr_affine(Func *f, Func *offset, Func *factor) { return add(mul(kr(f), factor), offset); }
 Func *kr_affine_(Func *f, double offset, double factor) { return kr_affine(f, const_(offset), const_(factor)); }
 Func *kr_scale(Func *f, Func *factor) { return mul(kr(f), factor); }
 Func *kr_scale_(Func *f, double factor) { return kr_scale(f, const_(factor)); }

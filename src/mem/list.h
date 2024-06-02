@@ -4,8 +4,8 @@
 #ifndef CSYNTH_LIST_H
 #define CSYNTH_LIST_H
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct
