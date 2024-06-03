@@ -9,8 +9,8 @@
 #include <termios.h>
 
 #include "../event/key_event.h"
-#include "../util/time.h"
 #include "../util/config.h"
+#include "../util/time.h"
 
 static volatile int term_signal = 0;
 
