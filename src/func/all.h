@@ -54,6 +54,7 @@
 #include "./op/ops.h"
 #include "./op/pow.h"
 #include "./op/sin.h"
+#include "./op/tanh.h"
 #include "./util/callback.h"
 #include "./util/logger.h"
 #include "./util/print.h"
