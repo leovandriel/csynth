@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/dynamic -Wall -Wextra -O3 -lm -lportaudio && ./bin/dynamic "$@"; exit $?
-#include "../src/func/all.h"
-#include "../src/io/player.h"
+#include "../../src/func/all.h"
+#include "../../src/io/player.h"
 
 #define P(_f) (mul(_f, pitch))
 #define T(_f) (dvd(_(_f), speed))

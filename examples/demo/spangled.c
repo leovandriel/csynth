@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/spangled -Wall -Wextra -O3 -lm -lportaudio && ./bin/spangled "$@"; exit $?
-#include "../src/func/all.h"
-#include "../src/io/writer.h"
+#include "../../src/func/all.h"
+#include "../../src/io/writer.h"
 
 double speed = 0.4;
 

@@ -1,7 +1,7 @@
 //usr/bin/gcc "$0" -o bin/drummer -Wall -Wextra -O3 -lm -lportaudio && ./bin/drummer "$@"; exit $?
 // Based on: https://supercollider.github.io/examples
-#include "../src/func/all.h"
-#include "../src/io/player.h"
+#include "../../src/func/all.h"
+#include "../../src/io/player.h"
 
 int main()
 {
