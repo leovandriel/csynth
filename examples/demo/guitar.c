@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/guitar -Wall -Wextra -O3 -lm -lportaudio && ./bin/guitar "$@"; exit $?
 #include "../../src/func/all.h"
-#include "../../src/io/writer.h"
+#include "../../src/io/player.h"
 
 static func strum(int count, const double *c, double span, double decay)
 {
@@ -88,7 +88,5 @@ int main()
     func guitar = seq_abs(
         t(0), g0,
         t(18), add(guitar1, guitar2));
-    const char *filename = "output/guitar.wav";
-    printf("Writing to %s\n", filename);
-    return write_file(guitar, 24, filename);
+    return play_(guitar, 24);
 }

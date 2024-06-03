@@ -23,25 +23,35 @@ done
 
 if [ $# -eq 0 ]; then
     # check if all source files have a corresponding test
-    find ./src -type f -print0 | while read -d $'\0' file; do
-        test=${file/src/tests}
-        if [ ! -f "$test" ] && [ "$test" != "./tests/func/all.h" ]; then
-            printf "\r\e[KTest missing: ${test}\n" >&2
+    find ./src -type f -not -name "all.h" -print0 | while read -d $'\0' file; do
+        test="${file/src/tests}"
+        if [ ! -f "$test" ]; then
+            printf "\r\e[KTest missing: ${test} (because ${file})\n" >&2
             exit 1
         fi       
     done
 
     # check if all functions are included in all.h
     find ./src/func -type f -print0 | while read -d $'\0' file; do
-        func=${file/\/src\/func/}
+        func="${file/\/src\/func/}"
         if ! grep -q "$func" "./src/func/all.h" && [ "$func" != "./all.h" ]; then
             printf "\r\e[KInclude missing in all.h: #include \"${func}\"\n" >&2
             exit 1
         fi
     done
 
+    # check if all funcs have a corresponding example
+    find ./src/func -type f -not -name "all.h" -print0 | while read -d $'\0' file; do
+        example="${file/src/examples}"
+        example="${example%.h}.c"
+        if [ ! -f "$example" ]; then
+            printf "\r\e[KExample missing: ${example} (because ${file})\n" >&2
+            exit 1
+        fi       
+    done
+
     # compile examples
-    find ./examples -type f -print0 | while read -d $'\0' file; do
+    find ./examples -name "*.c" -type f -print0 | while read -d $'\0' file; do
         gcc "$file" -o bin/test -Wall -Wextra -O3 -lm -lportaudio
         echo -n "."
     done

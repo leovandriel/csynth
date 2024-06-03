@@ -98,6 +98,7 @@ int play_stereo_duration(Func *left, Func *right, double duration)
 }
 
 int play(Func *root) { return play_duration(root, 0); }
+int play_(Func *root, double duration) { return play_duration(root, duration); }
 int play_mono_duration(Func *input, double duration) { return play_duration(input, duration); }
 int play_mono(Func *input) { return play(input); }
 int play_stereo(Func *left, Func *right) { return play_stereo_duration(left, right, 0); }
