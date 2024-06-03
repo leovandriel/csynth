@@ -47,18 +47,18 @@ int term_loop(double duration)
         int key = getchar();
         if (key == '\033')
         {
-            key = getchar();
-            if (key == '[')
+            int second = getchar();
+            if (second == '[')
             {
-                key = getchar() + ('\033' << 16) + ('[' << 8);
-                err = key_event_broadcast(key);
+                int combined = getchar() + ('\033' << 16) + ('[' << 8);
+                err = key_event_broadcast(combined);
             }
-            else if (key == config_exit_key)
+            else if (key == CONFIG_EXIT_KEY)
             {
                 break;
             }
         }
-        else if (key == config_exit_key)
+        else if (key == CONFIG_EXIT_KEY)
         {
             break;
         }

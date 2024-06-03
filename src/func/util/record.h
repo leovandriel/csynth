@@ -79,8 +79,8 @@ Func *record_array(const char *filename, int count, Func **args)
 }
 
 Func *record(Func *input, const char *filename) { return record_channels(filename, input); }
-Func *record_(Func *input) { return record(input, config_default_wav_filename); }
+Func *record_(Func *input) { return record(input, CONFIG_DEFAULT_WAV_FILENAME); }
 Func *record_stereo(Func *left, Func *right, const char *filename) { return record_channels(filename, left, right); }
-Func *record_stereo_(Func *left, Func *right) { return record_stereo(left, right, config_default_wav_filename); }
+Func *record_stereo_(Func *left, Func *right) { return record_stereo(left, right, CONFIG_DEFAULT_WAV_FILENAME); }
 
 #endif // CSYNTH_RECORD_H

@@ -13,7 +13,7 @@ static const int WRITER_BUFFER_SIZE = 4096;
 
 int writer_write_file(int channel_count, Func **roots, double duration, FILE *file)
 {
-    uint32_t sample_count = duration * SAMPLER_RATE;
+    uint32_t sample_count = duration * SAMPLE_RATE;
     int err = wav_header_write(sample_count, channel_count, file);
     if (err)
     {

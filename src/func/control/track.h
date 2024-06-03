@@ -31,7 +31,7 @@ int track_listen(EventType type, void *event_, void *context_)
     if (type == EventTypeKey)
     {
         KeyEvent *event = (KeyEvent *)event_;
-        if (event->key != config_pause_key)
+        if (event->key != CONFIG_PAUSE_KEY)
         {
             TimedKeyEvent timed_event = {
                 .key = event->key,
@@ -68,7 +68,7 @@ Func *track(Func *func, const char *filename)
 
 Func *track_(Func *func)
 {
-    return track(func, config_default_rec_filename);
+    return track(func, CONFIG_DEFAULT_REC_FILENAME);
 }
 
 #endif // CSYNTH_TRACK_H

@@ -29,7 +29,7 @@ static double replay_eval(__attribute__((unused)) int count, Gen **args, double 
         {
             break;
         }
-        if (event.key != config_pause_key)
+        if (event.key != CONFIG_PAUSE_KEY)
         {
             key_event_broadcast(event.key);
         }
@@ -62,7 +62,7 @@ Func *replay(Func *func, const char *filename)
 
 Func *replay_(Func *func)
 {
-    return replay(func, config_default_rec_filename);
+    return replay(func, CONFIG_DEFAULT_REC_FILENAME);
 }
 
 #endif // CSYNTH_REPLAY_H

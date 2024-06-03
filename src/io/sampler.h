@@ -6,8 +6,8 @@
 
 #include "../core/func.h"
 #include "../core/gen.h"
+#include "../util/config.h"
 
-static const int SAMPLER_RATE = 44100;
 typedef int16_t sample_t;
 
 typedef struct
@@ -22,7 +22,7 @@ Sampler *sampler_create(int count, Func **roots)
     sampler->channels = (Gen **)calloc(count, sizeof(Gen *));
     for (int index = 0; index < count; index++)
     {
-        sampler->channels[index] = gen_create(roots[index], 1.0 / SAMPLER_RATE);
+        sampler->channels[index] = gen_create(roots[index], 1.0 / SAMPLE_RATE);
     }
     sampler->count = count;
     return sampler;

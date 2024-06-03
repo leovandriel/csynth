@@ -43,7 +43,7 @@ int player_play_pause(PaStream *stream)
     {
         return paused;
     }
-    state_event_broadcast(config_pause_key, StateEventTypeBool, &paused);
+    state_event_broadcast(CONFIG_PAUSE_KEY, StateEventTypeBool, &paused);
     return 0;
 }
 
@@ -52,7 +52,7 @@ int player_event_listener(EventType type, void *event, void *context)
     if (type == EventTypeKey)
     {
         int key = *(int *)event;
-        if (key == config_pause_key)
+        if (key == CONFIG_PAUSE_KEY)
         {
             return player_play_pause((PaStream *)context);
         }
@@ -66,10 +66,10 @@ int play_array(int count, Func **roots, double duration)
     if (err != paNoError)
         return player_error(err);
     display_show();
-    state_event_broadcast(config_pause_key, StateEventTypeBoolInv, NULL);
+    state_event_broadcast(CONFIG_PAUSE_KEY, StateEventTypeBoolInv, NULL);
     Sampler *sampler = sampler_create(count, roots);
     PaStream *stream;
-    err = Pa_OpenDefaultStream(&stream, 0, count, paInt16, SAMPLER_RATE, paFramesPerBufferUnspecified, player_callback, sampler);
+    err = Pa_OpenDefaultStream(&stream, 0, count, paInt16, SAMPLE_RATE, paFramesPerBufferUnspecified, player_callback, sampler);
     if (err != paNoError)
         return player_error(err);
     err = Pa_StartStream(stream);

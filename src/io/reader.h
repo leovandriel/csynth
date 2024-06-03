@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "./sampler.h"
+#include "../util/config.h"
 #include "./wav_header.h"
 
 typedef struct
@@ -37,7 +37,7 @@ int reader_read_file(ReaderSamples *samples, FILE *file)
         fprintf(stderr, "Unsupported WAV format size: %d\n", header.format_size);
         return -1;
     }
-    if (header.sample_rate != SAMPLER_RATE)
+    if (header.sample_rate != SAMPLE_RATE)
     {
         fprintf(stderr, "Unsupported WAV sample rate: %d\n", header.sample_rate);
         return -1;
@@ -47,7 +47,7 @@ int reader_read_file(ReaderSamples *samples, FILE *file)
         fprintf(stderr, "Unsupported WAV header size: %d\n", header.file_size - header.data_size);
         return -1;
     }
-    if (header.byte_rate != sizeof(sample_t) * header.num_channels * SAMPLER_RATE || header.block_align != sizeof(sample_t) * header.num_channels || header.bits_sample != sizeof(sample_t) * 8)
+    if (header.byte_rate != sizeof(sample_t) * header.num_channels * SAMPLE_RATE || header.block_align != sizeof(sample_t) * header.num_channels || header.bits_sample != sizeof(sample_t) * 8)
     {
         fprintf(stderr, "Unsupported WAV sample bits: %d\n", header.bits_sample);
         return -1;
@@ -55,7 +55,7 @@ int reader_read_file(ReaderSamples *samples, FILE *file)
     int channel_count = header.num_channels;
     uint32_t data_size = header.data_size;
     uint32_t sample_count = data_size / (sizeof(sample_t) * channel_count);
-    double duration = sample_count / SAMPLER_RATE;
+    double duration = sample_count / SAMPLE_RATE;
     sample_t *buffer = (sample_t *)calloc(sample_count * channel_count, sizeof(sample_t));
     count = fread(buffer, sizeof(sample_t), sample_count * channel_count, file);
     if (count != sample_count * channel_count)
@@ -74,7 +74,7 @@ int reader_read_file(ReaderSamples *samples, FILE *file)
 
 sample_t reader_sample(ReaderSamples *samples, double time, int channel)
 {
-    uint32_t index = (uint32_t)(time * SAMPLER_RATE + 0.5);
+    uint32_t index = (uint32_t)(time * SAMPLE_RATE + 0.5);
     if (index >= samples->sample_count)
     {
         return 0.0;
