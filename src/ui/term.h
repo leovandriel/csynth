@@ -9,6 +9,8 @@
 #include <termios.h>
 
 #include "../event/key_event.h"
+#include "../util/time.h"
+#include "../util/config.h"
 
 static volatile int term_signal = 0;
 
@@ -34,11 +36,12 @@ void term_handler(__attribute__((unused)) int signal)
     term_signal = 1;
 }
 
-int term_loop()
+int term_loop(double duration)
 {
     struct termios term = term_setup();
     signal(SIGINT, term_handler);
     int err = 0;
+    double start = time_wall();
     while (!err && !term_signal)
     {
         int key = getchar();
@@ -50,10 +53,14 @@ int term_loop()
                 key = getchar() + ('\033' << 16) + ('[' << 8);
                 err = key_event_broadcast(key);
             }
-            else
+            else if (key == config_exit_key)
             {
                 break;
             }
+        }
+        else if (key == config_exit_key)
+        {
+            break;
         }
         else if (key > 0)
         {
@@ -66,6 +73,11 @@ int term_loop()
                 break;
             }
             clearerr(stdin);
+        }
+        double elapsed = time_wall() - start;
+        if (duration > 0 && elapsed > duration)
+        {
+            break;
         }
     }
     term_restore(term);

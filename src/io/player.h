@@ -43,7 +43,7 @@ int player_play_pause(PaStream *stream)
     {
         return paused;
     }
-    state_event_broadcast(' ', StateEventTypeBool, &paused);
+    state_event_broadcast(config_pause_key, StateEventTypeBool, &paused);
     return 0;
 }
 
@@ -52,7 +52,7 @@ int player_event_listener(EventType type, void *event, void *context)
     if (type == EventTypeKey)
     {
         int key = *(int *)event;
-        if (key == ' ')
+        if (key == config_pause_key)
         {
             return player_play_pause((PaStream *)context);
         }
@@ -60,13 +60,13 @@ int player_event_listener(EventType type, void *event, void *context)
     return 0;
 }
 
-int play_array(int count, Func **roots)
+int play_array(int count, Func **roots, double duration)
 {
     PaError err = Pa_Initialize();
     if (err != paNoError)
         return player_error(err);
     display_show();
-    state_event_broadcast(' ', StateEventTypeBoolInv, NULL);
+    state_event_broadcast(config_pause_key, StateEventTypeBoolInv, NULL);
     Sampler *sampler = sampler_create(count, roots);
     PaStream *stream;
     err = Pa_OpenDefaultStream(&stream, 0, count, paInt16, SAMPLER_RATE, paFramesPerBufferUnspecified, player_callback, sampler);
@@ -76,7 +76,7 @@ int play_array(int count, Func **roots)
     if (err != paNoError)
         return player_error(err);
     void *handler = event_add_listener(player_event_listener, stream);
-    term_loop();
+    term_loop(duration);
     event_remove_listener(handler);
     err = Pa_CloseStream(stream);
     if (err != paNoError)
@@ -87,14 +87,19 @@ int play_array(int count, Func **roots)
     return 0;
 }
 
-int play(Func *root)
+int play_duration(Func *root, double duration)
 {
-    return play_array(1, (Func *[]){root});
+    return play_array(1, (Func *[]){root}, duration);
 }
 
-int play_stereo(Func *left, Func *right)
+int play_stereo_duration(Func *left, Func *right, double duration)
 {
-    return play_array(2, (Func *[]){left, right});
+    return play_array(2, (Func *[]){left, right}, duration);
 }
+
+int play(Func *root) { return play_duration(root, 0); }
+int play_mono_duration(Func *input, double duration) { return play_duration(input, duration); }
+int play_mono(Func *input) { return play(input); }
+int play_stereo(Func *left, Func *right) { return play_stereo_duration(left, right, 0); }
 
 #endif // CSYNTH_PLAYER_H

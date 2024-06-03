@@ -23,7 +23,7 @@ int main()
         trigger('w', snare),
         trigger('e', bdrum));
     func guitar = keyboard(trigger, note, C4);
-    display_add_label(' ', "play");
+    display_add_label(config_pause_key, "play");
     display_add_label('1', "1:tempo");
     display_add_label('Q', "Q:hihat");
     display_add_label('W', "W:snare");

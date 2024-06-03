@@ -31,7 +31,7 @@ int track_listen(EventType type, void *event_, void *context_)
     if (type == EventTypeKey)
     {
         KeyEvent *event = (KeyEvent *)event_;
-        if (event->key != ' ')
+        if (event->key != config_pause_key)
         {
             TimedKeyEvent timed_event = {
                 .key = event->key,

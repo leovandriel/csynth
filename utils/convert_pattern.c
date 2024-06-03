@@ -90,7 +90,7 @@ int main(int argc, char **argv)
         printf("        pattern_(\"");
         write(list, step, keys[i], stdout);
         printf("\", actuate(");
-        if (keys[i] >= 32 && keys[i] <= 126)
+        if (keys[i] >= ' ' && keys[i] <= '~')
         {
             printf("'%c'", keys[i]);
         }

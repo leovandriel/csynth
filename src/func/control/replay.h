@@ -29,7 +29,7 @@ static double replay_eval(__attribute__((unused)) int count, Gen **args, double 
         {
             break;
         }
-        if (event.key != ' ')
+        if (event.key != config_pause_key)
         {
             key_event_broadcast(event.key);
         }

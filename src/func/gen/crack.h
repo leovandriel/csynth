@@ -11,7 +11,7 @@
 
 static double crack_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context_)
 {
-    double probability = gen_eval(args[0]);
+    double probability = gen_eval(args[0]) * delta;
     return rand_range(0, 1) < probability ? rand_range(-1, 1) : 0;
 }
 
