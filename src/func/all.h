@@ -32,6 +32,7 @@
 #include "./filter/low_pass.h"
 #include "./filter/resonant.h"
 #include "./gen/const.h"
+#include "./gen/crack.h"
 #include "./gen/gauss.h"
 #include "./gen/gens.h"
 #include "./gen/karplus_strong.h"
