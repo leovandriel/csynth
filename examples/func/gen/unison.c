@@ -4,7 +4,7 @@
 
 Func *note(Func *frequency)
 {
-    return mul(unison(frequency, saw, 10, 0.01), decay_(0.5));
+    return decay_(unison(frequency, saw, 10, 0.01), 0.5);
 }
 
 int main()

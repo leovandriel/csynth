@@ -11,9 +11,9 @@ func ear(func angle)
 
 int main()
 {
-    func hihat = loop_(mul(high_pass_(uniform(), 20000), decay_(.05)), .25);
-    func snare = loop_(delay_(mul(uniform(), decay_(.05)), .5), 1);
-    func bdrum = loop_(mul(sine(linear_(60, 30, 1)), decay_(.05), _(3)), 1);
+    func hihat = loop_(decay_(high_pass_(uniform(), 20000), .05), .25);
+    func snare = loop_(delay_(decay_(uniform(), .05), .5), 1);
+    func bdrum = loop_(mul(decay_(sine(linear_env_(60, 30, 1)), .05), _(3)), 1);
     func angle = mul_(timer(), 60);
     func left = add(
         mul(hihat, ear(add_(angle, 0))),

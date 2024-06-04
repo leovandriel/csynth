@@ -47,7 +47,7 @@ int main()
         t(0), pluck(D5),
         t(1), pluck(E5),
         t(2), pluck(D5),
-        t(3), mul(pluck(A4), smooth_inv(t(1), t(1.5))));
+        t(3), smooth_inv(pluck(A4), t(1), t(1.5)));
 
     func guitar1 = seq_abs(
         t(0), g1,

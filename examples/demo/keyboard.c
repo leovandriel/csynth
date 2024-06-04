@@ -10,9 +10,9 @@ func note(func frequency)
 
 int main()
 {
-    func hihat = mul(high_pass_(uniform(), 20000), decay_(.05));
-    func snare = mul(uniform(), decay_(.05));
-    func bdrum = mul(sine(linear_(60, 30, 1)), decay_(.05), _(3));
+    func hihat = decay_(high_pass_(uniform(), 20000), .05);
+    func snare = decay_(uniform(), .05);
+    func bdrum = mul(decay_(sine(linear_env_(60, 30, 1)), .05), _(3));
     func tempo = knob_rel('1', .5, -.1);
     func loops = add(
         mute('Q', loop(hihat, mul_(tempo, .5))),

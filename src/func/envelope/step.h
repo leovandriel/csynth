@@ -11,6 +11,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../gen/const.h"
+#include "../op/mul.h"
 
 typedef struct
 {
@@ -26,11 +27,13 @@ static double step_eval(__attribute__((unused)) int count, Gen **args, double de
     return value;
 }
 
-Func *step(Func *edge)
+Func *step_env(Func *edge)
 {
     return func_create(NULL, step_eval, NULL, sizeof(StepContext), NULL, FUNC_FLAG_DEFAULT, 1, edge);
 }
 
-Func *step_(double edge) { return step(const_(edge)); }
+Func *step_env_(double edge) { return step_env(const_(edge)); }
+Func *step(Func *f, Func *edge) { return mul(f, step_env(edge)); }
+Func *step_(Func *f, double edge) { return step(f, const_(edge)); }
 
 #endif // CSYNTH_STEP_H

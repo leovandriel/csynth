@@ -8,7 +8,7 @@
 static func beep_dynamic(func pitch, func speed)
 {
     func tone = sine(P(A4));
-    func note = mul(tone, block(T(0), T(.3)), _(.5));
+    func note = mul(block(tone, T(0), T(.3)), _(.5));
     func looped = loop(note, T(1.5));
     func revved = reverb(looped, T(.4), _(.2));
     return revved;

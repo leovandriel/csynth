@@ -12,6 +12,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../gen/const.h"
+#include "../op/mul.h"
 
 typedef struct
 {
@@ -41,11 +42,13 @@ static double smooth_eval(__attribute__((unused)) int count, Gen **args, double 
     }
 }
 
-Func *smooth(Func *edge0, Func *edge1)
+Func *smooth_env(Func *edge0, Func *edge1)
 {
     return func_create(NULL, smooth_eval, NULL, sizeof(SmoothContext), NULL, FUNC_FLAG_DEFAULT, 2, edge0, edge1);
 }
 
-Func *smooth_(double edge0, double edge1) { return smooth(const_(edge0), const_(edge1)); }
+Func *smooth_env_(double edge0, double edge1) { return smooth_env(const_(edge0), const_(edge1)); }
+Func *smooth(Func *f, Func *edge0, Func *edge1) { return mul(f, smooth_env(edge0, edge1)); }
+Func *smooth_(Func *f, double edge0, double edge1) { return smooth(f, const_(edge0), const_(edge1)); }
 
 #endif // CSYNTH_SMOOTH_H

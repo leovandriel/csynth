@@ -5,7 +5,7 @@
 
 void test_continuous()
 {
-    Func *t = loop_(continuous(linear_(0, 1, 1)), 2);
+    Func *t = loop_(continuous(linear_env_(0, 1, 1)), 2);
     Gen *g = gen_create(t, 1);
     assert_gen_equal(g, 0);
     assert_gen_equal(g, 1);
