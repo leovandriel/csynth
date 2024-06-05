@@ -1,6 +1,6 @@
 #include "../../../src/func/effect/continuous.h"
 #include "../../../src/func/effect/loop.h"
-#include "../../../src/func/envelope/envelopes.h"
+#include "../../../src/func/filter/envelopes.h"
 #include "../../util/test.h"
 
 void test_continuous()

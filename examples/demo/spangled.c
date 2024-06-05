@@ -10,7 +10,7 @@ static func A(func frequency, double duration)
     func f = saw(frequency);
     f = chorus_(f, sine_(.2), 0.02, 0.003);
     f = low_pass(f, A2);
-    f = mul(f, adsr_(d / 4, d / 8, 0.8, d / 8, d));
+    f = adsr_(f, d / 4, d / 8, 0.8, d / 8, d);
     return f;
 }
 

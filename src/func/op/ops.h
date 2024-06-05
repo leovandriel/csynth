@@ -25,11 +25,14 @@ Func *sq(Func *input) { return pow_op(input, const_(2)); }
 Func *sqr(Func *input) { return pow_op(input, const_(0.5)); }
 Func *expo(Func *input) { return pow_op(const_(M_E), input); }
 
-Func *clamp(Func *value, Func *min, Func *max) { return min(max(value, min), max); }
-Func *clamp_(Func *value, double min, double max) { return clamp(value, const_(min), const_(max)); }
+Func *clamp(Func *input, Func *min, Func *max) { return min(max(input, min), max); }
+Func *clamp_(Func *input, double min, double max) { return clamp(input, const_(min), const_(max)); }
 
 Func *sub(Func *a, Func *b) { return add(a, neg(b)); }
 Func *sub_(Func *a, double b) { return sub(a, const_(b)); }
+
+Func *linear_op(Func *input, Func *a, Func *b, Func *t) { return add(mul(input, dvd(sub(b, a), t)), a); }
+Func *linear_op_(Func *input, double a, double b, double t) { return linear_op(input, const_(a), const_(b), const_(t)); }
 
 Func *ar(Func *a) { return sub_(mul_(a, 2), 1); }
 
