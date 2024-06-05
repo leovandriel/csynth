@@ -8,7 +8,7 @@ static func strum(int count, const double *c, double span, double decay)
     for (int i = 0; i < count; i++)
     {
         func f = karplus_strong_(c[i], decay);
-        f = low_pass_(f, c[i]);
+        f = lpf_(f, c[i]);
         f = delay_(f, span * (span < 0 ? i - count : i));
         notes[i] = f;
     }
@@ -19,7 +19,7 @@ static func pluck(func frequency)
 {
     func f = karplus_strong(frequency, _(.6));
     f = clamp_(mul_(f, 10), -1, 1);
-    f = low_pass(f, dvd_(frequency, 2));
+    f = lpf(f, dvd_(frequency, 2));
     return f;
 }
 

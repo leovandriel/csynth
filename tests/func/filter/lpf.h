@@ -1,9 +1,9 @@
-#include "../../../src/func/filter/low_pass.h"
+#include "../../../src/func/filter/lpf.h"
 #include "../../util/test.h"
 
-void test_low_pass()
+void test_lpf()
 {
-    Func *t = low_pass(const_(1), const_(10));
+    Func *t = lpf(const_(1), const_(10));
     Gen *g = gen_create(t, 0.1);
     assert_gen_equal(g, 0.0000000000000000);
     assert_gen_equal(g, 0.8626974383015871);

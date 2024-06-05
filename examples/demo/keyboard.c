@@ -5,12 +5,12 @@
 
 func note(func frequency)
 {
-    return low_pass(karplus_strong(frequency, _(.3)), frequency);
+    return lpf(karplus_strong(frequency, _(.3)), frequency);
 }
 
 int main()
 {
-    func hihat = decay_(high_pass_(uniform(), 20000), .05);
+    func hihat = decay_(hpf_(uniform(), 20000), .05);
     func snare = decay_(uniform(), .05);
     func bdrum = mul(decay_(sine(linear_env_(60, 30, 1)), .05), _(3));
     func tempo = knob_rel('1', .5, -.1);

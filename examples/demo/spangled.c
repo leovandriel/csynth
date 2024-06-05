@@ -9,7 +9,7 @@ static func A(func frequency, double duration)
     double d = speed * duration;
     func f = saw(frequency);
     f = chorus_(f, sine_(.2), 0.02, 0.003);
-    f = low_pass(f, A2);
+    f = lpf(f, A2);
     f = adsr_(f, d / 4, d / 8, 0.8, d / 8, d);
     return f;
 }
@@ -28,7 +28,7 @@ static func C(func frequency, double duration)
 {
     double d = speed * duration;
     func f = karplus_strong(frequency, _(0.8));
-    f = low_pass(f, frequency);
+    f = lpf(f, frequency);
     f = block_(f, 0, d);
     f = distort_(f, 30);
     f = mul_(f, 0.05);

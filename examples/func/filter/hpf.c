@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/high_pass -Wall -Wextra -O3 -lm -lportaudio && ./bin/high_pass "$@"; exit $?
+//usr/bin/gcc "$0" -o bin/hpf -Wall -Wextra -O3 -lm -lportaudio && ./bin/hpf "$@"; exit $?
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 

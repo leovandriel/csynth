@@ -1,9 +1,9 @@
-#include "../../../src/func/filter/high_pass.h"
+#include "../../../src/func/filter/hpf.h"
 #include "../../util/test.h"
 
-void test_high_pass()
+void test_hpf()
 {
-    Func *t = high_pass(const_(1), const_(10));
+    Func *t = hpf(const_(1), const_(10));
     Gen *g = gen_create(t, 0.1);
     assert_gen_equal(g, 0.0000000000000000);
     assert_gen_equal(g, 0.1373025616984130);

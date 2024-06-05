@@ -6,7 +6,7 @@ int main()
 {
     func snare = decay_(uniform(), .05);
     func bdrum = mul(decay_(sine(linear_env(C1, C0, ONE)), .4), _(3));
-    func hihat = decay_(high_pass_(uniform(), 20000), .05);
+    func hihat = decay_(hpf_(uniform(), 20000), .05);
     func triggers = add(
         trigger('q', hihat),
         trigger('w', snare),
