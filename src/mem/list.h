@@ -22,7 +22,7 @@ List *list_alloc(size_t element)
     List *list = (List *)calloc_(1, sizeof(List));
     if (!list)
     {
-        fprintf(stderr, "list_create: malloc failed\n");
+        fprintf(stderr, "list_create: calloc failed\n");
         return NULL;
     }
     list->element = element;

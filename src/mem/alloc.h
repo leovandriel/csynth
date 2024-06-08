@@ -1,8 +1,8 @@
 //
 // alloc.h - Memory allocation wrappers
 //
-// To find leaks, prefix source with: #define CSYNTH_ALLOC_TRACE
-// To log allocations, add: #define CSYNTH_ALLOC_LOG
+// To find leaks, prefix source with: #define ALLOC_TRACE
+// To log allocations, add: #define ALLOC_LOG
 //
 #ifndef CSYNTH_ALLOC_H
 #define CSYNTH_ALLOC_H
@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifdef CSYNTH_ALLOC_TRACE
+#ifdef ALLOC_TRACE
 
 #define ALLOC_S1(__str) #__str
 #define ALLOC_S2(__str) ALLOC_S1(__str)
@@ -72,7 +72,7 @@ Alloc *alloc_list_find(void *ptr)
 void *alloc_malloc(size_t size, const char *line)
 {
     void *ptr = malloc(size);
-#ifdef CSYNTH_ALLOC_LOG
+#ifdef ALLOC_LOG
     fprintf(stderr, "malloc: %p, %zu bytes, at %s\n", ptr, size, line);
 #endif
     if (ptr && alloc_list_add(ptr, size, line))
@@ -85,7 +85,7 @@ void *alloc_malloc(size_t size, const char *line)
 void *alloc_calloc(size_t count, size_t size, const char *line)
 {
     void *ptr = calloc(count, size);
-#ifdef CSYNTH_ALLOC_LOG
+#ifdef ALLOC_LOG
     fprintf(stderr, "calloc: %p, %zu bytes, at %s\n", ptr, count * size, line);
 #endif
     if (ptr && alloc_list_add(ptr, count * size, line))
@@ -102,7 +102,7 @@ void *alloc_realloc(void *ptr, size_t size, const char *line)
         fprintf(stderr, "realloc error: pointer not allocated %p, at %s\n", ptr, line);
     }
     void *new_ptr = realloc(ptr, size);
-#ifdef CSYNTH_ALLOC_LOG
+#ifdef ALLOC_LOG
     if (ptr)
     {
         Alloc *alloc = alloc_list_find(ptr);
@@ -129,7 +129,7 @@ void *alloc_realloc(void *ptr, size_t size, const char *line)
 
 void alloc_free(void *ptr, const char *line)
 {
-#ifdef CSYNTH_ALLOC_LOG
+#ifdef ALLOC_LOG
     if (ptr)
     {
         Alloc *alloc = alloc_list_find(ptr);
@@ -167,13 +167,13 @@ void alloc_dump()
 #define free_(__ptr) alloc_free(__ptr, ALLOC_LINE)
 #define realloc_(__ptr, __size) alloc_realloc(__ptr, __size, ALLOC_LINE)
 
-#else // CSYNTH_ALLOC_TRACE
+#else // ALLOC_TRACE
 
 #define malloc_(__size) malloc(__size)
 #define calloc_(__count, __size) calloc(__count, __size)
 #define free_(__ptr) free(__ptr)
 #define realloc_(__ptr, __size) realloc(__ptr, __size)
 
-#endif // CSYNTH_ALLOC_TRACE
+#endif // ALLOC_TRACE
 
 #endif // CSYNTH_ALLOC_H

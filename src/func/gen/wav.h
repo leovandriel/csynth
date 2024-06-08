@@ -50,7 +50,6 @@ Func *wav_filename(const char *filename, int channel, Func *factor)
     {
         return NULL;
     }
-    // TODO: reader_free(context->samples);
     return wav_samples(samples, channel, factor);
 }
 

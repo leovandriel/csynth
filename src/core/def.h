@@ -29,6 +29,7 @@ struct Func
     eval_cb eval;
     free_cb free;
     unsigned int flags;
+    Func *next;
 };
 
 struct Gen

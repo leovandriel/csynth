@@ -9,6 +9,7 @@
 
 #include "../ui/display.h"
 #include "../ui/term.h"
+#include "../util/cleanup.h"
 #include "./sampler.h"
 
 static int player_callback(__attribute__((unused)) const void *input, void *output_, unsigned long count, __attribute__((unused)) const PaStreamCallbackTimeInfo *info, __attribute__((unused)) PaStreamCallbackFlags flags, void *data)
@@ -60,7 +61,7 @@ int player_event_listener(EventType type, void *event, void *context)
     return 0;
 }
 
-int play_array(int count, Func **roots, double duration)
+int play_array_no_cleanup(int count, Func **roots, double duration)
 {
     PaError err = Pa_Initialize();
     if (err != paNoError)
@@ -85,6 +86,13 @@ int play_array(int count, Func **roots, double duration)
     Pa_Terminate();
     sampler_free(sampler);
     return 0;
+}
+
+int play_array(int count, Func **roots, double duration)
+{
+    int err = play_array_no_cleanup(count, roots, duration);
+    cleanup_all();
+    return err;
 }
 
 int play_duration(Func *root, double duration)

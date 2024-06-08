@@ -13,7 +13,7 @@ static const double PI_M_2 = M_PI * 2;
 static double *sin_table = NULL;
 static unsigned long sin_table_size = 1 << 12;
 
-void ensure_sin_table()
+void sin_table_ensure()
 {
     if (sin_table == NULL)
     {
@@ -25,9 +25,15 @@ void ensure_sin_table()
     }
 }
 
+void sin_table_free()
+{
+    free_(sin_table);
+    sin_table = NULL;
+}
+
 double sin_lookup(double phase)
 {
-    ensure_sin_table();
+    sin_table_ensure();
     double sign = phase < 0 ? -1 : 1;
     phase = phase < 0 ? -phase * M_2_PI : phase * M_2_PI;
     sign = (unsigned long)phase % 4 < 2 ? sign : -sign;

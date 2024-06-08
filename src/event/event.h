@@ -47,6 +47,19 @@ void *event_add_listener(event_listener listener, void *context)
     return handle;
 }
 
+void event_free()
+{
+    EventListenerList *list = &event_listener_list;
+    for (int i = 0; i < list->size; i++)
+    {
+        free_(list->listeners[i]);
+    }
+    free_(list->listeners);
+    list->listeners = NULL;
+    list->capacity = 0;
+    list->size = 0;
+}
+
 void event_remove_listener(void *handle)
 {
     EventListenerList *list = &event_listener_list;

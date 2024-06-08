@@ -13,12 +13,14 @@
 
 static const double EPSILON = DBL_EPSILON * 2;
 
-Func *func_create_int(init_cb init, eval_cb eval, free_cb free, size_t size, void *blank, int count, unsigned int flags)
+Func *func_list = NULL;
+
+Func *func_create_int(init_cb init, eval_cb eval, free_cb free, size_t size, void *context, unsigned int flags, int count)
 {
-    void *initial = size > 0 && blank != NULL ? calloc_(1, size) : NULL;
-    if (initial != NULL && blank != NULL)
+    void *initial = size > 0 && context != NULL ? calloc_(1, size) : NULL;
+    if (initial != NULL && context != NULL)
     {
-        memcpy(initial, blank, size);
+        memcpy(initial, context, size);
     }
     Func **args = count > 0 ? (Func **)calloc_(count, sizeof(Func *)) : NULL;
     Func *func = (Func *)calloc_(1, sizeof(Func));
@@ -31,13 +33,15 @@ Func *func_create_int(init_cb init, eval_cb eval, free_cb free, size_t size, voi
         .eval = eval,
         .free = free,
         .flags = flags,
+        .next = func_list,
     };
+    func_list = func;
     return func;
 }
 
 Func *func_create_array(init_cb init, eval_cb eval, free_cb free, size_t size, void *context, unsigned int flags, int count, Func **args)
 {
-    Func *func = func_create_int(init, eval, free, size, context, count, flags);
+    Func *func = func_create_int(init, eval, free, size, context, flags, count);
     if (func->args)
     {
         memcpy(func->args, args, count * sizeof(Func *));
@@ -47,7 +51,7 @@ Func *func_create_array(init_cb init, eval_cb eval, free_cb free, size_t size, v
 
 Func *func_create_va(init_cb init, eval_cb eval, free_cb free, size_t size, void *context, unsigned int flags, int count, va_list valist)
 {
-    Func *func = func_create_int(init, eval, free, size, context, count, flags);
+    Func *func = func_create_int(init, eval, free, size, context, flags, count);
     for (int i = 0; i < count; i++)
     {
         func->args[i] = va_arg(valist, Func *);
@@ -62,6 +66,24 @@ Func *func_create(init_cb init, eval_cb eval, free_cb free, size_t size, void *c
     Func *func = func_create_va(init, eval, free, size, context, flags, count, valist);
     va_end(valist);
     return func;
+}
+
+void func_free()
+{
+    while (func_list != NULL)
+    {
+        Func *func = func_list;
+        func_list = func->next;
+        if (func->args != NULL)
+        {
+            free_(func->args);
+        }
+        if (func->initial != NULL)
+        {
+            free_(func->initial);
+        }
+        free_(func);
+    }
 }
 
 #endif // CSYNTH_FUNC_H

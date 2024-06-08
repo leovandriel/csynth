@@ -59,6 +59,15 @@ void display_add_all(const char *keys)
     }
 }
 
+void display_free()
+{
+    DisplayElementList *list = &display_element_list;
+    free_(list->elements);
+    list->elements = NULL;
+    list->capacity = 0;
+    list->size = 0;
+}
+
 void display_set_value(DisplayElementList *list, int key, StateEventType type, void *value)
 {
     for (int i = 0; i < list->size; i++)
