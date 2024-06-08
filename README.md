@@ -6,94 +6,108 @@ _A simple synth in C._
 
 ## Usage
 
-CSynth is a header-only library. Most functionality is accessible through
-`src/func/all.h`.
+To get started, check out the [examples](examples) folder. Each C file is
+executable, e.g. to run `beep.c`, simply enter:
 
-To get started, check out the [examples](examples) folder, e.g. by running:
+    ./examples/demo/beep.c
 
-    ./examples/beep.c
-
-This requires GCC and [PortAudio](https://www.portaudio.com/) binaries to be
-installed. You can also use CSynth without PortAudio; simply replace `play(..)`
-with `write(..)` to write to a WAV file.
+This requires GCC (or clang) and [PortAudio](https://www.portaudio.com/)
+binaries to be installed. You can also use CSynth without PortAudio; just
+replace `play(..)` with `write(..)` to write to a WAV file.
 
 ## Tutorial
 
-To create music in CSynth, combine basic (mathematical) functions to create
+To make music in CSynth, combine basic (mathematical) functions to create
 sounds, instruments, and compositions. Let's create a single note with reverb.
 
-Start by playing a 440 Hz sine wave (and stop by pressing Ctrl-C):
+Start by writing a minimal C program that plays a 440 Hz sine wave:
 
 ```c
-play(sine(A4));
+#include "./src/func/all.h"
+#include "./src/io/player.h"
+
+int main()
+{
+    return play(sine(A4));
+}
 ```
 
-The `A4` constant represents a 440 Hz, `sine` generates a sine wave at that
-frequency, and `play` samples the sine function for 2 seconds to your speakers.
+Now run with (and stop by pressing Esc):
 
-Next, add a block envelope to make this into a 0.3 second note:
+    ./examples/tutorial.c
+
+Taking a closer look, there are three pieces here: the `A4` constant represents
+440 Hz, `sine` generates a sine wave at that frequency, and `play` samples the
+sine function to your speakers.
+
+This probably sounded quite loud. Let's bring it down a little to save our ears:
 
 ```c
-func tone = sine(A4);
-func note = mul(tone, block_(0, .3));
-play(note);
+    func tone = sine(A4);
+    play(mul_(tone, .5));
 ```
 
-This adds `block`, which is value 1 for time in interval [0, 0.3] and 0
-elsewhere. `mul` simply multiplies the tone with the envelope, resulting in a .3
-second A4 note. By default, all functions take functions as arguments. The
-underscore `_` indicates that the function takes a number.
+Here we introduce `mul`, which multiplies both inputs. By multiplying by 0.5,
+the volume becomes less. This also adds `func`, which indicates a function
+variable `tone`, allowing us split things across two lines.
+
+Note the underscore `_`. By default, all functions take other functions as
+arguments. By appending `_`, you can pass in numbers instead.
+
+Next, add a block envelope to turn this into a 0.3 second note:
+
+```c
+    func tone = sine(A4);
+    func note = block_(tone, 0, .3);
+    play(mul_(note, .5));
+```
+
+This adds `block`, which multiplies tone by 1 during the interval [0, 0.3] and 0
+elsewhere, resulting in a 0.3 second A4 note.
 
 Next, add the note in a 1.5 second loop:
 
 ```c
-func tone = sine(A4);
-func note = mul(tone, block_(0, .3));
-func looped = loop_(note, 1.5);
-play(looped);
+    func tone = sine(A4);
+    func note = block_(tone, 0, .3);
+    func looped = loop_(note, 1.5);
+    play(mul_(looped, .5));
 ```
 
-Finally, add reverb (interval .4s, decay .2) and scale the note to prevent
-clipping:
+Finally, add reverb (interval .4s, decay .2):
 
 ```c
-func tone = sine(A4);
-func note = mul(tone, block_(0, .3), _(.5));
-func looped = loop_(note, 1.5);
-func revved = reverb_(looped, .4, .2);
-play(revved);
+    func tone = sine(A4);
+    func note = block_(tone, 0, .3);
+    func looped = loop_(note, 1.5);
+    func revved = reverb_(looped, .4, .2);
+    play(mul_(revved, .5));
 ```
 
-Listen to the result in
-[beep.mp3](https://github.com/leovandriel/csynth/raw/main/examples/beep.mp3)
-or by running:
+To listen to the result:
+[tutorial.mp3](https://github.com/leovandriel/csynth/raw/main/examples/tutorial.mp3)
 
-    ./examples/beep.c
+To see more of what you can do with CSynth, take a look in
+[examples/demo](examples/demo).
 
-To see more of what you can do with CSynth, take a look at the
-[examples](examples).
-
-To learn more about available functions, take a look at the [func](src/func)
-folder.
+To learn more about available functions, take a look in [src/func](src/func).
 
 ## How it works
 
 The `func` is the primary building block, representing a function that outputs a
 value over time. Almost all functions take another functions as input, allowing
-the creation of complex sounds from primitives like sine waves and envelopes.
-These inputs can represent a signal that they transform (e.g. `input` in
-`loop()`) or a parameter that is used for generating a signal (e.g. `frequency`
-in `sine()`). To CSynth there is no difference.
+the creation of complex sounds from primitives like sawtooth waves and
+envelopes. These inputs can represent a signal that they transform (e.g. `input`
+in `loop()`) or a parameter that is used for generating a signal (e.g.
+`frequency` in `saw()`).
 
-By nesting functions, you can create a acyclic graph of functions. When this is
-fed into the `player` or `writer`, traverse the graph and turn it into a tree of
-generators (`Gen`), together with a sample rate (as a time `delta`). The root
-generator then recursively samples the tree.
+By nesting functions, you can create a directed acyclic graph of functions. When
+this is fed into the `player` or `writer`, the graph is traversed and
+transformed into a tree of generators, together with a sample rate (as a time
+`delta`). The root generator then recursively samples the tree.
 
-This creation of generators allows functions to be reused during composition,
-i.e. to be a acyclic graph instead of a strict tree.
-
-All of the above logic is defined in [func.h](src/core/func.h).
+All of the above logic is defined in [func.h](src/core/func.h) and
+[gen.h](src/core/gen.h).
 
 ## Development
 
@@ -109,7 +123,7 @@ Example run specific test:
 
 _Why C?_
 
-Because it didn't seem like a good idea.
+Because it didn't seem like a good idea at the time.
 
 ## License
 
