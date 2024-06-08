@@ -6,7 +6,8 @@
 
 #include "../core/func.h"
 #include "../event/event.h"
-#include "../util/math.h"
+#include "../ui/display.h"
+#include "./math.h"
 
 void cleanup_all()
 {

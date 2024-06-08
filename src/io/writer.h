@@ -7,11 +7,12 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "../util/cleanup.h"
 #include "./wav_header.h"
 
 #define WRITER_BUFFER_SIZE 4096
 
-int writer_write_file(int channel_count, Func **roots, double duration, FILE *file)
+int writer_write_file_no_cleanup(int channel_count, Func **channels, double duration, FILE *file)
 {
     uint32_t sample_count = duration * SAMPLE_RATE;
     int err = wav_header_write(sample_count, channel_count, file);
@@ -19,7 +20,7 @@ int writer_write_file(int channel_count, Func **roots, double duration, FILE *fi
     {
         return err;
     }
-    Sampler *sampler = sampler_create(channel_count, roots);
+    Sampler *sampler = sampler_create(channel_count, channels);
     sample_t buffer[WRITER_BUFFER_SIZE];
     uint32_t buffer_samples = WRITER_BUFFER_SIZE / channel_count;
     while (sample_count)
@@ -39,22 +40,31 @@ int writer_write_file(int channel_count, Func **roots, double duration, FILE *fi
     return 0;
 }
 
-int writer_write_channels(int channel_count, Func **roots, double duration, const char *filename)
+int writer_write_file(int count, Func **channels, double duration, FILE *file)
+{
+    int err = writer_write_file_no_cleanup(count, channels, duration, file);
+    cleanup_all();
+    return err;
+}
+
+int writer_write_channels(int channel_count, Func **channels, double duration, const char *filename)
 {
     FILE *file = fopen(filename, "wb");
-    int result = writer_write_file(channel_count, roots, duration, file);
+    int result = writer_write_file(channel_count, channels, duration, file);
     fclose(file);
     return result;
 }
 
-int write_file(Func *root, double duration, const char *filename)
+int write(Func *input, double duration, const char *filename)
 {
-    return writer_write_channels(1, (Func *[]){root}, duration, filename);
+    return writer_write_channels(1, (Func *[]){input}, duration, filename);
 }
 
-int write_file_stereo(Func *left, Func *right, double duration, const char *filename)
+int write_stereo(Func *left, Func *right, double duration, const char *filename)
 {
     return writer_write_channels(2, (Func *[]){left, right}, duration, filename);
 }
+
+int write_mono(Func *input, double duration, const char *filename) { return write(input, duration, filename); }
 
 #endif // CSYNTH_WRITER_H

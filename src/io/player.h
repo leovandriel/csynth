@@ -61,14 +61,14 @@ int player_event_listener(EventType type, void *event, void *context)
     return 0;
 }
 
-int play_array_no_cleanup(int count, Func **roots, double duration)
+int player_play_channels_no_cleanup(int count, Func **channels, double duration)
 {
     PaError err = Pa_Initialize();
     if (err != paNoError)
         return player_error(err);
     display_show();
     state_event_broadcast(CONFIG_PAUSE_KEY, StateEventTypeBoolInv, NULL);
-    Sampler *sampler = sampler_create(count, roots);
+    Sampler *sampler = sampler_create(count, channels);
     PaStream *stream;
     err = Pa_OpenDefaultStream(&stream, 0, count, paInt16, SAMPLE_RATE, paFramesPerBufferUnspecified, player_callback, sampler);
     if (err != paNoError)
@@ -88,21 +88,21 @@ int play_array_no_cleanup(int count, Func **roots, double duration)
     return 0;
 }
 
-int play_array(int count, Func **roots, double duration)
+int player_play_channels(int count, Func **channels, double duration)
 {
-    int err = play_array_no_cleanup(count, roots, duration);
+    int err = player_play_channels_no_cleanup(count, channels, duration);
     cleanup_all();
     return err;
 }
 
 int play_duration(Func *root, double duration)
 {
-    return play_array(1, (Func *[]){root}, duration);
+    return player_play_channels(1, (Func *[]){root}, duration);
 }
 
 int play_stereo_duration(Func *left, Func *right, double duration)
 {
-    return play_array(2, (Func *[]){left, right}, duration);
+    return player_play_channels(2, (Func *[]){left, right}, duration);
 }
 
 int play(Func *root) { return play_duration(root, 0); }

@@ -1,6 +1,9 @@
 //
 // test.h - Testing utilties
 //
+#ifndef CSYNTH_TEST_H
+#define CSYNTH_TEST_H
+
 #include <assert.h>
 #include <stdio.h>
 
@@ -57,3 +60,5 @@ void print_assert_gen_equal(Gen *g)
 void test_test()
 {
 }
+
+#endif // CSYNTH_TEST_H
