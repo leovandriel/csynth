@@ -16,7 +16,7 @@
 Func *pattern(const char *string, Func *f, Func *duration, Func *timing)
 {
     int length = strlen(string);
-    Func **array = (Func **)calloc(length * 2, sizeof(Func *));
+    Func **array = (Func **)calloc_(length * 2, sizeof(Func *));
     int index = 0;
     for (int i = 0; i < length; i++)
     {
@@ -27,7 +27,7 @@ Func *pattern(const char *string, Func *f, Func *duration, Func *timing)
         }
     }
     Func *func = seq_abs_array(index, array);
-    free(array);
+    free_(array);
     return func;
 }
 

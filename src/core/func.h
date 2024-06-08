@@ -6,22 +6,22 @@
 
 #include <float.h>
 #include <stdarg.h>
-#include <stdlib.h>
 #include <string.h>
 
+#include "../mem/alloc.h"
 #include "./def.h"
 
 static const double EPSILON = DBL_EPSILON * 2;
 
 Func *func_create_int(init_cb init, eval_cb eval, free_cb free, size_t size, void *blank, int count, unsigned int flags)
 {
-    void *initial = size > 0 && blank != NULL ? calloc(1, size) : NULL;
+    void *initial = size > 0 && blank != NULL ? calloc_(1, size) : NULL;
     if (initial != NULL && blank != NULL)
     {
         memcpy(initial, blank, size);
     }
-    Func **args = count > 0 ? (Func **)calloc(count, sizeof(Func *)) : NULL;
-    Func *func = (Func *)calloc(1, sizeof(Func));
+    Func **args = count > 0 ? (Func **)calloc_(count, sizeof(Func *)) : NULL;
+    Func *func = (Func *)calloc_(1, sizeof(Func));
     *func = (Func){
         .args = args,
         .count = count,

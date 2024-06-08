@@ -4,14 +4,14 @@
 #ifndef CSYNTH_GEN_H
 #define CSYNTH_GEN_H
 
-#include <stdlib.h>
 #include <string.h>
 
+#include "../mem/alloc.h"
 #include "./def.h"
 
 Gen *gen_create(Func *func, double delta)
 {
-    void *context = func->size > 0 ? calloc(1, func->size) : NULL;
+    void *context = func->size > 0 ? calloc_(1, func->size) : NULL;
     if (context != NULL && func->initial != NULL)
     {
         memcpy(context, func->initial, func->size);
@@ -19,13 +19,13 @@ Gen *gen_create(Func *func, double delta)
     void *reset = func->initial;
     if (func->init != NULL)
     {
-        reset = func->size > 0 ? calloc(1, func->size) : NULL;
+        reset = func->size > 0 ? calloc_(1, func->size) : NULL;
         if (reset != NULL && func->initial != NULL)
         {
             memcpy(reset, func->initial, func->size);
         }
     }
-    Gen **args = func->count > 0 ? (Gen **)calloc(func->count, sizeof(Gen *)) : NULL;
+    Gen **args = func->count > 0 ? (Gen **)calloc_(func->count, sizeof(Gen *)) : NULL;
     for (int i = 0; i < func->count; i++)
     {
         args[i] = gen_create(func->args[i], delta);
@@ -38,7 +38,7 @@ Gen *gen_create(Func *func, double delta)
             memcpy(reset, context, func->size);
         }
     }
-    Gen *gen = (Gen *)calloc(1, sizeof(Gen));
+    Gen *gen = (Gen *)calloc_(1, sizeof(Gen));
     *gen = (Gen){
         .func = func,
         .args = args,
@@ -62,14 +62,14 @@ void gen_free(Gen *gen)
         {
             gen_free(gen->args[i]);
         }
-        free(gen->args);
+        free_(gen->args);
     }
-    free(gen->context);
+    free_(gen->context);
     if (func->init != NULL)
     {
-        free(gen->reset);
+        free_(gen->reset);
     }
-    free(gen);
+    free_(gen);
 }
 
 double gen_eval(Gen *gen)

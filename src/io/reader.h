@@ -56,19 +56,19 @@ int reader_read_file(ReaderSamples *samples, FILE *file)
     uint32_t data_size = header.data_size;
     uint32_t sample_count = data_size / (sizeof(sample_t) * channel_count);
     double duration = sample_count / SAMPLE_RATE;
-    sample_t *buffer = (sample_t *)calloc(sample_count * channel_count, sizeof(sample_t));
+    sample_t *buffer = (sample_t *)calloc_(sample_count * channel_count, sizeof(sample_t));
     count = fread(buffer, sizeof(sample_t), sample_count * channel_count, file);
     if (count != sample_count * channel_count)
     {
         fprintf(stderr, "Unable to read WAV data\n");
-        free(buffer);
+        free_(buffer);
         return -1;
     }
     samples->buffer = buffer;
     samples->sample_count = sample_count;
     samples->channel_count = channel_count;
     samples->duration = duration;
-    free(buffer);
+    free_(buffer);
     return 0;
 }
 
@@ -84,7 +84,7 @@ sample_t reader_sample(ReaderSamples *samples, double time, int channel)
 
 void reader_free(ReaderSamples *samples)
 {
-    free(samples->buffer);
+    free_(samples->buffer);
 }
 
 int reader_read_filename(ReaderSamples *samples, const char *filename)

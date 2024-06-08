@@ -16,13 +16,13 @@
 
 Func *unison(Func *frequency, gen_func generator, int count, double detune)
 {
-    Func **array = (Func **)calloc(count, sizeof(Func *));
+    Func **array = (Func **)calloc_(count, sizeof(Func *));
     for (int i = 0; i < count; i++)
     {
         array[i] = generator(mul_(frequency, rand_range(1 - detune, 1 + detune)));
     }
     Func *func = dvd_(add_array(count, array), count);
-    free(array);
+    free_(array);
     return func;
 }
 

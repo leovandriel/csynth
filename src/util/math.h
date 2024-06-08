@@ -5,8 +5,8 @@
 #define CSYNTH_MATH_H
 
 #include <math.h>
-#include <stddef.h>
-#include <stdlib.h>
+
+#include "../mem/alloc.h"
 
 static const double PI_M_2 = M_PI * 2;
 
@@ -17,7 +17,7 @@ void ensure_sin_table()
 {
     if (sin_table == NULL)
     {
-        sin_table = (double *)malloc(sizeof(double) * sin_table_size);
+        sin_table = (double *)malloc_(sizeof(double) * sin_table_size);
         for (unsigned long i = 0; i < sin_table_size; i++)
         {
             sin_table[i] = sin(M_PI_2 * i / sin_table_size);

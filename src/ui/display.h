@@ -41,7 +41,7 @@ void display_add_label(int key, const char *label)
     if (list->size == list->capacity)
     {
         list->capacity = list->capacity ? list->capacity * 2 : 16;
-        list->elements = (DisplayElement *)realloc(list->elements, list->capacity * sizeof(DisplayElement));
+        list->elements = (DisplayElement *)realloc_(list->elements, list->capacity * sizeof(DisplayElement));
     }
     list->elements[list->size++] = (DisplayElement){.key = key, .label = label};
 }

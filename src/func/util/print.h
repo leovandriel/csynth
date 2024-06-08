@@ -31,13 +31,13 @@ static double print_eval(__attribute__((unused)) int count, Gen **args, __attrib
 void print_free(__attribute__((unused)) int count, void *context_)
 {
     PrintContext *context = (PrintContext *)context_;
-    free((char *)context->text);
+    free_((char *)context->text);
 }
 
 Func *print(const char *text, Func *input)
 {
     size_t size = strlen(text) + 1;
-    char *copy = malloc(size);
+    char *copy = malloc_(size);
     strncpy(copy, text, size);
     PrintContext initial = (PrintContext){
         .text = copy,

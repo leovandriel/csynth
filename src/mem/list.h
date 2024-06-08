@@ -5,8 +5,9 @@
 #define CSYNTH_LIST_H
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+
+#include "./alloc.h"
 
 typedef struct
 {
@@ -18,7 +19,7 @@ typedef struct
 
 List *list_alloc(size_t element)
 {
-    List *list = (List *)calloc(1, sizeof(List));
+    List *list = (List *)calloc_(1, sizeof(List));
     if (!list)
     {
         fprintf(stderr, "list_create: malloc failed\n");
@@ -30,8 +31,8 @@ List *list_alloc(size_t element)
 
 void list_free(List *list)
 {
-    free(list->array);
-    free(list);
+    free_(list->array);
+    free_(list);
 }
 
 int list_ensure(List *list, size_t initial)
@@ -39,7 +40,7 @@ int list_ensure(List *list, size_t initial)
     if (list->size == list->capacity)
     {
         list->capacity = list->capacity ? list->capacity * 2 : initial;
-        void *resized = realloc(list->array, list->capacity * list->element);
+        void *resized = realloc_(list->array, list->capacity * list->element);
         if (!resized)
         {
             fprintf(stderr, "list_ensure: realloc failed\n");

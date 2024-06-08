@@ -18,14 +18,14 @@ typedef struct
 
 void buffer_init(Buffer *buffer, unsigned long size)
 {
-    buffer->samples = size ? (double *)calloc(size, sizeof(double)) : NULL;
+    buffer->samples = size ? (double *)calloc_(size, sizeof(double)) : NULL;
     buffer->capacity = size;
     buffer->size = size;
 }
 
 static unsigned long buffer_resize_from_zero(Buffer *buffer, unsigned long size, double (*fill)(unsigned long))
 {
-    buffer->samples = (double *)calloc(size, sizeof(double));
+    buffer->samples = (double *)calloc_(size, sizeof(double));
     if (fill != NULL)
     {
         for (unsigned long i = 0; i < size; i++)
@@ -40,7 +40,7 @@ static unsigned long buffer_resize_from_zero(Buffer *buffer, unsigned long size,
 
 static unsigned long buffer_resize_to_zero(Buffer *buffer)
 {
-    free(buffer->samples);
+    free_(buffer->samples);
     buffer->samples = NULL;
     buffer->capacity = 0;
     buffer->size = 0;
@@ -52,7 +52,7 @@ static unsigned long buffer_resize_up(Buffer *buffer, unsigned long size, unsign
     if (size > buffer->capacity)
     {
         buffer->capacity = size * 2;
-        buffer->samples = (double *)realloc(buffer->samples, buffer->capacity * sizeof(double));
+        buffer->samples = (double *)realloc_(buffer->samples, buffer->capacity * sizeof(double));
     }
     unsigned long diff = size - buffer->size;
     unsigned long to = index + diff;
@@ -121,7 +121,7 @@ unsigned long buffer_resize(Buffer *buffer, unsigned long size, unsigned long in
 
 void buffer_free(Buffer *buffer)
 {
-    free(buffer->samples);
+    free_(buffer->samples);
 }
 
 double fill_rand_0_1(__attribute__((unused)) unsigned long index)

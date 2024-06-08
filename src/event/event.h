@@ -5,8 +5,9 @@
 #define CSYNTH_EVENT_H
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+
+#include "../mem/alloc.h"
 
 typedef enum
 {
@@ -37,9 +38,9 @@ void *event_add_listener(event_listener listener, void *context)
     if (list->size == list->capacity)
     {
         list->capacity = list->capacity ? list->capacity * 2 : 16;
-        list->listeners = (EventListener **)realloc(list->listeners, list->capacity * sizeof(EventListener *));
+        list->listeners = (EventListener **)realloc_(list->listeners, list->capacity * sizeof(EventListener *));
     }
-    EventListener *handle = (EventListener *)calloc(1, sizeof(EventListener));
+    EventListener *handle = (EventListener *)calloc_(1, sizeof(EventListener));
     handle->listener = listener;
     handle->context = context;
     list->listeners[list->size++] = handle;
@@ -63,7 +64,7 @@ void event_remove_listener(void *handle)
         return;
     }
     list->listeners[index] = list->listeners[list->size-- - 1];
-    free(handle);
+    free_(handle);
 }
 
 int event_broadcast(EventType type, void *event)

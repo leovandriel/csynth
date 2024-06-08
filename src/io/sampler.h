@@ -18,8 +18,8 @@ typedef struct
 
 Sampler *sampler_create(int count, Func **roots)
 {
-    Sampler *sampler = (Sampler *)calloc(1, sizeof(Sampler));
-    sampler->channels = (Gen **)calloc(count, sizeof(Gen *));
+    Sampler *sampler = (Sampler *)calloc_(1, sizeof(Sampler));
+    sampler->channels = (Gen **)calloc_(count, sizeof(Gen *));
     for (int index = 0; index < count; index++)
     {
         sampler->channels[index] = gen_create(roots[index], 1.0 / SAMPLE_RATE);
@@ -47,8 +47,8 @@ void sampler_free(Sampler *sampler)
     {
         gen_free(sampler->channels[index]);
     }
-    free(sampler->channels);
-    free(sampler);
+    free_(sampler->channels);
+    free_(sampler);
 }
 
 #endif // CSYNTH_SAMPLER_H
