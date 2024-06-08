@@ -65,6 +65,7 @@ int main(int argc, char **argv)
         file = fopen(filename, "r");
         if (!file)
         {
+            key_list_free(list);
             fprintf(stderr, "machine: failed to open file: %s\n", filename);
             return 1;
         }
@@ -72,11 +73,15 @@ int main(int argc, char **argv)
     int err = key_list_read_file(list, file);
     if (err)
     {
+        key_list_free(list);
+        fclose(file);
         return err;
     }
     if (key_list_len(list) == 0)
     {
         fprintf(stderr, "machine: no events found\n");
+        fclose(file);
+        key_list_free(list);
         return 1;
     }
 

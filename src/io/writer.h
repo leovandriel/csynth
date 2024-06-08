@@ -9,7 +9,7 @@
 
 #include "./wav_header.h"
 
-static const int WRITER_BUFFER_SIZE = 4096;
+#define WRITER_BUFFER_SIZE 4096
 
 int writer_write_file(int channel_count, Func **roots, double duration, FILE *file)
 {

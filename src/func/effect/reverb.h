@@ -28,8 +28,12 @@ static double reverb_eval(__attribute__((unused)) int count, Gen **args, double 
     double decay = gen_eval(args[2]);
     context->index = buffer_resize(&context->buffer, size, context->index, NULL);
     double *buffer = context->buffer.samples;
-    double output = buffer[context->index];
-    buffer[context->index] = buffer[context->index] * decay + input;
+    double output = 0;
+    if (buffer)
+    {
+        output = buffer[context->index];
+        buffer[context->index] = buffer[context->index] * decay + input;
+    }
     context->index = (context->index + 1) % size;
     return output;
 }

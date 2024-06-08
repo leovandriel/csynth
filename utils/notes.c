@@ -7,7 +7,7 @@
 
 static const char *note_names[] = {"C", "Cs", "Db", "D", "Ds", "Eb", "E", "F", "Fs", "Gb", "G", "Gs", "Ab", "A", "As", "Bb", "B"};
 
-void main()
+int main()
 {
     int octaves = 10;
     for (int i = 0; i < 17 * octaves; i++)

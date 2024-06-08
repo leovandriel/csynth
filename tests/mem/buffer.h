@@ -13,6 +13,7 @@ static void test_same()
     assert(buffer.capacity == 2);
     assert(buffer.samples[0] == 1);
     assert(buffer.samples[1] == 2);
+    buffer_free(&buffer);
 }
 
 static void test_from_zero()

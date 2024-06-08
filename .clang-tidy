@@ -1,0 +1,4 @@
+Checks: >
+    -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling
+HeaderFilterRegex: .*
+SystemHeaders: True

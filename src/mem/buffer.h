@@ -18,7 +18,7 @@ typedef struct
 
 void buffer_init(Buffer *buffer, unsigned long size)
 {
-    buffer->samples = (double *)calloc(size, sizeof(double));
+    buffer->samples = size ? (double *)calloc(size, sizeof(double)) : NULL;
     buffer->capacity = size;
     buffer->size = size;
 }

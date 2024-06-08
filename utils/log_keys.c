@@ -1,5 +1,5 @@
 //usr/bin/gcc "$0" -o bin/log_keys -Wall -Wextra -O3 && ./bin/log_keys "$@"; exit $?
-#include "../../src/ui/term.h"
+#include "../src/ui/term.h"
 
 static volatile int stop = 0;
 

@@ -36,8 +36,9 @@ void print_free(__attribute__((unused)) int count, void *context_)
 
 Func *print(const char *text, Func *input)
 {
-    char *copy = malloc(strlen(text) + 1);
-    strcpy(copy, text);
+    size_t size = strlen(text) + 1;
+    char *copy = malloc(size);
+    strncpy(copy, text, size);
     PrintContext initial = (PrintContext){
         .text = copy,
     };
