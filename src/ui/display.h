@@ -40,8 +40,15 @@ void display_add_label(int key, const char *label)
     DisplayElementList *list = &display_element_list;
     if (list->size == list->capacity)
     {
-        list->capacity = list->capacity ? list->capacity * 2 : 16;
-        list->elements = (DisplayElement *)realloc_(list->elements, list->capacity * sizeof(DisplayElement));
+        int capacity = list->capacity > 0 ? list->capacity * 2 : 16;
+        DisplayElement *elements = (DisplayElement *)realloc_(list->elements, capacity * sizeof(DisplayElement));
+        if (!elements)
+        {
+            fprintf(stderr, "Failed to allocate memory for display elements\n");
+            return;
+        }
+        list->capacity = capacity;
+        list->elements = elements;
     }
     list->elements[list->size++] = (DisplayElement){.key = key, .label = label};
 }

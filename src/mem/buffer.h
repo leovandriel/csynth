@@ -51,13 +51,14 @@ static unsigned long buffer_resize_up(Buffer *buffer, unsigned long size, unsign
 {
     if (size > buffer->capacity)
     {
-        double *samples = (double *)realloc_(buffer->samples, size * 2 * sizeof(double));
+        unsigned long capacity = size * 2;
+        double *samples = (double *)realloc_(buffer->samples, capacity * sizeof(double));
         if (!samples)
         {
             fprintf(stderr, "Unable to resize buffer\n");
             return index;
         }
-        buffer->capacity = size * 2;
+        buffer->capacity = capacity;
         buffer->samples = samples;
     }
     unsigned long diff = size - buffer->size;

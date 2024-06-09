@@ -37,8 +37,15 @@ void *event_add_listener(event_listener listener, void *context)
     EventListenerList *list = &event_listener_list;
     if (list->size == list->capacity)
     {
-        list->capacity = list->capacity ? list->capacity * 2 : 16;
-        list->listeners = (EventListener **)realloc_(list->listeners, list->capacity * sizeof(EventListener *));
+        int capacity = list->capacity ? list->capacity * 2 : 16;
+        EventListener **listeners = (EventListener **)realloc_(list->listeners, capacity * sizeof(EventListener *));
+        if (!listeners)
+        {
+            fprintf(stderr, "Failed to allocate memory for event listeners\n");
+            return NULL;
+        }
+        list->capacity = capacity;
+        list->listeners = listeners;
     }
     EventListener *handle = (EventListener *)calloc_(1, sizeof(EventListener));
     handle->listener = listener;

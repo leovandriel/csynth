@@ -39,13 +39,14 @@ int list_ensure(List *list, size_t initial)
 {
     if (list->size == list->capacity)
     {
-        list->capacity = list->capacity ? list->capacity * 2 : initial;
-        void *resized = realloc_(list->array, list->capacity * list->element);
+        size_t capacity = list->capacity ? list->capacity * 2 : initial;
+        void *resized = realloc_(list->array, capacity * list->element);
         if (!resized)
         {
             fprintf(stderr, "list_ensure: realloc failed\n");
             return -1;
         }
+        list->capacity = capacity;
         memset(resized + list->size * list->element, 0, (list->capacity - list->size) * list->element);
         list->array = resized;
     }
