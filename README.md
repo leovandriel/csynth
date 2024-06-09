@@ -209,6 +209,47 @@ of `_()`. This is because the examples use short-hand helpers, while the source
 avoids those. Other than that, there is no specific distinction and code can
 easily make its way into the function library.
 
+## I/O
+
+Most of the examples above use [play](src/io/player.h) to sample a function to
+the system audio buffer. [play](src/io/player.h) takes care of setting up
+[PortAudio](https://www.portaudio.com/), the [sampler](src/io/sampler.h), the
+[terminal](src/ui/terminal.h), and it cleans things up before exiting the
+program. It comes in a few variants:
+
+```c
+    play(sine(A4));
+    play_(sine(A4), 10); // 10 seconds
+    play_stereo(sine(A4), sine(B4));
+    play_stereo_duration(sine(A4), sine(B4), 10);
+    player_play_channels(4, (Func *[]){sine(A4), sine(B4), sine(C4), sine(D4)}, 10);
+```
+
+Instead of playing the audio, we can also write things to a wav file using
+[write](src/io/writer.h):
+
+```c
+    write(sine(A4), 10, "output/sine.wav");
+    write_(sine(A4), 10); // writes to output/default.wav
+    write_stereo(sine(A4), sine(A4), 10, "output/sine.wav");
+    writer_write_channels(2, (Func *[]){sine(A4), sine(B4)}, 10, stdout);
+```
+
+Under the hood, `play` and `write` use [sampler](src/io/sampler.h). This makes
+it easy to implement a custom audio player:
+
+```c
+    Sampler *sampler = sampler_create(channel_count, channels);
+    for (;;) {
+        sample_t buffer = ...;
+        sampler_sample(sampler, sample_count, buffer);
+    }
+    sampler_free(sampler);
+```
+
+Lastly, functions that rely on sample data, like [wav](src/func/gen/wav.h), use
+[reader](src/io/reader.h) to load WAV data.
+
 ## How it works
 
 The `func` is the primary building block, representing a function that outputs a
