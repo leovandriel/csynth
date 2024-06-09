@@ -2,8 +2,6 @@
 // step.h - A step function
 //
 // `step(at)` returns 1 if time is past at, otherwise 0.
-// - block(edge0, edge1) - A block function, which is 1 between edge0 and edge1
-// - block_ - Take double arguments instead of functions
 //
 #ifndef CSYNTH_STEP_H
 #define CSYNTH_STEP_H

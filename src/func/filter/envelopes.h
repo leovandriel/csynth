@@ -41,10 +41,10 @@ Func *step_inv_env_(double edge) { return step_inv_env(const_(edge)); }
 Func *step_inv(Func *f, Func *edge) { return mul(f, step_inv_env(edge)); }
 Func *step_inv_(Func *f, double edge) { return step_inv(f, const_(edge)); }
 
-Func *block_env(Func *edge0, Func *edge1) { return mul(step_env(edge0), step_inv_env(edge1)); }
-Func *block_env_(double edge0, double edge1) { return block_env(const_(edge0), const_(edge1)); }
-Func *block(Func *f, Func *edge0, Func *edge1) { return mul(f, block_env(edge0, edge1)); }
-Func *block_(Func *f, double edge0, double edge1) { return block(f, const_(edge0), const_(edge1)); }
+Func *rect_env(Func *edge0, Func *edge1) { return mul(step_env(edge0), step_inv_env(edge1)); }
+Func *rect_env_(double edge0, double edge1) { return rect_env(const_(edge0), const_(edge1)); }
+Func *rect(Func *f, Func *edge0, Func *edge1) { return mul(f, rect_env(edge0, edge1)); }
+Func *rect_(Func *f, double edge0, double edge1) { return rect(f, const_(edge0), const_(edge1)); }
 
 Func *smooth_env(Func *edge0, Func *edge1) { return smooth_op(timer(), edge0, edge1); }
 Func *smooth_env_(double edge0, double edge1) { return smooth_env(const_(edge0), const_(edge1)); }
@@ -56,10 +56,10 @@ Func *smooth_inv_env_(double edge0, double edge1) { return smooth_inv_env(const_
 Func *smooth_inv(Func *f, Func *edge0, Func *edge1) { return mul(f, smooth_inv_env(edge0, edge1)); }
 Func *smooth_inv_(Func *f, double edge0, double edge1) { return smooth_inv(f, const_(edge0), const_(edge1)); }
 
-Func *hump_env(Func *edge0, Func *edge1, Func *edge2, Func *edge3) { return mul(smooth_env(edge0, edge1), smooth_inv_env(edge2, edge3)); }
-Func *hump_env_(double edge0, double edge1, double edge2, double edge3) { return hump_env(const_(edge0), const_(edge1), const_(edge2), const_(edge3)); }
-Func *hump(Func *f, Func *edge0, Func *edge1, Func *edge2, Func *edge3) { return mul(f, hump_env(edge0, edge1, edge2, edge3)); }
-Func *hump_(Func *f, double edge0, double edge1, double edge2, double edge3) { return hump(f, const_(edge0), const_(edge1), const_(edge2), const_(edge3)); }
+Func *rounded_env(Func *edge0, Func *edge1, Func *edge2, Func *edge3) { return mul(smooth_env(edge0, edge1), smooth_inv_env(edge2, edge3)); }
+Func *rounded_env_(double edge0, double edge1, double edge2, double edge3) { return rounded_env(const_(edge0), const_(edge1), const_(edge2), const_(edge3)); }
+Func *rounded(Func *f, Func *edge0, Func *edge1, Func *edge2, Func *edge3) { return mul(f, rounded_env(edge0, edge1, edge2, edge3)); }
+Func *rounded_(Func *f, double edge0, double edge1, double edge2, double edge3) { return rounded(f, const_(edge0), const_(edge1), const_(edge2), const_(edge3)); }
 
 Func *adsr_env(Func *attack, Func *decay, Func *sustain, Func *release, Func *duration) { return adsr_op(timer(), attack, decay, sustain, release, duration); }
 Func *adsr_env_(double attack, double decay, double sustain, double release, double duration) { return adsr_env(const_(attack), const_(decay), const_(sustain), const_(release), const_(duration)); }

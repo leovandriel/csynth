@@ -41,36 +41,36 @@ Taking a closer look, there are three pieces here: the `A4` constant represents
 440 Hz, `sine` generates a sine wave at that frequency, and `play` samples the
 sine function to your speakers.
 
-This probably sounded quite loud. Let's bring it down a little to save our ears:
+That probably sounded quite loud. Let's bring it down a little to save our ears:
 
 ```c
     func tone = sine(A4);
     play(mul_(tone, .5));
 ```
 
-Here we introduce `mul`, which multiplies both inputs. By multiplying by 0.5,
-the volume becomes less. This also adds `func`, which indicates a function
-variable `tone`, allowing us split things across two lines.
+Here we introduce `mul`, which multiplies both arguments together. By
+multiplying by 0.5, the volume becomes less. This also adds `func`, which
+indicates a function variable `tone`, allowing us split things across two lines.
 
 Note the underscore `_`. By default, all functions take other functions as
 arguments. By appending `_`, you can pass in numbers instead.
 
-Next, add a block envelope to turn this into a 0.3 second note:
+Next, add a rectangular envelope to turn this into a 0.3 second note:
 
 ```c
     func tone = sine(A4);
-    func note = block_(tone, 0, .3);
+    func note = rect_(tone, 0, .3);
     play(mul_(note, .5));
 ```
 
-This adds `block`, which multiplies tone by 1 during the interval [0, 0.3] and 0
+This adds `rect`, which multiplies tone by 1 during the interval [0, 0.3] and 0
 elsewhere, resulting in a 0.3 second A4 note.
 
 Next, add the note in a 1.5 second loop:
 
 ```c
     func tone = sine(A4);
-    func note = block_(tone, 0, .3);
+    func note = rect_(tone, 0, .3);
     func looped = loop_(note, 1.5);
     play(mul_(looped, .5));
 ```
@@ -79,7 +79,7 @@ Finally, add reverb (interval .4s, decay .2):
 
 ```c
     func tone = sine(A4);
-    func note = block_(tone, 0, .3);
+    func note = rect_(tone, 0, .3);
     func looped = loop_(note, 1.5);
     func revved = reverb_(looped, .4, .2);
     play(mul_(revved, .5));

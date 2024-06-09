@@ -6,9 +6,9 @@ int main()
 {
     func high = sine(A4);
     func low = mul_(saw(A2), .5);
-    func beep = block_(high, 0, .1);
-    func boop1 = block_(low, .4, .5);
-    func boop2 = block_(low, 1, 1.1);
+    func beep = rect_(high, 0, .1);
+    func boop1 = rect_(low, .4, .5);
+    func boop2 = rect_(low, 1, 1.1);
     func melody = add(beep, boop1, boop2);
     func looped = loop_(melody, 1.6);
     func echoed = reverb_(looped, .2, .5);

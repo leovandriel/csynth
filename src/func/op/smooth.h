@@ -2,9 +2,6 @@
 // smooth.h - A smooth step function
 //
 // `smooth(edge0, edge1)` returns 1 if time is past edge1, 0 before edge0.
-// - hump(edge0, edge1, edge2, edge3) - A smooth block function, which is 1
-//   between edge1 and edge2 and 0 before edge0 and after edge3
-// - hump_ - Take double arguments instead of functions
 //
 #ifndef CSYNTH_SMOOTH_H
 #define CSYNTH_SMOOTH_H
