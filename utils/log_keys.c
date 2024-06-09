@@ -1,5 +1,5 @@
 //usr/bin/gcc "$0" -o bin/log_keys -Wall -Wextra -O3 && ./bin/log_keys "$@"; exit $?
-#include "../src/ui/term.h"
+#include "../src/ui/terminal.h"
 
 static volatile int stop = 0;
 
@@ -11,7 +11,7 @@ void handler(__attribute__((unused)) int signal)
 int main()
 {
     signal(SIGINT, handler);
-    struct termios term = term_setup();
+    struct termios term = terminal_setup();
     int key = 0;
     while (!stop)
     {
@@ -38,6 +38,6 @@ int main()
             }
         }
     }
-    term_restore(term);
+    terminal_restore(term);
     return 0;
 }

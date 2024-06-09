@@ -1,8 +1,8 @@
 //
-// term.h - Handle key input from terminal
+// terminal.h - Handle key input from terminal
 //
-#ifndef CSYNTH_TERM_H
-#define CSYNTH_TERM_H
+#ifndef CSYNTH_TERMINAL_H
+#define CSYNTH_TERMINAL_H
 
 #include <signal.h>
 #include <stdio.h>
@@ -12,9 +12,9 @@
 #include "../util/config.h"
 #include "../util/time.h"
 
-static volatile int term_signal = 0;
+static volatile int terminal_signal = 0;
 
-struct termios term_setup()
+struct termios terminal_setup()
 {
     struct termios original;
     tcgetattr(fileno(stdin), &original);
@@ -26,23 +26,23 @@ struct termios term_setup()
     return original;
 }
 
-void term_restore(struct termios term)
+void terminal_restore(struct termios term)
 {
     tcsetattr(fileno(stdin), TCSANOW, &term);
 }
 
-void term_handler(__attribute__((unused)) int signal)
+void terminal_handler(__attribute__((unused)) int signal)
 {
-    term_signal = 1;
+    terminal_signal = 1;
 }
 
-int term_loop(double duration)
+int terminal_loop(double duration)
 {
-    struct termios term = term_setup();
-    signal(SIGINT, term_handler);
+    struct termios term = terminal_setup();
+    signal(SIGINT, terminal_handler);
     int err = 0;
     double start = time_wall();
-    while (!err && !term_signal)
+    while (!err && !terminal_signal)
     {
         int key = getchar();
         if (key == '\033')
@@ -80,8 +80,8 @@ int term_loop(double duration)
             break;
         }
     }
-    term_restore(term);
+    terminal_restore(term);
     return err;
 }
 
-#endif // CSYNTH_TERM_H
+#endif // CSYNTH_TERMINAL_H

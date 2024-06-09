@@ -8,7 +8,7 @@
 #include <stdio.h>
 
 #include "../ui/display.h"
-#include "../ui/term.h"
+#include "../ui/terminal.h"
 #include "../util/cleanup.h"
 #include "./sampler.h"
 
@@ -87,7 +87,7 @@ int player_play_channels_no_cleanup(int count, Func **channels, double duration)
         return player_error(err);
     }
     void *handler = event_add_listener(player_event_listener, stream);
-    term_loop(duration);
+    terminal_loop(duration);
     event_remove_listener(handler);
     err = Pa_CloseStream(stream);
     if (err != paNoError)

@@ -12,7 +12,7 @@
 
 #define WRITER_BUFFER_SIZE 4096
 
-int writer_write_file_no_cleanup(int channel_count, Func **channels, double duration, FILE *file)
+int writer_write_channels_no_cleanup(int channel_count, Func **channels, double duration, FILE *file)
 {
     uint32_t sample_count = (uint32_t)(duration * SAMPLE_RATE);
     int err = wav_header_write(sample_count, channel_count, file);
@@ -40,31 +40,31 @@ int writer_write_file_no_cleanup(int channel_count, Func **channels, double dura
     return 0;
 }
 
-int writer_write_file(int count, Func **channels, double duration, FILE *file)
+int writer_write_channels(int count, Func **channels, double duration, FILE *file)
 {
-    int err = writer_write_file_no_cleanup(count, channels, duration, file);
+    int err = writer_write_channels_no_cleanup(count, channels, duration, file);
     cleanup_all();
     return err;
 }
 
-int writer_write_channels(int channel_count, Func **channels, double duration, const char *filename)
+int writer_write_file(int channel_count, Func **channels, double duration, const char *filename)
 {
     FILE *file = fopen(filename, "wb");
-    int result = writer_write_file(channel_count, channels, duration, file);
+    int result = writer_write_channels(channel_count, channels, duration, file);
     fclose(file);
     return result;
 }
 
 int write(Func *input, double duration, const char *filename)
 {
-    return writer_write_channels(1, (Func *[]){input}, duration, filename);
+    return writer_write_file(1, (Func *[]){input}, duration, filename);
 }
 
 int write_(Func *input, double duration) { return write(input, duration, CONFIG_DEFAULT_WAV_FILENAME); }
 
 int write_stereo(Func *left, Func *right, double duration, const char *filename)
 {
-    return writer_write_channels(2, (Func *[]){left, right}, duration, filename);
+    return writer_write_file(2, (Func *[]){left, right}, duration, filename);
 }
 
 int write_mono(Func *input, double duration, const char *filename) { return write(input, duration, filename); }
