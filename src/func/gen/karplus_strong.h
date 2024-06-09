@@ -45,6 +45,6 @@ Func *karplus_strong(Func *frequency, Func *decay)
     return func_create(NULL, karplus_strong_eval, karplus_strong_free, sizeof(KarplusStrongContext), NULL, FUNC_FLAG_DEFAULT, 2, frequency, decay);
 }
 
-Func *karplus_strong_(double frequency, double decay) { return karplus_strong(const_(frequency), const_(decay)); }
+Func *karplus_strong_(Func *frequency, double decay) { return karplus_strong(frequency, const_(decay)); }
 
 #endif // CSYNTH_KARPLUS_STRONG_H

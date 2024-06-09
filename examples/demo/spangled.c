@@ -27,7 +27,7 @@ static func B(func frequency, double duration)
 static func C(func frequency, double duration)
 {
     double delta = speed * duration;
-    func note = karplus_strong(frequency, _(0.8));
+    func note = karplus_strong_(frequency, 0.8);
     note = lpf(note, frequency);
     note = rect_(note, 0, delta);
     note = distort_(note, 30);

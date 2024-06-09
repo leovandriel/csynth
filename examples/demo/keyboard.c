@@ -5,7 +5,7 @@
 
 func note(func frequency)
 {
-    return lpf(karplus_strong(frequency, _(.3)), frequency);
+    return lpf(karplus_strong_(frequency, .3), frequency);
 }
 
 int main()

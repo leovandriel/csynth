@@ -4,7 +4,7 @@
 
 Func *note(Func *frequency)
 {
-    return karplus_strong(frequency, const_(.3));
+    return karplus_strong_(frequency, .3);
 }
 
 int main()

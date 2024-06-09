@@ -4,7 +4,7 @@
 void test_karplus_strong()
 {
     rand_seed(0);
-    Func *time = karplus_strong(const_(2), const_(0.5));
+    Func *time = karplus_strong_(const_(2), 0.5);
     Gen *gen = gen_create(time, 0.1);
     assert_gen_equal(gen, -0.2886412523525353);
     assert_gen_equal(gen, 0.4912185886479782);
