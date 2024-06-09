@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/callback -Wall -Wextra -O3 -lm -lportaudio && ./bin/callback "$@"; exit $?
+//usr/bin/gcc "$0" -o bin/wrap -Wall -Wextra -O3 -lm -lportaudio && ./bin/wrap "$@"; exit $?
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 

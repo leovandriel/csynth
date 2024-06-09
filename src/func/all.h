@@ -55,9 +55,9 @@
 #include "./op/smooth.h"
 #include "./op/step.h"
 #include "./op/tanh.h"
-#include "./util/callback.h"
 #include "./util/logger.h"
 #include "./util/print.h"
 #include "./util/record.h"
+#include "./util/wrap.h"
 
 #endif // CSYNTH_FUNC_ALL_H
