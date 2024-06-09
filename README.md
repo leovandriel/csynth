@@ -85,6 +85,12 @@ Finally, add reverb (interval .4s, decay .2):
     play(mul_(revved, .5));
 ```
 
+Or, to make it more compact:
+
+```c
+    play(mul_(reverb_(loop_(rect_(sine(A4),0,.3),1.5),.4,.2),.5));
+```
+
 To listen to the result:
 [tutorial.mp3](https://github.com/leovandriel/csynth/raw/main/examples/tutorial.mp3)
 
