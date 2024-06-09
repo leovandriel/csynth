@@ -7,7 +7,7 @@ _A simple synth in C._
 ## Usage
 
 To get started, check out the [examples](examples) folder. Each C file is
-executable, e.g. to run `beep.c`, simply enter:
+executable, e.g. to run `beep.c`, simply run:
 
     ./examples/demo/beep.c
 
@@ -18,9 +18,10 @@ replace `play(..)` with `write(..)` to write to a WAV file.
 ## Tutorial
 
 To make music in CSynth, combine basic (mathematical) functions to create
-sounds, instruments, and compositions. Let's create a single note with reverb.
+sounds, instruments, and compositions.
 
-Start by writing a minimal C program that plays a 440 Hz sine wave:
+Let's create a single note with reverb. Start by writing a minimal C program
+that plays a 440 Hz sine wave:
 
 ```c
 #include "./src/func/all.h"

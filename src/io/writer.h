@@ -60,6 +60,8 @@ int write(Func *input, double duration, const char *filename)
     return writer_write_channels(1, (Func *[]){input}, duration, filename);
 }
 
+int write_(Func *input, double duration) { return write(input, duration, CONFIG_DEFAULT_WAV_FILENAME); }
+
 int write_stereo(Func *left, Func *right, double duration, const char *filename)
 {
     return writer_write_channels(2, (Func *[]){left, right}, duration, filename);
