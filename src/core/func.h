@@ -59,6 +59,48 @@ Func *func_create_va(init_callback init, eval_callback eval, free_callback free,
     return func;
 }
 
+/**
+ * Create a function with a variable number of arguments.
+ *
+ * This is at the core of the function system. A function represents a
+ * mathematical operation that is evaluated for each audio sample. The function
+ * can have any number of inputs, and can be used to create complex audio
+ * effects.
+ *
+ * The function is defined by three callbacks:
+ * - init: Called once before the first evaluation. This allows for things like
+ *   memory allocation. Typical use cases are functions that keep an internal
+ *   buffer like reverb or that open a file like wav.
+ * - eval: Returns the value of the function, given inputs and time delta. This
+ *   argument is required for all functions. There are no restrictions on the
+ *   domain, though for audio functions it is typically in the range [-1, 1].
+ * - free: Called once after the last evaluation. This allows for various
+ *   cleanup tasks, like deallocating buffers or closing files.
+ *
+ * Additionally, the function can have a context struct, which is used to store
+ * state between evaluations. This is useful for functions that need to keep
+ * track of previous values, like a delay line or a filter.
+ *
+ * The function can have flags that control the behavior of the function. The
+ * flags are defined in `def.h` and can be combined with the bitwise OR
+ * operator. The default flags are `FUNC_FLAG_DEFAULT`.
+ *
+ * The function can have any number of inputs. The inputs are passed as a
+ * variable number of arguments, and must be of type `Func *`.
+ *
+ * The return value is a pointer to the function, which can be used as an input
+ * to other functions or as an output to the audio system.
+ *
+ * @param init Called once before the first evaluation.
+ * @param eval Returns the value of the function, given inputs and time delta.
+ * @param free Called once after the last evaluation.
+ * @param size The size of the context struct.
+ * @param context The initial value of the context.
+ * @param flags Flags that control the behavior of the function.
+ * @param count The number of inputs.
+ * @param ... The inputs to the function.
+ * @return The function output.
+ */
 Func *func_create(init_callback init, eval_callback eval, free_callback free, size_t size, void *context, unsigned int flags, int count, ...)
 {
     va_list valist = {0};
