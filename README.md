@@ -170,14 +170,14 @@ to go beyond combining existing functions. The easiest way to do this is to use
 [wrap](src/func/util/wrap.h), which takes a C function as input:
 
 ```c
-double step_filter(double input, double delta, void *context)
+double step_filter(double input, double delta)
 {
     return round(input * 10) / 10;
 }
 
 int main()
 {
-    return play(wrap_filter(sine(A4), step_filter, NULL));
+    return play(wrap(sine(A4), step_filter));
 }
 ```
 
@@ -206,8 +206,8 @@ of basic functions like [saw](src/func/gen/saw.h) and
 [lpf](src/func/filter/lpf.h). Some of the notation is slightly different from
 the examples, e.g. sources use `Func *` instead of `func` and `const_()` instead
 of `_()`. This is because the examples use short-hand helpers, while the source
-avoids those. Other than that, there is no specific distinction and code can
-easily make its way into the function library.
+avoids those. Other than that, there is no specific distinction and example code
+can easily make its way into the function library.
 
 ## I/O
 
