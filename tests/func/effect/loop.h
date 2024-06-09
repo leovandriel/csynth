@@ -5,18 +5,18 @@
 
 void test_loop()
 {
-    Func *t = loop(step_op(timer(), const_(0.3)), const_(0.5));
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
+    Func *time = loop(step_op(timer(), const_(0.3)), const_(0.5));
+    Gen *gen = gen_create(time, 0.1);
+    assert_gen_equal(gen, 0.0);
+    assert_gen_equal(gen, 0.0);
+    assert_gen_equal(gen, 0.0);
+    assert_gen_equal(gen, 1.0);
+    assert_gen_equal(gen, 1.0);
+    assert_gen_equal(gen, 0.0);
+    assert_gen_equal(gen, 0.0);
+    assert_gen_equal(gen, 0.0);
+    assert_gen_equal(gen, 1.0);
+    assert_gen_equal(gen, 1.0);
+    assert_gen_equal(gen, 0.0);
+    assert_gen_equal(gen, 0.0);
 }

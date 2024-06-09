@@ -29,7 +29,7 @@ static double chorus_eval(__attribute__((unused)) int count, Gen **args, double 
     double delay = gen_eval(args[2]);
     double depth = gen_eval(args[3]);
     unsigned long size = (unsigned long)(delay / delta + 0.5);
-    unsigned long offset = (unsigned long)(depth / delta * modulation + size * 0.5 + 0.5);
+    unsigned long offset = (unsigned long)(depth / delta * modulation + (double)size * 0.5 + 0.5);
     // unsigned long offset = (unsigned long)(depth / delta * (modulation + 1) * 0.5 + 0.5);
     unsigned long index = (context->index + size - offset) % size;
     context->index = buffer_resize(&context->buffer, size, context->index, NULL);

@@ -3,18 +3,18 @@
 
 void test_square()
 {
-    Func *t = square(const_(1));
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, -1.0);
-    assert_gen_equal(g, 1.0);
-    assert_gen_equal(g, 1.0);
+    Func *time = square(const_(1));
+    Gen *gen = gen_create(time, 0.1);
+    assert_gen_equal(gen, 1.0);
+    assert_gen_equal(gen, 1.0);
+    assert_gen_equal(gen, 1.0);
+    assert_gen_equal(gen, 1.0);
+    assert_gen_equal(gen, 1.0);
+    assert_gen_equal(gen, -1.0);
+    assert_gen_equal(gen, -1.0);
+    assert_gen_equal(gen, -1.0);
+    assert_gen_equal(gen, -1.0);
+    assert_gen_equal(gen, -1.0);
+    assert_gen_equal(gen, 1.0);
+    assert_gen_equal(gen, 1.0);
 }

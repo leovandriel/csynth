@@ -5,9 +5,9 @@
 
 void test_time()
 {
-    time_t t = time(NULL);
-    double t1 = time_wall();
-    assert(fabs(t - t1) < 1);
-    double t2 = time_wall();
-    assert(t2 - t1 < 0.001);
+    time_t tme = time(NULL);
+    double time1 = time_wall();
+    assert(fabs(tme - time1) < 1);
+    double time2 = time_wall();
+    assert(time2 - time1 < 0.001);
 }

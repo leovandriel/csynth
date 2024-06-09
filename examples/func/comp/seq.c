@@ -4,7 +4,7 @@
 
 int main()
 {
-    // TODO: Implement
-    func f = hush(sine(C4));
-    return play(mul_(f, .5));
+    // TODO(leo): Implement
+    func note = hush(sine(C4));
+    return play(mul_(note, .5));
 }

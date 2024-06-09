@@ -61,7 +61,7 @@ Func *func_create_va(init_cb init, eval_cb eval, free_cb free, size_t size, void
 
 Func *func_create(init_cb init, eval_cb eval, free_cb free, size_t size, void *context, unsigned int flags, int count, ...)
 {
-    va_list valist;
+    va_list valist = {0};
     va_start(valist, count);
     Func *func = func_create_va(init, eval, free, size, context, flags, count, valist);
     va_end(valist);

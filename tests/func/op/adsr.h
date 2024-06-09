@@ -4,21 +4,21 @@
 
 void test_adsr()
 {
-    Func *t = adsr_op_(timer(), 0.01, 0.1, 0.7, 0.2, 1.2);
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 0.000);
-    assert_gen_equal(g, 0.730);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.700);
-    assert_gen_equal(g, 0.350);
-    assert_gen_equal(g, 0.000);
-    assert_gen_equal(g, 0.000);
-    assert_gen_equal(g, 0.000);
+    Func *time = adsr_op_(timer(), 0.01, 0.1, 0.7, 0.2, 1.2);
+    Gen *gen = gen_create(time, 0.1);
+    assert_gen_equal(gen, 0.000);
+    assert_gen_equal(gen, 0.730);
+    assert_gen_equal(gen, 0.700);
+    assert_gen_equal(gen, 0.700);
+    assert_gen_equal(gen, 0.700);
+    assert_gen_equal(gen, 0.700);
+    assert_gen_equal(gen, 0.700);
+    assert_gen_equal(gen, 0.700);
+    assert_gen_equal(gen, 0.700);
+    assert_gen_equal(gen, 0.700);
+    assert_gen_equal(gen, 0.700);
+    assert_gen_equal(gen, 0.350);
+    assert_gen_equal(gen, 0.000);
+    assert_gen_equal(gen, 0.000);
+    assert_gen_equal(gen, 0.000);
 }

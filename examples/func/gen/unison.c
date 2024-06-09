@@ -10,6 +10,6 @@ Func *note(Func *frequency)
 int main()
 {
     // unison saw wave keyboard, with 10 voices and 1% detune
-    func f = keyboard(trigger, note, C4);
-    return play(mul_(f, .5));
+    func fun = keyboard(trigger, note, C4);
+    return play(mul_(fun, .5));
 }

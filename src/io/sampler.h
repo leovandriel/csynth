@@ -36,7 +36,7 @@ void sampler_sample(Sampler *sampler, unsigned long count, sample_t *buffer)
         {
             double output = gen_eval(sampler->channels[index]);
             double clip = output > 1.0 ? 1.0 : (output < -1.0 ? -1.0 : output);
-            *(buffer++) = clip * 32767;
+            *(buffer++) = (sample_t)(clip * 32767);
         }
     }
 }

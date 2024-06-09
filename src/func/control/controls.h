@@ -18,7 +18,7 @@ const char *keyboard_keys = "zsxdcvgbhnjm,l.;/";
 
 Func *keyboard(control_func control, gen_func generator, Func *frequency)
 {
-    int count = strlen(keyboard_keys);
+    int count = (int)strlen(keyboard_keys);
     Func **array = (Func **)calloc_(count, sizeof(Func *));
     for (int i = 0; i < count; i++)
     {

@@ -13,9 +13,9 @@
 #include "../op/mul.h"
 #include "./seq.h"
 
-Func *pattern(const char *string, Func *f, Func *duration, Func *timing)
+Func *pattern(const char *string, Func *input, Func *duration, Func *timing)
 {
-    int length = strlen(string);
+    int length = (int)strlen(string);
     Func **array = (Func **)calloc_(length * 2, sizeof(Func *));
     int index = 0;
     for (int i = 0; i < length; i++)
@@ -23,7 +23,7 @@ Func *pattern(const char *string, Func *f, Func *duration, Func *timing)
         if (string[i] == '.')
         {
             array[index++] = add(mul_(duration, i), mul_(timing, rand_gauss(0, 1)));
-            array[index++] = f;
+            array[index++] = input;
         }
     }
     Func *func = seq_abs_array(index, array);
@@ -31,9 +31,9 @@ Func *pattern(const char *string, Func *f, Func *duration, Func *timing)
     return func;
 }
 
-Func *pattern_(const char *string, Func *f, double duration, double timing)
+Func *pattern_(const char *string, Func *input, double duration, double timing)
 {
-    return pattern(string, f, const_(duration), const_(timing));
+    return pattern(string, input, const_(duration), const_(timing));
 }
 
 #endif // CSYNTH_COMPS_H

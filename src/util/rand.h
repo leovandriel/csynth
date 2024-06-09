@@ -12,12 +12,12 @@
 
 static unsigned long rand_state_int = RAND_STATE_INIT;
 
-unsigned long rand_next(unsigned long x)
+unsigned long rand_next(unsigned long reg)
 {
-    x ^= x << 13;
-    x ^= x >> 7;
-    x ^= x << 17;
-    return x;
+    reg ^= reg << 13;
+    reg ^= reg >> 7;
+    reg ^= reg << 17;
+    return reg;
 }
 
 unsigned long rand_unsigned_long()
@@ -28,17 +28,17 @@ unsigned long rand_unsigned_long()
 
 double rand_uniform()
 {
-    return rand_unsigned_long() / (double)ULONG_MAX;
+    return (double)rand_unsigned_long() / (double)ULONG_MAX;
 }
 
-double rand_range(double a, double b)
+double rand_range(double left, double right)
 {
-    return (b - a) * rand_uniform() + a;
+    return (right - left) * rand_uniform() + left;
 }
 
-double rand_gauss(double mu, double sigma)
+double rand_gauss(double muu, double sigma)
 {
-    return sigma * sqrt(-2.0 * log(rand_uniform())) * cos(rand_uniform() * PI_M_2) + mu;
+    return sigma * sqrt(-2.0 * log(rand_uniform())) * cos(rand_uniform() * PI_M_2) + muu;
 }
 
 void rand_seed(unsigned long seed)

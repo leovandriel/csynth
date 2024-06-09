@@ -18,10 +18,10 @@ static double max_eval(int count, Gen **args, __attribute__((unused)) double del
     double max = -FLT_MAX;
     for (int i = 0; i < count; i++)
     {
-        double f = gen_eval(args[i]);
-        if (max < f)
+        double input = gen_eval(args[i]);
+        if (max < input)
         {
-            max = f;
+            max = input;
         }
     }
     return max;
@@ -29,7 +29,7 @@ static double max_eval(int count, Gen **args, __attribute__((unused)) double del
 
 Func *max_args(int count, ...)
 {
-    va_list valist;
+    va_list valist = {0};
     va_start(valist, count);
     Func *func = func_create_va(NULL, max_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);

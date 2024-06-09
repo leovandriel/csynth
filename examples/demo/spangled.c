@@ -6,38 +6,38 @@ double speed = 0.4;
 
 static func A(func frequency, double duration)
 {
-    double d = speed * duration;
-    func f = saw(frequency);
-    f = chorus_(f, sine_(.2), 0.02, 0.003);
-    f = lpf(f, A2);
-    f = adsr_(f, d / 4, d / 8, 0.8, d / 8, d);
-    return f;
+    double delta = speed * duration;
+    func note = saw(frequency);
+    note = chorus_(note, sine_(.2), 0.02, 0.003);
+    note = lpf(note, A2);
+    note = adsr_(note, delta / 4, delta / 8, 0.8, delta / 8, delta);
+    return note;
 }
 
 static func B(func frequency, double duration)
 {
-    double d = speed * duration;
-    func f = add(
+    double delta = speed * duration;
+    func note = add(
         mul_(sine(mul_(frequency, 2)), 0.2),
         mul_(sine(dvd_(frequency, 2)), 0.2));
-    f = rect_(f, 0, d);
-    return add(f, A(frequency, duration));
+    note = rect_(note, 0, delta);
+    return add(note, A(frequency, duration));
 }
 
 static func C(func frequency, double duration)
 {
-    double d = speed * duration;
-    func f = karplus_strong(frequency, _(0.8));
-    f = lpf(f, frequency);
-    f = rect_(f, 0, d);
-    f = distort_(f, 30);
-    f = mul_(f, 0.05);
-    return add(f, A(frequency, duration));
+    double delta = speed * duration;
+    func note = karplus_strong(frequency, _(0.8));
+    note = lpf(note, frequency);
+    note = rect_(note, 0, delta);
+    note = distort_(note, 30);
+    note = mul_(note, 0.05);
+    return add(note, A(frequency, duration));
 }
 
 int main()
 {
-    func f1 = seq_seq(
+    func ff1 = seq_seq(
         A(G4, 1.5),
         A(E4, .5),
         A(C4, 2),
@@ -64,7 +64,7 @@ int main()
         A(E4, 2),
         A(C4, 2));
 
-    func f2 = seq_seq(
+    func ff2 = seq_seq(
         B(G4, 1.5),
         B(E4, .5),
         B(C4, 2),
@@ -91,7 +91,7 @@ int main()
         B(E4, 2),
         B(C4, 2));
 
-    func f3 = seq_seq(
+    func ff3 = seq_seq(
         C(E5, 1),
         C(E5, 1),
         C(E5, 2),
@@ -143,7 +143,7 @@ int main()
         C(F5, 1),
         C(D5, 2),
         C(C5, 4));
-    func f = seq_rel(f1, _(48.5 * speed), f2, _(48.5 * speed), f3, _(98 * speed));
-    func spangled = reverb_(f, 0.1, 0.5);
+    func sequence = seq_rel(ff1, _(48.5 * speed), ff2, _(48.5 * speed), ff3, _(98 * speed));
+    func spangled = reverb_(sequence, 0.1, 0.5);
     return play_(spangled, 80);
 }

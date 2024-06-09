@@ -2,35 +2,35 @@
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
 
-static func strum(int count, const double *c, double span, double decay)
+static func strum(int count, const double *freqs, double span, double decay)
 {
     func notes[10];
     for (int i = 0; i < count; i++)
     {
-        func f = karplus_strong_(c[i], decay);
-        f = lpf_(f, c[i]);
-        f = delay_(f, span * (span < 0 ? i - count : i));
-        notes[i] = f;
+        func note = karplus_strong_(freqs[i], decay);
+        note = lpf_(note, freqs[i]);
+        note = delay_(note, span * (span < 0 ? i - count : i));
+        notes[i] = note;
     }
     return add_array(count, notes);
 }
 
 static func pluck(func frequency)
 {
-    func f = karplus_strong(frequency, _(.6));
-    f = clamp_(mul_(f, 10), -1, 1);
-    f = lpf(f, dvd_(frequency, 2));
-    return f;
+    func note = karplus_strong(frequency, _(.6));
+    note = clamp_(mul_(note, 10), -1, 1);
+    note = lpf(note, dvd_(frequency, 2));
+    return note;
 }
 
 #define slow(_chord) (strum(sizeof(_chord) / sizeof(func), _chord, .1, .3))
 #define down(_chord) (strum(sizeof(_chord) / sizeof(func), _chord, .01, .5))
 #define up(_chord) (strum(sizeof(_chord) / sizeof(func), _chord, -.01, .5))
 
-static const double Dm[] = {A2_, D3_, A3_, D3_, F4_};
-static const double F[] = {C3_, F3_, A3_, C4_};
-static const double G[] = {G2_, B2_, D3_, G3_, B3_, G4_};
-static const double Am[] = {A2_, E3_, A3_, C4_, E4_};
+static const double Dm_[] = {A2_, D3_, A3_, D3_, F4_};
+static const double F__[] = {C3_, F3_, A3_, C4_};
+static const double G__[] = {G2_, B2_, D3_, G3_, B3_, G4_};
+static const double Am_[] = {A2_, E3_, A3_, C4_, E4_};
 
 static func t(double index)
 {
@@ -39,54 +39,54 @@ static func t(double index)
 
 int main()
 {
-    func g0 = seq_abs(
-        t(0), slow(Am),
-        t(8), slow(Am));
+    func gg0 = seq_abs(
+        t(0), slow(Am_),
+        t(8), slow(Am_));
 
-    func g1 = seq_abs(
+    func gg1 = seq_abs(
         t(0), pluck(D5),
         t(1), pluck(E5),
         t(2), pluck(D5),
         t(3), smooth_inv(pluck(A4), t(1), t(1.5)));
 
     func guitar1 = seq_abs(
-        t(0), g1,
-        t(16), g1,
-        t(32), g1,
-        t(48), g1);
+        t(0), gg1,
+        t(16), gg1,
+        t(32), gg1,
+        t(48), gg1);
 
-    func g2 = seq_abs(
-        t(0), down(F),
-        t(3), up(F),
-        t(4), down(F),
-        t(5), up(F),
-        t(7), up(F),
-        t(9), up(Dm),
-        t(11), up(Dm),
-        t(12), down(G),
-        t(14), down(G));
+    func gg2 = seq_abs(
+        t(0), down(F__),
+        t(3), up(F__),
+        t(4), down(F__),
+        t(5), up(F__),
+        t(7), up(F__),
+        t(9), up(Dm_),
+        t(11), up(Dm_),
+        t(12), down(G__),
+        t(14), down(G__));
 
-    func g3 = seq_abs(
-        t(0), down(Am),
-        t(3), up(Am),
-        t(4), down(Am),
-        t(5), up(Am),
-        t(7), up(Am),
-        t(9), up(Am),
-        t(11), up(Am),
-        t(12), down(G),
-        t(13), down(G),
-        t(14), down(G),
-        t(15), down(G));
+    func gg3 = seq_abs(
+        t(0), down(Am_),
+        t(3), up(Am_),
+        t(4), down(Am_),
+        t(5), up(Am_),
+        t(7), up(Am_),
+        t(9), up(Am_),
+        t(11), up(Am_),
+        t(12), down(G__),
+        t(13), down(G__),
+        t(14), down(G__),
+        t(15), down(G__));
 
     func guitar2 = seq_abs(
-        t(4), g2,
-        t(20), g3,
-        t(36), g2,
-        t(52), g3);
+        t(4), gg2,
+        t(20), gg3,
+        t(36), gg2,
+        t(52), gg3);
 
     func guitar = seq_abs(
-        t(0), g0,
+        t(0), gg0,
         t(18), add(guitar1, guitar2));
     return play_(guitar, 24);
 }

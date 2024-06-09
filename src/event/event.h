@@ -88,7 +88,9 @@ int event_broadcast(EventType type, void *event)
         EventListener *listener = list->listeners[i];
         int err = listener->listener(type, event, listener->context);
         if (err)
+        {
             return err;
+        }
     }
     return 0;
 }

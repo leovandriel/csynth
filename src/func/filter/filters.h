@@ -8,10 +8,10 @@
 #include "../../core/gen.h"
 #include "../op/ops.h"
 
-Func *distort(Func *f, Func *multiplier) { return clamp_(mul(f, multiplier), -1, 1); }
-Func *distort_(Func *f, double multiplier) { return clamp_(mul_(f, multiplier), -1, 1); }
+Func *distort(Func *input, Func *multiplier) { return clamp_(mul(input, multiplier), -1, 1); }
+Func *distort_(Func *input, double multiplier) { return clamp_(mul_(input, multiplier), -1, 1); }
 
-Func *pass(Func *f, ...) { return f; }
+Func *pass(Func *input, ...) { return input; }
 #define zero(...) pass(ZERO, __VA_ARGS__)
 #define one(...) pass(ONE, __VA_ARGS__)
 #define hush(...) zero(__VA_ARGS__)

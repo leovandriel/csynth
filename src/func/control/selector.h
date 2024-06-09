@@ -43,7 +43,7 @@ void selector_init(__attribute__((unused)) int count, __attribute__((unused)) Ge
 
 Func *selector_args(int key, int count, ...)
 {
-    va_list valist;
+    va_list valist = {0};
     va_start(valist, count);
     SelectorContext initial = (SelectorContext){
         .parent = {.key_listener = selector_listener},

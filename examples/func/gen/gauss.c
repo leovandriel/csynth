@@ -5,6 +5,6 @@
 int main()
 {
     // gaussian noise, normal distributed amplitude
-    func f = gauss();
-    return play(mul_(f, .2));
+    func fun = gauss();
+    return play(mul_(fun, .2));
 }

@@ -5,6 +5,6 @@
 int main()
 {
     // ONE and ZERO are shortcuts for const_(1) and const_(0)
-    func f = crack(ONE);
-    return play(mul_(f, .5));
+    func fun = crack(ONE);
+    return play(mul_(fun, .5));
 }

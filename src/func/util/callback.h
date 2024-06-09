@@ -27,7 +27,7 @@ Func *callback_func_args(double (*callback)(int, Gen **, double, void *), void *
         .callback = callback,
         .context = context,
     };
-    va_list valist;
+    va_list valist = {0};
     va_start(valist, count);
     Func *func = func_create_va(NULL, callback_func_eval, NULL, sizeof(CallbackContext), &initial, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);

@@ -18,10 +18,10 @@ static double min_eval(int count, Gen **args, __attribute__((unused)) double del
     double min = FLT_MAX;
     for (int i = 0; i < count; i++)
     {
-        double f = gen_eval(args[i]);
-        if (min > f)
+        double input = gen_eval(args[i]);
+        if (min > input)
         {
-            min = f;
+            min = input;
         }
     }
     return min;
@@ -29,7 +29,7 @@ static double min_eval(int count, Gen **args, __attribute__((unused)) double del
 
 Func *min_args(int count, ...)
 {
-    va_list valist;
+    va_list valist = {0};
     va_start(valist, count);
     Func *func = func_create_va(NULL, min_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);

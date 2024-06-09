@@ -5,6 +5,6 @@
 int main()
 {
     // play C, D, E, C5
-    func f = seq_fix_(1, saw(C4), saw(D4), saw(E4), saw(C5));
-    return play_(mul_(f, .1), 4);
+    func fun = seq_fix_(1, saw(C4), saw(D4), saw(E4), saw(C5));
+    return play_(mul_(fun, .1), 4);
 }

@@ -8,9 +8,9 @@
 
 double time_wall()
 {
-    struct timespec ts;
-    timespec_get(&ts, TIME_UTC);
-    return ts.tv_sec + ts.tv_nsec / 1e9;
+    struct timespec spec;
+    timespec_get(&spec, TIME_UTC);
+    return (double)spec.tv_sec + (double)spec.tv_nsec / 1e9;
 }
 
 #endif // CSYNTH_TIME_H

@@ -15,17 +15,17 @@ int main()
     int key = 0;
     while (!stop)
     {
-        int ch = getchar();
-        if (ch > 0)
+        int chr = getchar();
+        if (chr > 0)
         {
-            key = (key << 8) | ch;
-            if (ch >= ' ' && ch <= '~')
+            key = (key << 8) | chr;
+            if (chr >= ' ' && chr <= '~')
             {
-                printf("%c", ch);
+                printf("%c", chr);
             }
             else
             {
-                printf("\\%03o", ch);
+                printf("\\%03o", chr);
             }
         }
         else

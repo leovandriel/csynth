@@ -14,13 +14,13 @@
 
 static double sin_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
-    double x = gen_eval(args[0]);
-    return sin(x);
+    double input = gen_eval(args[0]);
+    return sin(input);
 }
 
-Func *sin_op(Func *f)
+Func *sin_op(Func *input)
 {
-    return func_create(NULL, sin_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, 1, f);
+    return func_create(NULL, sin_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, 1, input);
 }
 
 #endif // CSYNTH_SIN_H

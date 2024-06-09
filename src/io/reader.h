@@ -77,7 +77,7 @@ sample_t reader_sample(ReaderSamples *samples, double time, int channel)
     uint32_t index = (uint32_t)(time * SAMPLE_RATE + 0.5);
     if (index >= samples->sample_count)
     {
-        return 0.0;
+        return 0;
     }
     return samples->buffer[index * samples->channel_count + channel];
 }

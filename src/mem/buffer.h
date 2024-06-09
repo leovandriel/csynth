@@ -51,15 +51,21 @@ static unsigned long buffer_resize_up(Buffer *buffer, unsigned long size, unsign
 {
     if (size > buffer->capacity)
     {
+        double *samples = (double *)realloc_(buffer->samples, size * 2 * sizeof(double));
+        if (!samples)
+        {
+            fprintf(stderr, "Unable to resize buffer\n");
+            return index;
+        }
         buffer->capacity = size * 2;
-        buffer->samples = (double *)realloc_(buffer->samples, buffer->capacity * sizeof(double));
+        buffer->samples = samples;
     }
     unsigned long diff = size - buffer->size;
-    unsigned long to = index + diff;
-    memmove(buffer->samples + to, buffer->samples + index, diff * sizeof(double));
+    unsigned long too = index + diff;
+    memmove(buffer->samples + too, buffer->samples + index, diff * sizeof(double));
     if (fill != NULL)
     {
-        for (unsigned long i = index, e = index + diff; i < e; i++)
+        for (unsigned long i = index, end = index + diff; i < end; i++)
         {
             buffer->samples[i] = fill(i);
         }
@@ -136,7 +142,7 @@ double fill_rand_1_1(__attribute__((unused)) unsigned long index)
 
 double fill_inc(unsigned long index)
 {
-    return index;
+    return (double)index;
 }
 
 #endif // CSYNTH_BUFFER_H

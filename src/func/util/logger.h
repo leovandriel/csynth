@@ -14,7 +14,7 @@
 typedef struct
 {
     double output;
-    char dir;
+    int dir;
     long min;
     long max;
     long zero0;
@@ -30,9 +30,7 @@ static double logger_eval(__attribute__((unused)) int count, Gen **args, double 
     double input = gen_eval(args[0]);
     int dir_up = context->index > 0 && context->output < input;
     int dir_down = context->index > 0 && context->output > input;
-    char dir = dir_up ? '/' : dir_down         ? '\\'
-                          : context->index > 0 ? '-'
-                                               : '.';
+    int dir = dir_up ? '/' : (dir_down ? '\\' : (context->index > 0 ? '-' : '.'));
     int at_zero = context->index > 0 && (context->output > 0) != (input > 0);
     int at_min = context->index > 1 && dir != context->dir && dir == '/';
     int at_max = context->index > 1 && dir != context->dir && dir == '\\';
@@ -42,33 +40,31 @@ static double logger_eval(__attribute__((unused)) int count, Gen **args, double 
     {
         if (context->zero1 != -1)
         {
-            frequency = 1.0 / (diff * (context->index - context->zero1));
+            frequency = 1.0 / (diff * (double)(context->index - context->zero1));
         }
         context->zero1 = context->zero0;
-        context->zero0 = context->index;
+        context->zero0 = (long)context->index;
     }
     else if (at_min)
     {
         if (context->min != -1)
         {
-            frequency = 1.0 / (diff * (context->index - context->min));
+            frequency = 1.0 / (diff * (double)(context->index - context->min));
         }
-        context->min = context->index;
+        context->min = (long)context->index;
     }
     else if (at_max)
     {
         if (context->max != -1)
         {
-            frequency = 1.0 / (diff * (context->index - context->max));
+            frequency = 1.0 / (diff * (double)(context->index - context->max));
         }
-        context->max = context->index;
+        context->max = (long)context->index;
     }
     if (context->index < context->count * context->step && context->index % context->step == 0)
     {
-        const char *pass = at_zero ? "zero" : at_min ? "min"
-                                          : at_max   ? "max"
-                                                     : "";
-        double time = context->index * delta;
+        const char *pass = at_zero ? "zero" : (at_min ? "min" : (at_max ? "max" : ""));
+        double time = (double)context->index * delta;
         char buffer[100];
         snprintf(buffer, 100, "%f", frequency);
         const char *freq = frequency >= 0 ? buffer : "";

@@ -28,7 +28,7 @@ static double record_eval(int count, Gen **args, __attribute__((unused)) double 
     {
         double output = gen_eval(args[channel]);
         double clip = output > 1.0 ? 1.0 : (output < -1.0 ? -1.0 : output);
-        context->buffer[context->offset++] = clip * 32767;
+        context->buffer[context->offset++] = (sample_t)(clip * 32767);
         if (context->offset == WRITER_BUFFER_SIZE)
         {
             fwrite(context->buffer, sizeof(sample_t), context->offset, context->file);
@@ -58,7 +58,7 @@ static void record_free(int count, void *context_)
 
 Func *record_args(const char *filename, int count, ...)
 {
-    va_list valist;
+    va_list valist = {0};
     va_start(valist, count);
     RecordContext initial = (RecordContext){
         .filename = filename,

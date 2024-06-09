@@ -5,7 +5,7 @@
 int main()
 {
     // sine wave keyboard
-    func f = (keyboard(unmute, sine, C4));
+    func fun = (keyboard(unmute, sine, C4));
     printf("keyboard keys: %s\n", keyboard_keys);
-    return play(mul_(f, .2));
+    return play(mul_(fun, .2));
 }

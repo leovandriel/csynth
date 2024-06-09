@@ -19,12 +19,12 @@ static double smooth_eval(__attribute__((unused)) int count, Gen **args, __attri
     {
         return 0.0;
     }
-    else if (input >= edge1)
+    if (input >= edge1)
     {
         return 1.0;
     }
-    double s = (input - edge0) / (edge1 - edge0);
-    return s * s * (3.0 - 2.0 * s);
+    double ratio = (input - edge0) / (edge1 - edge0);
+    return ratio * ratio * (3.0 - 2.0 * ratio);
 }
 
 Func *smooth_op(Func *input, Func *edge0, Func *edge1)

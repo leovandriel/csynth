@@ -27,7 +27,8 @@ TimedKeyEvent key_list_get(KeyList *list, size_t index) { return *(TimedKeyEvent
 
 int key_list_read_file(KeyList *list, FILE *file)
 {
-    int key, stamp;
+    int key = 0;
+    int stamp = 0;
     while (fscanf(file, "%d %d\n", &key, &stamp) == 2)
     {
         TimedKeyEvent event = {.key = key, .time = stamp / 1000.0};

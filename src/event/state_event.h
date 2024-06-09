@@ -33,7 +33,7 @@ typedef struct
     state_event_listener state_listener;
 } StateEventContext;
 
-int state_event_broadcast(char key, StateEventType type, void *value)
+int state_event_broadcast(int key, StateEventType type, void *value)
 {
     StateEvent event = {.key = key, .type = type, .value = value};
     return event_broadcast(EventTypeState, &event);

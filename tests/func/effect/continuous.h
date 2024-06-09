@@ -5,11 +5,11 @@
 
 void test_continuous()
 {
-    Func *t = loop_(continuous(linear_env_(0, 1, 1)), 2);
-    Gen *g = gen_create(t, 1);
-    assert_gen_equal(g, 0);
-    assert_gen_equal(g, 1);
-    assert_gen_equal(g, 2);
-    assert_gen_equal(g, 3);
-    assert_gen_equal(g, 4);
+    Func *time = loop_(continuous(linear_env_(0, 1, 1)), 2);
+    Gen *gen = gen_create(time, 1);
+    assert_gen_equal(gen, 0);
+    assert_gen_equal(gen, 1);
+    assert_gen_equal(gen, 2);
+    assert_gen_equal(gen, 3);
+    assert_gen_equal(gen, 4);
 }

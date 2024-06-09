@@ -14,7 +14,7 @@
 
 int writer_write_file_no_cleanup(int channel_count, Func **channels, double duration, FILE *file)
 {
-    uint32_t sample_count = duration * SAMPLE_RATE;
+    uint32_t sample_count = (uint32_t)(duration * SAMPLE_RATE);
     int err = wav_header_write(sample_count, channel_count, file);
     if (err)
     {

@@ -12,13 +12,13 @@
 
 static double tanh_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
-    double x = gen_eval(args[0]);
-    return tanh(x);
+    double input = gen_eval(args[0]);
+    return tanh(input);
 }
 
-Func *tanh_op(Func *f)
+Func *tanh_op(Func *input)
 {
-    return func_create(NULL, tanh_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, 1, f);
+    return func_create(NULL, tanh_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, 1, input);
 }
 
 #endif // CSYNTH_TANH_H

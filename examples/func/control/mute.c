@@ -5,6 +5,6 @@
 int main()
 {
     // press space to mute note
-    func f = mute(' ', sine(C4));
-    return play(mul_(f, .5));
+    func note = mute(' ', sine(C4));
+    return play(mul_(note, .5));
 }

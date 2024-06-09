@@ -13,7 +13,7 @@ static double test_callback_add(int count, Gen **args, double delta, void *conte
 void test_callback()
 {
     int context = 2;
-    Func *t = callback_func(test_callback_add, &context, const_(3), const_(4));
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 7);
+    Func *fun = callback_func(test_callback_add, &context, const_(3), const_(4));
+    Gen *gen = gen_create(fun, 0.1);
+    assert_gen_equal(gen, 7);
 }

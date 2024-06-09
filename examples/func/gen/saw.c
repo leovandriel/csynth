@@ -5,7 +5,7 @@
 int main()
 {
     // sawtooth wave keyboard
-    func f = (keyboard(unmute, saw, C4));
+    func fun = (keyboard(unmute, saw, C4));
     printf("keyboard keys: %s\n", keyboard_keys);
-    return play(mul_(f, .1));
+    return play(mul_(fun, .1));
 }

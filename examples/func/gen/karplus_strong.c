@@ -10,7 +10,7 @@ Func *note(Func *frequency)
 int main()
 {
     // strings keyboard
-    func f = (keyboard(trigger, note, C4));
+    func fun = (keyboard(trigger, note, C4));
     printf("keyboard keys: %s\n", keyboard_keys);
-    return play(mul_(f, .5));
+    return play(mul_(fun, .5));
 }

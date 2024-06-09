@@ -19,22 +19,22 @@ void write(KeyList *list, double step, int key, FILE *file)
     int offset = (int)(start / step);
     for (int i = offset; index < size; i++)
     {
-        char c = ' ';
+        int chr = ' ';
         while (index < size)
         {
             TimedKeyEvent event = key_list_get(list, index);
-            int j = lround(event.time / step);
-            if (j > i)
+            int event_index = (int)lround(event.time / step);
+            if (event_index > i)
             {
                 break;
             }
             if (event.key == key)
             {
-                c = '.';
+                chr = '.';
             }
             index++;
         }
-        fputc(c, file);
+        fputc(chr, file);
     }
 }
 

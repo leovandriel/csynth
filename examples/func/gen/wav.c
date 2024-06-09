@@ -10,7 +10,7 @@ func meow(func factor)
 int main()
 {
     // play meow keyboard
-    func f = keyboard_(trigger, meow, 1);
+    func fun = keyboard_(trigger, meow, 1);
     printf("keyboard keys: %s\n", keyboard_keys);
-    return play(mul_(f, .5));
+    return play(mul_(fun, .5));
 }

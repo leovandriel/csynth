@@ -5,6 +5,6 @@
 int main()
 {
     // press space to trigger note
-    func f = trigger(' ', decay_(sine(C4), .5));
-    return play(mul_(f, .5));
+    func note = trigger(' ', decay_(sine(C4), .5));
+    return play(mul_(note, .5));
 }

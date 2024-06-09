@@ -20,7 +20,7 @@ void sin_table_ensure()
         sin_table = (double *)malloc_(sizeof(double) * sin_table_size);
         for (unsigned long i = 0; i < sin_table_size; i++)
         {
-            sin_table[i] = sin(M_PI_2 * i / sin_table_size);
+            sin_table[i] = sin(M_PI_2 * (double)i / (double)sin_table_size);
         }
     }
 }
@@ -39,18 +39,15 @@ double sin_lookup(double phase)
     sign = (unsigned long)phase % 4 < 2 ? sign : -sign;
     phase = fmod(phase, 2);
     phase = phase > 1 ? 2 - phase : phase;
-    double offset = phase * sin_table_size;
+    double offset = phase * (double)sin_table_size;
     unsigned long lower = floor(offset);
     if (lower < sin_table_size - 1)
     {
-        // TODO: higher-order interpolation
-        double rem = offset - lower;
+        // TODO(leo): higher-order interpolation
+        double rem = offset - (double)lower;
         return sign * (sin_table[lower] * (1 - rem) + sin_table[lower + 1] * rem);
     }
-    else
-    {
-        return sign * sin_table[lower];
-    }
+    return sign * sin_table[lower];
 }
 
 #endif // CSYNTH_MATH_H

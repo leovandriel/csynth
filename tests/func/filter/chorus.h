@@ -4,8 +4,8 @@
 
 void test_chorus()
 {
-    Func *t = chorus_(sine_(10), sine_(.2), 0.2, 0.2);
-    Gen *g = gen_create(t, 0.1);
-    assert_gen_equal(g, 0.0);
-    assert_gen_equal(g, 0.0);
+    Func *time = chorus_(sine_(10), sine_(.2), 0.2, 0.2);
+    Gen *gen = gen_create(time, 0.1);
+    assert_gen_equal(gen, 0.0);
+    assert_gen_equal(gen, 0.0);
 }

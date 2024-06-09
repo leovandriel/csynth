@@ -32,13 +32,17 @@ int player_play_pause(PaStream *stream)
     {
         PaError err = Pa_StartStream(stream);
         if (err != paNoError)
+        {
             return player_error(err);
+        }
     }
     else if (paused == 0)
     {
         PaError err = Pa_StopStream(stream);
         if (err != paNoError)
+        {
             return player_error(err);
+        }
     }
     else
     {
@@ -65,23 +69,31 @@ int player_play_channels_no_cleanup(int count, Func **channels, double duration)
 {
     PaError err = Pa_Initialize();
     if (err != paNoError)
+    {
         return player_error(err);
+    }
     display_show();
     state_event_broadcast(CONFIG_PAUSE_KEY, StateEventTypeBoolInv, NULL);
     Sampler *sampler = sampler_create(count, channels);
-    PaStream *stream;
+    PaStream *stream = NULL;
     err = Pa_OpenDefaultStream(&stream, 0, count, paInt16, SAMPLE_RATE, paFramesPerBufferUnspecified, player_callback, sampler);
     if (err != paNoError)
+    {
         return player_error(err);
+    }
     err = Pa_StartStream(stream);
     if (err != paNoError)
+    {
         return player_error(err);
+    }
     void *handler = event_add_listener(player_event_listener, stream);
     term_loop(duration);
     event_remove_listener(handler);
     err = Pa_CloseStream(stream);
     if (err != paNoError)
+    {
         return player_error(err);
+    }
     display_hide();
     Pa_Terminate();
     sampler_free(sampler);

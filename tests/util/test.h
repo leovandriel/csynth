@@ -47,12 +47,12 @@
 #define assert_gen_equal(_gen, _value) assert_double_equal(gen_eval(_gen), _value)
 #define assert_gen_range(_gen, _a, _b) assert_double_range(gen_eval(_gen), _a, _b)
 
-void print_assert_gen_equal(Gen *g)
+void print_assert_gen_equal(Gen *gen)
 {
     printf("\n");
     for (int i = 0; i < 12; i++)
     {
-        printf("    assert_gen_equal(g, %.16f);\n", gen_eval(g));
+        printf("    assert_gen_equal(gen, %.16f);\n", gen_eval(gen));
     }
     printf("\n");
 }
