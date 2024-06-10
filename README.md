@@ -217,7 +217,7 @@ system that broadcasts keyboard input and state changes.
 
 Keyboard input is read by [terminal](src/ui/terminal.h) and broadcasted to
 gating functions. The most basic example of this is
-[unmute](src/func/contro/unmute), which multiplies by 0 and 1 alternating at
+[unmute](src/func/contro/unmute), which multiplies input by 0 and 1 alternating at
 every space bar press.
 
 ```c
@@ -263,7 +263,7 @@ To visualize the state of controls, basic [display](src/ui/display.h)
 functionality is included for switches and numerical values. 
 
 ```c
-    display_add_label(' ', "select frequency");
+    display(' ', "select frequency");
     return play(selector(' ', sine(A4), sine(A5), sine(A6)));
 ```
 

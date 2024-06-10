@@ -35,7 +35,7 @@ typedef struct
 
 DisplayElementList display_element_list = {0};
 
-void display_add_label(int key, const char *label)
+void display(int key, const char *label)
 {
     DisplayElementList *list = &display_element_list;
     if (list->size == list->capacity)
@@ -53,16 +53,16 @@ void display_add_label(int key, const char *label)
     list->elements[list->size++] = (DisplayElement){.key = key, .label = label};
 }
 
-void display_add(int key)
+void display_(int key)
 {
-    display_add_label(key, NULL);
+    display(key, NULL);
 }
 
-void display_add_all(const char *keys)
+void display_all(const char *keys)
 {
     for (size_t i = 0; i < strlen(keys); i++)
     {
-        display_add(keys[i]);
+        display_(keys[i]);
     }
 }
 

@@ -23,10 +23,10 @@ int main()
         trigger('w', snare),
         trigger('e', bdrum));
     func guitar = keyboard(trigger, note, C4);
-    display_add_label(CONFIG_PAUSE_KEY, "play");
-    display_add_label('1', "1:tempo");
-    display_add_label('Q', "Q:hihat");
-    display_add_label('W', "W:snare");
-    display_add_label('E', "E:bdrum");
+    display(CONFIG_PAUSE_KEY, "play");
+    display('1', "1:tempo");
+    display('Q', "Q:hihat");
+    display('W', "W:snare");
+    display('E', "E:bdrum");
     return play(add(mul_(loops, 0.5), drums, guitar));
 }
