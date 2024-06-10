@@ -209,6 +209,64 @@ of `_()`. This is because the examples use short-hand helpers, while the source
 avoids those. Other than that, there is no specific distinction and example code
 can easily make its way into the function library.
 
+## UI
+
+While running `play`, function parameters can be controlled with the keyboard
+and displayed in the terminal. This is based on an [event](src/event/event.h)
+system that broadcasts keyboard input and state changes.
+
+Keyboard input is read by [terminal](src/ui/terminal.h) and broadcasted to
+gating functions. The most basic example of this is
+[unmute](src/func/contro/unmute), which multiplies by 0 and 1 alternating at
+every space bar press.
+
+```c
+    play(unmute(' ', sine(A4)));
+```
+
+To emulate a key on a keyboard or drum pad, use the
+[trigger](src/func/control/trigger.h) function, which resets to initial state on
+every key press:
+
+```c
+    play(trigger(' ', decay_(sine(A4), .1)));
+```
+
+There is also [knob](src/func/control/knob.h) to modulate a value and
+[selector](src/func/control/selector.h) to switch between functions:
+
+```c
+    play(selector(' ', sine(A4), sine(A5), sine(A6)));
+```
+
+These controls can be combined to create a
+[keyboard](src/func/control/controls.h):
+
+```c
+func note(func frequency)
+{
+    return decay_(sine(frequency), .1);
+}
+
+int main()
+{
+    return play(keyboard(trigger, note, C4));
+}
+```
+
+Keyboard strokes can also be recorded and replay with
+[track](src/func/control/track.h) and [actuate](src/func/control/actuate.h). Key
+events are managed by [key_event](src/event/key_event.h). Two keys are directly
+handled by `play`: `Tab` to pause, and `Esc` to exit.
+
+To visualize the state of controls, basic [display](src/ui/display.h)
+functionality is included for switches and numerical values. 
+
+```c
+    display_add_label(' ', "select frequency");
+    return play(selector(' ', sine(A4), sine(A5), sine(A6)));
+```
+
 ## I/O
 
 Most of the examples above use [play](src/io/player.h) to sample a function to
