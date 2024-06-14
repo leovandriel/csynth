@@ -225,22 +225,22 @@ every space bar press.
 ```
 
 To emulate a key on a keyboard or drum pad, use the
-[trigger](src/func/control/trigger.h) function, which resets to initial state on
+[trigger](src/func/keyboard/trigger.h) function, which resets to initial state on
 every key press:
 
 ```c
     play(trigger(' ', decay_(sine(A4), .1)));
 ```
 
-There is also [knob](src/func/control/knob.h) to modulate a value and
-[selector](src/func/control/selector.h) to switch between functions:
+There is also [knob](src/func/keyboard/knob.h) to modulate a value and
+[selector](src/func/keyboard/selector.h) to switch between functions:
 
 ```c
     play(selector(' ', sine(A4), sine(A5), sine(A6)));
 ```
 
 These controls can be combined to create a
-[keyboard](src/func/control/controls.h):
+[keyboard](src/func/keyboard/controls.h):
 
 ```c
 func note(func frequency)
@@ -255,7 +255,7 @@ int main()
 ```
 
 Keyboard strokes can also be recorded and replay with
-[track](src/func/control/track.h) and [replay](src/func/control/replay.h). Key
+[track](src/func/keyboard/track.h) and [replay](src/func/keyboard/replay.h). Key
 events are managed by [key_event](src/event/key_event.h). Two keys are directly
 handled by `play`: `Tab` to pause, and `Esc` to exit.
 
