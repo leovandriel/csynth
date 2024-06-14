@@ -6,12 +6,12 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../event/key_event.h"
+#include "../../event/keyboard_event.h"
 #include "../../event/state_event.h"
 
 typedef struct
 {
-    KeyEventContext parent;
+    KeyboardEventContext parent;
     int key;
     int on;
     int reset;
@@ -44,16 +44,16 @@ void trigger_init(__attribute__((unused)) int count, __attribute__((unused)) Gen
 {
     TriggerContext *context = (TriggerContext *)context_;
     state_event_broadcast(context->key, StateEventTypeTrigger, &context->on);
-    key_event_add(&context->parent);
+    keyboard_event_add(&context->parent);
 }
 
 Func *trigger(int key, Func *func)
 {
     TriggerContext initial = (TriggerContext){
-        .parent = {.key_listener = trigger_listener},
+        .parent = {.keyboard_listener = trigger_listener},
         .key = key,
     };
-    return func_create(trigger_init, trigger_eval, key_event_free, sizeof(TriggerContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
+    return func_create(trigger_init, trigger_eval, keyboard_event_free, sizeof(TriggerContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
 }
 
 #endif // CSYNTH_TRIGGER_H

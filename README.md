@@ -256,7 +256,7 @@ int main()
 
 Keyboard strokes can also be recorded and replay with
 [track](src/func/keyboard/track.h) and [replay](src/func/keyboard/replay.h). Key
-events are managed by [key_event](src/event/key_event.h). Two keys are directly
+events are managed by [keyboard_event](src/event/keyboard_event.h). Two keys are directly
 handled by `play`: `Tab` to pause, and `Esc` to exit.
 
 To visualize the state of controls, basic [display](src/ui/display.h)

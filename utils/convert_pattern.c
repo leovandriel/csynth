@@ -7,7 +7,7 @@
 
 #include "../src/core/func.h"
 #include "../src/core/gen.h"
-#include "../src/event/key_event.h"
+#include "../src/event/keyboard_event.h"
 #include "../src/mem/key_list.h"
 #include "../src/util/config.h"
 
@@ -22,7 +22,7 @@ void write(KeyList *list, double step, int key, FILE *file)
         int chr = ' ';
         while (index < size)
         {
-            TimedKeyEvent event = key_list_get(list, index);
+            TimedKeyboardEvent event = key_list_get(list, index);
             int event_index = (int)lround(event.time / step);
             if (event_index > i)
             {

@@ -6,7 +6,7 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../event/key_event.h"
+#include "../../event/keyboard_event.h"
 #include "../../mem/key_list.h"
 #include "../../util/config.h"
 
@@ -24,14 +24,14 @@ static double replay_eval(__attribute__((unused)) int count, Gen **args, double 
     size_t size = key_list_len(context->list);
     while (context->index < size)
     {
-        TimedKeyEvent event = key_list_get(context->list, context->index);
+        TimedKeyboardEvent event = key_list_get(context->list, context->index);
         if (event.time > context->time)
         {
             break;
         }
         if (event.key != CONFIG_PAUSE_KEY)
         {
-            key_event_broadcast(event.key);
+            keyboard_event_broadcast(event.key);
         }
         context->index++;
     }

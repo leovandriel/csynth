@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <termios.h>
 
-#include "../event/key_event.h"
+#include "../event/keyboard_event.h"
 #include "../util/config.h"
 #include "../util/time.h"
 
@@ -51,7 +51,7 @@ int terminal_loop(double duration)
             if (second == '[')
             {
                 int combined = getchar() + ('\033' << 16) + ('[' << 8);
-                err = key_event_broadcast(combined);
+                err = keyboard_event_broadcast(combined);
             }
             else if (key == CONFIG_EXIT_KEY)
             {
@@ -64,7 +64,7 @@ int terminal_loop(double duration)
         }
         else if (key > 0)
         {
-            err = key_event_broadcast(key);
+            err = keyboard_event_broadcast(key);
         }
         else
         {

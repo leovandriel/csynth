@@ -6,12 +6,12 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../event/key_event.h"
+#include "../../event/keyboard_event.h"
 #include "../../event/state_event.h"
 
 typedef struct
 {
-    KeyEventContext parent;
+    KeyboardEventContext parent;
     int key;
     int count;
     int selected;
@@ -38,7 +38,7 @@ void selector_init(__attribute__((unused)) int count, __attribute__((unused)) Ge
 {
     SelectorContext *context = (SelectorContext *)context_;
     state_event_broadcast(context->key, StateEventTypeInt, &context->selected);
-    key_event_add(&context->parent);
+    keyboard_event_add(&context->parent);
 }
 
 Func *selector_args(int key, int count, ...)
@@ -46,11 +46,11 @@ Func *selector_args(int key, int count, ...)
     va_list valist = {0};
     va_start(valist, count);
     SelectorContext initial = (SelectorContext){
-        .parent = {.key_listener = selector_listener},
+        .parent = {.keyboard_listener = selector_listener},
         .key = key,
         .count = count,
     };
-    Func *func = func_create_va(selector_init, selector_eval, key_event_free, sizeof(SelectorContext), &initial, FUNC_FLAG_SKIP_RESET, count, valist);
+    Func *func = func_create_va(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FUNC_FLAG_SKIP_RESET, count, valist);
     va_end(valist);
     return func;
 }
@@ -60,11 +60,11 @@ Func *selector_args(int key, int count, ...)
 Func *selector_array(int key, int count, Func **args)
 {
     SelectorContext initial = (SelectorContext){
-        .parent = {.key_listener = selector_listener},
+        .parent = {.keyboard_listener = selector_listener},
         .key = key,
         .count = count,
     };
-    return func_create_array(selector_init, selector_eval, key_event_free, sizeof(SelectorContext), &initial, FUNC_FLAG_SKIP_RESET, count, args);
+    return func_create_array(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FUNC_FLAG_SKIP_RESET, count, args);
 }
 
 #endif // CSYNTH_SELECTOR_H

@@ -10,12 +10,12 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-#include "../../event/key_event.h"
+#include "../../event/keyboard_event.h"
 #include "../../event/state_event.h"
 
 typedef struct
 {
-    KeyEventContext parent;
+    KeyboardEventContext parent;
     int key;
     double value;
     double step;
@@ -39,7 +39,7 @@ int knob_listener(int key, void *context_)
         context->active = 1;
         state_event_broadcast(context->key, StateEventTypeSelected, &context->active);
     }
-    else if (context->active && key == KEY_EVENT_UP)
+    else if (context->active && key == KEYBOARD_EVENT_UP)
     {
         if (context->rel)
         {
@@ -55,7 +55,7 @@ int knob_listener(int key, void *context_)
         }
         state_event_broadcast(context->key, StateEventTypeDouble, &context->value);
     }
-    else if (context->active && key == KEY_EVENT_DOWN)
+    else if (context->active && key == KEYBOARD_EVENT_DOWN)
     {
         if (context->rel)
         {
@@ -83,13 +83,13 @@ void knob_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **
 {
     KnobContext *context = (KnobContext *)context_;
     state_event_broadcast(context->key, StateEventTypeDouble, &context->value);
-    key_event_add(&context->parent);
+    keyboard_event_add(&context->parent);
 }
 
 Func *knob_range(int key, double value, double step, double min, double max, int rel)
 {
     KnobContext initial = (KnobContext){
-        .parent = {.key_listener = knob_listener},
+        .parent = {.keyboard_listener = knob_listener},
         .key = key,
         .value = value,
         .step = step,
@@ -97,7 +97,7 @@ Func *knob_range(int key, double value, double step, double min, double max, int
         .max = max,
         .rel = rel,
     };
-    return func_create(knob_init, knob_eval, key_event_free, sizeof(KnobContext), &initial, FUNC_FLAG_SKIP_RESET, 0);
+    return func_create(knob_init, knob_eval, keyboard_event_free, sizeof(KnobContext), &initial, FUNC_FLAG_SKIP_RESET, 0);
 }
 
 Func *knob(int key, double value, double delta)

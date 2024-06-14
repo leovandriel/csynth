@@ -6,12 +6,12 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../event/key_event.h"
+#include "../../event/keyboard_event.h"
 #include "../../event/state_event.h"
 
 typedef struct
 {
-    KeyEventContext parent;
+    KeyboardEventContext parent;
     int key;
     int paused;
     int reset;
@@ -45,18 +45,18 @@ void pause_init(__attribute__((unused)) int count, __attribute__((unused)) Gen *
 {
     PauseContext *context = (PauseContext *)context_;
     state_event_broadcast(context->key, StateEventTypeBool, &context->paused);
-    key_event_add(&context->parent);
+    keyboard_event_add(&context->parent);
 }
 
 Func *pause_play_(int key, Func *func, int play_reset, int paused)
 {
     PauseContext initial = (PauseContext){
-        .parent = {.key_listener = pause_listener},
+        .parent = {.keyboard_listener = pause_listener},
         .key = key,
         .play_reset = play_reset,
         .paused = paused,
     };
-    return func_create(pause_init, pause_eval, key_event_free, sizeof(PauseContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
+    return func_create(pause_init, pause_eval, keyboard_event_free, sizeof(PauseContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
 }
 
 Func *pause_play(int key, Func *func)

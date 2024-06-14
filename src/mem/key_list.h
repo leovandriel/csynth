@@ -9,21 +9,21 @@
 #include <sys/time.h>
 
 #include "../event/event.h"
-#include "../event/key_event.h"
+#include "../event/keyboard_event.h"
 #include "../mem/list.h"
 
 typedef struct
 {
     int key;
     double time;
-} TimedKeyEvent;
+} TimedKeyboardEvent;
 
 typedef List KeyList;
-KeyList *key_list_alloc() { return list_alloc(sizeof(TimedKeyEvent)); }
+KeyList *key_list_alloc() { return list_alloc(sizeof(TimedKeyboardEvent)); }
 void key_list_free(KeyList *list) { list_free(list); }
 size_t key_list_len(KeyList *list) { return list_len(list); }
-int key_list_add(KeyList *list, TimedKeyEvent event) { return list_add(list, &event); }
-TimedKeyEvent key_list_get(KeyList *list, size_t index) { return *(TimedKeyEvent *)list_get(list, index); }
+int key_list_add(KeyList *list, TimedKeyboardEvent event) { return list_add(list, &event); }
+TimedKeyboardEvent key_list_get(KeyList *list, size_t index) { return *(TimedKeyboardEvent *)list_get(list, index); }
 
 int key_list_read_file(KeyList *list, FILE *file)
 {
@@ -31,7 +31,7 @@ int key_list_read_file(KeyList *list, FILE *file)
     int stamp = 0;
     while (fscanf(file, "%d %d\n", &key, &stamp) == 2)
     {
-        TimedKeyEvent event = {.key = key, .time = stamp / 1000.0};
+        TimedKeyboardEvent event = {.key = key, .time = stamp / 1000.0};
         int err = key_list_add(list, event);
         if (err)
         {
@@ -58,7 +58,7 @@ int key_list_write_file(KeyList *list, FILE *file)
 {
     for (size_t i = 0; i < key_list_len(list); i++)
     {
-        TimedKeyEvent event = key_list_get(list, i);
+        TimedKeyboardEvent event = key_list_get(list, i);
         int err = fprintf(file, "%d %d\n", event.key, (int)(event.time * 1000));
         if (err < 0)
         {

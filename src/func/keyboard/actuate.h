@@ -6,7 +6,7 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../event/key_event.h"
+#include "../../event/keyboard_event.h"
 
 typedef struct
 {
@@ -19,7 +19,7 @@ static double actuate_eval(__attribute__((unused)) int count, __attribute__((unu
     ActuateContext *context = (ActuateContext *)context_;
     if (!context->completed)
     {
-        key_event_broadcast(context->key);
+        keyboard_event_broadcast(context->key);
         context->completed = 1;
     }
     return 0;

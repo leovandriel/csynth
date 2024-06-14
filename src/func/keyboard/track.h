@@ -6,7 +6,7 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../event/key_event.h"
+#include "../../event/keyboard_event.h"
 #include "../../mem/key_list.h"
 #include "../../util/config.h"
 
@@ -30,10 +30,10 @@ int track_listen(EventType type, void *event_, void *context_)
     TrackContext *context = (TrackContext *)context_;
     if (type == EventTypeKey)
     {
-        KeyEvent *event = (KeyEvent *)event_;
+        KeyboardEvent *event = (KeyboardEvent *)event_;
         if (event->key != CONFIG_PAUSE_KEY)
         {
-            TimedKeyEvent timed_event = {
+            TimedKeyboardEvent timed_event = {
                 .key = event->key,
                 .time = context->time,
             };

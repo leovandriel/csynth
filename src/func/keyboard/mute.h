@@ -6,12 +6,12 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../event/key_event.h"
+#include "../../event/keyboard_event.h"
 #include "../../event/state_event.h"
 
 typedef struct
 {
-    KeyEventContext parent;
+    KeyboardEventContext parent;
     int key;
     int muted;
 } MuteContext;
@@ -38,17 +38,17 @@ void mute_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **
 {
     MuteContext *context = (MuteContext *)context_;
     state_event_broadcast(context->key, StateEventTypeBoolInv, &context->muted);
-    key_event_add(&context->parent);
+    keyboard_event_add(&context->parent);
 }
 
 Func *mute_(int key, Func *func, int muted)
 {
     MuteContext initial = (MuteContext){
-        .parent = {.key_listener = mute_listener},
+        .parent = {.keyboard_listener = mute_listener},
         .key = key,
         .muted = muted,
     };
-    return func_create(mute_init, mute_eval, key_event_free, sizeof(MuteContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
+    return func_create(mute_init, mute_eval, keyboard_event_free, sizeof(MuteContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
 }
 
 Func *mute(int key, Func *func)
