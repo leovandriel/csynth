@@ -12,6 +12,18 @@
 #include "../util/cleanup.h"
 #include "./sampler.h"
 
+typedef int (*player_event_loop)(double duration);
+
+int player_event_loop_no_terminal(double duration)
+{
+    if (duration <= 0)
+    {
+        duration = FLT_MAX;
+    }
+    Pa_Sleep((long)(duration * 1000));
+    return 0;
+}
+
 static int player_callback(__attribute__((unused)) const void *input, void *output_, unsigned long count, __attribute__((unused)) const PaStreamCallbackTimeInfo *info, __attribute__((unused)) PaStreamCallbackFlags flags, void *data)
 {
     sampler_sample((Sampler *)data, count, (int16_t *)output_);
@@ -27,7 +39,7 @@ static int player_error(PaError err)
 
 int player_play_pause(PaStream *stream)
 {
-    int paused = Pa_IsStreamStopped(stream);
+    PaError paused = Pa_IsStreamStopped(stream);
     if (paused == 1)
     {
         PaError err = Pa_StartStream(stream);
@@ -65,7 +77,7 @@ int player_event_listener(EventType type, void *event, void *context)
     return 0;
 }
 
-int player_play_channels_no_cleanup(int count, Func **channels, double duration)
+int player_play_channels_no_cleanup(int count, Func **channels, player_event_loop loop, double duration)
 {
     PaError err = Pa_Initialize();
     if (err != paNoError)
@@ -87,7 +99,7 @@ int player_play_channels_no_cleanup(int count, Func **channels, double duration)
         return player_error(err);
     }
     void *handler = event_add_listener(player_event_listener, stream);
-    terminal_loop(duration);
+    loop(duration);
     event_remove_listener(handler);
     err = Pa_CloseStream(stream);
     if (err != paNoError)
@@ -100,27 +112,23 @@ int player_play_channels_no_cleanup(int count, Func **channels, double duration)
     return 0;
 }
 
-int player_play_channels(int count, Func **channels, double duration)
+int player_play_cleanup(int count, Func **channels, player_event_loop loop, double duration)
 {
-    int err = player_play_channels_no_cleanup(count, channels, duration);
+    int err = player_play_channels_no_cleanup(count, channels, loop, duration);
     cleanup_all();
     return err;
 }
 
-int play_duration(Func *root, double duration)
-{
-    return player_play_channels(1, (Func *[]){root}, duration);
-}
-
-int play_stereo_duration(Func *left, Func *right, double duration)
-{
-    return player_play_channels(2, (Func *[]){left, right}, duration);
-}
-
+int play_duration(Func *root, double duration) { return player_play_cleanup(1, (Func *[]){root}, terminal_loop, duration); }
 int play(Func *root) { return play_duration(root, 0); }
 int play_(Func *root, double duration) { return play_duration(root, duration); }
-int play_mono_duration(Func *input, double duration) { return play_duration(input, duration); }
-int play_mono(Func *input) { return play(input); }
+int play_stereo_duration(Func *left, Func *right, double duration) { return player_play_cleanup(2, (Func *[]){left, right}, terminal_loop, duration); }
 int play_stereo(Func *left, Func *right) { return play_stereo_duration(left, right, 0); }
+
+int play_duration_no_terminal(Func *root, double duration) { return player_play_cleanup(1, (Func *[]){root}, player_event_loop_no_terminal, duration); }
+int play_no_terminal(Func *root) { return play_duration_no_terminal(root, 0); }
+int play_no_terminal_(Func *root, double duration) { return play_duration_no_terminal(root, duration); }
+int play_stereo_duration_no_terminal(Func *left, Func *right, double duration) { return player_play_cleanup(2, (Func *[]){left, right}, player_event_loop_no_terminal, duration); }
+int play_stereo_no_terminal(Func *left, Func *right) { return play_stereo_duration_no_terminal(left, right, 0); }
 
 #endif // CSYNTH_PLAYER_H
