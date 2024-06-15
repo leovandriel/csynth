@@ -52,7 +52,7 @@ if [ $# -eq 0 ]; then
 
     # compile examples
     find ./examples -name "*.c" -type f -print0 | while read -d $'\0' file; do
-        gcc "$file" -o bin/test -Wall -Wextra -O3 -lm -lportaudio
+        gcc "$file" -o bin/test -Wall -Wextra -O3 -lm -lportaudio -lportmidi
         echo -n "."
     done
 fi

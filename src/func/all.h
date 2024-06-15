@@ -42,6 +42,8 @@
 #include "./keyboard/selector.h"
 #include "./keyboard/track.h"
 #include "./keyboard/trigger.h"
+#include "./midi/key.h"
+#include "./midi/midis.h"
 #include "./op/add.h"
 #include "./op/adsr.h"
 #include "./op/inv.h"

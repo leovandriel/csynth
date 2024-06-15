@@ -14,6 +14,7 @@ typedef enum
     EventTypeNone = 0,
     EventTypeKeyboard = 1,
     EventTypeState = 2,
+    EventTypeMidi = 3,
 } EventType;
 
 typedef int (*event_listener)(EventType type, void *event, void *context);
