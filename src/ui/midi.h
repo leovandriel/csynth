@@ -92,7 +92,7 @@ int midi_terminate(MidiContext *context)
     return 0;
 }
 
-int midi_loop(__attribute__((unused)) double duration)
+int midi_loop(__attribute__((unused)) double duration, int exit_key)
 {
     MidiContext context = {0};
     int err = midi_initialize(&context);
@@ -104,7 +104,7 @@ int midi_loop(__attribute__((unused)) double duration)
     signal(SIGINT, terminal_handler);
     while (!terminal_signaled())
     {
-        int key = terminal_read();
+        int key = terminal_read(exit_key);
         if (key > 0)
         {
             keyboard_event_broadcast(time_wall(), key);

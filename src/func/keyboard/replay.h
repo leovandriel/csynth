@@ -29,7 +29,7 @@ static double replay_eval(__attribute__((unused)) int count, Gen **args, double 
         {
             break;
         }
-        if (event.key != CONFIG_PAUSE_KEY)
+        if (event.key != CONFIG_DEFAULT_PAUSE_KEY)
         {
             keyboard_event_broadcast(event.time, event.key);
         }

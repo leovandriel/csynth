@@ -217,16 +217,16 @@ system that broadcasts keyboard input and state changes.
 
 Keyboard input is read by [terminal](src/ui/terminal.h) and broadcasted to
 gating functions. The most basic example of this is
-[unmute](src/func/contro/unmute), which multiplies input by 0 and 1 alternating at
-every space bar press.
+[unmute](src/func/contro/unmute), which multiplies input by 0 and 1 alternating
+at every space bar press.
 
 ```c
     play(unmute(' ', sine(A4)));
 ```
 
 To emulate a key on a keyboard or drum pad, use the
-[trigger](src/func/keyboard/trigger.h) function, which resets to initial state on
-every key press:
+[trigger](src/func/keyboard/trigger.h) function, which resets to initial state
+on every key press:
 
 ```c
     play(trigger(' ', decay_(sine(A4), .1)));
@@ -256,11 +256,11 @@ int main()
 
 Keyboard strokes can also be recorded and replay with
 [track](src/func/keyboard/track.h) and [replay](src/func/keyboard/replay.h). Key
-events are managed by [keyboard_event](src/event/keyboard_event.h). Two keys are directly
-handled by `play`: `Tab` to pause, and `Esc` to exit.
+events are managed by [keyboard_event](src/event/keyboard_event.h). To exit,
+`Esc` is directly handled by `play`.
 
 To visualize the state of controls, basic [display](src/ui/display.h)
-functionality is included for switches and numerical values. 
+functionality is included for switches and numerical values.
 
 ```c
     display(' ', "select frequency");
@@ -297,7 +297,7 @@ Under the hood, `play` and `write` use [sampler](src/io/sampler.h). This makes
 it easy to implement a custom audio player:
 
 ```c
-    Sampler *sampler = sampler_create(channel_count, channels);
+    Sampler *sampler = sampler_create(channel_count, channels, 44100);
     for (;;) {
         sample_t buffer = ...;
         sampler_sample(sampler, sample_count, buffer);

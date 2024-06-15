@@ -1,5 +1,5 @@
 //
-// mute.h - Pause/play based on key press
+// mute.h - Mute/unmute based on key press
 //
 #ifndef CSYNTH_MUTE_H
 #define CSYNTH_MUTE_H

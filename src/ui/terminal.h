@@ -64,10 +64,10 @@ int terminal_read_key()
     return key;
 }
 
-int terminal_read()
+int terminal_read(int exit_key)
 {
     int key = terminal_read_key();
-    if (key == CONFIG_EXIT_KEY)
+    if (key == exit_key)
     {
         return -1;
     }
@@ -88,7 +88,7 @@ int terminal_signaled()
     return terminal_signal;
 }
 
-int terminal_loop(double duration)
+int terminal_loop(double duration, int exit_key)
 {
     struct termios term = terminal_setup(1);
     signal(SIGINT, terminal_handler);
@@ -96,7 +96,7 @@ int terminal_loop(double duration)
     double start = time_wall();
     while (!terminal_signaled())
     {
-        int key = terminal_read();
+        int key = terminal_read(exit_key);
         double time = time_wall();
         if (key > 0)
         {

@@ -16,13 +16,13 @@ typedef struct
     int count;
 } Sampler;
 
-Sampler *sampler_create(int count, Func **roots)
+Sampler *sampler_create(int count, Func **roots, int sample_rate)
 {
     Sampler *sampler = (Sampler *)calloc_(1, sizeof(Sampler));
     sampler->channels = (Gen **)calloc_(count, sizeof(Gen *));
     for (int index = 0; index < count; index++)
     {
-        sampler->channels[index] = gen_create(roots[index], 1.0 / SAMPLE_RATE);
+        sampler->channels[index] = gen_create(roots[index], 1.0 / sample_rate);
     }
     sampler->count = count;
     return sampler;

@@ -31,7 +31,7 @@ typedef struct
 static const size_t WAV_HEADER_SIZE = sizeof(WavHeader) - WAV_HEADER_(riff_type) - WAV_HEADER_(file_size);
 static const size_t WAV_HEADER_FORMAT_SIZE = WAV_HEADER_(format_type) + WAV_HEADER_(num_channels) + WAV_HEADER_(sample_rate) + WAV_HEADER_(byte_rate) + WAV_HEADER_(block_align) + WAV_HEADER_(bits_sample);
 
-int wav_header_write(uint32_t sample_count, uint32_t channel_count, FILE *file)
+int wav_header_write(uint32_t sample_count, uint32_t channel_count, FILE *file, int sample_rate)
 {
     uint32_t data_size = sizeof(sample_t) * channel_count * sample_count;
     WavHeader header = {0};
@@ -42,8 +42,8 @@ int wav_header_write(uint32_t sample_count, uint32_t channel_count, FILE *file)
     header.format_size = WAV_HEADER_FORMAT_SIZE;
     header.format_type = 1; // PCM
     header.num_channels = channel_count;
-    header.sample_rate = SAMPLE_RATE;
-    header.byte_rate = sizeof(sample_t) * channel_count * SAMPLE_RATE;
+    header.sample_rate = sample_rate;
+    header.byte_rate = sizeof(sample_t) * channel_count * sample_rate;
     header.block_align = sizeof(sample_t) * channel_count;
     header.bits_sample = sizeof(sample_t) * 8;
     memcpy(header.data_chunk, "data", 4);

@@ -12,9 +12,18 @@
 #include "../util/cleanup.h"
 #include "./sampler.h"
 
-typedef int (*player_event_loop)(double duration);
+typedef int (*player_event_loop)(double duration, int exit_key);
 
-int player_event_loop_no_terminal(double duration)
+typedef struct
+{
+    player_event_loop loop;
+    double duration;
+    int sample_rate;
+    int exit_key;
+    int pause_key;
+} PlayerConfig;
+
+int player_event_loop_no_terminal(double duration, __attribute__((unused)) int exit_key)
 {
     if (duration <= 0)
     {
@@ -60,7 +69,7 @@ int player_play_pause(PaStream *stream)
     {
         return paused;
     }
-    state_event_broadcast(CONFIG_PAUSE_KEY, StateEventTypeBool, &paused);
+    state_event_broadcast(CONFIG_DEFAULT_PAUSE_KEY, StateEventTypeBool, &paused);
     return 0;
 }
 
@@ -69,7 +78,7 @@ int player_event_listener(EventType type, void *event_, void *context)
     if (type == EventTypeKeyboard)
     {
         KeyboardEvent *event = (KeyboardEvent *)event_;
-        if (event->key == CONFIG_PAUSE_KEY)
+        if (event->key == CONFIG_DEFAULT_PAUSE_KEY)
         {
             return player_play_pause((PaStream *)context);
         }
@@ -77,7 +86,7 @@ int player_event_listener(EventType type, void *event_, void *context)
     return 0;
 }
 
-int player_play_channels_no_cleanup(int count, Func **channels, player_event_loop loop, double duration)
+int player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig config)
 {
     PaError err = Pa_Initialize();
     if (err != paNoError)
@@ -85,10 +94,10 @@ int player_play_channels_no_cleanup(int count, Func **channels, player_event_loo
         return player_error(err);
     }
     display_show();
-    state_event_broadcast(CONFIG_PAUSE_KEY, StateEventTypeBoolInv, NULL);
-    Sampler *sampler = sampler_create(count, channels);
+    state_event_broadcast(config.pause_key, StateEventTypeBoolInv, NULL);
+    Sampler *sampler = sampler_create(count, channels, config.sample_rate);
     PaStream *stream = NULL;
-    err = Pa_OpenDefaultStream(&stream, 0, count, paInt16, SAMPLE_RATE, paFramesPerBufferUnspecified, player_callback, sampler);
+    err = Pa_OpenDefaultStream(&stream, 0, count, paInt16, config.sample_rate, paFramesPerBufferUnspecified, player_callback, sampler);
     if (err != paNoError)
     {
         return player_error(err);
@@ -99,7 +108,7 @@ int player_play_channels_no_cleanup(int count, Func **channels, player_event_loo
         return player_error(err);
     }
     void *handler = event_add_listener(player_event_listener, stream);
-    loop(duration);
+    config.loop(config.duration, config.exit_key);
     event_remove_listener(handler);
     err = Pa_CloseStream(stream);
     if (err != paNoError)
@@ -112,18 +121,21 @@ int player_play_channels_no_cleanup(int count, Func **channels, player_event_loo
     return 0;
 }
 
-int player_play_cleanup(int count, Func **channels, player_event_loop loop, double duration)
+int player_play_with_cleanup(int count, Func **channels, PlayerConfig config)
 {
-    int err = player_play_channels_no_cleanup(count, channels, loop, duration);
+    int err = player_play_channels_no_cleanup(count, channels, config);
     cleanup_all();
     return err;
 }
 
-int play(Func *root) { return player_play_cleanup(1, (Func *[]){root}, terminal_loop, 0); }
-int play_stereo(Func *left, Func *right) { return player_play_cleanup(2, (Func *[]){left, right}, terminal_loop, 0); }
+const PlayerConfig player_config_terminal = {.loop = terminal_loop, .duration = 0, .sample_rate = CONFIG_DEFAULT_SAMPLE_RATE, .exit_key = CONFIG_DEFAULT_EXIT_KEY, .pause_key = CONFIG_DEFAULT_PAUSE_KEY};
+const PlayerConfig player_config_no_terminal = {.loop = player_event_loop_no_terminal, .duration = 0, .sample_rate = CONFIG_DEFAULT_SAMPLE_RATE, .exit_key = CONFIG_DEFAULT_EXIT_KEY, .pause_key = CONFIG_DEFAULT_PAUSE_KEY};
 
-int play_duration(Func *root, double duration) { return player_play_cleanup(1, (Func *[]){root}, player_event_loop_no_terminal, duration); }
+int play(Func *root) { return player_play_with_cleanup(1, (Func *[]){root}, player_config_terminal); }
+int play_stereo(Func *left, Func *right) { return player_play_with_cleanup(2, (Func *[]){left, right}, player_config_terminal); }
+
+int play_duration(Func *root, double duration) { return player_play_with_cleanup(1, (Func *[]){root}, (PlayerConfig){player_event_loop_no_terminal, duration, CONFIG_DEFAULT_SAMPLE_RATE, CONFIG_DEFAULT_EXIT_KEY, CONFIG_DEFAULT_PAUSE_KEY}); }
 int play_(Func *root, double duration) { return play_duration(root, duration); }
-int play_stereo_duration(Func *left, Func *right, double duration) { return player_play_cleanup(2, (Func *[]){left, right}, player_event_loop_no_terminal, duration); }
+int play_stereo_duration(Func *left, Func *right, double duration) { return player_play_with_cleanup(2, (Func *[]){left, right}, (PlayerConfig){player_event_loop_no_terminal, duration, CONFIG_DEFAULT_SAMPLE_RATE, CONFIG_DEFAULT_EXIT_KEY, CONFIG_DEFAULT_PAUSE_KEY}); }
 
 #endif // CSYNTH_PLAYER_H

@@ -18,6 +18,7 @@ typedef struct
     size_t size;
     const char *filename;
     FILE *file;
+    int sample_rate;
 } RecordContext;
 
 static double record_eval(int count, Gen **args, __attribute__((unused)) double delta, void *context_)
@@ -44,7 +45,7 @@ void record_init(int count, __attribute__((unused)) Gen **args, __attribute__((u
 {
     RecordContext *context = (RecordContext *)context_;
     context->file = fopen(context->filename, "wb");
-    wav_header_write(1, count, context->file);
+    wav_header_write(1, count, context->file, context->sample_rate);
 }
 
 static void record_free(int count, void *context_)
@@ -52,35 +53,37 @@ static void record_free(int count, void *context_)
     RecordContext *context = (RecordContext *)context_;
     fwrite(context->buffer, sizeof(sample_t), context->offset, context->file);
     fseek(context->file, 0, SEEK_SET);
-    wav_header_write(context->size, count, context->file);
+    wav_header_write(context->size, count, context->file, context->sample_rate);
     fclose(context->file);
 }
 
-Func *record_args(const char *filename, int count, ...)
+Func *record_args(const char *filename, int sample_rate, int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
     RecordContext initial = (RecordContext){
         .filename = filename,
+        .sample_rate = sample_rate,
     };
     Func *func = func_create_va(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);
     return func;
 }
 
-#define record_channels(_filename, ...) (record_args(_filename, (sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
+#define record_channels(_filename, _sample_rate, ...) (record_args(_filename, _sample_rate, (sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
 
-Func *record_array(const char *filename, int count, Func **args)
+Func *record_array(const char *filename, int sample_rate, int count, Func **args)
 {
     RecordContext initial = (RecordContext){
         .filename = filename,
+        .sample_rate = sample_rate,
     };
     return func_create_array(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FUNC_FLAG_DEFAULT, count, args);
 }
 
-Func *record(Func *input, const char *filename) { return record_channels(filename, input); }
+Func *record(Func *input, const char *filename) { return record_channels(filename, CONFIG_DEFAULT_SAMPLE_RATE, input); }
 Func *record_(Func *input) { return record(input, CONFIG_DEFAULT_WAV_FILENAME); }
-Func *record_stereo(Func *left, Func *right, const char *filename) { return record_channels(filename, left, right); }
+Func *record_stereo(Func *left, Func *right, const char *filename) { return record_channels(filename, CONFIG_DEFAULT_SAMPLE_RATE, left, right); }
 Func *record_stereo_(Func *left, Func *right) { return record_stereo(left, right, CONFIG_DEFAULT_WAV_FILENAME); }
 
 #endif // CSYNTH_RECORD_H
