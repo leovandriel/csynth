@@ -36,6 +36,34 @@ void terminal_handler(__attribute__((unused)) int signal)
     terminal_signal = 1;
 }
 
+int terminal_read_key()
+{
+    int key = getchar();
+    if (key < 0)
+    {
+        return key;
+    }
+    if (key == '\033')
+    {
+        int second = getchar();
+        if (second < 0)
+        {
+            return key;
+        }
+        key = (key << 8) + second;
+        if (second == '[')
+        {
+            int third = getchar();
+            if (third < 0)
+            {
+                return key;
+            }
+            key = (key << 8) + third;
+        }
+    }
+    return key;
+}
+
 int terminal_loop(double duration)
 {
     struct termios term = terminal_setup();
@@ -44,21 +72,8 @@ int terminal_loop(double duration)
     double start = time_wall();
     while (!err && !terminal_signal)
     {
-        int key = getchar();
-        if (key == '\033')
-        {
-            int second = getchar();
-            if (second == '[')
-            {
-                int combined = getchar() + ('\033' << 16) + ('[' << 8);
-                err = keyboard_event_broadcast(combined);
-            }
-            else if (key == CONFIG_EXIT_KEY)
-            {
-                break;
-            }
-        }
-        else if (key == CONFIG_EXIT_KEY)
+        int key = terminal_read_key();
+        if (key == CONFIG_EXIT_KEY)
         {
             break;
         }
