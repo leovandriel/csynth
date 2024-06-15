@@ -16,4 +16,7 @@ void test_resonant()
     assert_gen_equal(gen, -1.3835083183028383);
     assert_gen_equal(gen, -0.0165945916944109);
     assert_gen_equal(gen, -0.4292847868595760);
+    gen_free(gen);
+    func_free();
+    sin_table_free();
 }

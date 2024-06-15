@@ -13,4 +13,5 @@ void test_sin()
 void test_math()
 {
     test_sin();
+    sin_table_free();
 }

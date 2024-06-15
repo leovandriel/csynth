@@ -17,4 +17,6 @@ void test_triangle()
     assert_gen_equal(gen, -0.4);
     assert_gen_equal(gen, 0.0);
     assert_gen_equal(gen, 0.4);
+    gen_free(gen);
+    func_free();
 }

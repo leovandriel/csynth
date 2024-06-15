@@ -17,4 +17,6 @@ void test_lpf()
     assert_gen_equal(gen, 0.9999999826576574);
     assert_gen_equal(gen, 0.9999999976188519);
     assert_gen_equal(gen, 0.9999999996730623);
+    gen_free(gen);
+    func_free();
 }

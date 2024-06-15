@@ -18,6 +18,7 @@ void test_sine_const()
     assert_gen_equal(gen, -0.5877852419187400);
     assert_gen_equal(gen, 0.0000000000000000);
     assert_gen_equal(gen, 0.5877852419187400);
+    gen_free(gen);
 }
 
 void test_sine_timer()
@@ -36,10 +37,13 @@ void test_sine_timer()
     assert_gen_equal(gen, 0.9892723178837863);
     assert_gen_equal(gen, 0.9759167442563212);
     assert_gen_equal(gen, 0.8090169800974962);
+    gen_free(gen);
 }
 
 void test_sine()
 {
     test_sine_const();
     test_sine_timer();
+    func_free();
+    sin_table_free();
 }

@@ -17,4 +17,6 @@ void test_hpf()
     assert_gen_equal(gen, 0.0000000173423426);
     assert_gen_equal(gen, 0.0000000023811481);
     assert_gen_equal(gen, 0.0000000003269377);
+    gen_free(gen);
+    func_free();
 }

@@ -16,4 +16,6 @@ void test_saw()
     assert_gen_equal(gen, -0.4);
     assert_gen_equal(gen, -0.2);
     assert_gen_equal(gen, -0.0);
+    gen_free(gen);
+    func_free();
 }

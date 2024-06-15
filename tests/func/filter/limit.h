@@ -18,4 +18,6 @@ void test_limit()
     assert_gen_equal(gen, -0.50);
     assert_gen_equal(gen, -0.20);
     assert_gen_equal(gen, 0.10);
+    gen_free(gen);
+    func_free();
 }

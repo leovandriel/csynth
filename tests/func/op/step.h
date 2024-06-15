@@ -17,4 +17,6 @@ void test_step()
     assert_gen_equal(gen, 1.0);
     assert_gen_equal(gen, 1.0);
     assert_gen_equal(gen, 1.0);
+    gen_free(gen);
+    func_free();
 }

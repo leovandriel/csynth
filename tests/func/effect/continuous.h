@@ -12,4 +12,6 @@ void test_continuous()
     assert_gen_equal(gen, 2);
     assert_gen_equal(gen, 3);
     assert_gen_equal(gen, 4);
+    gen_free(gen);
+    func_free();
 }

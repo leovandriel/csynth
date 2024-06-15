@@ -14,4 +14,6 @@ void test_wrap()
     Func *fun = wrap(_(3), test_wrap_add);
     Gen *gen = gen_create(fun, 0.1);
     assert_gen_equal(gen, 7);
+    gen_free(gen);
+    func_free();
 }

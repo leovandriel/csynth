@@ -17,4 +17,6 @@ void test_reverb()
     assert_gen_equal(gen, 1.87500);
     assert_gen_equal(gen, 1.93750);
     assert_gen_equal(gen, 1.93750);
+    gen_free(gen);
+    func_free();
 }

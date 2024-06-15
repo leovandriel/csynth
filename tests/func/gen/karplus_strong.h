@@ -18,4 +18,6 @@ void test_karplus_strong()
     assert_gen_equal(gen, 0.1593760951610511);
     assert_gen_equal(gen, 0.2109418661214700);
     assert_gen_equal(gen, 0.3324191163681807);
+    gen_free(gen);
+    func_free();
 }

@@ -19,4 +19,6 @@ void test_unison()
     assert_gen_equal(gen, -0.1557908228366712);
     assert_gen_equal(gen, 0.0491213079592542);
     assert_gen_equal(gen, 0.2540334387551796);
+    gen_free(gen);
+    func_free();
 }

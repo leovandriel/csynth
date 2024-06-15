@@ -47,6 +47,16 @@
 #define assert_gen_equal(_gen, _value) assert_double_equal(gen_eval(_gen), _value)
 #define assert_gen_range(_gen, _a, _b) assert_double_range(gen_eval(_gen), _a, _b)
 
+#define assert_msg(_cond, _msg)            \
+    do                                     \
+    {                                      \
+        if (!(_cond))                      \
+        {                                  \
+            fprintf(stderr, "%s\n", _msg); \
+        }                                  \
+        assert(_cond);                     \
+    } while (0)
+
 void print_assert_gen_equal(Gen *gen)
 {
     printf("\n");

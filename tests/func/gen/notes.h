@@ -3,5 +3,8 @@
 
 void test_notes()
 {
-    assert_gen_equal(gen_create(G9, .1), G9_);
+    Gen *gen = gen_create(G9, .1);
+    assert_gen_equal(gen, G9_);
+    gen_free(gen);
+    func_free();
 }

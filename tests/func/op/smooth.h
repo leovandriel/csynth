@@ -16,4 +16,6 @@ void test_smooth()
     assert_gen_equal(gen, 1.000000);
     assert_gen_equal(gen, 1.000000);
     assert_gen_equal(gen, 1.000000);
+    gen_free(gen);
+    func_free();
 }

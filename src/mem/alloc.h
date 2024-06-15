@@ -154,6 +154,21 @@ void alloc_free(void *ptr, const char *line)
     free(ptr);
 }
 
+size_t alloc_count()
+{
+    size_t count = 0;
+    for (Alloc *iter = alloc_list; iter; iter = iter->next)
+    {
+        count++;
+    }
+    return count;
+}
+
+int alloc_empty()
+{
+    return alloc_list == NULL;
+}
+
 void alloc_dump()
 {
     for (Alloc *iter = alloc_list; iter; iter = iter->next)

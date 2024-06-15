@@ -21,4 +21,6 @@ void test_adsr()
     assert_gen_equal(gen, 0.000);
     assert_gen_equal(gen, 0.000);
     assert_gen_equal(gen, 0.000);
+    gen_free(gen);
+    func_free();
 }
