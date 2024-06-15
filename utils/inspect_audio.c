@@ -3,12 +3,12 @@
 #include <portaudio.h>
 #include <stdio.h>
 
-#define PA_ERR_CHECK(err)                                               \
-    if (err < 0)                                                        \
-    {                                                                   \
-        fprintf(stderr, "Error: %s (%d)\n", Pa_GetErrorText(err), err); \
-        return err;                                                     \
-    }                                                                   \
+#define PA_ERR_CHECK(_err)                                                \
+    if ((_err) < 0)                                                       \
+    {                                                                     \
+        fprintf(stderr, "Error: %s (%d)\n", Pa_GetErrorText(_err), _err); \
+        return _err;                                                      \
+    }                                                                     \
     (void)0
 
 const char *host_type_string(PaHostApiTypeId type)

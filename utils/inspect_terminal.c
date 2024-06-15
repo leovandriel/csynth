@@ -20,8 +20,9 @@ void print_key(int key)
 int main()
 {
     printf("Press key to print key code. Ctrl+C to exit\n");
-    struct termios term = terminal_setup();
-    for (;;)
+    struct termios term = terminal_setup(1);
+    signal(SIGINT, terminal_handler);
+    while (!terminal_signaled())
     {
         int key = terminal_read_key();
         if (key > 0)
