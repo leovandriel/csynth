@@ -34,7 +34,7 @@
 #include "./gen/unison.h"
 #include "./gen/wav.h"
 #include "./keyboard/actuate.h"
-#include "./keyboard/controls.h"
+#include "./keyboard/keyboards.h"
 #include "./keyboard/knob.h"
 #include "./keyboard/mute.h"
 #include "./keyboard/pause.h"

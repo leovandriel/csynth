@@ -14,28 +14,26 @@ typedef struct
 {
     KeyList *list;
     const char *filename;
-    double time;
     void *handle;
 } TrackContext;
 
-static double track_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
+static double track_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context_)
 {
-    TrackContext *context = (TrackContext *)context_;
-    context->time += delta;
+    // TODO(leo): consider converting to non-func
     return gen_eval(args[0]);
 }
 
 int track_listen(EventType type, void *event_, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
-    if (type == EventTypeKey)
+    if (type == EventTypeKeyboard)
     {
         KeyboardEvent *event = (KeyboardEvent *)event_;
         if (event->key != CONFIG_PAUSE_KEY)
         {
             TimedKeyboardEvent timed_event = {
                 .key = event->key,
-                .time = context->time,
+                .time = event->time,
             };
             key_list_add(context->list, timed_event);
         }

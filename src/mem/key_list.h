@@ -14,8 +14,8 @@
 
 typedef struct
 {
-    int key;
     double time;
+    int key;
 } TimedKeyboardEvent;
 
 typedef List KeyList;

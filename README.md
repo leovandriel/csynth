@@ -240,7 +240,7 @@ There is also [knob](src/func/keyboard/knob.h) to modulate a value and
 ```
 
 These controls can be combined to create a
-[keyboard](src/func/keyboard/controls.h):
+[keyboard](src/func/keyboard/keyboards.h):
 
 ```c
 func note(func frequency)

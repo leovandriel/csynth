@@ -14,6 +14,7 @@ typedef int (*keyboard_event_listener)(int key, void *context);
 
 typedef struct
 {
+    double time;
     int key;
 } KeyboardEvent;
 
@@ -23,16 +24,16 @@ typedef struct
     keyboard_event_listener keyboard_listener;
 } KeyboardEventContext;
 
-int keyboard_event_broadcast(int key)
+int keyboard_event_broadcast(double time, int key)
 {
-    KeyboardEvent event = {.key = key};
-    return event_broadcast(EventTypeKey, &event);
+    KeyboardEvent event = {.time = time, .key = key};
+    return event_broadcast(EventTypeKeyboard, &event);
 }
 
 int keyboard_event_listen(EventType type, void *event_, void *context_)
 {
     KeyboardEventContext *context = (KeyboardEventContext *)context_;
-    if (type == EventTypeKey)
+    if (type == EventTypeKeyboard)
     {
         KeyboardEvent *event = (KeyboardEvent *)event_;
         return context->keyboard_listener(event->key, context);

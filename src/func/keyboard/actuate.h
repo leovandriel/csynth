@@ -7,6 +7,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../event/keyboard_event.h"
+#include "../../util/time.h"
 
 typedef struct
 {
@@ -19,7 +20,7 @@ static double actuate_eval(__attribute__((unused)) int count, __attribute__((unu
     ActuateContext *context = (ActuateContext *)context_;
     if (!context->completed)
     {
-        keyboard_event_broadcast(context->key);
+        keyboard_event_broadcast(time_wall(), context->key);
         context->completed = 1;
     }
     return 0;

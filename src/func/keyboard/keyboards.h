@@ -1,8 +1,8 @@
 //
-// controls.h - Misc controls
+// keyboards.h - Misc keyboard controls
 //
-#ifndef CSYNTH_CONTROLS_H
-#define CSYNTH_CONTROLS_H
+#ifndef CSYNTH_KEYBOARDS_H
+#define CSYNTH_KEYBOARDS_H
 
 #include <math.h>
 
@@ -12,11 +12,11 @@
 #include "../op/add.h"
 #include "../op/mul.h"
 
-typedef Func *(*control_func)(int key, Func *frequency);
+typedef Func *(*keyboard_control_func)(int key, Func *frequency);
 
 const char *keyboard_keys = "zsxdcvgbhnjm,l.;/";
 
-Func *keyboard(control_func control, gen_func generator, Func *frequency)
+Func *keyboard(keyboard_control_func control, gen_func generator, Func *frequency)
 {
     int count = (int)strlen(keyboard_keys);
     Func **array = (Func **)calloc_(count, sizeof(Func *));
@@ -31,9 +31,9 @@ Func *keyboard(control_func control, gen_func generator, Func *frequency)
     return func;
 }
 
-Func *keyboard_(control_func control, gen_func generator, double frequency)
+Func *keyboard_(keyboard_control_func control, gen_func generator, double frequency)
 {
     return keyboard(control, generator, const_(frequency));
 }
 
-#endif // CSYNTH_CONTROLS_H
+#endif // CSYNTH_KEYBOARDS_H

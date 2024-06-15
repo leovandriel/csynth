@@ -64,12 +64,12 @@ int player_play_pause(PaStream *stream)
     return 0;
 }
 
-int player_event_listener(EventType type, void *event, void *context)
+int player_event_listener(EventType type, void *event_, void *context)
 {
-    if (type == EventTypeKey)
+    if (type == EventTypeKeyboard)
     {
-        int key = *(int *)event;
-        if (key == CONFIG_PAUSE_KEY)
+        KeyboardEvent *event = (KeyboardEvent *)event_;
+        if (event->key == CONFIG_PAUSE_KEY)
         {
             return player_play_pause((PaStream *)context);
         }
@@ -119,16 +119,11 @@ int player_play_cleanup(int count, Func **channels, player_event_loop loop, doub
     return err;
 }
 
-int play_duration(Func *root, double duration) { return player_play_cleanup(1, (Func *[]){root}, terminal_loop, duration); }
-int play(Func *root) { return play_duration(root, 0); }
-int play_(Func *root, double duration) { return play_duration(root, duration); }
-int play_stereo_duration(Func *left, Func *right, double duration) { return player_play_cleanup(2, (Func *[]){left, right}, terminal_loop, duration); }
-int play_stereo(Func *left, Func *right) { return play_stereo_duration(left, right, 0); }
+int play(Func *root) { return player_play_cleanup(1, (Func *[]){root}, terminal_loop, 0); }
+int play_stereo(Func *left, Func *right) { return player_play_cleanup(2, (Func *[]){left, right}, terminal_loop, 0); }
 
-int play_duration_no_terminal(Func *root, double duration) { return player_play_cleanup(1, (Func *[]){root}, player_event_loop_no_terminal, duration); }
-int play_no_terminal(Func *root) { return play_duration_no_terminal(root, 0); }
-int play_no_terminal_(Func *root, double duration) { return play_duration_no_terminal(root, duration); }
-int play_stereo_duration_no_terminal(Func *left, Func *right, double duration) { return player_play_cleanup(2, (Func *[]){left, right}, player_event_loop_no_terminal, duration); }
-int play_stereo_no_terminal(Func *left, Func *right) { return play_stereo_duration_no_terminal(left, right, 0); }
+int play_duration(Func *root, double duration) { return player_play_cleanup(1, (Func *[]){root}, player_event_loop_no_terminal, duration); }
+int play_(Func *root, double duration) { return play_duration(root, duration); }
+int play_stereo_duration(Func *left, Func *right, double duration) { return player_play_cleanup(2, (Func *[]){left, right}, player_event_loop_no_terminal, duration); }
 
 #endif // CSYNTH_PLAYER_H

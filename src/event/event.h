@@ -12,7 +12,7 @@
 typedef enum
 {
     EventTypeNone = 0,
-    EventTypeKey = 1,
+    EventTypeKeyboard = 1,
     EventTypeState = 2,
 } EventType;
 

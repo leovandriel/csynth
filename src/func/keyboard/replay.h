@@ -31,7 +31,7 @@ static double replay_eval(__attribute__((unused)) int count, Gen **args, double 
         }
         if (event.key != CONFIG_PAUSE_KEY)
         {
-            keyboard_event_broadcast(event.key);
+            keyboard_event_broadcast(event.time, event.key);
         }
         context->index++;
     }

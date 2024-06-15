@@ -14,14 +14,14 @@
 
 static volatile int terminal_signal = 0;
 
-struct termios terminal_setup()
+struct termios terminal_setup(cc_t vtime)
 {
     struct termios original;
     tcgetattr(fileno(stdin), &original);
     struct termios raw = original;
     raw.c_lflag &= ~(ICANON | ECHO);
     raw.c_cc[VMIN] = 0;
-    raw.c_cc[VTIME] = 1;
+    raw.c_cc[VTIME] = vtime;
     tcsetattr(fileno(stdin), TCSANOW, &raw);
     return original;
 }
@@ -64,32 +64,50 @@ int terminal_read_key()
     return key;
 }
 
+int terminal_read()
+{
+    int key = terminal_read_key();
+    if (key == CONFIG_EXIT_KEY)
+    {
+        return -1;
+    }
+    if (key > 0)
+    {
+        return key;
+    }
+    if (ferror(stdin))
+    {
+        return -1;
+    }
+    clearerr(stdin);
+    return 0;
+}
+
+int terminal_signaled()
+{
+    return terminal_signal;
+}
+
 int terminal_loop(double duration)
 {
-    struct termios term = terminal_setup();
+    struct termios term = terminal_setup(1);
     signal(SIGINT, terminal_handler);
     int err = 0;
     double start = time_wall();
-    while (!err && !terminal_signal)
+    while (!terminal_signaled())
     {
-        int key = terminal_read_key();
-        if (key == CONFIG_EXIT_KEY)
+        int key = terminal_read();
+        double time = time_wall();
+        if (key > 0)
         {
+            keyboard_event_broadcast(time, key);
+        }
+        else if (key < 0)
+        {
+            err = key;
             break;
         }
-        else if (key > 0)
-        {
-            err = keyboard_event_broadcast(key);
-        }
-        else
-        {
-            if (ferror(stdin))
-            {
-                break;
-            }
-            clearerr(stdin);
-        }
-        double elapsed = time_wall() - start;
+        double elapsed = time - start;
         if (duration > 0 && elapsed > duration)
         {
             break;
