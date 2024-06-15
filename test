@@ -15,7 +15,7 @@ rm -f ./tests/.test.c
 # compile and all tests individually
 find ./tests -regex "$pattern" -print0 | while read -d $'\0' file; do
     name=$(basename "$file" .h)
-    printf "#define ALLOC_TRACE\\n#include \".$file\"\\nint main() { test_$name(); alloc_dump(); assert_msg(alloc_empty(),\"$file\"); return 0; }" > ./tests/.test.c
+    printf "#define ALLOC_TRACE\\n#include \".$file\"\\nint main() { test_$name(); alloc_list_dump(); assert_msg(alloc_list_is_empty(),\"$file\"); return 0; }" > ./tests/.test.c
     gcc ./tests/.test.c -o bin/test -Wall -Wextra -lm
     ./bin/test
     echo -n "."

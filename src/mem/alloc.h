@@ -69,6 +69,39 @@ Alloc *alloc_list_find(void *ptr)
     return NULL;
 }
 
+size_t alloc_list_count()
+{
+    size_t count = 0;
+    for (Alloc *iter = alloc_list; iter; iter = iter->next)
+    {
+        count++;
+    }
+    return count;
+}
+
+int alloc_list_is_empty()
+{
+    return alloc_list == NULL;
+}
+
+void alloc_list_clear()
+{
+    while (alloc_list)
+    {
+        Alloc *next = alloc_list->next;
+        free(alloc_list);
+        alloc_list = next;
+    }
+}
+
+void alloc_list_dump()
+{
+    for (Alloc *iter = alloc_list; iter; iter = iter->next)
+    {
+        fprintf(stderr, "allocated: %zu bytes, at %s\n", iter->size, iter->line);
+    }
+}
+
 void *alloc_malloc(size_t size, const char *line)
 {
     void *ptr = malloc(size);
@@ -152,29 +185,6 @@ void alloc_free(void *ptr, const char *line)
         fprintf(stderr, "free error: pointer not allocated %p, at %s\n", ptr, line);
     }
     free(ptr);
-}
-
-size_t alloc_count()
-{
-    size_t count = 0;
-    for (Alloc *iter = alloc_list; iter; iter = iter->next)
-    {
-        count++;
-    }
-    return count;
-}
-
-int alloc_empty()
-{
-    return alloc_list == NULL;
-}
-
-void alloc_dump()
-{
-    for (Alloc *iter = alloc_list; iter; iter = iter->next)
-    {
-        fprintf(stderr, "allocated: %zu bytes, at %s\n", iter->size, iter->line);
-    }
 }
 
 #define malloc_(__size) alloc_malloc(__size, ALLOC_LINE)
