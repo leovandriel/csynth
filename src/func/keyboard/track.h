@@ -29,14 +29,11 @@ int track_listen(EventType type, void *event_, void *context_)
     if (type == EventTypeKeyboard)
     {
         KeyboardEvent *event = (KeyboardEvent *)event_;
-        if (event->key != CONFIG_DEFAULT_PAUSE_KEY)
-        {
-            TimedKeyboardEvent timed_event = {
-                .key = event->key,
-                .time = event->time,
-            };
-            key_list_add(context->list, timed_event);
-        }
+        TimedKeyboardEvent timed_event = {
+            .key = event->key,
+            .time = event->time,
+        };
+        key_list_add(context->list, timed_event);
     }
     return 0;
 }

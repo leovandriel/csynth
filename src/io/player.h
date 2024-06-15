@@ -20,7 +20,6 @@ typedef struct
     double duration;
     int sample_rate;
     int exit_key;
-    int pause_key;
 } PlayerConfig;
 
 int player_event_loop_no_terminal(double duration, __attribute__((unused)) int exit_key)
@@ -69,20 +68,6 @@ int player_play_pause(PaStream *stream)
     {
         return paused;
     }
-    state_event_broadcast(CONFIG_DEFAULT_PAUSE_KEY, StateEventTypeBool, &paused);
-    return 0;
-}
-
-int player_event_listener(EventType type, void *event_, void *context)
-{
-    if (type == EventTypeKeyboard)
-    {
-        KeyboardEvent *event = (KeyboardEvent *)event_;
-        if (event->key == CONFIG_DEFAULT_PAUSE_KEY)
-        {
-            return player_play_pause((PaStream *)context);
-        }
-    }
     return 0;
 }
 
@@ -93,32 +78,33 @@ int player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig con
     {
         return player_error(err);
     }
-    display_show();
-    state_event_broadcast(config.pause_key, StateEventTypeBoolInv, NULL);
     Sampler *sampler = sampler_create(count, channels, config.sample_rate);
     PaStream *stream = NULL;
     err = Pa_OpenDefaultStream(&stream, 0, count, paInt16, config.sample_rate, paFramesPerBufferUnspecified, player_callback, sampler);
     if (err != paNoError)
     {
+        Pa_Terminate();
         return player_error(err);
     }
     err = Pa_StartStream(stream);
     if (err != paNoError)
     {
+        Pa_CloseStream(stream);
+        Pa_Terminate();
         return player_error(err);
     }
-    void *handler = event_add_listener(player_event_listener, stream);
+    display_show();
     config.loop(config.duration, config.exit_key);
-    event_remove_listener(handler);
+    display_hide();
     err = Pa_CloseStream(stream);
     if (err != paNoError)
     {
+        Pa_Terminate();
         return player_error(err);
     }
-    display_hide();
-    Pa_Terminate();
     sampler_free(sampler);
-    return 0;
+    err = Pa_Terminate();
+    return err;
 }
 
 int player_play_with_cleanup(int count, Func **channels, PlayerConfig config)
@@ -128,14 +114,14 @@ int player_play_with_cleanup(int count, Func **channels, PlayerConfig config)
     return err;
 }
 
-const PlayerConfig player_config_terminal = {.loop = terminal_loop, .duration = 0, .sample_rate = CONFIG_DEFAULT_SAMPLE_RATE, .exit_key = CONFIG_DEFAULT_EXIT_KEY, .pause_key = CONFIG_DEFAULT_PAUSE_KEY};
-const PlayerConfig player_config_no_terminal = {.loop = player_event_loop_no_terminal, .duration = 0, .sample_rate = CONFIG_DEFAULT_SAMPLE_RATE, .exit_key = CONFIG_DEFAULT_EXIT_KEY, .pause_key = CONFIG_DEFAULT_PAUSE_KEY};
+const PlayerConfig player_config_terminal = {.loop = terminal_loop, .duration = 0, .sample_rate = CONFIG_DEFAULT_SAMPLE_RATE, .exit_key = CONFIG_DEFAULT_EXIT_KEY};
+const PlayerConfig player_config_no_terminal = {.loop = player_event_loop_no_terminal, .duration = 0, .sample_rate = CONFIG_DEFAULT_SAMPLE_RATE, .exit_key = CONFIG_DEFAULT_EXIT_KEY};
 
 int play(Func *root) { return player_play_with_cleanup(1, (Func *[]){root}, player_config_terminal); }
 int play_stereo(Func *left, Func *right) { return player_play_with_cleanup(2, (Func *[]){left, right}, player_config_terminal); }
 
-int play_duration(Func *root, double duration) { return player_play_with_cleanup(1, (Func *[]){root}, (PlayerConfig){player_event_loop_no_terminal, duration, CONFIG_DEFAULT_SAMPLE_RATE, CONFIG_DEFAULT_EXIT_KEY, CONFIG_DEFAULT_PAUSE_KEY}); }
+int play_duration(Func *root, double duration) { return player_play_with_cleanup(1, (Func *[]){root}, (PlayerConfig){player_event_loop_no_terminal, duration, CONFIG_DEFAULT_SAMPLE_RATE, CONFIG_DEFAULT_EXIT_KEY}); }
 int play_(Func *root, double duration) { return play_duration(root, duration); }
-int play_stereo_duration(Func *left, Func *right, double duration) { return player_play_with_cleanup(2, (Func *[]){left, right}, (PlayerConfig){player_event_loop_no_terminal, duration, CONFIG_DEFAULT_SAMPLE_RATE, CONFIG_DEFAULT_EXIT_KEY, CONFIG_DEFAULT_PAUSE_KEY}); }
+int play_stereo_duration(Func *left, Func *right, double duration) { return player_play_with_cleanup(2, (Func *[]){left, right}, (PlayerConfig){player_event_loop_no_terminal, duration, CONFIG_DEFAULT_SAMPLE_RATE, CONFIG_DEFAULT_EXIT_KEY}); }
 
 #endif // CSYNTH_PLAYER_H
