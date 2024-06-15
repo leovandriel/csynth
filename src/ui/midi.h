@@ -43,6 +43,8 @@ int midi_initialize(MidiContext *context)
         fprintf(stderr, "open error: %s\n", Pm_GetErrorText(err));
         return err;
     }
+    const PmDeviceInfo *info = Pm_GetDeviceInfo(input);
+    printf("MIDI initialized: %s on %s\n", info->name, info->interf);
     return 0;
 }
 
@@ -109,7 +111,6 @@ int midi_loop(__attribute__((unused)) double duration)
         }
         else if (key < 0)
         {
-            err = key;
             break;
         }
         Pt_Sleep(1);
