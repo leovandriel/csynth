@@ -12,8 +12,8 @@
 void cleanup_all()
 {
     sin_table_free();
-    event_free();
-    display_free();
+    event_clear();
+    display_clear();
     func_free();
 }
 

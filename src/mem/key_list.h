@@ -75,9 +75,9 @@ int key_list_read_filename(KeyList *list, const char *filename)
 
 int key_list_write_file(KeyList *list, FILE *file)
 {
-    for (TimedKeyboardEvent *iter = *list; iter; iter = iter->next)
+    for (TimedKeyboardEvent *event = *list; event; event = event->next)
     {
-        int err = fprintf(file, "%d %d\n", iter->key, (int)(iter->time * 1000));
+        int err = fprintf(file, "%d %d\n", event->key, (int)(event->time * 1000));
         if (err < 0)
         {
             fprintf(stderr, "record: failed to write to file\n");

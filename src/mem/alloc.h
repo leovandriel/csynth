@@ -44,26 +44,26 @@ int alloc_list_add(void *ptr, size_t size, const char *line)
 int alloc_list_remove(void *ptr)
 {
     Alloc **prev = &alloc_list;
-    for (Alloc *iter = alloc_list; iter; iter = iter->next)
+    for (Alloc *alloc = alloc_list; alloc; alloc = alloc->next)
     {
-        if (iter->ptr == ptr)
+        if (alloc->ptr == ptr)
         {
-            *prev = iter->next;
-            free(iter);
+            *prev = alloc->next;
+            free(alloc);
             return 0;
         }
-        prev = &iter->next;
+        prev = &alloc->next;
     }
     return -1;
 }
 
 Alloc *alloc_list_find(void *ptr)
 {
-    for (Alloc *iter = alloc_list; iter; iter = iter->next)
+    for (Alloc *alloc = alloc_list; alloc; alloc = alloc->next)
     {
-        if (iter->ptr == ptr)
+        if (alloc->ptr == ptr)
         {
-            return iter;
+            return alloc;
         }
     }
     return NULL;
@@ -72,7 +72,7 @@ Alloc *alloc_list_find(void *ptr)
 size_t alloc_list_count()
 {
     size_t count = 0;
-    for (Alloc *iter = alloc_list; iter; iter = iter->next)
+    for (Alloc *alloc = alloc_list; alloc; alloc = alloc->next)
     {
         count++;
     }
@@ -96,9 +96,9 @@ void alloc_list_clear()
 
 void alloc_list_dump()
 {
-    for (Alloc *iter = alloc_list; iter; iter = iter->next)
+    for (Alloc *alloc = alloc_list; alloc; alloc = alloc->next)
     {
-        fprintf(stderr, "allocated: %zu bytes, at %s\n", iter->size, iter->line);
+        fprintf(stderr, "allocated: %zu bytes, at %s\n", alloc->size, alloc->line);
     }
 }
 

@@ -46,21 +46,21 @@ void *event_add_listener(event_listener listener, void *context)
 int event_remove_listener(void *handle)
 {
     EventListener **prev = &event_listener_list;
-    for (EventListener *iter = event_listener_list; iter; iter = iter->next)
+    for (EventListener *listener = event_listener_list; listener; listener = listener->next)
     {
-        if (iter == handle)
+        if (listener == handle)
         {
-            *prev = iter->next;
-            free_(iter);
+            *prev = listener->next;
+            free_(listener);
             return 0;
         }
-        prev = &iter->next;
+        prev = &listener->next;
     }
     fprintf(stderr, "event_remove_listener: listener not found\n");
     return -1;
 }
 
-void event_free()
+void event_clear()
 {
     while (event_listener_list)
     {
@@ -72,9 +72,9 @@ void event_free()
 
 int event_broadcast(EventType type, void *event)
 {
-    for (EventListener *iter = event_listener_list; iter; iter = iter->next)
+    for (EventListener *alloc = event_listener_list; alloc; alloc = alloc->next)
     {
-        int err = iter->listener(type, event, iter->context);
+        int err = alloc->listener(type, event, alloc->context);
         if (err)
         {
             return err;

@@ -6,7 +6,7 @@
 
 #include "../event/state_event.h"
 
-typedef struct
+typedef struct DisplayElement
 {
     int key;
     const char *label;
@@ -23,34 +23,23 @@ typedef struct
         };
     };
     int selected;
+    struct DisplayElement *next;
 } DisplayElement;
 
-typedef struct
-{
-    StateEventContext parent;
-    DisplayElement *elements;
-    int capacity;
-    int size;
-} DisplayElementList;
+DisplayElement *display_element_list = NULL;
+StateEventContext display_event_context = {0};
 
-DisplayElementList display_element_list = {0};
-
-void display(int key, const char *label)
+int display(int key, const char *label)
 {
-    DisplayElementList *list = &display_element_list;
-    if (list->size == list->capacity)
+    DisplayElement *element = malloc_(sizeof(DisplayElement));
+    if (element == NULL)
     {
-        int capacity = list->capacity > 0 ? list->capacity * 2 : 16;
-        DisplayElement *elements = (DisplayElement *)realloc_(list->elements, capacity * sizeof(DisplayElement));
-        if (!elements)
-        {
-            fprintf(stderr, "Failed to allocate memory for display elements\n");
-            return;
-        }
-        list->capacity = capacity;
-        list->elements = elements;
+        fprintf(stderr, "display: unable to allocate memory\n");
+        return -1;
     }
-    list->elements[list->size++] = (DisplayElement){.key = key, .label = label};
+    *element = (DisplayElement){.key = key, .label = label, .next = display_element_list};
+    display_element_list = element;
+    return 0;
 }
 
 void display_(int key)
@@ -66,20 +55,20 @@ void display_all(const char *keys)
     }
 }
 
-void display_free()
+void display_clear()
 {
-    DisplayElementList *list = &display_element_list;
-    free_(list->elements);
-    list->elements = NULL;
-    list->capacity = 0;
-    list->size = 0;
+    while (display_element_list)
+    {
+        DisplayElement *next = display_element_list->next;
+        free_(display_element_list);
+        display_element_list = next;
+    }
 }
 
-void display_set_value(DisplayElementList *list, int key, StateEventType type, void *value)
+void display_set_value(DisplayElement *list, int key, StateEventType type, void *value)
 {
-    for (int i = 0; i < list->size; i++)
+    for (DisplayElement *element = list; element != NULL; element = element->next)
     {
-        DisplayElement *element = &list->elements[i];
         if (element->key == key)
         {
             switch (type)
@@ -144,42 +133,39 @@ void display_render_element(DisplayElement *element)
     }
 }
 
-void display_render(DisplayElementList *list)
+void display_render(DisplayElement *list)
 {
-    if (list->size)
+    if (list != NULL)
     {
         printf("\e[K\r ");
     }
-    for (int i = 0; i < list->size; i++)
+    for (DisplayElement *element = list; element != NULL; element = element->next)
     {
-        display_render_element(&list->elements[i]);
+        display_render_element(element);
     }
-    if (list->size)
+    if (list != NULL)
     {
         printf("\r");
     }
 }
 
-int display_listener(int key, StateEventType type, void *value, void *context_)
+int display_listener(int key, StateEventType type, void *value, __attribute__((unused)) void *context)
 {
-    DisplayElementList *list = (DisplayElementList *)context_;
-    display_set_value(list, key, type, value);
-    display_render(list);
+    display_set_value(display_element_list, key, type, value);
+    display_render(display_element_list);
     return 0;
 }
 
 void display_show()
 {
-    DisplayElementList *list = &display_element_list;
-    list->parent.state_listener = display_listener;
-    state_event_add(&list->parent);
-    display_render(list);
+    display_event_context.state_listener = display_listener;
+    state_event_add(&display_event_context);
+    display_render(display_element_list);
 }
 
 void display_hide()
 {
-    DisplayElementList *list = &display_element_list;
-    state_event_remove(&list->parent);
+    state_event_remove(&display_event_context);
     printf("\r\e[K");
 }
 
