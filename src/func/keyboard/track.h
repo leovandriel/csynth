@@ -12,7 +12,7 @@
 
 typedef struct
 {
-    KeyList *list;
+    KeyList list;
     const char *filename;
     void *handle;
 } TrackContext;
@@ -33,7 +33,7 @@ int track_listen(EventType type, void *event_, void *context_)
             .key = event->key,
             .time = event->time,
         };
-        key_list_add(context->list, timed_event);
+        key_list_add(&context->list, timed_event);
     }
     return 0;
 }
@@ -42,15 +42,15 @@ void track_init(__attribute__((unused)) int count, __attribute__((unused)) Gen *
 {
     TrackContext *context = (TrackContext *)context_;
     context->handle = event_add_listener(track_listen, context);
-    context->list = key_list_alloc();
+    context->list = NULL;
 }
 
 static void track_free(__attribute__((unused)) int count, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
     event_remove_listener(context->handle);
-    key_list_write_filename(context->list, context->filename);
-    key_list_free(context->list);
+    key_list_write_filename(&context->list, context->filename);
+    key_list_clear(&context->list);
 }
 
 Func *track(Func *func, const char *filename)

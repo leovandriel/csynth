@@ -11,28 +11,26 @@
 #include "../src/mem/key_list.h"
 #include "../src/util/config.h"
 
-void write(KeyList *list, double step, int key, FILE *file)
+void write(KeyList list, double step, int key, FILE *file)
 {
-    size_t index = 0;
-    size_t size = key_list_len(list);
-    double start = key_list_get(list, 0).time;
+    TimedKeyboardEvent *current = list;
+    double start = current->time;
     int offset = (int)(start / step);
-    for (int i = offset; index < size; i++)
+    for (int i = offset; current; i++)
     {
         int chr = ' ';
-        while (index < size)
+        while (current)
         {
-            TimedKeyboardEvent event = key_list_get(list, index);
-            int event_index = (int)lround(event.time / step);
+            int event_index = (int)lround(current->time / step);
             if (event_index > i)
             {
                 break;
             }
-            if (event.key == key)
+            if (current->key == key)
             {
                 chr = '.';
             }
-            index++;
+            current = current->next;
         }
         fputc(chr, file);
     }
@@ -53,7 +51,6 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    KeyList *list = key_list_alloc();
     FILE *file = NULL;
     if (argc >= 4 && strcmp(argv[3], "-") == 0)
     {
@@ -65,23 +62,23 @@ int main(int argc, char **argv)
         file = fopen(filename, "r");
         if (!file)
         {
-            key_list_free(list);
             fprintf(stderr, "machine: failed to open file: %s\n", filename);
             return 1;
         }
     }
-    int err = key_list_read_file(list, file);
+    KeyList list = NULL;
+    int err = key_list_read_file(&list, file);
     if (err)
     {
-        key_list_free(list);
+        key_list_clear(&list);
         fclose(file);
         return err;
     }
-    if (key_list_len(list) == 0)
+    if (list == NULL)
     {
         fprintf(stderr, "machine: no events found\n");
         fclose(file);
-        key_list_free(list);
+        key_list_clear(&list);
         return 1;
     }
 
@@ -111,6 +108,6 @@ int main(int argc, char **argv)
     {
         fclose(file);
     }
-    key_list_free(list);
+    key_list_clear(&list);
     return 0;
 }

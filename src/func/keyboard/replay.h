@@ -12,7 +12,8 @@
 
 typedef struct
 {
-    KeyList *list;
+    KeyList list;
+    TimedKeyboardEvent *current;
     const char *filename;
     size_t index;
     double time;
@@ -21,16 +22,10 @@ typedef struct
 static double replay_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
 {
     ReplayContext *context = (ReplayContext *)context_;
-    size_t size = key_list_len(context->list);
-    while (context->index < size)
+    while (context->current && context->current->time <= context->time)
     {
-        TimedKeyboardEvent event = key_list_get(context->list, context->index);
-        if (event.time > context->time)
-        {
-            break;
-        }
-        keyboard_event_broadcast(event.time, event.key);
-        context->index++;
+        keyboard_event_broadcast(context->current->time, context->current->key);
+        context->current = context->current->next;
     }
     context->time += delta;
     return gen_eval(args[0]);
@@ -39,14 +34,14 @@ static double replay_eval(__attribute__((unused)) int count, Gen **args, double 
 void replay_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     ReplayContext *context = (ReplayContext *)context_;
-    context->list = key_list_alloc();
-    key_list_read_filename(context->list, context->filename);
+    key_list_read_filename(&context->list, context->filename);
+    context->current = context->list;
 }
 
 static void replay_free(__attribute__((unused)) int count, void *context_)
 {
     ReplayContext *context = (ReplayContext *)context_;
-    key_list_free(context->list);
+    key_list_clear(&context->list);
 }
 
 Func *replay(Func *func, const char *filename)

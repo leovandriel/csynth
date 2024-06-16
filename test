@@ -12,6 +12,13 @@ fi
 
 rm -f ./tests/.test.c
 
+bad_allocs=$(egrep -iR "(malloc\(|calloc\(|realloc\(| free\()" --exclude "alloc.h" | tee)
+
+if [[ "$bad_allocs" ]]; then
+    printf "\r\e[KInvalid allocation: Use malloc_, calloc_, realloc_, or free_:\n$bad_allocs\n" >&2
+    exit 1
+fi
+
 # compile and all tests individually
 find ./tests -regex "$pattern" -print0 | while read -d $'\0' file; do
     name=$(basename "$file" .h)
@@ -51,7 +58,7 @@ if [ $# -eq 0 ]; then
     done
 
     # compile examples
-    find ./examples -name "*.c" -type f -print0 | while read -d $'\0' file; do
+    find . -name "*.c" -type f -print0 | while read -d $'\0' file; do
         gcc "$file" -o bin/test -Wall -Wextra -O3 -lm -lportaudio -lportmidi
         echo -n "."
     done

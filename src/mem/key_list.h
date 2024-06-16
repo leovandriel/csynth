@@ -10,20 +10,39 @@
 
 #include "../event/event.h"
 #include "../event/keyboard_event.h"
-#include "../mem/list.h"
 
-typedef struct
+typedef struct TimedKeyboardEvent
 {
     double time;
     int key;
+    struct TimedKeyboardEvent *next;
 } TimedKeyboardEvent;
 
-typedef List KeyList;
-KeyList *key_list_alloc() { return list_alloc(sizeof(TimedKeyboardEvent)); }
-void key_list_free(KeyList *list) { list_free(list); }
-size_t key_list_len(KeyList *list) { return list_len(list); }
-int key_list_add(KeyList *list, TimedKeyboardEvent event) { return list_add(list, &event); }
-TimedKeyboardEvent key_list_get(KeyList *list, size_t index) { return *(TimedKeyboardEvent *)list_get(list, index); }
+typedef TimedKeyboardEvent *KeyList;
+
+int key_list_add(KeyList *list, TimedKeyboardEvent event)
+{
+    TimedKeyboardEvent *new_event = malloc_(sizeof(TimedKeyboardEvent));
+    if (!new_event)
+    {
+        return -1;
+    }
+    *new_event = event;
+    new_event->next = *list;
+    *list = new_event;
+    return 0;
+}
+
+int key_list_clear(KeyList *list)
+{
+    while (*list)
+    {
+        TimedKeyboardEvent *next = (*list)->next;
+        free_(*list);
+        *list = next;
+    }
+    return 0;
+}
 
 int key_list_read_file(KeyList *list, FILE *file)
 {
@@ -56,10 +75,9 @@ int key_list_read_filename(KeyList *list, const char *filename)
 
 int key_list_write_file(KeyList *list, FILE *file)
 {
-    for (size_t i = 0; i < key_list_len(list); i++)
+    for (TimedKeyboardEvent *iter = *list; iter; iter = iter->next)
     {
-        TimedKeyboardEvent event = key_list_get(list, i);
-        int err = fprintf(file, "%d %d\n", event.key, (int)(event.time * 1000));
+        int err = fprintf(file, "%d %d\n", iter->key, (int)(iter->time * 1000));
         if (err < 0)
         {
             fprintf(stderr, "record: failed to write to file\n");
