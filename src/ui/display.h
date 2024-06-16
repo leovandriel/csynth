@@ -5,6 +5,7 @@
 #define CSYNTH_DISPLAY_H
 
 #include "../event/state_event.h"
+#include "../util/error.h"
 
 typedef struct DisplayElement
 {
@@ -29,35 +30,39 @@ typedef struct DisplayElement
 DisplayElement *display_element_list = NULL;
 StateEventContext display_event_context = {0};
 
-int display(int key, const char *label)
+csError display(int key, const char *label)
 {
     DisplayElement *element = malloc_(sizeof(DisplayElement));
     if (element == NULL)
     {
-        fprintf(stderr, "display: unable to allocate memory\n");
-        return -1;
+        return error_type(csErrorMemoryAlloc);
     }
     *element = (DisplayElement){.key = key, .label = label, .next = display_element_list};
     display_element_list = element;
-    return 0;
+    return csErrorNone;
 }
 
-void display_(int key)
+csError display_(int key)
 {
-    display(key, NULL);
+    return display(key, NULL);
 }
 
-void display_all(const char *keys)
+csError display_all(const char *keys)
 {
     for (size_t i = 0; i < strlen(keys); i++)
     {
-        display_(keys[i]);
+        csError error = display_(keys[i]);
+        if (error != csErrorNone)
+        {
+            return error;
+        }
     }
+    return csErrorNone;
 }
 
 void display_clear()
 {
-    while (display_element_list)
+    while (display_element_list != NULL)
     {
         DisplayElement *next = display_element_list->next;
         free_(display_element_list);
@@ -74,7 +79,6 @@ void display_set_value(DisplayElement *list, int key, StateEventType type, void 
             switch (type)
             {
             case StateEventTypeNone:
-                printf("Unexpected StateEventTypeNone\n");
                 break;
             case StateEventTypeBool:
             case StateEventTypeBoolInv:
@@ -97,13 +101,13 @@ void display_set_value(DisplayElement *list, int key, StateEventType type, void 
 
 void display_render_label(DisplayElement *element)
 {
-    if (element->label)
+    if (element->label != NULL)
     {
-        printf(element->selected ? "{%s}" : " %s ", element->label);
+        fprintf(stdout, element->selected ? "{%s}" : " %s ", element->label);
     }
     else
     {
-        printf(element->selected ? "{%c} " : " %c: ", element->key);
+        fprintf(stdout, element->selected ? "{%c} " : " %c: ", element->key);
     }
 }
 
@@ -116,19 +120,19 @@ void display_render_element(DisplayElement *element)
     case StateEventTypeSelected:
         break;
     case StateEventTypeBool:
-        printf("[%s] ", element->i ? "x" : " ");
+        fprintf(stdout, "[%s] ", element->i ? "x" : " ");
         break;
     case StateEventTypeBoolInv:
-        printf("[%s] ", element->i ? " " : "x");
+        fprintf(stdout, "[%s] ", element->i ? " " : "x");
         break;
     case StateEventTypeTrigger:
-        printf("[%s] ", element->i ? "!" : "?");
+        fprintf(stdout, "[%s] ", element->i ? "!" : "?");
         break;
     case StateEventTypeInt:
-        printf("[%d] ", element->i);
+        fprintf(stdout, "[%d] ", element->i);
         break;
     case StateEventTypeDouble:
-        printf("[%.2f] ", element->d);
+        fprintf(stdout, "[%.2f] ", element->d);
         break;
     }
 }
@@ -137,7 +141,7 @@ void display_render(DisplayElement *list)
 {
     if (list != NULL)
     {
-        printf("\e[K\r ");
+        fprintf(stdout, "\e[K\r ");
     }
     for (DisplayElement *element = list; element != NULL; element = element->next)
     {
@@ -145,28 +149,37 @@ void display_render(DisplayElement *list)
     }
     if (list != NULL)
     {
-        printf("\r");
+        fprintf(stdout, "\r");
     }
 }
 
-int display_listener(int key, StateEventType type, void *value, __attribute__((unused)) void *context)
+void display_listener(int key, StateEventType type, void *value, __attribute__((unused)) void *context)
 {
     display_set_value(display_element_list, key, type, value);
     display_render(display_element_list);
-    return 0;
 }
 
-void display_show()
+csError display_show()
 {
     display_event_context.state_listener = display_listener;
-    state_event_add(&display_event_context);
+    csError error = state_event_add(&display_event_context);
+    if (error != csErrorNone)
+    {
+        return error;
+    }
     display_render(display_element_list);
+    return csErrorNone;
 }
 
-void display_hide()
+csError display_hide()
 {
-    state_event_remove(&display_event_context);
-    printf("\r\e[K");
+    csError error = state_event_remove(&display_event_context);
+    if (error != csErrorNone)
+    {
+        return error;
+    }
+    fprintf(stdout, "\r\e[K");
+    return csErrorNone;
 }
 
 #endif // CSYNTH_DISPLAY_H

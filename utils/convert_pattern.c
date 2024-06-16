@@ -47,8 +47,7 @@ int main(int argc, char **argv)
     double step = atof(argv[2]);
     if (step <= 0)
     {
-        fprintf(stderr, "machine: invalid step size: %f\n", step);
-        return 1;
+        return error_catch_message(csErrorSome, "invalid step size: %f", step);
     }
 
     FILE *file = NULL;
@@ -60,23 +59,22 @@ int main(int argc, char **argv)
     {
         const char *filename = argc >= 4 ? argv[3] : CONFIG_DEFAULT_REC_FILENAME;
         file = fopen(filename, "r");
-        if (!file)
+        if (file == NULL)
         {
-            fprintf(stderr, "machine: failed to open file: %s\n", filename);
-            return 1;
+            return error_catch_message(csErrorFileOpen, "Unable to open file: %s", filename);
         }
     }
     KeyList list = NULL;
-    int err = key_list_read_file(&list, file);
-    if (err)
+    csError error = key_list_read_file(&list, file);
+    if (error != csErrorNone)
     {
         key_list_clear(&list);
         fclose(file);
-        return err;
+        return error;
     }
     if (list == NULL)
     {
-        fprintf(stderr, "machine: no events found\n");
+        return error_catch_message(csErrorSome, "no events found");
         fclose(file);
         key_list_clear(&list);
         return 1;
@@ -104,7 +102,7 @@ int main(int argc, char **argv)
     }
     printf(");\n");
 
-    if (file)
+    if (file != NULL)
     {
         fclose(file);
     }

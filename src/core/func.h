@@ -9,29 +9,60 @@
 #include <string.h>
 
 #include "../mem/alloc.h"
+#include "../util/error.h"
 #include "./def.h"
 
 static const double EPSILON = DBL_EPSILON * 2;
 
 Func *func_list = NULL;
 
-Func *func_create_int(init_callback init, eval_callback eval, free_callback free, size_t size, void *context, unsigned int flags, int count)
+Func *func_create_int(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, unsigned int flags, int count)
 {
-    void *initial = size > 0 && context != NULL ? calloc_(1, size) : NULL;
-    if (initial != NULL && context != NULL)
+    void *initial = NULL;
+    if (size > 0 && context != NULL)
     {
-        memcpy(initial, context, size);
+        initial = malloc_(size);
+        if (initial == NULL)
+        {
+            return error_null(csErrorMemoryAlloc);
+        }
     }
-    Func **args = count > 0 ? (Func **)calloc_(count, sizeof(Func *)) : NULL;
-    Func *func = (Func *)calloc_(1, sizeof(Func));
+    if (initial != NULL)
+    {
+        if (context != NULL)
+        {
+            memcpy(initial, context, size);
+        }
+        else
+        {
+            memset(initial, 0, size);
+        }
+    }
+    Func **args = NULL;
+    if (count > 0)
+    {
+        args = (Func **)malloc_(count * sizeof(Func *));
+        if (args == NULL)
+        {
+            free_(initial);
+            return error_null(csErrorMemoryAlloc);
+        }
+    }
+    Func *func = (Func *)malloc_(sizeof(Func));
+    if (func == NULL)
+    {
+        free_(initial);
+        free_(args);
+        return error_null(csErrorMemoryAlloc);
+    }
     *func = (Func){
         .args = args,
         .count = count,
         .size = size,
         .initial = initial,
-        .init = init,
-        .eval = eval,
-        .free = free,
+        .init_cb = init_cb,
+        .eval_cb = eval_cb,
+        .free_cb = free_cb,
         .flags = flags,
         .next = func_list,
     };
@@ -39,19 +70,19 @@ Func *func_create_int(init_callback init, eval_callback eval, free_callback free
     return func;
 }
 
-Func *func_create_array(init_callback init, eval_callback eval, free_callback free, size_t size, void *context, unsigned int flags, int count, Func **args)
+Func *func_create_array(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, unsigned int flags, int count, Func **args)
 {
-    Func *func = func_create_int(init, eval, free, size, context, flags, count);
-    if (func->args)
+    Func *func = func_create_int(init_cb, eval_cb, free_cb, size, context, flags, count);
+    if (func->args != NULL)
     {
         memcpy(func->args, args, count * sizeof(Func *));
     }
     return func;
 }
 
-Func *func_create_va(init_callback init, eval_callback eval, free_callback free, size_t size, void *context, unsigned int flags, int count, va_list valist)
+Func *func_create_va(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, unsigned int flags, int count, va_list valist)
 {
-    Func *func = func_create_int(init, eval, free, size, context, flags, count);
+    Func *func = func_create_int(init_cb, eval_cb, free_cb, size, context, flags, count);
     for (int i = 0; i < count; i++)
     {
         func->args[i] = va_arg(valist, Func *);
@@ -68,13 +99,13 @@ Func *func_create_va(init_callback init, eval_callback eval, free_callback free,
  * effects.
  *
  * The function is defined by three callbacks:
- * - init: Called once before the first evaluation. This allows for things like
+ * - init_cb: Called once before the first evaluation. This allows for things like
  *   memory allocation. Typical use cases are functions that keep an internal
  *   buffer like reverb or that open a file like wav.
- * - eval: Returns the value of the function, given inputs and time delta. This
+ * - eval_cb: Returns the value of the function, given inputs and time delta. This
  *   argument is required for all functions. There are no restrictions on the
  *   domain, though for audio functions it is typically in the range [-1, 1].
- * - free: Called once after the last evaluation. This allows for various
+ * - free_cb: Called once after the last evaluation. This allows for various
  *   cleanup tasks, like deallocating buffers or closing files.
  *
  * Additionally, the function can have a context struct, which is used to store
@@ -101,11 +132,11 @@ Func *func_create_va(init_callback init, eval_callback eval, free_callback free,
  * @param ... The inputs to the function.
  * @return The function output.
  */
-Func *func_create(init_callback init, eval_callback eval, free_callback free, size_t size, void *context, unsigned int flags, int count, ...)
+Func *func_create(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, unsigned int flags, int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    Func *func = func_create_va(init, eval, free, size, context, flags, count, valist);
+    Func *func = func_create_va(init_cb, eval_cb, free_cb, size, context, flags, count, valist);
     va_end(valist);
     return func;
 }

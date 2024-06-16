@@ -7,6 +7,7 @@
 #include <math.h>
 
 #include "../../core/func.h"
+#include "../../util/error.h"
 #include "../gen/gens.h"
 #include "../gen/notes.h"
 #include "../op/add.h"
@@ -19,7 +20,11 @@ const char *keyboard_keys = "zsxdcvgbhnjm,l.;/";
 Func *keyboard(keyboard_control_func control, gen_func generator, Func *frequency)
 {
     int count = (int)strlen(keyboard_keys);
-    Func **array = (Func **)calloc_(count, sizeof(Func *));
+    Func **array = (Func **)malloc_(count * sizeof(Func *));
+    if (array == NULL)
+    {
+        return error_null(csErrorMemoryAlloc);
+    }
     for (int i = 0; i < count; i++)
     {
         char key = keyboard_keys[i];

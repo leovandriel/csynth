@@ -16,7 +16,11 @@
 
 Func *unison(Func *frequency, gen_func generator, int count, double detune)
 {
-    Func **array = (Func **)calloc_(count, sizeof(Func *));
+    Func **array = (Func **)malloc_(count * sizeof(Func *));
+    if (array == NULL)
+    {
+        return error_null(csErrorMemoryAlloc);
+    }
     for (int i = 0; i < count; i++)
     {
         array[i] = generator(mul_(frequency, rand_range(1 - detune, 1 + detune)));

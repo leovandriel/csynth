@@ -34,7 +34,7 @@ static double karplus_strong_eval(__attribute__((unused)) int count, Gen **args,
     return output;
 }
 
-void karplus_strong_free(__attribute__((unused)) int count, void *context_)
+static void karplus_strong_free(__attribute__((unused)) int count, void *context_)
 {
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
     buffer_free(&context->buffer);

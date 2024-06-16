@@ -15,7 +15,7 @@ typedef struct Gen Gen;
 #define FUNC_FLAG_SKIP_RESET (1 << 2)
 
 typedef double (*eval_callback)(int count, Gen **args, double delta, void *context);
-typedef void (*init_callback)(int count, Gen **args, double delta, void *context);
+typedef int (*init_callback)(int count, Gen **args, double delta, void *context);
 typedef void (*free_callback)(int count, void *context);
 
 // Represents a function (R -> Rn) that takes one or more inputs and outputs a single value.
@@ -25,9 +25,9 @@ struct Func
     int count;
     size_t size;
     void *initial;
-    init_callback init;
-    eval_callback eval;
-    free_callback free;
+    init_callback init_cb;
+    eval_callback eval_cb;
+    free_callback free_cb;
     unsigned int flags;
     Func *next;
 };

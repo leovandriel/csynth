@@ -17,46 +17,49 @@ typedef struct
     PortMidiStream *stream;
 } MidiContext;
 
-int midi_initialize(MidiContext *context)
+csError midi_initialize(MidiContext *context)
 {
-    PmError err = Pm_Initialize();
-    if (err != pmNoError)
+    PmError pm_error = Pm_Initialize();
+    if (pm_error != pmNoError)
     {
-        fprintf(stderr, "initialize error: %s\n", Pm_GetErrorText(err));
-        return err;
+        return error_type_message(csErrorPortMidi, "Unable to initialize: %s", Pm_GetErrorText(pm_error));
     }
     int count = Pm_CountDevices();
     if (count == 0)
     {
-        fprintf(stderr, "no midi devices found\n");
-        return -1;
+        Pm_Terminate();
+        return error_type_message(csErrorMidi, "No MIDI devices found");
     }
     PmDeviceID input = Pm_GetDefaultInputDeviceID();
     if (input < 0)
     {
-        fprintf(stderr, "no default midi devices\n");
-        return -1;
-    }
-    err = Pm_OpenInput(&context->stream, input, NULL, MIDI_EVENT_BUFFER_SIZE, NULL, NULL);
-    if (err != pmNoError)
-    {
-        fprintf(stderr, "open error: %s\n", Pm_GetErrorText(err));
-        return err;
+        Pm_Terminate();
+        return error_type_message(csErrorMidi, "No default MIDI device found");
     }
     const PmDeviceInfo *info = Pm_GetDeviceInfo(input);
-    printf("MIDI initialized: %s on %s\n", info->name, info->interf);
-    return 0;
+    if (info == NULL)
+    {
+        Pm_Terminate();
+        return error_type_message(csErrorMidi, "Unable to get MIDI device info");
+    }
+    pm_error = Pm_OpenInput(&context->stream, input, NULL, MIDI_EVENT_BUFFER_SIZE, NULL, NULL);
+    if (pm_error != pmNoError)
+    {
+        Pm_Terminate();
+        return error_type_message(csErrorPortMidi, "Unable to terminate: %s", Pm_GetErrorText(pm_error));
+    }
+    fprintf(stdout, "MIDI initialized: %s on %s\n", info->name, info->interf);
+    return csErrorNone;
 }
 
-int midi_broadcast(MidiContext *context)
+csError midi_read_broadcast(MidiContext *context)
 {
     PmEvent buffer[MIDI_EVENT_BUFFER_SIZE];
     int count = Pm_Read(context->stream, buffer, 1024);
     if (count < 0)
     {
-        PmError err = count;
-        fprintf(stderr, "read error: %s\n", Pm_GetErrorText(err));
-        return err;
+        PmError pm_error = count;
+        return error_type_message(csErrorPortMidi, "Unable to read: %s", Pm_GetErrorText(pm_error));
     }
     for (int i = 0; i < count; i++)
     {
@@ -66,39 +69,34 @@ int midi_broadcast(MidiContext *context)
         uint32_t channel = status & 0x0F;
         uint32_t data1 = Pm_MessageData1(buffer[i].message);
         uint32_t data2 = Pm_MessageData2(buffer[i].message);
-        int err = midi_event_broadcast(time, type, channel, data1, data2);
-        if (err)
-        {
-            return err;
-        }
+        midi_event_broadcast(time, type, channel, data1, data2);
     }
-    return 0;
+    return csErrorNone;
 }
 
-int midi_terminate(MidiContext *context)
+csError midi_terminate(MidiContext *context)
 {
-    PmError err = Pm_Close(context->stream);
-    if (err != pmNoError)
+    PmError pm_error = Pm_Close(context->stream);
+    if (pm_error != pmNoError)
     {
-        fprintf(stderr, "close error: %s\n", Pm_GetErrorText(err));
-        return err;
+        return error_type_message(csErrorPortMidi, "Unable to close: %s", Pm_GetErrorText(pm_error));
     }
-    err = Pm_Terminate();
-    if (err != pmNoError)
+    pm_error = Pm_Terminate();
+    if (pm_error != pmNoError)
     {
-        fprintf(stderr, "terminate error: %s\n", Pm_GetErrorText(err));
-        return err;
+        return error_type_message(csErrorPortMidi, "Unable to terminate: %s", Pm_GetErrorText(pm_error));
     }
-    return 0;
+    return csErrorNone;
 }
 
-int midi_loop(__attribute__((unused)) double duration, int exit_key)
+void midi_loop(__attribute__((unused)) double duration, int exit_key)
 {
     MidiContext context = {0};
-    int err = midi_initialize(&context);
-    if (err)
+    csError error = midi_initialize(&context);
+    if (error != csErrorNone)
     {
-        return err;
+        error_catch(error);
+        return;
     }
     struct termios term = terminal_setup(0);
     signal(SIGINT, terminal_handler);
@@ -114,19 +112,15 @@ int midi_loop(__attribute__((unused)) double duration, int exit_key)
             break;
         }
         Pt_Sleep(1);
-        err = midi_broadcast(&context);
-        if (err)
+        error = midi_read_broadcast(&context);
+        if (error != csErrorNone)
         {
             break;
         }
     }
     terminal_restore(term);
-    err = midi_terminate(&context);
-    if (err)
-    {
-        return err;
-    }
-    return 0;
+    error = midi_terminate(&context);
+    error_catch(error);
 }
 
 #endif // CSYNTH_MIDI_H

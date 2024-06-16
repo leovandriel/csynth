@@ -41,20 +41,40 @@ static double record_eval(int count, Gen **args, __attribute__((unused)) double 
     return sum;
 }
 
-void record_init(int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int record_init(int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
-    context->file = fopen(context->filename, "wb");
-    wav_header_write(1, count, context->file, context->sample_rate);
+    FILE *file = fopen(context->filename, "wb");
+    if (file == NULL)
+    {
+        return error_catch_message(csErrorFileOpen, "Unable to open file: %s", context->filename);
+    }
+    context->file = file;
+    csError error = wav_header_write(1, count, context->file, context->sample_rate);
+    return error_catch(error);
 }
 
 static void record_free(int count, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
-    fwrite(context->buffer, sizeof(sample_t), context->offset, context->file);
-    fseek(context->file, 0, SEEK_SET);
-    wav_header_write(context->size, count, context->file, context->sample_rate);
-    fclose(context->file);
+    size_t write_count = fwrite(context->buffer, sizeof(sample_t), context->offset, context->file);
+    if (write_count != context->offset)
+    {
+        error_catch(csErrorFileWrite);
+    }
+    if (fseek(context->file, 0, SEEK_SET))
+    {
+        error_catch(csErrorFileSeek);
+    }
+    csError error = wav_header_write(context->size, count, context->file, context->sample_rate);
+    if (error != csErrorNone)
+    {
+        error_catch(error);
+    }
+    if (fclose(context->file) == EOF)
+    {
+        error_catch(csErrorFileClose);
+    }
 }
 
 Func *record_args(const char *filename, int sample_rate, int count, ...)

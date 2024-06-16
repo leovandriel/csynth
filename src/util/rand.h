@@ -12,7 +12,7 @@
 
 static unsigned long rand_state_int = RAND_STATE_INIT;
 
-unsigned long rand_next(unsigned long reg)
+static unsigned long rand_next(unsigned long reg)
 {
     reg ^= reg << 13;
     reg ^= reg >> 7;

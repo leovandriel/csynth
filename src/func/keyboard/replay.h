@@ -31,11 +31,16 @@ static double replay_eval(__attribute__((unused)) int count, Gen **args, double 
     return gen_eval(args[0]);
 }
 
-void replay_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int replay_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     ReplayContext *context = (ReplayContext *)context_;
-    key_list_read_filename(&context->list, context->filename);
+    csError error = key_list_read_filename(&context->list, context->filename);
+    if (error != csErrorNone)
+    {
+        return error_catch(error);
+    }
     context->current = context->list;
+    return 0;
 }
 
 static void replay_free(__attribute__((unused)) int count, void *context_)

@@ -7,6 +7,7 @@
 #include <math.h>
 
 #include "../../core/func.h"
+#include "../../util/error.h"
 #include "../gen/gens.h"
 #include "../gen/notes.h"
 #include "../op/add.h"
@@ -18,7 +19,11 @@ typedef Func *(*midi_control_func)(int key, int channel, Func *frequency);
 
 Func *midi_keyboard(int channel, midi_control_func control, gen_func generator, Func *frequency)
 {
-    Func **array = (Func **)calloc_(MIDI_NOTE_COUNT, sizeof(Func *));
+    Func **array = (Func **)malloc_(MIDI_NOTE_COUNT * sizeof(Func *));
+    if (array == NULL)
+    {
+        return error_null(csErrorMemoryAlloc);
+    }
     for (int i = 0; i < MIDI_NOTE_COUNT; i++)
     {
         Func *gen = generator(mul_(frequency, pow(2, i / 12.0)));

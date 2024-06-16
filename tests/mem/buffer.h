@@ -4,7 +4,7 @@
 static void test_same()
 {
     Buffer buffer;
-    buffer_init(&buffer, 2);
+    assert(buffer_init(&buffer, 2) == csErrorNone);
     buffer.samples[0] = 1;
     buffer.samples[1] = 2;
     assert(buffer_resize(&buffer, 2, 3, fill_inc) == 3);
@@ -19,7 +19,7 @@ static void test_same()
 static void test_from_zero()
 {
     Buffer buffer;
-    buffer_init(&buffer, 0);
+    assert(buffer_init(&buffer, 0) == csErrorNone);
     assert(buffer_resize(&buffer, 2, 3, fill_inc) == 0);
     assert(buffer.samples != NULL);
     assert(buffer.size == 2);
@@ -32,7 +32,7 @@ static void test_from_zero()
 static void test_to_zero()
 {
     Buffer buffer;
-    buffer_init(&buffer, 2);
+    assert(buffer_init(&buffer, 2) == csErrorNone);
     buffer.samples[0] = 1;
     buffer.samples[1] = 2;
     assert(buffer_resize(&buffer, 0, 3, fill_inc) == 0);
@@ -47,7 +47,7 @@ static void test_up()
     for (unsigned long i = 0; i < 2; i++)
     {
         Buffer buffer;
-        buffer_init(&buffer, 2);
+        assert(buffer_init(&buffer, 2) == csErrorNone);
         buffer.samples[0] = 1;
         buffer.samples[1] = 2;
         assert(buffer_resize(&buffer, 4, i, fill_inc) == i);
@@ -68,7 +68,7 @@ static void test_down()
     for (unsigned long i = 0; i < 4; i++)
     {
         Buffer buffer;
-        buffer_init(&buffer, 4);
+        assert(buffer_init(&buffer, 4) == csErrorNone);
         buffer.samples[0] = 1;
         buffer.samples[1] = 2;
         buffer.samples[2] = 3;

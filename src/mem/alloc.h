@@ -29,7 +29,7 @@ Alloc *alloc_list = NULL;
 int alloc_list_add(void *ptr, size_t size, const char *line)
 {
     Alloc *alloc = (Alloc *)malloc(sizeof(Alloc));
-    if (!alloc)
+    if (alloc == NULL)
     {
         return -1;
     }
@@ -108,7 +108,7 @@ void *alloc_malloc(size_t size, const char *line)
 #ifdef ALLOC_LOG
     fprintf(stderr, "malloc: %p, %zu bytes, at %s\n", ptr, size, line);
 #endif
-    if (ptr && alloc_list_add(ptr, size, line))
+    if (ptr != NULL && alloc_list_add(ptr, size, line))
     {
         fprintf(stderr, "malloc error: internal malloc failed, at %s\n", line);
     }
@@ -121,7 +121,7 @@ void *alloc_calloc(size_t count, size_t size, const char *line)
 #ifdef ALLOC_LOG
     fprintf(stderr, "calloc: %p, %zu bytes, at %s\n", ptr, count * size, line);
 #endif
-    if (ptr && alloc_list_add(ptr, count * size, line))
+    if (ptr != NULL && alloc_list_add(ptr, count * size, line))
     {
         fprintf(stderr, "calloc error: internal malloc failed, at %s\n", line);
     }
@@ -130,16 +130,16 @@ void *alloc_calloc(size_t count, size_t size, const char *line)
 
 void *alloc_realloc(void *ptr, size_t size, const char *line)
 {
-    if (ptr && alloc_list_remove(ptr))
+    if (ptr != NULL && alloc_list_remove(ptr))
     {
         fprintf(stderr, "realloc error: pointer not allocated %p, at %s\n", ptr, line);
     }
     void *new_ptr = realloc(ptr, size);
 #ifdef ALLOC_LOG
-    if (ptr)
+    if (ptr != NULL)
     {
         Alloc *alloc = alloc_list_find(ptr);
-        if (alloc)
+        if (alloc != NULL)
         {
             fprintf(stderr, "realloc: %p to %p, %zu to %zu bytes, from %s, at %s\n", ptr, new_ptr, alloc->size, size, alloc->line, line);
         }
@@ -153,7 +153,7 @@ void *alloc_realloc(void *ptr, size_t size, const char *line)
         fprintf(stderr, "realloc: %p to %p, 0 to %zu bytes, at %s\n", ptr, new_ptr, size, line);
     }
 #endif
-    if (new_ptr && alloc_list_add(new_ptr, size, line))
+    if (new_ptr != NULL && alloc_list_add(new_ptr, size, line))
     {
         fprintf(stderr, "realloc error: internal realloc failed, at %s\n", line);
     }
@@ -163,10 +163,10 @@ void *alloc_realloc(void *ptr, size_t size, const char *line)
 void alloc_free(void *ptr, const char *line)
 {
 #ifdef ALLOC_LOG
-    if (ptr)
+    if (ptr != NULL)
     {
         Alloc *alloc = alloc_list_find(ptr);
-        if (alloc)
+        if (alloc != NULL)
         {
             fprintf(stderr, "free: %p, %zu bytes, from %s, at %s\n", ptr, alloc->size, alloc->line, line);
         }
@@ -180,7 +180,7 @@ void alloc_free(void *ptr, const char *line)
         fprintf(stderr, "free: %p, NULL pointer, at %s\n", ptr, line);
     }
 #endif
-    if (ptr && alloc_list_remove(ptr))
+    if (ptr != NULL && alloc_list_remove(ptr))
     {
         fprintf(stderr, "free error: pointer not allocated %p, at %s\n", ptr, line);
     }

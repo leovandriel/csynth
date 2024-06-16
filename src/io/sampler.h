@@ -7,6 +7,7 @@
 #include "../core/func.h"
 #include "../core/gen.h"
 #include "../util/config.h"
+#include "../util/error.h"
 
 typedef int16_t sample_t;
 
@@ -18,13 +19,33 @@ typedef struct
 
 Sampler *sampler_create(int count, Func **roots, int sample_rate)
 {
-    Sampler *sampler = (Sampler *)calloc_(1, sizeof(Sampler));
-    sampler->channels = (Gen **)calloc_(count, sizeof(Gen *));
+    Sampler *sampler = (Sampler *)malloc_(sizeof(Sampler));
+    if (sampler == NULL)
+    {
+        return error_null(csErrorMemoryAlloc);
+    }
+    Gen **channels = (Gen **)malloc_(count * sizeof(Gen *));
+    if (channels == NULL)
+    {
+        free_(sampler);
+        return error_null(csErrorMemoryAlloc);
+    }
     for (int index = 0; index < count; index++)
     {
-        sampler->channels[index] = gen_create(roots[index], 1.0 / sample_rate);
+        Gen *channel = gen_create(roots[index], 1.0 / sample_rate);
+        if (channel == NULL)
+        {
+            for (int i = 0; i < index; i++)
+            {
+                gen_free(channels[i]);
+            }
+            free_(channels);
+            free_(sampler);
+            return NULL;
+        }
+        channels[index] = channel;
     }
-    sampler->count = count;
+    *sampler = (Sampler){.channels = channels, .count = count};
     return sampler;
 }
 

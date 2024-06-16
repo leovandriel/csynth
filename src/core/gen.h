@@ -7,54 +7,15 @@
 #include <string.h>
 
 #include "../mem/alloc.h"
+#include "../util/error.h"
 #include "./def.h"
-
-Gen *gen_create(Func *func, double delta)
-{
-    void *context = func->size > 0 ? calloc_(1, func->size) : NULL;
-    if (context != NULL && func->initial != NULL)
-    {
-        memcpy(context, func->initial, func->size);
-    }
-    void *reset = func->initial;
-    if (func->init != NULL)
-    {
-        reset = func->size > 0 ? calloc_(1, func->size) : NULL;
-        if (reset != NULL && func->initial != NULL)
-        {
-            memcpy(reset, func->initial, func->size);
-        }
-    }
-    Gen **args = func->count > 0 ? (Gen **)calloc_(func->count, sizeof(Gen *)) : NULL;
-    for (int i = 0; i < func->count; i++)
-    {
-        args[i] = gen_create(func->args[i], delta);
-    }
-    if (func->init != NULL)
-    {
-        func->init(func->count, args, delta, context);
-        if (context != NULL && reset != NULL)
-        {
-            memcpy(reset, context, func->size);
-        }
-    }
-    Gen *gen = (Gen *)calloc_(1, sizeof(Gen));
-    *gen = (Gen){
-        .func = func,
-        .args = args,
-        .delta = delta,
-        .context = context,
-        .reset = reset,
-    };
-    return gen;
-}
 
 void gen_free(Gen *gen)
 {
     Func *func = gen->func;
-    if (func->free != NULL)
+    if (func->free_cb != NULL)
     {
-        func->free(func->count, gen->context);
+        func->free_cb(func->count, gen->context);
     }
     if (gen->args != NULL)
     {
@@ -65,17 +26,114 @@ void gen_free(Gen *gen)
         free_(gen->args);
     }
     free_(gen->context);
-    if (func->init != NULL)
+    if (func->init_cb != NULL)
     {
         free_(gen->reset);
     }
     free_(gen);
 }
 
+Gen *gen_create(Func *func, double delta)
+{
+    void *context = NULL;
+    if (func->size > 0)
+    {
+        context = malloc_(func->size);
+        if (context == NULL)
+        {
+            return error_null(csErrorMemoryAlloc);
+        }
+        if (func->initial != NULL)
+        {
+            memcpy(context, func->initial, func->size);
+        }
+        else
+        {
+            memset(context, 0, func->size);
+        }
+    }
+    void *reset = func->initial;
+    if (func->init_cb != NULL)
+    {
+        if (func->size > 0)
+        {
+            reset = malloc_(func->size);
+            if (reset == NULL)
+            {
+                free_(context);
+                return error_null(csErrorMemoryAlloc);
+            }
+            if (func->initial != NULL)
+            {
+                memcpy(reset, func->initial, func->size);
+            }
+            else
+            {
+                memset(reset, 0, func->size);
+            }
+        }
+        else
+        {
+            reset = NULL;
+        }
+    }
+    Gen **args = NULL;
+    if (func->count > 0)
+    {
+        args = (Gen **)malloc_(func->count * sizeof(Gen *));
+        if (args == NULL)
+        {
+            free_(context);
+            free_(reset);
+            return error_null(csErrorMemoryAlloc);
+        }
+    }
+    for (int i = 0; i < func->count; i++)
+    {
+        Gen *arg = gen_create(func->args[i], delta);
+        if (arg == NULL)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                gen_free(args[j]);
+            }
+            free_(args);
+            free_(context);
+            free_(reset);
+            return NULL;
+        }
+        args[i] = arg;
+    }
+    if (func->init_cb != NULL)
+    {
+        func->init_cb(func->count, args, delta, context);
+        if (context != NULL && reset != NULL)
+        {
+            memcpy(reset, context, func->size);
+        }
+    }
+    Gen *gen = (Gen *)malloc_(sizeof(Gen));
+    if (gen == NULL)
+    {
+        free_(context);
+        free_(reset);
+        free_(args);
+        return error_null(csErrorMemoryAlloc);
+    }
+    *gen = (Gen){
+        .func = func,
+        .args = args,
+        .delta = delta,
+        .context = context,
+        .reset = reset,
+    };
+    return gen;
+}
+
 double gen_eval(Gen *gen)
 {
     Func *func = gen->func;
-    return func->eval(func->count, gen->args, gen->delta, gen->context);
+    return func->eval_cb(func->count, gen->args, gen->delta, gen->context);
 }
 
 void gen_reset(Gen *gen)

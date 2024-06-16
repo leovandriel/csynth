@@ -17,12 +17,12 @@ int main()
         int index = (int)((i + 4) * 12.0 / 17 - 59.45);
         double freq = 440 * pow(2, index / 12.0);
         int prec = 20 - (int)log10(freq);
-        fprintf(stderr, "static const double %s%d_ = %.*f; // 440 * pow(2, %d / 12.0)\n", note, octave, prec, freq, index);
+        fprintf(stdout, "static const double %s%d_ = %.*f; // 440 * pow(2, %d / 12.0)\n", note, octave, prec, freq, index);
     }
     for (int i = 0; i < 17 * octaves; i++)
     {
         const char *note = note_names[i % 17];
         int octave = i / 17;
-        fprintf(stderr, "#define %s%d (const_(%s%d_))\n", note, octave, note, octave);
+        fprintf(stdout, "#define %s%d (const_(%s%d_))\n", note, octave, note, octave);
     }
 }

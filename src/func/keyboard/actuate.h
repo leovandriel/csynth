@@ -23,7 +23,7 @@ static double actuate_eval(__attribute__((unused)) int count, __attribute__((unu
         keyboard_event_broadcast(time_wall(), context->key);
         context->completed = 1;
     }
-    return 0;
+    return 0.0;
 }
 
 Func *actuate(int key)

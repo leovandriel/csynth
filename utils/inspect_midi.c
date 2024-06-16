@@ -4,13 +4,7 @@
 #include <porttime.h>
 #include <stdio.h>
 
-#define PA_ERR_CHECK(_err)                                                \
-    if ((_err) < 0)                                                       \
-    {                                                                     \
-        fprintf(stderr, "Error: %s (%d)\n", Pm_GetErrorText(_err), _err); \
-        return _err;                                                      \
-    }                                                                     \
-    (void)0
+#include "../src/util/error.h"
 
 #define BUFFER_SIZE 1024
 
@@ -41,15 +35,17 @@ const char *message_type(uint32_t type)
 
 int main()
 {
-    printf("[PortMidi]\n");
-    PmError err = Pm_Initialize();
-    PA_ERR_CHECK(err);
+    printf("[PortMIDI]\n");
+    PmError pm_error = Pm_Initialize();
+    if (pm_error != pmNoError)
+    {
+        return error_catch_message(csErrorPortMidi, "Unable to initialize: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
+    }
     printf("Devices\n");
     int device_count = Pm_CountDevices();
     if (device_count == 0)
     {
-        fprintf(stderr, "No MIDI devices found.\n");
-        return 0;
+        return error_catch_message(csErrorMidi, "No MIDI devices found");
     }
     int device_input_default = Pm_GetDefaultInputDeviceID();
     int device_output_default = Pm_GetDefaultOutputDeviceID();
@@ -66,14 +62,21 @@ int main()
         printf("    isVirtual: %s\n", info->is_virtual ? "yes" : "no");
     }
     PortMidiStream *stream = NULL;
-    err = Pm_OpenInput(&stream, device_input_default, NULL, BUFFER_SIZE, NULL, NULL);
-    PA_ERR_CHECK(err);
+    pm_error = Pm_OpenInput(&stream, device_input_default, NULL, BUFFER_SIZE, NULL, NULL);
+    if (pm_error != pmNoError)
+    {
+        return error_catch_message(csErrorPortMidi, "Unable to open input: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
+    }
     printf("Use MIDI device to log events. Ctrl+C to exit\n");
     PmEvent buffer[BUFFER_SIZE];
     for (;;)
     {
         int count = Pm_Read(stream, buffer, 1024);
-        PA_ERR_CHECK(count);
+        if (count < 0)
+        {
+            pm_error = count;
+            return error_catch_message(csErrorPortMidi, "Unable to read stream: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
+        }
         for (int i = 0; i < count; i++)
         {
             PmEvent event = buffer[i];
@@ -87,9 +90,17 @@ int main()
         }
         Pt_Sleep(1);
     }
-    err = Pm_Close(stream);
-    PA_ERR_CHECK(err);
-    err = Pm_Terminate();
-    PA_ERR_CHECK(err);
+    pm_error = Pm_Close(stream);
+    if (pm_error != pmNoError)
+    {
+        return error_catch_message(csErrorPortMidi, "Unable to close: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
+        return pm_error;
+    }
+    pm_error = Pm_Terminate();
+    if (pm_error != pmNoError)
+    {
+        return error_catch_message(csErrorPortMidi, "Unable to terminate: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
+    }
+
     return 0;
 }

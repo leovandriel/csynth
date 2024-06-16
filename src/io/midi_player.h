@@ -1,5 +1,5 @@
 //
-// midi_player.h - Samples a function and plays it using PortAudio output and PortMidi input.
+// midi_player.h - Samples a function and plays it using PortAudio output and PortMIDI input.
 //
 #ifndef CSYNTH_MIDI_PLAYER_H
 #define CSYNTH_MIDI_PLAYER_H

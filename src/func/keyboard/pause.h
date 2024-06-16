@@ -21,7 +21,7 @@ typedef struct
 static double pause_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     PauseContext *context = (PauseContext *)context_;
-    if (context->reset)
+    if (context->reset != 0)
     {
         gen_reset(args[0]);
         context->reset = 0;
@@ -29,7 +29,7 @@ static double pause_eval(__attribute__((unused)) int count, __attribute__((unuse
     return context->paused ? 0 : gen_eval(args[0]);
 }
 
-int pause_listener(int key, void *context_)
+static void pause_listener(int key, void *context_)
 {
     PauseContext *context = (PauseContext *)context_;
     if (key == context->key)
@@ -38,14 +38,14 @@ int pause_listener(int key, void *context_)
         context->reset = context->play_reset;
         state_event_broadcast(context->key, StateEventTypeBool, &context->paused);
     }
-    return 0;
 }
 
-void pause_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int pause_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     PauseContext *context = (PauseContext *)context_;
     state_event_broadcast(context->key, StateEventTypeBool, &context->paused);
-    keyboard_event_add(&context->parent);
+    csError error = keyboard_event_add(&context->parent);
+    return error_catch(error);
 }
 
 Func *pause_play_(int key, Func *func, int play_reset, int paused)

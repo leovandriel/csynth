@@ -18,7 +18,7 @@ typedef enum
     StateEventTypeSelected = 6,
 } StateEventType;
 
-typedef int (*state_event_listener)(int key, StateEventType type, void *value, void *context);
+typedef void (*state_event_listener)(int key, StateEventType type, void *value, void *context);
 
 typedef struct
 {
@@ -33,32 +33,42 @@ typedef struct
     state_event_listener state_listener;
 } StateEventContext;
 
-int state_event_broadcast(int key, StateEventType type, void *value)
+void state_event_broadcast(int key, StateEventType type, void *value)
 {
     StateEvent event = {.key = key, .type = type, .value = value};
-    return event_broadcast(EventTypeState, &event);
+    event_broadcast(EventTypeState, &event);
 }
 
-int state_event_listen(EventType type, void *event_, void *context_)
+void state_event_listen(EventType type, void *event_, void *context_)
 {
     StateEventContext *context = (StateEventContext *)context_;
     if (type == EventTypeState)
     {
         StateEvent *event = (StateEvent *)event_;
-        return context->state_listener(event->key, event->type, event->value, context);
+        context->state_listener(event->key, event->type, event->value, context);
     }
-    return 0;
 }
 
-void state_event_add(StateEventContext *context)
+csError state_event_add(StateEventContext *context)
 {
-    context->handle = event_add_listener(state_event_listen, context);
+    void *handle = event_add_listener(state_event_listen, context);
+    if (handle == NULL)
+    {
+        return error_type_message(csErrorInit, "Unable to add state event listener");
+    }
+    context->handle = handle;
+    return csErrorNone;
 }
 
-void state_event_remove(StateEventContext *context)
+csError state_event_remove(StateEventContext *context)
 {
-    event_remove_listener(context->handle);
+    csError error = event_remove_listener(context->handle);
+    if (error != csErrorNone)
+    {
+        return error;
+    }
     context->handle = NULL;
+    return csErrorNone;
 }
 
 #endif // CSYNTH_STATE_EVENT_H

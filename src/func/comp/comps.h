@@ -16,7 +16,11 @@
 Func *pattern(const char *string, Func *input, Func *duration, Func *timing)
 {
     int length = (int)strlen(string);
-    Func **array = (Func **)calloc_(length * 2, sizeof(Func *));
+    Func **array = (Func **)malloc_(length * 2 * sizeof(Func *));
+    if (array == NULL)
+    {
+        return error_null(csErrorMemoryAlloc);
+    }
     int index = 0;
     for (int i = 0; i < length; i++)
     {

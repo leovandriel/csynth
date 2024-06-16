@@ -10,7 +10,7 @@ void print_key(int key)
         {
             printf("%c", chr);
         }
-        else if (chr)
+        else if (chr != 0)
         {
             printf("\\%03o", chr);
         }

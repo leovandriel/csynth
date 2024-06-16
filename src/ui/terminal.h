@@ -31,7 +31,7 @@ void terminal_restore(struct termios term)
     tcsetattr(fileno(stdin), TCSANOW, &term);
 }
 
-void terminal_handler(__attribute__((unused)) int signal)
+static void terminal_handler(__attribute__((unused)) int signal)
 {
     terminal_signal = 1;
 }
@@ -75,7 +75,7 @@ int terminal_read(int exit_key)
     {
         return key;
     }
-    if (ferror(stdin))
+    if (ferror(stdin) != 0)
     {
         return -1;
     }
@@ -88,11 +88,10 @@ int terminal_signaled()
     return terminal_signal;
 }
 
-int terminal_loop(double duration, int exit_key)
+void terminal_loop(double duration, int exit_key)
 {
     struct termios term = terminal_setup(1);
     signal(SIGINT, terminal_handler);
-    int err = 0;
     double start = time_wall();
     while (!terminal_signaled())
     {
@@ -104,7 +103,6 @@ int terminal_loop(double duration, int exit_key)
         }
         else if (key < 0)
         {
-            err = key;
             break;
         }
         double elapsed = time - start;
@@ -114,7 +112,6 @@ int terminal_loop(double duration, int exit_key)
         }
     }
     terminal_restore(term);
-    return err;
 }
 
 #endif // CSYNTH_TERMINAL_H

@@ -23,7 +23,7 @@ static double selector_eval(__attribute__((unused)) int count, __attribute__((un
     return gen_eval(args[context->selected]);
 }
 
-int selector_listener(int key, void *context_)
+static void selector_listener(int key, void *context_)
 {
     SelectorContext *context = (SelectorContext *)context_;
     if (key == context->key)
@@ -31,14 +31,14 @@ int selector_listener(int key, void *context_)
         context->selected = (context->selected + 1) % context->count;
         state_event_broadcast(context->key, StateEventTypeInt, &context->selected);
     }
-    return 0;
 }
 
-void selector_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int selector_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     SelectorContext *context = (SelectorContext *)context_;
     state_event_broadcast(context->key, StateEventTypeInt, &context->selected);
-    keyboard_event_add(&context->parent);
+    csError error = keyboard_event_add(&context->parent);
+    return error_catch(error);
 }
 
 Func *selector_args(int key, int count, ...)

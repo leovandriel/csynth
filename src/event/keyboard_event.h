@@ -7,7 +7,7 @@
 #include "../core/gen.h"
 #include "./event.h"
 
-typedef int (*keyboard_event_listener)(int key, void *context);
+typedef void (*keyboard_event_listener)(int key, void *context);
 
 #define KEYBOARD_EVENT_UP 1792833
 #define KEYBOARD_EVENT_DOWN 1792834
@@ -24,42 +24,53 @@ typedef struct
     keyboard_event_listener keyboard_listener;
 } KeyboardEventContext;
 
-int keyboard_event_broadcast(double time, int key)
+void keyboard_event_broadcast(double time, int key)
 {
     KeyboardEvent event = {.time = time, .key = key};
-    return event_broadcast(EventTypeKeyboard, &event);
+    event_broadcast(EventTypeKeyboard, &event);
 }
 
-int keyboard_event_listen(EventType type, void *event_, void *context_)
+void keyboard_event_listen(EventType type, void *event_, void *context_)
 {
     KeyboardEventContext *context = (KeyboardEventContext *)context_;
     if (type == EventTypeKeyboard)
     {
         KeyboardEvent *event = (KeyboardEvent *)event_;
-        return context->keyboard_listener(event->key, context);
+        context->keyboard_listener(event->key, context);
     }
-    return 0;
 }
 
-void keyboard_event_add(KeyboardEventContext *context)
+csError keyboard_event_add(KeyboardEventContext *context)
 {
-    context->handle = event_add_listener(keyboard_event_listen, context);
+    void *handle = event_add_listener(keyboard_event_listen, context);
+    if (handle == NULL)
+    {
+        return error_type_message(csErrorInit, "Unable to add keyboard event listener");
+    }
+    context->handle = handle;
+    return csErrorNone;
 }
 
-void keyboard_event_remove(KeyboardEventContext *context)
+csError keyboard_event_remove(KeyboardEventContext *context)
 {
-    event_remove_listener(context->handle);
+    csError error = event_remove_listener(context->handle);
+    if (error != csErrorNone)
+    {
+        return error;
+    }
     context->handle = NULL;
+    return csErrorNone;
 }
 
-void keyboard_event_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context)
+csError keyboard_event_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context)
 {
-    keyboard_event_add((KeyboardEventContext *)context);
+    return keyboard_event_add((KeyboardEventContext *)context);
 }
 
 void keyboard_event_free(__attribute__((unused)) int count, void *context)
 {
-    keyboard_event_remove((KeyboardEventContext *)context);
+    csError error = keyboard_event_remove((KeyboardEventContext *)context);
+    error_catch(error);
 }
 
 #endif // CSYNTH_KEYBOARD_EVENT_H

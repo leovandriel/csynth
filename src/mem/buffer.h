@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../util/error.h"
 #include "../util/rand.h"
 
 typedef struct
@@ -16,23 +17,44 @@ typedef struct
     unsigned long capacity;
 } Buffer;
 
-void buffer_init(Buffer *buffer, unsigned long size)
+csError buffer_init(Buffer *buffer, unsigned long size)
 {
-    buffer->samples = size ? (double *)calloc_(size, sizeof(double)) : NULL;
+    double *samples = NULL;
+    if (size > 0)
+    {
+        samples = (double *)calloc_(size, sizeof(double));
+        if (samples == NULL)
+        {
+            return error_type(csErrorMemoryAlloc);
+        }
+    }
+    buffer->samples = samples;
     buffer->capacity = size;
     buffer->size = size;
+    return csErrorNone;
 }
 
 static unsigned long buffer_resize_from_zero(Buffer *buffer, unsigned long size, double (*fill)(unsigned long))
 {
-    buffer->samples = (double *)calloc_(size, sizeof(double));
+    double *samples = (double *)malloc_(size * sizeof(double));
+    if (samples == NULL)
+    {
+        error_catch(csErrorMemoryAlloc);
+        // TODO(leo): handle error
+        return 0;
+    }
     if (fill != NULL)
     {
         for (unsigned long i = 0; i < size; i++)
         {
-            buffer->samples[i] = fill(i);
+            samples[i] = fill(i);
         }
     }
+    else
+    {
+        memset(samples, 0, size * sizeof(double));
+    }
+    buffer->samples = samples;
     buffer->capacity = size;
     buffer->size = size;
     return 0;
@@ -53,9 +75,9 @@ static unsigned long buffer_resize_up(Buffer *buffer, unsigned long size, unsign
     {
         unsigned long capacity = size * 2;
         double *samples = (double *)realloc_(buffer->samples, capacity * sizeof(double));
-        if (!samples)
+        if (samples == NULL)
         {
-            fprintf(stderr, "Unable to resize buffer\n");
+            error_catch(csErrorMemoryAlloc);
             return index;
         }
         buffer->capacity = capacity;

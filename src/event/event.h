@@ -8,6 +8,7 @@
 #include <string.h>
 
 #include "../mem/alloc.h"
+#include "../util/error.h"
 
 typedef enum
 {
@@ -17,7 +18,7 @@ typedef enum
     EventTypeMidi = 3,
 } EventType;
 
-typedef int (*event_listener)(EventType type, void *event, void *context);
+typedef void (*event_listener)(EventType type, void *event, void *context);
 
 typedef struct EventListener
 {
@@ -31,19 +32,16 @@ EventListener *event_listener_list = NULL;
 void *event_add_listener(event_listener listener, void *context)
 {
     EventListener *handle = (EventListener *)malloc_(sizeof(EventListener));
-    if (!handle)
+    if (handle == NULL)
     {
-        fprintf(stderr, "event_add_listener: unable to allocate memory\n");
-        return NULL;
+        return error_null(csErrorMemoryAlloc);
     }
-    handle->listener = listener;
-    handle->context = context;
-    handle->next = event_listener_list;
+    *handle = (EventListener){.listener = listener, .context = context, .next = event_listener_list};
     event_listener_list = handle;
-    return 0;
+    return handle;
 }
 
-int event_remove_listener(void *handle)
+csError event_remove_listener(void *handle)
 {
     EventListener **prev = &event_listener_list;
     for (EventListener *listener = event_listener_list; listener; listener = listener->next)
@@ -52,12 +50,11 @@ int event_remove_listener(void *handle)
         {
             *prev = listener->next;
             free_(listener);
-            return 0;
+            return csErrorNone;
         }
         prev = &listener->next;
     }
-    fprintf(stderr, "event_remove_listener: listener not found\n");
-    return -1;
+    return error_type_message(csErrorNotFound, "Event listener not found");
 }
 
 void event_clear()
@@ -70,17 +67,12 @@ void event_clear()
     }
 }
 
-int event_broadcast(EventType type, void *event)
+void event_broadcast(EventType type, void *event)
 {
     for (EventListener *alloc = event_listener_list; alloc; alloc = alloc->next)
     {
-        int err = alloc->listener(type, event, alloc->context);
-        if (err)
-        {
-            return err;
-        }
+        alloc->listener(type, event, alloc->context);
     }
-    return 0;
 }
 
 #endif // CSYNTH_EVENT_H

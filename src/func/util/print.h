@@ -10,6 +10,7 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
+#include "../../util/error.h"
 
 typedef struct
 {
@@ -28,7 +29,7 @@ static double print_eval(__attribute__((unused)) int count, Gen **args, __attrib
     return output;
 }
 
-void print_free(__attribute__((unused)) int count, void *context_)
+static void print_free(__attribute__((unused)) int count, void *context_)
 {
     PrintContext *context = (PrintContext *)context_;
     free_((char *)context->text);
@@ -38,11 +39,15 @@ Func *print(const char *text, Func *input)
 {
     size_t size = strlen(text) + 1;
     char *copy = malloc_(size);
+    if (copy == NULL)
+    {
+        return error_null(csErrorMemoryAlloc);
+    }
     strncpy(copy, text, size);
     PrintContext initial = (PrintContext){
         .text = copy,
     };
-    return func_create(NULL, print_eval, NULL, sizeof(PrintContext), &initial, FUNC_FLAG_DEFAULT, 1, input);
+    return func_create(NULL, print_eval, print_free, sizeof(PrintContext), &initial, FUNC_FLAG_DEFAULT, 1, input);
 }
 
 #endif // CSYNTH_PRINT_H

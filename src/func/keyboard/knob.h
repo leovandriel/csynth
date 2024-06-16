@@ -31,7 +31,7 @@ static double knob_eval(__attribute__((unused)) int count, __attribute__((unused
     return context->value;
 }
 
-int knob_listener(int key, void *context_)
+static void knob_listener(int key, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
     if (key == context->key && !context->active)
@@ -41,7 +41,7 @@ int knob_listener(int key, void *context_)
     }
     else if (context->active && key == KEYBOARD_EVENT_UP)
     {
-        if (context->rel)
+        if (context->rel != 0)
         {
             context->value *= (1 + context->step);
         }
@@ -57,7 +57,7 @@ int knob_listener(int key, void *context_)
     }
     else if (context->active && key == KEYBOARD_EVENT_DOWN)
     {
-        if (context->rel)
+        if (context->rel != 0)
         {
             context->value /= (1 + context->step);
         }
@@ -76,14 +76,14 @@ int knob_listener(int key, void *context_)
         context->active = 0;
         state_event_broadcast(context->key, StateEventTypeSelected, &context->active);
     }
-    return 0;
 }
 
-void knob_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int knob_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
     state_event_broadcast(context->key, StateEventTypeDouble, &context->value);
-    keyboard_event_add(&context->parent);
+    csError error = keyboard_event_add(&context->parent);
+    return error_catch(error);
 }
 
 Func *knob_range(int key, double value, double step, double min, double max, int rel)

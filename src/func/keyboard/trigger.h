@@ -20,7 +20,7 @@ typedef struct
 static double trigger_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
-    if (context->reset)
+    if (context->reset != 0)
     {
         gen_reset(args[0]);
         context->reset = 0;
@@ -28,7 +28,7 @@ static double trigger_eval(__attribute__((unused)) int count, __attribute__((unu
     return context->on ? gen_eval(args[0]) : 0;
 }
 
-int trigger_listener(int key, void *context_)
+static void trigger_listener(int key, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
     if (key == context->key)
@@ -37,14 +37,14 @@ int trigger_listener(int key, void *context_)
         context->reset = 1;
         state_event_broadcast(context->key, StateEventTypeTrigger, &context->on);
     }
-    return 0;
 }
 
-void trigger_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int trigger_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
     state_event_broadcast(context->key, StateEventTypeTrigger, &context->on);
-    keyboard_event_add(&context->parent);
+    csError error = keyboard_event_add(&context->parent);
+    return error_catch(error);
 }
 
 Func *trigger(int key, Func *func)

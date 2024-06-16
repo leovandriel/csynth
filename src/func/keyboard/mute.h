@@ -23,7 +23,7 @@ static double mute_eval(__attribute__((unused)) int count, __attribute__((unused
     return context->muted ? 0 : output;
 }
 
-int mute_listener(int key, void *context_)
+static void mute_listener(int key, void *context_)
 {
     MuteContext *context = (MuteContext *)context_;
     if (key == context->key)
@@ -31,14 +31,14 @@ int mute_listener(int key, void *context_)
         context->muted = !context->muted;
         state_event_broadcast(context->key, StateEventTypeBoolInv, &context->muted);
     }
-    return 0;
 }
 
-void mute_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int mute_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     MuteContext *context = (MuteContext *)context_;
     state_event_broadcast(context->key, StateEventTypeBoolInv, &context->muted);
-    keyboard_event_add(&context->parent);
+    csError error = keyboard_event_add(&context->parent);
+    return error_catch(error);
 }
 
 Func *mute_(int key, Func *func, int muted)

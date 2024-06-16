@@ -23,7 +23,7 @@ static double track_eval(__attribute__((unused)) int count, Gen **args, __attrib
     return gen_eval(args[0]);
 }
 
-int track_listen(EventType type, void *event_, void *context_)
+static void track_listen(EventType type, void *event_, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
     if (type == EventTypeKeyboard)
@@ -33,23 +33,31 @@ int track_listen(EventType type, void *event_, void *context_)
             .key = event->key,
             .time = event->time,
         };
-        key_list_add(&context->list, timed_event);
+        csError error = key_list_add(&context->list, timed_event);
+        error_catch(error);
     }
-    return 0;
 }
 
-void track_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int track_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
-    context->handle = event_add_listener(track_listen, context);
+    void *handle = event_add_listener(track_listen, context);
+    if (handle == NULL)
+    {
+        return error_catch_message(csErrorInit, "Unable to add track listener");
+    }
+    context->handle = handle;
     context->list = NULL;
+    return 0;
 }
 
 static void track_free(__attribute__((unused)) int count, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
-    event_remove_listener(context->handle);
-    key_list_write_filename(&context->list, context->filename);
+    csError error = event_remove_listener(context->handle);
+    error_catch(error);
+    error = key_list_write_filename(&context->list, context->filename);
+    error_catch(error);
     key_list_clear(&context->list);
 }
 

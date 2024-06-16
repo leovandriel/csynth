@@ -19,46 +19,44 @@ typedef struct
     uint32_t sample_rate;
 } ReaderSamples;
 
-int reader_read_file(ReaderSamples *samples, FILE *file)
+csError reader_read_file(ReaderSamples *samples, FILE *file)
 {
     WavHeader header = {0};
     size_t count = fread(&header, sizeof(header), 1, file);
     if (count != 1)
     {
-        fprintf(stderr, "Unable to read WAV header\n");
-        return -1;
+        return error_type_message(csErrorWav, "Unable to read WAV header");
     }
     if (memcmp(header.riff_type, "RIFF", 4) || memcmp(header.file_type, "WAVE", 4) || memcmp(header.format_mark, "fmt ", 4) || header.format_type != 1 || memcmp(header.data_chunk, "data", 4))
     {
-        fprintf(stderr, "Unsupported WAV format\n");
-        return -1;
+        return error_type_message(csErrorWav, "Unsupported WAV format");
     }
     if (header.format_size != WAV_HEADER_FORMAT_SIZE)
     {
-        fprintf(stderr, "Unsupported WAV format size: %d\n", header.format_size);
-        return -1;
+        return error_type_message(csErrorWav, "Unsupported WAV format size: %d", header.format_size);
     }
     if (header.file_size - header.data_size != WAV_HEADER_SIZE)
     {
-        fprintf(stderr, "Unsupported WAV header size: %d\n", header.file_size - header.data_size);
-        return -1;
+        return error_type_message(csErrorWav, "Unsupported WAV header size: %d", header.file_size - header.data_size);
     }
     if (header.byte_rate != sizeof(sample_t) * header.num_channels * header.sample_rate || header.block_align != sizeof(sample_t) * header.num_channels || header.bits_sample != sizeof(sample_t) * 8)
     {
-        fprintf(stderr, "Unsupported WAV sample bits: %d\n", header.bits_sample);
-        return -1;
+        return error_type_message(csErrorWav, "Unsupported WAV sample bits: %d", header.bits_sample);
     }
     int channel_count = header.num_channels;
     uint32_t data_size = header.data_size;
     uint32_t sample_count = data_size / (sizeof(sample_t) * channel_count);
     double duration = sample_count / header.sample_rate;
-    sample_t *buffer = (sample_t *)calloc_(sample_count * channel_count, sizeof(sample_t));
+    sample_t *buffer = (sample_t *)malloc_(sample_count * channel_count * sizeof(sample_t));
+    if (buffer == NULL)
+    {
+        return error_type(csErrorMemoryAlloc);
+    }
     count = fread(buffer, sizeof(sample_t), sample_count * channel_count, file);
     if (count != sample_count * channel_count)
     {
-        fprintf(stderr, "Unable to read WAV data\n");
         free_(buffer);
-        return -1;
+        return error_type(csErrorFileRead);
     }
     samples->buffer = buffer;
     samples->sample_count = sample_count;
@@ -66,7 +64,7 @@ int reader_read_file(ReaderSamples *samples, FILE *file)
     samples->duration = duration;
     samples->sample_rate = header.sample_rate;
     free_(buffer);
-    return 0;
+    return csErrorNone;
 }
 
 sample_t reader_sample(ReaderSamples *samples, double time, int channel)
@@ -84,12 +82,24 @@ void reader_free(ReaderSamples *samples)
     free_(samples->buffer);
 }
 
-int reader_read_filename(ReaderSamples *samples, const char *filename)
+csError reader_read_filename(ReaderSamples *samples, const char *filename)
 {
     FILE *file = fopen(filename, "rb");
-    int result = reader_read_file(samples, file);
-    fclose(file);
-    return result;
+    if (file == NULL)
+    {
+        return error_type_message(csErrorFileOpen, "Unable to open file: %s", filename);
+    }
+    csError error = reader_read_file(samples, file);
+    if (error != csErrorNone)
+    {
+        fclose(file);
+        return error;
+    }
+    if (fclose(file) == EOF)
+    {
+        return error_type(csErrorFileClose);
+    }
+    return csErrorNone;
 }
 
 #endif // CSYNTH_READER_H
