@@ -232,7 +232,7 @@ on every key press:
     play(trigger(' ', decay_(sine(A4), .1)));
 ```
 
-There is also [knob](src/func/keyboard/knob.h) to modulate a value and
+There is also [stepper](src/func/keyboard/stepper.h) and
 [selector](src/func/keyboard/selector.h) to switch between functions:
 
 ```c

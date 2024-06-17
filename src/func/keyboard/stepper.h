@@ -1,8 +1,8 @@
 //
-// knob.h - Trigger based on key knob
+// stepper.h - Control in steps
 //
-#ifndef CSYNTH_KNOB_H
-#define CSYNTH_KNOB_H
+#ifndef CSYNTH_STEPPER_H
+#define CSYNTH_STEPPER_H
 
 #include <float.h>
 
@@ -23,17 +23,17 @@ typedef struct
     double max;
     int rel;
     int active;
-} KnobContext;
+} StepperContext;
 
-static double knob_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static double stepper_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
-    KnobContext *context = (KnobContext *)context_;
+    StepperContext *context = (StepperContext *)context_;
     return context->value;
 }
 
-static void knob_listener(int key, void *context_)
+static void stepper_listener(int key, void *context_)
 {
-    KnobContext *context = (KnobContext *)context_;
+    StepperContext *context = (StepperContext *)context_;
     if (key == context->key && !context->active)
     {
         context->active = 1;
@@ -78,18 +78,18 @@ static void knob_listener(int key, void *context_)
     }
 }
 
-static int knob_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int stepper_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
-    KnobContext *context = (KnobContext *)context_;
+    StepperContext *context = (StepperContext *)context_;
     state_event_broadcast(context->key, StateEventTypeDouble, &context->value);
     csError error = keyboard_event_add(&context->parent);
     return error_catch(error);
 }
 
-Func *knob_range(int key, double value, double step, double min, double max, int rel)
+Func *stepper_range(int key, double value, double step, double min, double max, int rel)
 {
-    KnobContext initial = (KnobContext){
-        .parent = {.keyboard_listener = knob_listener},
+    StepperContext initial = (StepperContext){
+        .parent = {.keyboard_listener = stepper_listener},
         .key = key,
         .value = value,
         .step = step,
@@ -97,17 +97,17 @@ Func *knob_range(int key, double value, double step, double min, double max, int
         .max = max,
         .rel = rel,
     };
-    return func_create(knob_init, knob_eval, keyboard_event_free, sizeof(KnobContext), &initial, FUNC_FLAG_SKIP_RESET, 0);
+    return func_create(stepper_init, stepper_eval, keyboard_event_free, sizeof(StepperContext), &initial, FUNC_FLAG_SKIP_RESET, 0);
 }
 
-Func *knob(int key, double value, double delta)
+Func *stepper(int key, double value, double delta)
 {
-    return knob_range(key, value, delta, -FLT_MAX, FLT_MAX, 0);
+    return stepper_range(key, value, delta, -FLT_MAX, FLT_MAX, 0);
 }
 
-Func *knob_rel(int key, double value, double perc)
+Func *stepper_rel(int key, double value, double perc)
 {
-    return knob_range(key, value, perc, -FLT_MAX, FLT_MAX, 1);
+    return stepper_range(key, value, perc, -FLT_MAX, FLT_MAX, 1);
 }
 
-#endif // CSYNTH_KNOB_H
+#endif // CSYNTH_STEPPER_H

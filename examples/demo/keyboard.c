@@ -13,7 +13,7 @@ int main()
     func hihat = decay_(hpf_(uniform(), 20000), .05);
     func snare = decay_(uniform(), .05);
     func bdrum = mul(decay_(sine(linear_env_(60, 30, 1)), .05), _(3));
-    func tempo = knob_rel('1', .5, -.1);
+    func tempo = stepper_rel('1', .5, -.1);
     func loops = add(
         mute('Q', loop(hihat, mul_(tempo, .5))),
         mute('W', loop(delay(snare, mul_(tempo, 1)), mul_(tempo, 2))),
