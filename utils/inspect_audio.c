@@ -68,7 +68,6 @@ int main()
     {
         const PaHostApiInfo *info = Pa_GetHostApiInfo(i);
         printf("  %d:%s\n", i, i == host_default ? " (default)" : "");
-        printf("    structVersion: %d\n", info->structVersion);
         printf("    type: %d (%s)\n", info->type, host_type_string(info->type));
         printf("    name: %s\n", info->name);
         printf("    deviceCount: %d\n", info->deviceCount);
@@ -94,7 +93,6 @@ int main()
     {
         const PaDeviceInfo *info = Pa_GetDeviceInfo(i);
         printf("  %d:%s%s\n", i, i == device_input_default ? " (default input)" : "", i == device_output_default ? " (default output)" : "");
-        printf("    structVersion: %d\n", info->structVersion);
         printf("    name: %s\n", info->name);
         printf("    hostApi: %d (%s)\n", info->hostApi, Pa_GetHostApiInfo(info->hostApi)->name);
         printf("    maxInputChannels: %d\n", info->maxInputChannels);

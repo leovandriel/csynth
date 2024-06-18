@@ -12,7 +12,8 @@
 #include "../util/error.h"
 #include "./def.h"
 
-static const double EPSILON = DBL_EPSILON * 2;
+static const double FUNC_EPSILON = DBL_EPSILON * 2;
+static const double FUNC_AUDIBLE = 1e-3;
 
 Func *func_list = NULL;
 

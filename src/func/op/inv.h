@@ -12,9 +12,9 @@
 static double inv_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
 {
     double value = gen_eval(args[0]);
-    if (value < EPSILON && value > -EPSILON)
+    if (value < FUNC_EPSILON && value > -FUNC_EPSILON)
     {
-        value = value >= 0 ? EPSILON : -EPSILON;
+        value = value >= 0 ? FUNC_EPSILON : -FUNC_EPSILON;
     }
     return 1.0 / value;
 }

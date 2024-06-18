@@ -48,7 +48,7 @@ csError midi_initialize(MidiContext *context)
         Pm_Terminate();
         return error_type_message(csErrorPortMidi, "Unable to terminate: %s", Pm_GetErrorText(pm_error));
     }
-    fprintf(stdout, "MIDI initialized: %s on %s\n", info->name, info->interf);
+    fprintf(stdout, "MIDI initialized: %s, %s\n", info->name, info->interf);
     return csErrorNone;
 }
 

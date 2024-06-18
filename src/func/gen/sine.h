@@ -22,7 +22,7 @@ static double sine_eval(__attribute__((unused)) int count, Gen **args, double de
     SineContext *context = (SineContext *)context_;
     double frequency = gen_eval(args[0]);
     double step = PI_M_2 * frequency * delta;
-    if (frequency > EPSILON)
+    if (frequency > FUNC_EPSILON)
     {
         context->phase *= context->frequency / frequency;
     }

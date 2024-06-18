@@ -21,7 +21,7 @@ static double print_eval(__attribute__((unused)) int count, Gen **args, __attrib
 {
     PrintContext *context = (PrintContext *)context_;
     double output = gen_eval(args[0]);
-    if ((output > EPSILON || output < -EPSILON) && context->text != NULL)
+    if ((output > FUNC_EPSILON || output < -FUNC_EPSILON) && context->text != NULL)
     {
         fprintf(stderr, "%s\n", context->text);
         context->text = NULL;

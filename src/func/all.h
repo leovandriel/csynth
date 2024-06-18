@@ -45,6 +45,7 @@
 #include "./midi/key.h"
 #include "./midi/knob.h"
 #include "./midi/midis.h"
+#include "./midi/pad.h"
 #include "./op/add.h"
 #include "./op/adsr.h"
 #include "./op/inv.h"

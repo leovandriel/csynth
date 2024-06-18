@@ -65,25 +65,51 @@ csError player_play_pause(PaStream *stream)
 
 csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig config)
 {
-    PaError pa_error = Pa_Initialize();
-    if (pa_error != paNoError)
-    {
-        Pa_Terminate();
-        return error_type_message(csErrorPortAudio, "Unable to initialize: %s", Pa_GetErrorText(pa_error), pa_error);
-    }
     Sampler *sampler = sampler_create(count, channels, config.sample_rate);
     if (sampler == NULL)
     {
-        Pa_Terminate();
         return error_type_message(csErrorInit, "Unable to create sampler");
     }
+    PaError pa_error = Pa_Initialize();
+    if (pa_error != paNoError)
+    {
+        return error_type_message(csErrorPortAudio, "Unable to initialize: %s", Pa_GetErrorText(pa_error), pa_error);
+    }
+    PaDeviceIndex device = Pa_GetDefaultOutputDevice();
+    if (device == paNoDevice)
+    {
+        Pa_Terminate();
+        return error_type_message(csErrorInit, "No default audio device");
+    }
+    const PaDeviceInfo *device_info = Pa_GetDeviceInfo(device);
+    if (device_info == NULL)
+    {
+        Pa_Terminate();
+        return error_type_message(csErrorPortAudio, "Unable to get device info");
+    }
+    fprintf(stdout, "Audio device: %s\n", device_info->name);
+    PaStreamParameters params = {
+        .device = device,
+        .channelCount = count,
+        .sampleFormat = paInt16,
+        .suggestedLatency = device_info->defaultLowOutputLatency,
+        .hostApiSpecificStreamInfo = NULL,
+    };
     PaStream *stream = NULL;
-    pa_error = Pa_OpenDefaultStream(&stream, 0, count, paInt16, config.sample_rate, paFramesPerBufferUnspecified, player_callback, sampler);
+    pa_error = Pa_OpenStream(&stream, NULL, &params, config.sample_rate, paFramesPerBufferUnspecified, paNoFlag, player_callback, sampler);
     if (pa_error != paNoError)
     {
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to open stream: %s", Pa_GetErrorText(pa_error), pa_error);
     }
+    const PaStreamInfo *stream_info = Pa_GetStreamInfo(stream);
+    if (pa_error != paNoError)
+    {
+        Pa_CloseStream(stream);
+        Pa_Terminate();
+        return error_type_message(csErrorPortAudio, "Unable to get stream info: %s", Pa_GetErrorText(pa_error), pa_error);
+    }
+    fprintf(stdout, "Stream opened: %.1f ms, %.3f kHz\n", stream_info->outputLatency * 1000, stream_info->sampleRate / 1000);
     pa_error = Pa_StartStream(stream);
     if (pa_error != paNoError)
     {

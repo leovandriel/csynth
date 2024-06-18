@@ -53,7 +53,6 @@ int main()
     {
         const PmDeviceInfo *info = Pm_GetDeviceInfo(i);
         printf("  %d:%s%s\n", i, i == device_input_default ? " (default input)" : "", i == device_output_default ? " (default output)" : "");
-        printf("    structVersion: %d\n", info->structVersion);
         printf("    interface: %s\n", info->interf);
         printf("    name: %s\n", info->name);
         printf("    input: %s\n", info->input ? "yes" : "no");

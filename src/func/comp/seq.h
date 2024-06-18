@@ -66,7 +66,7 @@ static double seq_eval_seq(int count, Gen **args, __attribute__((unused)) double
 {
     SeqContext *context = (SeqContext *)context_;
     double output = gen_eval(args[context->index]);
-    if (output < EPSILON && output > -EPSILON)
+    if (output < FUNC_AUDIBLE && output > -FUNC_AUDIBLE)
     {
         context->counter++;
     }
