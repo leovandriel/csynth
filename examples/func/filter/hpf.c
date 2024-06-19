@@ -4,7 +4,7 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
-    return play(mul_(note, .5));
+    // high-pass filter with exponentially increasing frequency
+    func note = hpf(saw(C4), expo(linear_env_(0, 10, 4)));
+    return play(mul_(note, .1));
 }
