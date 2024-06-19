@@ -53,14 +53,14 @@ static void knob_listener(__attribute__((unused)) double time, MidiType type, ui
     if (type == MidiTypeControlChange && channel == context->channel && data1 == context->index)
     {
         context->target = (double)data2 / 127.0;
-        state_event_broadcast(context->index, StateEventTypeDouble, &context->target);
+        state_event_broadcast((int)context->index, StateEventTypeDouble, &context->target);
     }
 }
 
 static int knob_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
-    state_event_broadcast(context->index, StateEventTypeDouble, &context->target);
+    state_event_broadcast((int)context->index, StateEventTypeDouble, &context->target);
     csError error = midi_event_add(&context->parent);
     return error_catch(error);
 }

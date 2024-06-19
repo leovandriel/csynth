@@ -73,17 +73,20 @@ csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig
     PaError pa_error = Pa_Initialize();
     if (pa_error != paNoError)
     {
+        sampler_free(sampler);
         return error_type_message(csErrorPortAudio, "Unable to initialize: %s", Pa_GetErrorText(pa_error), pa_error);
     }
     PaDeviceIndex device = Pa_GetDefaultOutputDevice();
     if (device == paNoDevice)
     {
+        sampler_free(sampler);
         Pa_Terminate();
         return error_type_message(csErrorInit, "No default audio device");
     }
     const PaDeviceInfo *device_info = Pa_GetDeviceInfo(device);
     if (device_info == NULL)
     {
+        sampler_free(sampler);
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to get device info");
     }
@@ -99,12 +102,14 @@ csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig
     pa_error = Pa_OpenStream(&stream, NULL, &params, config.sample_rate, paFramesPerBufferUnspecified, paNoFlag, player_callback, sampler);
     if (pa_error != paNoError)
     {
+        sampler_free(sampler);
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to open stream: %s", Pa_GetErrorText(pa_error), pa_error);
     }
     const PaStreamInfo *stream_info = Pa_GetStreamInfo(stream);
     if (pa_error != paNoError)
     {
+        sampler_free(sampler);
         Pa_CloseStream(stream);
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to get stream info: %s", Pa_GetErrorText(pa_error), pa_error);
@@ -113,6 +118,7 @@ csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig
     pa_error = Pa_StartStream(stream);
     if (pa_error != paNoError)
     {
+        sampler_free(sampler);
         Pa_CloseStream(stream);
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to start stream: %s", Pa_GetErrorText(pa_error), pa_error);
@@ -120,6 +126,7 @@ csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig
     csError error = display_show();
     if (error != csErrorNone)
     {
+        sampler_free(sampler);
         Pa_CloseStream(stream);
         Pa_Terminate();
         return error;
@@ -128,6 +135,7 @@ csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig
     error = display_hide();
     if (error != csErrorNone)
     {
+        sampler_free(sampler);
         Pa_CloseStream(stream);
         Pa_Terminate();
         return error;
@@ -135,6 +143,7 @@ csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig
     pa_error = Pa_CloseStream(stream);
     if (pa_error != paNoError)
     {
+        sampler_free(sampler);
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to close stream: %s", Pa_GetErrorText(pa_error), pa_error);
     }
