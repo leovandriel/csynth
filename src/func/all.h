@@ -14,6 +14,7 @@
 #include "./effect/reverb.h"
 #include "./filter/chorus.h"
 #include "./filter/compressor.h"
+#include "./filter/distortion.h"
 #include "./filter/envelopes.h"
 #include "./filter/filters.h"
 #include "./filter/hpf.h"

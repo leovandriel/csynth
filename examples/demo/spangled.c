@@ -30,7 +30,7 @@ static func C(func frequency, double duration)
     func note = karplus_strong_(frequency, 0.8);
     note = lpf(note, frequency);
     note = rect_(note, 0, delta);
-    note = distort_(note, 30);
+    note = distortion_(note, 5);
     note = mul_(note, 0.05);
     return add(note, A(frequency, duration));
 }
