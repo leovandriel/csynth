@@ -4,6 +4,7 @@
 #ifndef CSYNTH_FUNC_ALL_H
 #define CSYNTH_FUNC_ALL_H
 
+#include "./bank/drums.h"
 #include "./comp/comps.h"
 #include "./comp/seq.h"
 #include "./effect/continuous.h"
