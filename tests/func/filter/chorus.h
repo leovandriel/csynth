@@ -10,5 +10,4 @@ void test_chorus()
     assert_gen_equal(gen, 0.0);
     gen_free(gen);
     func_free();
-    sin_table_free();
 }

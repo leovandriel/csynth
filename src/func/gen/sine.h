@@ -6,9 +6,10 @@
 #ifndef CSYNTH_SINE_H
 #define CSYNTH_SINE_H
 
+#include <math.h>
+
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../util/math.h"
 #include "./const.h"
 
 typedef struct
@@ -21,13 +22,13 @@ static double sine_eval(__attribute__((unused)) int count, Gen **args, double de
 {
     SineContext *context = (SineContext *)context_;
     double frequency = gen_eval(args[0]);
-    double step = PI_M_2 * frequency * delta;
+    double step = M_PI * 2 * frequency * delta;
     if (frequency > FUNC_EPSILON)
     {
         context->phase *= context->frequency / frequency;
     }
-    double output = sin_lookup(context->phase);
-    context->phase = fmod(context->phase + step, PI_M_2);
+    double output = sin(context->phase);
+    context->phase = fmod(context->phase + step, M_PI * 2);
     context->frequency = frequency;
     return output;
 }

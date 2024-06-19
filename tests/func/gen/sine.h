@@ -7,17 +7,17 @@ void test_sine_const()
     Func *time = sine(const_(1));
     Gen *gen = gen_create(time, 0.1);
     assert_gen_equal(gen, 0.0000000000000000);
-    assert_gen_equal(gen, 0.5877852419187400);
-    assert_gen_equal(gen, 0.9510565051057910);
-    assert_gen_equal(gen, 0.9510565051057910);
-    assert_gen_equal(gen, 0.5877852419187400);
-    assert_gen_equal(gen, -0.0000000000000000);
-    assert_gen_equal(gen, -0.5877852419187400);
-    assert_gen_equal(gen, -0.9510565051057910);
-    assert_gen_equal(gen, -0.9510565051057910);
-    assert_gen_equal(gen, -0.5877852419187400);
+    assert_gen_equal(gen, 0.5877852522924731);
+    assert_gen_equal(gen, 0.9510565162951535);
+    assert_gen_equal(gen, 0.9510565162951536);
+    assert_gen_equal(gen, 0.5877852522924732);
+    assert_gen_equal(gen, 0.0000000000000001);
+    assert_gen_equal(gen, -0.5877852522924730);
+    assert_gen_equal(gen, -0.9510565162951535);
+    assert_gen_equal(gen, -0.9510565162951536);
+    assert_gen_equal(gen, -0.5877852522924734);
     assert_gen_equal(gen, 0.0000000000000000);
-    assert_gen_equal(gen, 0.5877852419187400);
+    assert_gen_equal(gen, 0.5877852522924731);
     gen_free(gen);
 }
 
@@ -27,16 +27,16 @@ void test_sine_timer()
     Gen *gen = gen_create(time, 0.1);
     assert_gen_equal(gen, 0.0000000000000000);
     assert_gen_equal(gen, 0.0000000000000000);
-    assert_gen_equal(gen, 0.0314107589087103);
-    assert_gen_equal(gen, 0.1045284627888829);
-    assert_gen_equal(gen, 0.2181432374437673);
-    assert_gen_equal(gen, 0.3681245516448899);
-    assert_gen_equal(gen, 0.5446390303877368);
-    assert_gen_equal(gen, 0.7289686234765415);
-    assert_gen_equal(gen, 0.8910065137048342);
-    assert_gen_equal(gen, 0.9892723178837863);
-    assert_gen_equal(gen, 0.9759167442563212);
-    assert_gen_equal(gen, 0.8090169800974962);
+    assert_gen_equal(gen, 0.0314107590781283);
+    assert_gen_equal(gen, 0.1045284632676535);
+    assert_gen_equal(gen, 0.2181432413965426);
+    assert_gen_equal(gen, 0.3681245526846780);
+    assert_gen_equal(gen, 0.5446390350150272);
+    assert_gen_equal(gen, 0.7289686274214117);
+    assert_gen_equal(gen, 0.8910065241883679);
+    assert_gen_equal(gen, 0.9892723329629883);
+    assert_gen_equal(gen, 0.9759167619387474);
+    assert_gen_equal(gen, 0.8090169943749475);
     gen_free(gen);
 }
 
@@ -45,5 +45,4 @@ void test_sine()
     test_sine_const();
     test_sine_timer();
     func_free();
-    sin_table_free();
 }

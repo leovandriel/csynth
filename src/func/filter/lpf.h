@@ -6,9 +6,10 @@
 #ifndef CSYNTH_LPF_H
 #define CSYNTH_LPF_H
 
+#include <math.h>
+
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../util/math.h"
 #include "../gen/const.h"
 
 typedef struct
@@ -21,7 +22,7 @@ static double lpf_eval(__attribute__((unused)) int count, Gen **args, double del
     LowPassContext *context = (LowPassContext *)context_;
     double input = gen_eval(args[0]);
     double frequency = gen_eval(args[1]);
-    double factor = 1 / (PI_M_2 * frequency * delta) + 1.0;
+    double factor = 1 / (M_PI * 2 * frequency * delta) + 1.0;
     double output = context->output;
     context->output = context->output + (input - context->output) / factor;
     return output;

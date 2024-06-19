@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "../mem/alloc.h"
 #include "../util/error.h"
 #include "../util/rand.h"
 

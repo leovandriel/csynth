@@ -6,9 +6,10 @@
 #ifndef CSYNTH_RESONANT_H
 #define CSYNTH_RESONANT_H
 
+#include <math.h>
+
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../util/math.h"
 #include "../gen/const.h"
 
 typedef struct
@@ -22,12 +23,12 @@ static double resonant_eval(__attribute__((unused)) int count, Gen **args, doubl
     double input = gen_eval(args[0]);
     double frequency = gen_eval(args[1]);
     double q_factor = gen_eval(args[2]);
-    double omega = PI_M_2 * frequency * delta;
-    double alpha = sin_lookup(omega) / (2.0 * q_factor);
+    double omega = M_PI * 2 * frequency * delta;
+    double alpha = sin(omega) / (2.0 * q_factor);
     double va0 = 1.0 + alpha;
-    double va1 = -2.0 * sin_lookup(omega + M_PI_2);
+    double va1 = -2.0 * sin(omega + M_PI_2);
     double va2 = 1.0 - alpha;
-    double vb1 = 2.0 * (1.0 - sin_lookup(omega + M_PI_2));
+    double vb1 = 2.0 * (1.0 - sin(omega + M_PI_2));
     double vb2 = 1.0 - alpha;
     double output = (va0 * input + va1 * context->x1 + va2 * context->x2 - vb1 * context->y1 - vb2 * context->y2) / va0;
     context->x2 = context->x1;

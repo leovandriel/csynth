@@ -5,8 +5,7 @@
 #define CSYNTH_RAND_H
 
 #include <limits.h>
-
-#include "../util/math.h"
+#include <math.h>
 
 #define RAND_STATE_INIT 1082269761
 
@@ -38,7 +37,7 @@ double rand_range(double left, double right)
 
 double rand_gauss(double muu, double sigma)
 {
-    return sigma * sqrt(-2.0 * log(rand_uniform())) * cos(rand_uniform() * PI_M_2) + muu;
+    return sigma * sqrt(-2.0 * log(rand_uniform())) * cos(rand_uniform() * M_PI * 2) + muu;
 }
 
 void rand_seed(unsigned long seed)
