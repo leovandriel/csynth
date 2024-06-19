@@ -2,4 +2,21 @@
 
 set -e
 
+bad_allocs=$(egrep -iR "(malloc\(|calloc\(|realloc\(| free\()" --exclude "alloc.h" | tee)
+
+if [[ "$bad_allocs" ]]; then
+    printf "\r\e[KInvalid allocation: Use malloc_, calloc_, realloc_, or free_:\n$bad_allocs\n" >&2
+    exit 1
+fi
+
+find . -name "*.c" -type f -print0 | while read -d $'\0' file; do
+    filename=$(basename "$file")
+    name="${filename%.*}"
+    found=$(grep "bin/$name" "$file" | tee)
+    if [[ ! "$found" ]]; then
+        printf "\r\e[KInvalid binary name: $file\n" >&2
+        exit 1
+    fi
+done
+
 find . -name '*.c' -o -name '*.h' | xargs clang-tidy

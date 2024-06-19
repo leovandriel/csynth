@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/cpattern -Wall -Wextra -O3 -lm && ./bin/cpattern "$@"; exit $?
+//usr/bin/gcc "$0" -o bin/convert_pattern -Wall -Wextra -O3 -lm && ./bin/convert_pattern "$@"; exit $?
 //
 //  Convert recordings to pattern.
 //
