@@ -19,6 +19,7 @@
 #include "./filter/limit.h"
 #include "./filter/lpf.h"
 #include "./filter/resonant.h"
+#include "./filter/truncate.h"
 #include "./gen/const.h"
 #include "./gen/crack.h"
 #include "./gen/gauss.h"

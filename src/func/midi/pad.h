@@ -11,15 +11,12 @@
 #include "../../event/midi_event.h"
 #include "../../event/state_event.h"
 
-#define PAD_LEVEL_DECAY 0.1
-
 typedef struct
 {
     MidiEventContext parent;
     uint32_t pad;
     uint32_t channel;
     double value;
-    double level;
     int reset;
 } PadContext;
 
@@ -31,13 +28,7 @@ static double pad_eval(__attribute__((unused)) int count, __attribute__((unused)
         gen_reset(args[0]);
         context->reset = 0;
     }
-    double output = 0.0;
-    if (context->level > FUNC_AUDIBLE)
-    {
-        output = gen_eval(args[0]) * (double)context->value;
-    }
-    context->level += fmax(fabs(output), context->level * pow(PAD_LEVEL_DECAY, delta));
-    return output;
+    return gen_eval(args[0]) * context->value;
 }
 
 static void pad_listener(__attribute__((unused)) double time, MidiType type, uint32_t channel, uint32_t data1, uint32_t data2, void *context_)
@@ -47,7 +38,6 @@ static void pad_listener(__attribute__((unused)) double time, MidiType type, uin
     {
         context->value = (double)data2 / 127.0;
         context->reset = 1;
-        context->level = 1;
     }
 }
 

@@ -3,4 +3,4 @@
 set -e
 
 find . -name '*.h' -o -name '*.c' | xargs clang-format -i
-find . -name '*.c' | xargs chmod +x
+find . -name '*.c' ! -perm -u=x | xargs chmod +x
