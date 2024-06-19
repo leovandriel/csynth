@@ -17,8 +17,8 @@
 typedef struct
 {
     MidiEventContext parent;
-    uint32_t index;
-    uint32_t channel;
+    uint8_t control;
+    uint8_t channel;
     double value;
     double target;
     int exponential;
@@ -47,30 +47,30 @@ static double knob_eval(__attribute__((unused)) int count, __attribute__((unused
     return (max - min) * context->value + min;
 }
 
-static void knob_listener(__attribute__((unused)) double time, MidiType type, uint32_t channel, uint32_t data1, uint32_t data2, void *context_)
+static void knob_listener(__attribute__((unused)) double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
-    if (type == MidiTypeControlChange && channel == context->channel && data1 == context->index)
+    if (type == MidiTypeControlChange && channel == context->channel && data1 == context->control)
     {
         context->target = (double)data2 / 127.0;
-        state_event_broadcast((int)context->index, StateEventTypeDouble, &context->target);
+        state_event_broadcast((int)context->control, StateEventTypeDouble, &context->target);
     }
 }
 
 static int knob_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
-    state_event_broadcast((int)context->index, StateEventTypeDouble, &context->target);
+    state_event_broadcast((int)context->control, StateEventTypeDouble, &context->target);
     csError error = midi_event_add(&context->parent);
     return error_catch(error);
 }
 
-Func *knob_diff(int index, int channel, Func *min, Func *max, Func *slope, int exponential)
+Func *knob_diff(int control, int channel, Func *min, Func *max, Func *slope, int exponential)
 {
     KnobContext initial = (KnobContext){
         .parent = {.midi_listener = knob_listener},
-        .index = index,
-        .channel = channel,
+        .control = control,
+        .channel = channel - 1,
         .exponential = exponential,
     };
     return func_create(knob_init, knob_eval, midi_event_free, sizeof(KnobContext), &initial, FUNC_FLAG_SKIP_RESET, 3, min, max, slope);

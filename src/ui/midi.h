@@ -64,11 +64,11 @@ csError midi_read_broadcast(MidiContext *context)
     for (int i = 0; i < count; i++)
     {
         double time = (double)buffer[i].timestamp / 1000.;
-        uint32_t status = Pm_MessageStatus(buffer[i].message);
+        uint8_t status = Pm_MessageStatus(buffer[i].message);
         MidiType type = status >> 4;
-        uint32_t channel = status & 0x0F;
-        uint32_t data1 = Pm_MessageData1(buffer[i].message);
-        uint32_t data2 = Pm_MessageData2(buffer[i].message);
+        uint8_t channel = status & 0x0F;
+        uint8_t data1 = Pm_MessageData1(buffer[i].message);
+        uint8_t data2 = Pm_MessageData2(buffer[i].message);
         midi_event_broadcast(time, type, channel, data1, data2);
     }
     return csErrorNone;

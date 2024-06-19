@@ -8,7 +8,7 @@
 
 #define BUFFER_SIZE 1024
 
-const char *message_type(uint32_t type)
+const char *message_type(uint8_t type)
 {
     switch (type)
     {
@@ -80,11 +80,11 @@ int main()
         {
             PmEvent event = buffer[i];
             PmTimestamp time = event.timestamp;
-            uint32_t status = Pm_MessageStatus(event.message);
-            uint32_t type = status >> 4;
-            uint32_t channel = status & 0x0F;
-            uint32_t data1 = Pm_MessageData1(event.message);
-            uint32_t data2 = Pm_MessageData2(event.message);
+            uint8_t status = Pm_MessageStatus(event.message);
+            uint8_t type = status >> 4;
+            uint8_t channel = (status & 0x0F) + 1;
+            uint8_t data1 = Pm_MessageData1(event.message);
+            uint8_t data2 = Pm_MessageData2(event.message);
             printf("time: %d  type: %d (%s)  channel: %d  data1: %d  data2: %d\n", time, type, message_type(type), channel, data1, data2);
         }
         Pt_Sleep(1);

@@ -19,15 +19,15 @@ typedef enum
     MidiTypeSystem = 0xF,
 } MidiType;
 
-typedef void (*midi_event_listener)(double time, MidiType type, uint32_t channel, uint32_t data1, uint32_t data2, void *context);
+typedef void (*midi_event_listener)(double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context);
 
 typedef struct
 {
     double time;
     MidiType type;
-    uint32_t channel;
-    uint32_t data1;
-    uint32_t data2;
+    uint8_t channel;
+    uint8_t data1;
+    uint8_t data2;
 } MidiEvent;
 
 typedef struct
@@ -36,7 +36,7 @@ typedef struct
     midi_event_listener midi_listener;
 } MidiEventContext;
 
-void midi_event_broadcast(double time, MidiType type, uint32_t channel, uint32_t data1, uint32_t data2)
+void midi_event_broadcast(double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2)
 {
     MidiEvent event = {
         .time = time,
