@@ -65,20 +65,21 @@ static int knob_init(__attribute__((unused)) int count, __attribute__((unused)) 
     return error_catch(error);
 }
 
-Func *knob_diff(int index, Func *min, Func *max, Func *slope, int exponential)
+Func *knob_diff(int index, int channel, Func *min, Func *max, Func *slope, int exponential)
 {
     KnobContext initial = (KnobContext){
         .parent = {.midi_listener = knob_listener},
         .index = index,
+        .channel = channel,
         .exponential = exponential,
     };
     return func_create(knob_init, knob_eval, midi_event_free, sizeof(KnobContext), &initial, FUNC_FLAG_SKIP_RESET, 3, min, max, slope);
 }
 
-Func *knob(int index, Func *min, Func *max) { return knob_diff(index, min, max, const_(1), 0); }
-Func *knob_(int index, double min, double max) { return knob(index, const_(min), const_(max)); }
+Func *knob(int index, int channel, Func *min, Func *max) { return knob_diff(index, channel, min, max, const_(1), 0); }
+Func *knob_(int index, int channel, double min, double max) { return knob(index, channel, const_(min), const_(max)); }
 
-Func *knob_exp(int index, Func *min, Func *max) { return knob_diff(index, min, max, const_(1), 1); }
-Func *knob_exp_(int index, double min, double max) { return knob_exp(index, const_(min), const_(max)); }
+Func *knob_exp(int index, int channel, Func *min, Func *max) { return knob_diff(index, channel, min, max, const_(1), 1); }
+Func *knob_exp_(int index, int channel, double min, double max) { return knob_exp(index, channel, const_(min), const_(max)); }
 
 #endif // CSYNTH_KNOB_H

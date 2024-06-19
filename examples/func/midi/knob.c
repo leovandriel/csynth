@@ -4,6 +4,6 @@
 
 int main()
 {
-    func tone = sine(knob_exp(70, C0, C9));
+    func tone = sine(knob_exp(70, 0, C0, C9));
     return play_midi(mul_(tone, .5));
 }
