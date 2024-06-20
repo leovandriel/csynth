@@ -21,6 +21,7 @@
 #include "./filter/limit.h"
 #include "./filter/lpf.h"
 #include "./filter/resonant.h"
+#include "./filter/slope.h"
 #include "./filter/truncate.h"
 #include "./gen/const.h"
 #include "./gen/crack.h"
