@@ -47,7 +47,7 @@ static int pad_init(__attribute__((unused)) int count, __attribute__((unused)) G
     return error_catch(error);
 }
 
-Func *pad(int pad, int channel, Func *func)
+Func *pad(int channel, int pad, Func *func)
 {
     PadContext initial = (PadContext){
         .parent = {.midi_listener = pad_listener},

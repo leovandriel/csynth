@@ -65,28 +65,20 @@ csError player_play_pause(PaStream *stream)
 
 csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig config)
 {
-    Sampler *sampler = sampler_create(count, channels, config.sample_rate);
-    if (sampler == NULL)
-    {
-        return error_type_message(csErrorInit, "Unable to create sampler");
-    }
     PaError pa_error = Pa_Initialize();
     if (pa_error != paNoError)
     {
-        sampler_free(sampler);
         return error_type_message(csErrorPortAudio, "Unable to initialize: %s", Pa_GetErrorText(pa_error), pa_error);
     }
     PaDeviceIndex device = Pa_GetDefaultOutputDevice();
     if (device == paNoDevice)
     {
-        sampler_free(sampler);
         Pa_Terminate();
         return error_type_message(csErrorInit, "No default audio device");
     }
     const PaDeviceInfo *device_info = Pa_GetDeviceInfo(device);
     if (device_info == NULL)
     {
-        sampler_free(sampler);
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to get device info");
     }
@@ -98,6 +90,18 @@ csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig
         .suggestedLatency = device_info->defaultLowOutputLatency,
         .hostApiSpecificStreamInfo = NULL,
     };
+    csError error = display_show();
+    if (error != csErrorNone)
+    {
+        Pa_Terminate();
+        return error;
+    }
+    Sampler *sampler = sampler_create(count, channels, config.sample_rate);
+    if (sampler == NULL)
+    {
+        Pa_Terminate();
+        return error_type_message(csErrorInit, "Unable to create sampler");
+    }
     PaStream *stream = NULL;
     pa_error = Pa_OpenStream(&stream, NULL, &params, config.sample_rate, paFramesPerBufferUnspecified, paNoFlag, player_callback, sampler);
     if (pa_error != paNoError)
@@ -123,23 +127,7 @@ csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to start stream: %s", Pa_GetErrorText(pa_error), pa_error);
     }
-    csError error = display_show();
-    if (error != csErrorNone)
-    {
-        sampler_free(sampler);
-        Pa_CloseStream(stream);
-        Pa_Terminate();
-        return error;
-    }
     config.loop(config.duration, config.exit_key);
-    error = display_hide();
-    if (error != csErrorNone)
-    {
-        sampler_free(sampler);
-        Pa_CloseStream(stream);
-        Pa_Terminate();
-        return error;
-    }
     pa_error = Pa_CloseStream(stream);
     if (pa_error != paNoError)
     {
@@ -148,6 +136,12 @@ csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig
         return error_type_message(csErrorPortAudio, "Unable to close stream: %s", Pa_GetErrorText(pa_error), pa_error);
     }
     sampler_free(sampler);
+    error = display_hide();
+    if (error != csErrorNone)
+    {
+        Pa_Terminate();
+        return error;
+    }
     pa_error = Pa_Terminate();
     if (pa_error != paNoError)
     {

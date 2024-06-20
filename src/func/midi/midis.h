@@ -15,7 +15,7 @@
 
 #define MIDI_NOTE_COUNT 100
 
-typedef Func *(*midi_control_func)(int key, int channel, Func *frequency);
+typedef Func *(*midi_control_func)(int channel, int key, Func *frequency);
 
 Func *midi_keyboard(int channel, midi_control_func control, gen_func generator, Func *frequency)
 {
@@ -27,7 +27,7 @@ Func *midi_keyboard(int channel, midi_control_func control, gen_func generator, 
     for (int i = 0; i < MIDI_NOTE_COUNT; i++)
     {
         Func *gen = generator(mul_(frequency, pow(2, i / 12.0)));
-        array[i] = control(i, channel, gen);
+        array[i] = control(channel, i, gen);
     }
     Func *func = add_array(MIDI_NOTE_COUNT, array);
     free_(array);

@@ -69,9 +69,9 @@ void event_clear()
 
 void event_broadcast(EventType type, void *event)
 {
-    for (EventListener *alloc = event_listener_list; alloc; alloc = alloc->next)
+    for (EventListener *handler = event_listener_list; handler; handler = handler->next)
     {
-        alloc->listener(type, event, alloc->context);
+        handler->listener(type, event, handler->context);
     }
 }
 

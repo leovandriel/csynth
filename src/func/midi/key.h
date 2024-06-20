@@ -48,7 +48,7 @@ static int key_init(__attribute__((unused)) int count, __attribute__((unused)) G
     return error_catch(error);
 }
 
-Func *key(int pitch, int channel, Func *func)
+Func *key(int channel, int pitch, Func *func)
 {
     KeyContext initial = (KeyContext){
         .parent = {.midi_listener = key_listener},

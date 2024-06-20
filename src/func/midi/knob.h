@@ -21,6 +21,8 @@ typedef struct
     double value;
     double target;
     int exponential;
+    double min;
+    double max;
 } KnobContext;
 
 static double knob_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
@@ -39,6 +41,8 @@ static double knob_eval(__attribute__((unused)) int count, __attribute__((unused
         diff = -slope;
     }
     context->value += diff;
+    context->min = min;
+    context->max = max;
     if (context->exponential)
     {
         return pow(max / min, context->value) * min;
@@ -64,7 +68,7 @@ static int knob_init(__attribute__((unused)) int count, __attribute__((unused)) 
     return error_catch(error);
 }
 
-Func *knob_diff(int control, int channel, Func *min, Func *max, Func *slope, int exponential)
+Func *knob_diff(int channel, int control, Func *min, Func *max, Func *slope, int exponential)
 {
     KnobContext initial = (KnobContext){
         .parent = {.midi_listener = knob_listener},
@@ -77,10 +81,10 @@ Func *knob_diff(int control, int channel, Func *min, Func *max, Func *slope, int
     return func_create(knob_init, knob_eval, midi_event_free, sizeof(KnobContext), &initial, FUNC_FLAG_SKIP_RESET, 3, min, max, slope);
 }
 
-Func *knob(int index, int channel, Func *min, Func *max) { return knob_diff(index, channel, min, max, const_(1), 0); }
-Func *knob_(int index, int channel, double min, double max) { return knob(index, channel, const_(min), const_(max)); }
+Func *knob(int channel, int index, Func *min, Func *max) { return knob_diff(channel, index, min, max, const_(1), 0); }
+Func *knob_(int channel, int index, double min, double max) { return knob(channel, index, const_(min), const_(max)); }
 
-Func *knob_exp(int index, int channel, Func *min, Func *max) { return knob_diff(index, channel, min, max, const_(1), 1); }
-Func *knob_exp_(int index, int channel, double min, double max) { return knob_exp(index, channel, const_(min), const_(max)); }
+Func *knob_exp(int channel, int index, Func *min, Func *max) { return knob_diff(channel, index, min, max, const_(1), 1); }
+Func *knob_exp_(int channel, int index, double min, double max) { return knob_exp(channel, index, const_(min), const_(max)); }
 
 #endif // CSYNTH_KNOB_H

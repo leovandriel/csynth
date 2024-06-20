@@ -69,6 +69,7 @@ void sampler_free(Sampler *sampler)
         gen_free(sampler->channels[index]);
     }
     free_(sampler->channels);
+    sampler->channels = NULL;
     free_(sampler);
 }
 

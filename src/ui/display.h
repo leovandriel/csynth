@@ -214,13 +214,13 @@ csError display_keyboard(int key, const char *label)
 
 csError display_keyboard_(int key) { return display_keyboard(key, NULL); }
 
-csError display_midi(int control, int channel, const char *label)
+csError display_midi(int channel, int control, const char *label)
 {
-    MidiKey key = {.control = control, .channel = channel - 1};
-    return display_element((DisplayElement){.key_type = StateEventKeyTypeKeyboard, .midi_key = key, .label = label});
+    MidiKey key = {.channel = channel - 1, .control = control};
+    return display_element((DisplayElement){.key_type = StateEventKeyTypeMidi, .midi_key = key, .label = label});
 }
 
-csError display_midi_(int pitch, int channel) { return display_midi(pitch, channel, NULL); }
+csError display_midi_(int channel, int pitch) { return display_midi(pitch, channel, NULL); }
 
 csError display_row(const char *keys)
 {
