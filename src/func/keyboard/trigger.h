@@ -28,7 +28,7 @@ static double trigger_eval(__attribute__((unused)) int count, __attribute__((unu
     return context->on ? gen_eval(args[0]) : 0;
 }
 
-static void trigger_listener(int key, void *context_)
+static void trigger_handle_event(int key, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
     if (key == context->key)
@@ -50,7 +50,7 @@ static int trigger_init(__attribute__((unused)) int count, __attribute__((unused
 Func *trigger(int key, Func *func)
 {
     TriggerContext initial = (TriggerContext){
-        .parent = {.keyboard_listener = trigger_listener},
+        .parent = {.handle_event = trigger_handle_event},
         .key = key,
     };
     return func_create(trigger_init, trigger_eval, keyboard_event_free, sizeof(TriggerContext), &initial, FUNC_FLAG_DEFAULT, 1, func);

@@ -30,7 +30,7 @@ static double pad_eval(__attribute__((unused)) int count, __attribute__((unused)
     return gen_eval(args[0]) * context->value;
 }
 
-static void pad_listener(__attribute__((unused)) double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
+static void pad_handle_event(__attribute__((unused)) double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
 {
     PadContext *context = (PadContext *)context_;
     if (type == MidiTypeNoteOn && channel == context->key.channel && data1 == context->key.control)
@@ -50,7 +50,7 @@ static int pad_init(__attribute__((unused)) int count, __attribute__((unused)) G
 Func *pad(int channel, int pad, Func *func)
 {
     PadContext initial = (PadContext){
-        .parent = {.midi_listener = pad_listener},
+        .parent = {.handle_event = pad_handle_event},
         .key = (MidiKey){
             .channel = channel - 1,
             .control = pad,

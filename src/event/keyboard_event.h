@@ -7,7 +7,7 @@
 #include "../core/gen.h"
 #include "./event.h"
 
-typedef void (*keyboard_event_listener)(int key, void *context);
+typedef void (*keyboard_handle_event)(int key, void *context);
 
 #define KEYBOARD_EVENT_UP 1792833
 #define KEYBOARD_EVENT_DOWN 1792834
@@ -20,8 +20,8 @@ typedef struct
 
 typedef struct
 {
-    void *handle;
-    keyboard_event_listener keyboard_listener;
+    void *handler;
+    keyboard_handle_event handle_event;
 } KeyboardEventContext;
 
 void keyboard_event_broadcast(double time, int key)
@@ -30,35 +30,35 @@ void keyboard_event_broadcast(double time, int key)
     event_broadcast(EventTypeKeyboard, &event);
 }
 
-void keyboard_event_listen(EventType type, void *event_, void *context_)
+void keyboard_handle_event_(EventType type, void *event_, void *context_)
 {
     KeyboardEventContext *context = (KeyboardEventContext *)context_;
     if (type == EventTypeKeyboard)
     {
         KeyboardEvent *event = (KeyboardEvent *)event_;
-        context->keyboard_listener(event->key, context);
+        context->handle_event(event->key, context);
     }
 }
 
 csError keyboard_event_add(KeyboardEventContext *context)
 {
-    void *handle = event_add_listener(keyboard_event_listen, context);
-    if (handle == NULL)
+    void *handler = event_add_handler(keyboard_handle_event_, context);
+    if (handler == NULL)
     {
-        return error_type_message(csErrorInit, "Unable to add keyboard event listener");
+        return error_type_message(csErrorInit, "Unable to add keyboard event handler");
     }
-    context->handle = handle;
+    context->handler = handler;
     return csErrorNone;
 }
 
 csError keyboard_event_remove(KeyboardEventContext *context)
 {
-    csError error = event_remove_listener(context->handle);
+    csError error = event_remove_handler(context->handler);
     if (error != csErrorNone)
     {
         return error;
     }
-    context->handle = NULL;
+    context->handler = NULL;
     return csErrorNone;
 }
 

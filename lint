@@ -9,7 +9,7 @@ if [[ "$bad_allocs" ]]; then
     exit 1
 fi
 
-find . -name "*.c" -type f  --exclude "./tests/.test.c" -print0 | while read -d $'\0' file; do
+find . -name "*.c" -type f  -not -path "./tests/.test.c" -print0 | while read -d $'\0' file; do
     filename=$(basename "$file")
     name="${filename%.*}"
     found=$(grep "bin/$name" "$file" | tee)

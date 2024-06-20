@@ -165,7 +165,7 @@ void display_render(DisplayElement *list)
     }
 }
 
-void display_listener(StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value, __attribute__((unused)) void *context)
+void display_handle_event(StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value, __attribute__((unused)) void *context)
 {
     display_set_value(display_element_list, key_type, key, value_type, value);
     display_render(display_element_list);
@@ -173,7 +173,7 @@ void display_listener(StateEventKeyType key_type, void *key, StateEventValueType
 
 csError display_show()
 {
-    display_event_context.state_listener = display_listener;
+    display_event_context.handle_event = display_handle_event;
     csError error = state_event_add(&display_event_context);
     if (error != csErrorNone)
     {
@@ -220,7 +220,7 @@ csError display_midi(int channel, int control, const char *label)
     return display_element((DisplayElement){.key_type = StateEventKeyTypeMidi, .midi_key = key, .label = label});
 }
 
-csError display_midi_(int channel, int pitch) { return display_midi(pitch, channel, NULL); }
+csError display_midi_(int channel, int pitch) { return display_midi(channel, pitch, NULL); }
 
 csError display_row(const char *keys)
 {

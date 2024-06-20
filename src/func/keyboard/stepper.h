@@ -31,7 +31,7 @@ static double stepper_eval(__attribute__((unused)) int count, __attribute__((unu
     return context->value;
 }
 
-static void stepper_listener(int key, void *context_)
+static void stepper_handle_event(int key, void *context_)
 {
     StepperContext *context = (StepperContext *)context_;
     if (key == context->key && !context->active)
@@ -89,7 +89,7 @@ static int stepper_init(__attribute__((unused)) int count, __attribute__((unused
 Func *stepper_range(int key, double value, double step, double min, double max, int rel)
 {
     StepperContext initial = (StepperContext){
-        .parent = {.keyboard_listener = stepper_listener},
+        .parent = {.handle_event = stepper_handle_event},
         .key = key,
         .value = value,
         .step = step,

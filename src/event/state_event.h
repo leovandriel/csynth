@@ -25,7 +25,7 @@ typedef enum
     StateEventKeyTypeMidi = 2,
 } StateEventKeyType;
 
-typedef void (*state_event_listener)(StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value, void *context);
+typedef void (*state_handle_event)(StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value, void *context);
 
 typedef struct
 {
@@ -37,8 +37,8 @@ typedef struct
 
 typedef struct
 {
-    void *handle;
-    state_event_listener state_listener;
+    void *handler;
+    state_handle_event handle_event;
 } StateEventContext;
 
 void state_event_broadcast(StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value)
@@ -47,35 +47,35 @@ void state_event_broadcast(StateEventKeyType key_type, void *key, StateEventValu
     event_broadcast(EventTypeState, &event);
 }
 
-void state_event_listen(EventType type, void *event_, void *context_)
+void state_handle_event_(EventType type, void *event_, void *context_)
 {
     StateEventContext *context = (StateEventContext *)context_;
     if (type == EventTypeState)
     {
         StateEvent *event = (StateEvent *)event_;
-        context->state_listener(event->key_type, event->key, event->value_type, event->value, context);
+        context->handle_event(event->key_type, event->key, event->value_type, event->value, context);
     }
 }
 
 csError state_event_add(StateEventContext *context)
 {
-    void *handle = event_add_listener(state_event_listen, context);
-    if (handle == NULL)
+    void *handler = event_add_handler(state_handle_event_, context);
+    if (handler == NULL)
     {
-        return error_type_message(csErrorInit, "Unable to add state event listener");
+        return error_type_message(csErrorInit, "Unable to add state event handler");
     }
-    context->handle = handle;
+    context->handler = handler;
     return csErrorNone;
 }
 
 csError state_event_remove(StateEventContext *context)
 {
-    csError error = event_remove_listener(context->handle);
+    csError error = event_remove_handler(context->handler);
     if (error != csErrorNone)
     {
         return error;
     }
-    context->handle = NULL;
+    context->handler = NULL;
     return csErrorNone;
 }
 

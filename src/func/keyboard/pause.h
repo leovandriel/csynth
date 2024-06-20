@@ -29,7 +29,7 @@ static double pause_eval(__attribute__((unused)) int count, __attribute__((unuse
     return context->paused ? 0 : gen_eval(args[0]);
 }
 
-static void pause_listener(int key, void *context_)
+static void pause_handle_event(int key, void *context_)
 {
     PauseContext *context = (PauseContext *)context_;
     if (key == context->key)
@@ -51,7 +51,7 @@ static int pause_init(__attribute__((unused)) int count, __attribute__((unused))
 Func *pause_play_(int key, Func *func, int play_reset, int paused)
 {
     PauseContext initial = (PauseContext){
-        .parent = {.keyboard_listener = pause_listener},
+        .parent = {.handle_event = pause_handle_event},
         .key = key,
         .play_reset = play_reset,
         .paused = paused,

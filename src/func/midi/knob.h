@@ -50,7 +50,7 @@ static double knob_eval(__attribute__((unused)) int count, __attribute__((unused
     return (max - min) * context->value + min;
 }
 
-static void knob_listener(__attribute__((unused)) double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
+static void knob_handle_event(__attribute__((unused)) double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
     if (type == MidiTypeControlChange && channel == context->key.channel && data1 == context->key.control)
@@ -71,7 +71,7 @@ static int knob_init(__attribute__((unused)) int count, __attribute__((unused)) 
 Func *knob_diff(int channel, int control, Func *min, Func *max, Func *slope, int exponential)
 {
     KnobContext initial = (KnobContext){
-        .parent = {.midi_listener = knob_listener},
+        .parent = {.handle_event = knob_handle_event},
         .key = (MidiKey){
             .channel = channel - 1,
             .control = control,

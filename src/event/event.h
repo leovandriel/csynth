@@ -1,5 +1,5 @@
 //
-// event.h - Manage event listeners
+// event.h - Manage event handlers
 //
 #ifndef CSYNTH_EVENT_H
 #define CSYNTH_EVENT_H
@@ -18,60 +18,60 @@ typedef enum
     EventTypeMidi = 3,
 } EventType;
 
-typedef void (*event_listener)(EventType type, void *event, void *context);
+typedef void (*event_handle_event)(EventType type, void *event, void *context);
 
-typedef struct EventListener
+typedef struct EventHandler
 {
-    event_listener listener;
+    event_handle_event handle_event;
     void *context;
-    struct EventListener *next;
-} EventListener;
+    struct EventHandler *next;
+} EventHandler;
 
-EventListener *event_listener_list = NULL;
+EventHandler *event_handler_list = NULL;
 
-void *event_add_listener(event_listener listener, void *context)
+void *event_add_handler(event_handle_event handle_event, void *context)
 {
-    EventListener *handle = (EventListener *)malloc_(sizeof(EventListener));
-    if (handle == NULL)
+    EventHandler *handler = (EventHandler *)malloc_(sizeof(EventHandler));
+    if (handler == NULL)
     {
         return error_null(csErrorMemoryAlloc);
     }
-    *handle = (EventListener){.listener = listener, .context = context, .next = event_listener_list};
-    event_listener_list = handle;
-    return handle;
+    *handler = (EventHandler){.handle_event = handle_event, .context = context, .next = event_handler_list};
+    event_handler_list = handler;
+    return handler;
 }
 
-csError event_remove_listener(void *handle)
+csError event_remove_handler(void *handler_)
 {
-    EventListener **prev = &event_listener_list;
-    for (EventListener *listener = event_listener_list; listener; listener = listener->next)
+    EventHandler **prev = &event_handler_list;
+    for (EventHandler *handler = event_handler_list; handler; handler = handler->next)
     {
-        if (listener == handle)
+        if (handler == handler_)
         {
-            *prev = listener->next;
-            free_(listener);
+            *prev = handler->next;
+            free_(handler);
             return csErrorNone;
         }
-        prev = &listener->next;
+        prev = &handler->next;
     }
-    return error_type_message(csErrorNotFound, "Event listener not found");
+    return error_type_message(csErrorNotFound, "Event handler not found");
 }
 
 void event_clear()
 {
-    while (event_listener_list)
+    while (event_handler_list)
     {
-        EventListener *next = event_listener_list->next;
-        free_(event_listener_list);
-        event_listener_list = next;
+        EventHandler *next = event_handler_list->next;
+        free_(event_handler_list);
+        event_handler_list = next;
     }
 }
 
 void event_broadcast(EventType type, void *event)
 {
-    for (EventListener *handler = event_listener_list; handler; handler = handler->next)
+    for (EventHandler *handler = event_handler_list; handler; handler = handler->next)
     {
-        handler->listener(type, event, handler->context);
+        handler->handle_event(type, event, handler->context);
     }
 }
 

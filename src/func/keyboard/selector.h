@@ -23,7 +23,7 @@ static double selector_eval(__attribute__((unused)) int count, __attribute__((un
     return gen_eval(args[context->selected]);
 }
 
-static void selector_listener(int key, void *context_)
+static void selector_handle_event(int key, void *context_)
 {
     SelectorContext *context = (SelectorContext *)context_;
     if (key == context->key)
@@ -46,7 +46,7 @@ Func *selector_args(int key, int count, ...)
     va_list valist = {0};
     va_start(valist, count);
     SelectorContext initial = (SelectorContext){
-        .parent = {.keyboard_listener = selector_listener},
+        .parent = {.handle_event = selector_handle_event},
         .key = key,
         .count = count,
     };
@@ -60,7 +60,7 @@ Func *selector_args(int key, int count, ...)
 Func *selector_array(int key, int count, Func **args)
 {
     SelectorContext initial = (SelectorContext){
-        .parent = {.keyboard_listener = selector_listener},
+        .parent = {.handle_event = selector_handle_event},
         .key = key,
         .count = count,
     };

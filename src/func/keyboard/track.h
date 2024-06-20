@@ -14,7 +14,7 @@ typedef struct
 {
     KeyList list;
     const char *filename;
-    void *handle;
+    void *handler;
 } TrackContext;
 
 static double track_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context_)
@@ -23,7 +23,7 @@ static double track_eval(__attribute__((unused)) int count, Gen **args, __attrib
     return gen_eval(args[0]);
 }
 
-static void track_listen(EventType type, void *event_, void *context_)
+static void track_handle_event(EventType type, void *event_, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
     if (type == EventTypeKeyboard)
@@ -41,12 +41,12 @@ static void track_listen(EventType type, void *event_, void *context_)
 static int track_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
-    void *handle = event_add_listener(track_listen, context);
-    if (handle == NULL)
+    void *handler = event_add_handler(track_handle_event, context);
+    if (handler == NULL)
     {
-        return error_catch_message(csErrorInit, "Unable to add track listener");
+        return error_catch_message(csErrorInit, "Unable to add track handler");
     }
-    context->handle = handle;
+    context->handler = handler;
     context->list = NULL;
     return 0;
 }
@@ -54,7 +54,7 @@ static int track_init(__attribute__((unused)) int count, __attribute__((unused))
 static void track_free(__attribute__((unused)) int count, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
-    csError error = event_remove_listener(context->handle);
+    csError error = event_remove_handler(context->handler);
     error_catch(error);
     error = key_list_write_filename(&context->list, context->filename);
     error_catch(error);

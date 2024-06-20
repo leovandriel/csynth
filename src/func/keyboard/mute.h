@@ -23,7 +23,7 @@ static double mute_eval(__attribute__((unused)) int count, __attribute__((unused
     return context->muted ? 0 : output;
 }
 
-static void mute_listener(int key, void *context_)
+static void mute_handle_event(int key, void *context_)
 {
     MuteContext *context = (MuteContext *)context_;
     if (key == context->key)
@@ -44,7 +44,7 @@ static int mute_init(__attribute__((unused)) int count, __attribute__((unused)) 
 Func *mute_(int key, Func *func, int muted)
 {
     MuteContext initial = (MuteContext){
-        .parent = {.keyboard_listener = mute_listener},
+        .parent = {.handle_event = mute_handle_event},
         .key = key,
         .muted = muted,
     };

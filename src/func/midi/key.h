@@ -31,7 +31,7 @@ static double key_eval(__attribute__((unused)) int count, __attribute__((unused)
     return 0.;
 }
 
-static void key_listener(__attribute__((unused)) double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
+static void key_handle_event(__attribute__((unused)) double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
 {
     KeyContext *context = (KeyContext *)context_;
     if ((type == MidiTypeNoteOff || type == MidiTypeNoteOn) && channel == context->key.channel && data1 == context->key.control)
@@ -51,7 +51,7 @@ static int key_init(__attribute__((unused)) int count, __attribute__((unused)) G
 Func *key(int channel, int pitch, Func *func)
 {
     KeyContext initial = (KeyContext){
-        .parent = {.midi_listener = key_listener},
+        .parent = {.handle_event = key_handle_event},
         .key = (MidiKey){
             .channel = channel - 1,
             .control = pitch,

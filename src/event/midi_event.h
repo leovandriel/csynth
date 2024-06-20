@@ -19,7 +19,7 @@ typedef enum
     MidiTypeSystem = 0xF,
 } MidiType;
 
-typedef void (*midi_event_listener)(double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context);
+typedef void (*midi_handle_event)(double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context);
 
 typedef struct
 {
@@ -38,8 +38,8 @@ typedef struct
 
 typedef struct
 {
-    void *handle;
-    midi_event_listener midi_listener;
+    void *handler;
+    midi_handle_event handle_event;
 } MidiEventContext;
 
 void midi_event_broadcast(double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2)
@@ -54,35 +54,35 @@ void midi_event_broadcast(double time, MidiType type, uint8_t channel, uint8_t d
     event_broadcast(EventTypeMidi, &event);
 }
 
-void midi_event_listen(EventType type, void *event_, void *context_)
+void midi_handle_event_(EventType type, void *event_, void *context_)
 {
     MidiEventContext *context = (MidiEventContext *)context_;
     if (type == EventTypeMidi)
     {
         MidiEvent *event = (MidiEvent *)event_;
-        context->midi_listener(event->time, event->type, event->channel, event->data1, event->data2, context);
+        context->handle_event(event->time, event->type, event->channel, event->data1, event->data2, context);
     }
 }
 
 csError midi_event_add(MidiEventContext *context)
 {
-    void *handle = event_add_listener(midi_event_listen, context);
-    if (handle == NULL)
+    void *handler = event_add_handler(midi_handle_event_, context);
+    if (handler == NULL)
     {
-        return error_type_message(csErrorInit, "Unable to add MIDI event listener");
+        return error_type_message(csErrorInit, "Unable to add MIDI event handler");
     }
-    context->handle = handle;
+    context->handler = handler;
     return csErrorNone;
 }
 
 csError midi_event_remove(MidiEventContext *context)
 {
-    csError error = event_remove_listener(context->handle);
+    csError error = event_remove_handler(context->handler);
     if (error != csErrorNone)
     {
         return error;
     }
-    context->handle = NULL;
+    context->handler = NULL;
     return csErrorNone;
 }
 
