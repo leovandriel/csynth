@@ -11,8 +11,7 @@
 typedef struct
 {
     MidiEventContext parent;
-    uint8_t pitch;
-    uint8_t channel;
+    MidiKey key;
     int active;
     int reset;
 } KeyContext;
@@ -35,7 +34,7 @@ static double key_eval(__attribute__((unused)) int count, __attribute__((unused)
 static void key_listener(__attribute__((unused)) double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
 {
     KeyContext *context = (KeyContext *)context_;
-    if ((type == MidiTypeNoteOff || type == MidiTypeNoteOn) && channel == context->channel && data1 == context->pitch)
+    if ((type == MidiTypeNoteOff || type == MidiTypeNoteOn) && channel == context->key.channel && data1 == context->key.control)
     {
         context->active = (int)data2;
         context->reset = data2 ? 1 : 0;
@@ -53,8 +52,10 @@ Func *key(int pitch, int channel, Func *func)
 {
     KeyContext initial = (KeyContext){
         .parent = {.midi_listener = key_listener},
-        .pitch = pitch,
-        .channel = channel - 1,
+        .key = (MidiKey){
+            .channel = channel - 1,
+            .control = pitch,
+        },
     };
     return func_create(key_init, key_eval, midi_event_free, sizeof(KeyContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
 }

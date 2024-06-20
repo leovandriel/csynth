@@ -35,14 +35,14 @@ static void trigger_listener(int key, void *context_)
     {
         context->on = 1;
         context->reset = 1;
-        state_event_broadcast(context->key, StateEventTypeTrigger, &context->on);
+        state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeTrigger, &context->on);
     }
 }
 
 static int trigger_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
-    state_event_broadcast(context->key, StateEventTypeTrigger, &context->on);
+    state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeTrigger, &context->on);
     csError error = keyboard_event_add(&context->parent);
     return error_catch(error);
 }

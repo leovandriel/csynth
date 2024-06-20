@@ -37,7 +37,7 @@ static void stepper_listener(int key, void *context_)
     if (key == context->key && !context->active)
     {
         context->active = 1;
-        state_event_broadcast(context->key, StateEventTypeSelected, &context->active);
+        state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeSelected, &context->active);
     }
     else if (context->active && key == KEYBOARD_EVENT_UP)
     {
@@ -53,7 +53,7 @@ static void stepper_listener(int key, void *context_)
         {
             context->value = context->max;
         }
-        state_event_broadcast(context->key, StateEventTypeDouble, &context->value);
+        state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeDouble, &context->value);
     }
     else if (context->active && key == KEYBOARD_EVENT_DOWN)
     {
@@ -69,19 +69,19 @@ static void stepper_listener(int key, void *context_)
         {
             context->value = context->min;
         }
-        state_event_broadcast(context->key, StateEventTypeDouble, &context->value);
+        state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeDouble, &context->value);
     }
     else
     {
         context->active = 0;
-        state_event_broadcast(context->key, StateEventTypeSelected, &context->active);
+        state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeSelected, &context->active);
     }
 }
 
 static int stepper_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     StepperContext *context = (StepperContext *)context_;
-    state_event_broadcast(context->key, StateEventTypeDouble, &context->value);
+    state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeDouble, &context->value);
     csError error = keyboard_event_add(&context->parent);
     return error_catch(error);
 }

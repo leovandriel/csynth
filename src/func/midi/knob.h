@@ -17,8 +17,7 @@
 typedef struct
 {
     MidiEventContext parent;
-    uint8_t control;
-    uint8_t channel;
+    MidiKey key;
     double value;
     double target;
     int exponential;
@@ -50,17 +49,17 @@ static double knob_eval(__attribute__((unused)) int count, __attribute__((unused
 static void knob_listener(__attribute__((unused)) double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
-    if (type == MidiTypeControlChange && channel == context->channel && data1 == context->control)
+    if (type == MidiTypeControlChange && channel == context->key.channel && data1 == context->key.control)
     {
         context->target = (double)data2 / 127.0;
-        state_event_broadcast((int)context->control, StateEventTypeDouble, &context->target);
+        state_event_broadcast(StateEventKeyTypeMidi, &context->key, StateEventValueTypeDouble, &context->target);
     }
 }
 
 static int knob_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
-    state_event_broadcast((int)context->control, StateEventTypeDouble, &context->target);
+    state_event_broadcast(StateEventKeyTypeMidi, &context->key, StateEventValueTypeDouble, &context->target);
     csError error = midi_event_add(&context->parent);
     return error_catch(error);
 }
@@ -69,8 +68,10 @@ Func *knob_diff(int control, int channel, Func *min, Func *max, Func *slope, int
 {
     KnobContext initial = (KnobContext){
         .parent = {.midi_listener = knob_listener},
-        .control = control,
-        .channel = channel - 1,
+        .key = (MidiKey){
+            .channel = channel - 1,
+            .control = control,
+        },
         .exponential = exponential,
     };
     return func_create(knob_init, knob_eval, midi_event_free, sizeof(KnobContext), &initial, FUNC_FLAG_SKIP_RESET, 3, min, max, slope);

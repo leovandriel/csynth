@@ -14,8 +14,7 @@
 typedef struct
 {
     MidiEventContext parent;
-    uint8_t pad;
-    uint8_t channel;
+    MidiKey key;
     double value;
     int reset;
 } PadContext;
@@ -34,7 +33,7 @@ static double pad_eval(__attribute__((unused)) int count, __attribute__((unused)
 static void pad_listener(__attribute__((unused)) double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
 {
     PadContext *context = (PadContext *)context_;
-    if (type == MidiTypeNoteOn && channel == context->channel && data1 == context->pad)
+    if (type == MidiTypeNoteOn && channel == context->key.channel && data1 == context->key.control)
     {
         context->value = (double)data2 / 127.0;
         context->reset = 1;
@@ -52,8 +51,10 @@ Func *pad(int pad, int channel, Func *func)
 {
     PadContext initial = (PadContext){
         .parent = {.midi_listener = pad_listener},
-        .pad = pad,
-        .channel = channel - 1,
+        .key = (MidiKey){
+            .channel = channel - 1,
+            .control = pad,
+        },
     };
     return func_create(pad_init, pad_eval, midi_event_free, sizeof(PadContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
 }

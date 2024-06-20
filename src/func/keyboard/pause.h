@@ -36,14 +36,14 @@ static void pause_listener(int key, void *context_)
     {
         context->paused = !context->paused;
         context->reset = context->play_reset;
-        state_event_broadcast(context->key, StateEventTypeBool, &context->paused);
+        state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeBool, &context->paused);
     }
 }
 
 static int pause_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     PauseContext *context = (PauseContext *)context_;
-    state_event_broadcast(context->key, StateEventTypeBool, &context->paused);
+    state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeBool, &context->paused);
     csError error = keyboard_event_add(&context->parent);
     return error_catch(error);
 }

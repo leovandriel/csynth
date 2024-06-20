@@ -29,14 +29,14 @@ static void selector_listener(int key, void *context_)
     if (key == context->key)
     {
         context->selected = (context->selected + 1) % context->count;
-        state_event_broadcast(context->key, StateEventTypeInt, &context->selected);
+        state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeInt, &context->selected);
     }
 }
 
 static int selector_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     SelectorContext *context = (SelectorContext *)context_;
-    state_event_broadcast(context->key, StateEventTypeInt, &context->selected);
+    state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeInt, &context->selected);
     csError error = keyboard_event_add(&context->parent);
     return error_catch(error);
 }

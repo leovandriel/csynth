@@ -4,61 +4,43 @@
 #ifndef CSYNTH_DISPLAY_H
 #define CSYNTH_DISPLAY_H
 
+#include "../event/midi_event.h"
 #include "../event/state_event.h"
 #include "../util/error.h"
 
 typedef struct DisplayElement
 {
-    int key;
-    const char *label;
-    StateEventType type;
+    StateEventKeyType key_type;
     union
     {
         struct
         {
-            int i;
+            int keyboard_key;
         };
         struct
         {
-            double d;
+            MidiKey midi_key;
         };
     };
+    StateEventValueType value_type;
+    union
+    {
+        struct
+        {
+            int int_value;
+        };
+        struct
+        {
+            double double_value;
+        };
+    };
+    const char *label;
     int selected;
     struct DisplayElement *next;
 } DisplayElement;
 
 DisplayElement *display_element_list = NULL;
 StateEventContext display_event_context = {0};
-
-csError display(int key, const char *label)
-{
-    DisplayElement *element = malloc_(sizeof(DisplayElement));
-    if (element == NULL)
-    {
-        return error_type(csErrorMemoryAlloc);
-    }
-    *element = (DisplayElement){.key = key, .label = label, .next = display_element_list};
-    display_element_list = element;
-    return csErrorNone;
-}
-
-csError display_(int key)
-{
-    return display(key, NULL);
-}
-
-csError display_all(const char *keys)
-{
-    for (size_t i = 0; i < strlen(keys); i++)
-    {
-        csError error = display_(keys[i]);
-        if (error != csErrorNone)
-        {
-            return error;
-        }
-    }
-    return csErrorNone;
-}
 
 void display_clear()
 {
@@ -70,28 +52,48 @@ void display_clear()
     }
 }
 
-void display_set_value(DisplayElement *list, int key, StateEventType type, void *value)
+void display_set_value(DisplayElement *list, StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value)
 {
     for (DisplayElement *element = list; element != NULL; element = element->next)
     {
-        if (element->key == key)
+        if (element->key_type == key_type)
         {
-            switch (type)
+            switch (key_type)
             {
-            case StateEventTypeNone:
+            case StateEventKeyTypeNone:
+                continue;
+            case StateEventKeyTypeKeyboard:
+                if (element->keyboard_key != *(int *)key)
+                {
+                    continue;
+                }
                 break;
-            case StateEventTypeBool:
-            case StateEventTypeBoolInv:
-            case StateEventTypeTrigger:
-            case StateEventTypeInt:
-                element->type = type;
-                element->i = value ? *(int *)value : 0;
+            case StateEventKeyTypeMidi:
+            {
+                MidiKey midi_key = *(MidiKey *)key;
+                if (element->midi_key.control != midi_key.control || element->midi_key.channel != midi_key.channel)
+                {
+                    continue;
+                }
                 break;
-            case StateEventTypeDouble:
-                element->type = type;
-                element->d = value ? *(double *)value : 0.;
+            }
+            }
+            switch (value_type)
+            {
+            case StateEventValueTypeNone:
                 break;
-            case StateEventTypeSelected:
+            case StateEventValueTypeBool:
+            case StateEventValueTypeBoolInv:
+            case StateEventValueTypeTrigger:
+            case StateEventValueTypeInt:
+                element->value_type = value_type;
+                element->int_value = value ? *(int *)value : 0;
+                break;
+            case StateEventValueTypeDouble:
+                element->value_type = value_type;
+                element->double_value = value ? *(double *)value : 0.;
+                break;
+            case StateEventValueTypeSelected:
                 element->selected = value ? *(int *)value : 0;
                 break;
             }
@@ -107,32 +109,42 @@ void display_render_label(DisplayElement *element)
     }
     else
     {
-        fprintf(stdout, element->selected ? "{%c} " : " %c: ", element->key);
+        switch (element->key_type)
+        {
+        case StateEventKeyTypeNone:
+            break;
+        case StateEventKeyTypeKeyboard:
+            fprintf(stdout, element->selected ? "{%c}" : " %c ", element->keyboard_key);
+            break;
+        case StateEventKeyTypeMidi:
+            fprintf(stdout, element->selected ? "{%d:%d}" : " %d:%d ", element->midi_key.channel, element->midi_key.control);
+            break;
+        }
     }
 }
 
 void display_render_element(DisplayElement *element)
 {
     display_render_label(element);
-    switch (element->type)
+    switch (element->value_type)
     {
-    case StateEventTypeNone:
-    case StateEventTypeSelected:
+    case StateEventValueTypeNone:
+    case StateEventValueTypeSelected:
         break;
-    case StateEventTypeBool:
-        fprintf(stdout, "[%s] ", element->i ? "x" : " ");
+    case StateEventValueTypeBool:
+        fprintf(stdout, "[%s] ", element->int_value ? "x" : " ");
         break;
-    case StateEventTypeBoolInv:
-        fprintf(stdout, "[%s] ", element->i ? " " : "x");
+    case StateEventValueTypeBoolInv:
+        fprintf(stdout, "[%s] ", element->int_value ? " " : "x");
         break;
-    case StateEventTypeTrigger:
-        fprintf(stdout, "[%s] ", element->i ? "!" : "?");
+    case StateEventValueTypeTrigger:
+        fprintf(stdout, "[%s] ", element->int_value ? "!" : "?");
         break;
-    case StateEventTypeInt:
-        fprintf(stdout, "[%d] ", element->i);
+    case StateEventValueTypeInt:
+        fprintf(stdout, "[%d] ", element->int_value);
         break;
-    case StateEventTypeDouble:
-        fprintf(stdout, "[%.2f] ", element->d);
+    case StateEventValueTypeDouble:
+        fprintf(stdout, "[%.2f] ", element->double_value);
         break;
     }
 }
@@ -153,9 +165,9 @@ void display_render(DisplayElement *list)
     }
 }
 
-void display_listener(int key, StateEventType type, void *value, __attribute__((unused)) void *context)
+void display_listener(StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value, __attribute__((unused)) void *context)
 {
-    display_set_value(display_element_list, key, type, value);
+    display_set_value(display_element_list, key_type, key, value_type, value);
     display_render(display_element_list);
 }
 
@@ -179,6 +191,47 @@ csError display_hide()
         return error;
     }
     fprintf(stdout, "\r\e[K");
+    return csErrorNone;
+}
+
+csError display_element(DisplayElement element_)
+{
+    DisplayElement *element = malloc_(sizeof(DisplayElement));
+    if (element == NULL)
+    {
+        return error_type(csErrorMemoryAlloc);
+    }
+    *element = element_;
+    element->next = display_element_list;
+    display_element_list = element;
+    return csErrorNone;
+}
+
+csError display_keyboard(int key, const char *label)
+{
+    return display_element((DisplayElement){.key_type = StateEventKeyTypeKeyboard, .keyboard_key = key, .label = label});
+}
+
+csError display_keyboard_(int key) { return display_keyboard(key, NULL); }
+
+csError display_midi(int control, int channel, const char *label)
+{
+    MidiKey key = {.control = control, .channel = channel - 1};
+    return display_element((DisplayElement){.key_type = StateEventKeyTypeKeyboard, .midi_key = key, .label = label});
+}
+
+csError display_midi_(int pitch, int channel) { return display_midi(pitch, channel, NULL); }
+
+csError display_row(const char *keys)
+{
+    for (size_t i = 0; i < strlen(keys); i++)
+    {
+        csError error = display_keyboard_(keys[i]);
+        if (error != csErrorNone)
+        {
+            return error;
+        }
+    }
     return csErrorNone;
 }
 

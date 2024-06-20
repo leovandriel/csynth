@@ -32,6 +32,12 @@ typedef struct
 
 typedef struct
 {
+    uint8_t channel;
+    uint8_t control;
+} MidiKey;
+
+typedef struct
+{
     void *handle;
     midi_event_listener midi_listener;
 } MidiEventContext;

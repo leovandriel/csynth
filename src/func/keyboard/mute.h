@@ -29,14 +29,14 @@ static void mute_listener(int key, void *context_)
     if (key == context->key)
     {
         context->muted = !context->muted;
-        state_event_broadcast(context->key, StateEventTypeBoolInv, &context->muted);
+        state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeBoolInv, &context->muted);
     }
 }
 
 static int mute_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
 {
     MuteContext *context = (MuteContext *)context_;
-    state_event_broadcast(context->key, StateEventTypeBoolInv, &context->muted);
+    state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeBoolInv, &context->muted);
     csError error = keyboard_event_add(&context->parent);
     return error_catch(error);
 }

@@ -4,7 +4,7 @@
 
 func meow(func factor)
 {
-    return wav_filename("examples/demo/meow.wav", 0, factor);
+    return wav_filename("examples/meow.wav", 0, factor);
 }
 
 int main()
