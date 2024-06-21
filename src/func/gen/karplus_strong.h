@@ -16,17 +16,17 @@
 typedef struct
 {
     Buffer buffer;
-    unsigned long index;
+    size_t index;
 } KarplusStrongContext;
 
 static double karplus_strong_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
 {
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
     double frequency = gen_eval(args[0]);
-    unsigned long size = (unsigned long)(1.0 / (delta * frequency) + 0.5);
+    size_t size = (size_t)(1.0 / (delta * frequency) + 0.5);
     double decay = pow(gen_eval(args[1]), 1 / (double)size);
     context->index = buffer_resize(&context->buffer, size, context->index, fill_rand_1_1);
-    unsigned long next = (context->index + 1) % size;
+    size_t next = (context->index + 1) % size;
     double *buffer = context->buffer.samples;
     buffer[context->index] = 0.5 * (buffer[context->index] + buffer[next]) * decay;
     double output = buffer[context->index];

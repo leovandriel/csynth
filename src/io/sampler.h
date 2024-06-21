@@ -49,9 +49,9 @@ Sampler *sampler_create(int count, Func **roots, int sample_rate)
     return sampler;
 }
 
-void sampler_sample(Sampler *sampler, unsigned long count, sample_t *buffer)
+void sampler_sample(Sampler *sampler, size_t count, sample_t *buffer)
 {
-    for (unsigned long frame = 0; frame < count; frame++)
+    for (size_t frame = 0; frame < count; frame++)
     {
         for (int index = 0; index < sampler->count; index++)
         {

@@ -14,11 +14,11 @@
 typedef struct
 {
     double *samples;
-    unsigned long size;
-    unsigned long capacity;
+    size_t size;
+    size_t capacity;
 } Buffer;
 
-csError buffer_init(Buffer *buffer, unsigned long size)
+csError buffer_init(Buffer *buffer, size_t size)
 {
     double *samples = NULL;
     if (size > 0)
@@ -35,7 +35,7 @@ csError buffer_init(Buffer *buffer, unsigned long size)
     return csErrorNone;
 }
 
-static unsigned long buffer_resize_from_zero(Buffer *buffer, unsigned long size, double (*fill)(unsigned long))
+static size_t buffer_resize_from_zero(Buffer *buffer, size_t size, double (*fill)(size_t))
 {
     double *samples = (double *)malloc_(size * sizeof(double));
     if (samples == NULL)
@@ -46,7 +46,7 @@ static unsigned long buffer_resize_from_zero(Buffer *buffer, unsigned long size,
     }
     if (fill != NULL)
     {
-        for (unsigned long i = 0; i < size; i++)
+        for (size_t i = 0; i < size; i++)
         {
             samples[i] = fill(i);
         }
@@ -61,7 +61,7 @@ static unsigned long buffer_resize_from_zero(Buffer *buffer, unsigned long size,
     return 0;
 }
 
-static unsigned long buffer_resize_to_zero(Buffer *buffer)
+static size_t buffer_resize_to_zero(Buffer *buffer)
 {
     free_(buffer->samples);
     buffer->samples = NULL;
@@ -70,11 +70,11 @@ static unsigned long buffer_resize_to_zero(Buffer *buffer)
     return 0;
 }
 
-static unsigned long buffer_resize_up(Buffer *buffer, unsigned long size, unsigned long index, double (*fill)(unsigned long))
+static size_t buffer_resize_up(Buffer *buffer, size_t size, size_t index, double (*fill)(size_t))
 {
     if (size > buffer->capacity)
     {
-        unsigned long capacity = size * 2;
+        size_t capacity = size * 2;
         double *samples = (double *)realloc_(buffer->samples, capacity * sizeof(double));
         if (samples == NULL)
         {
@@ -84,36 +84,36 @@ static unsigned long buffer_resize_up(Buffer *buffer, unsigned long size, unsign
         buffer->capacity = capacity;
         buffer->samples = samples;
     }
-    unsigned long diff = buffer->size - index;
-    unsigned long too = size - diff;
+    size_t diff = buffer->size - index;
+    size_t too = size - diff;
     memmove(buffer->samples + too, buffer->samples + index, diff * sizeof(double));
     if (fill != NULL)
     {
-        for (unsigned long i = index, end = size - diff; i < end; i++)
+        for (size_t i = index, end = size - diff; i < end; i++)
         {
             buffer->samples[i] = fill(i);
         }
     }
     else
     {
-        unsigned long gap = size - buffer->size;
+        size_t gap = size - buffer->size;
         memset(buffer->samples + index, 0, gap * sizeof(double));
     }
     buffer->size = size;
     return index;
 }
 
-static unsigned long buffer_resize_down(Buffer *buffer, unsigned long size, unsigned long index)
+static size_t buffer_resize_down(Buffer *buffer, size_t size, size_t index)
 {
     if (index < size)
     {
-        unsigned long diff = size - index;
-        unsigned long from = buffer->size - diff;
+        size_t diff = size - index;
+        size_t from = buffer->size - diff;
         memmove(buffer->samples + index, buffer->samples + from, diff * sizeof(double));
     }
     else if (index > size)
     {
-        unsigned long diff = index - size;
+        size_t diff = index - size;
         memmove(buffer->samples, buffer->samples + size, diff * sizeof(double));
         index -= size;
     }
@@ -125,7 +125,7 @@ static unsigned long buffer_resize_down(Buffer *buffer, unsigned long size, unsi
     return index;
 }
 
-unsigned long buffer_resize(Buffer *buffer, unsigned long size, unsigned long index, double (*fill)(unsigned long))
+size_t buffer_resize(Buffer *buffer, size_t size, size_t index, double (*fill)(size_t))
 {
     if (size != buffer->size)
     {
@@ -154,17 +154,17 @@ void buffer_free(Buffer *buffer)
     free_(buffer->samples);
 }
 
-double fill_rand_0_1(__attribute__((unused)) unsigned long index)
+double fill_rand_0_1(__attribute__((unused)) size_t index)
 {
     return rand_range(0, 1);
 }
 
-double fill_rand_1_1(__attribute__((unused)) unsigned long index)
+double fill_rand_1_1(__attribute__((unused)) size_t index)
 {
     return rand_range(-1, 1);
 }
 
-double fill_inc(unsigned long index)
+double fill_inc(size_t index)
 {
     return (double)index;
 }

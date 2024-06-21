@@ -18,7 +18,7 @@
 typedef struct
 {
     Buffer buffer;
-    unsigned long index;
+    size_t index;
 } ChorusContext;
 
 static double chorus_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
@@ -28,10 +28,10 @@ static double chorus_eval(__attribute__((unused)) int count, Gen **args, double 
     double modulation = gen_eval(args[1]);
     double delay = gen_eval(args[2]);
     double depth = gen_eval(args[3]);
-    unsigned long size = (unsigned long)(delay / delta + 0.5);
-    unsigned long offset = (unsigned long)(depth / delta * modulation + (double)size * 0.5 + 0.5);
-    // unsigned long offset = (unsigned long)(depth / delta * (modulation + 1) * 0.5 + 0.5);
-    unsigned long index = (context->index + size - offset) % size;
+    size_t size = (size_t)(delay / delta + 0.5);
+    size_t offset = (size_t)(depth / delta * modulation + (double)size * 0.5 + 0.5);
+    // size_t offset = (size_t)(depth / delta * (modulation + 1) * 0.5 + 0.5);
+    size_t index = (context->index + size - offset) % size;
     context->index = buffer_resize(&context->buffer, size, context->index, NULL);
     double *buffer = context->buffer.samples;
     double output = 0.5 * (input + buffer[index]);

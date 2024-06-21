@@ -44,7 +44,7 @@ static void test_to_zero()
 
 static void test_up()
 {
-    for (unsigned long i = 0; i < 2; i++)
+    for (size_t i = 0; i < 2; i++)
     {
         Buffer buffer;
         assert(buffer_init(&buffer, 2) == csErrorNone);
@@ -65,7 +65,7 @@ static void test_up()
 
 static void test_down()
 {
-    for (unsigned long i = 0; i < 4; i++)
+    for (size_t i = 0; i < 4; i++)
     {
         Buffer buffer;
         assert(buffer_init(&buffer, 4) == csErrorNone);

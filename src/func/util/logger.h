@@ -19,9 +19,9 @@ typedef struct
     long max;
     long zero0;
     long zero1;
-    unsigned long count;
-    unsigned long step;
-    unsigned long index;
+    size_t count;
+    size_t step;
+    size_t index;
 } LoggerContext;
 
 static double logger_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
@@ -76,7 +76,7 @@ static double logger_eval(__attribute__((unused)) int count, Gen **args, double 
     return input;
 }
 
-Func *logger(Func *input, unsigned long count, unsigned long step)
+Func *logger(Func *input, size_t count, size_t step)
 {
     LoggerContext initial = (LoggerContext){
         .min = -1,

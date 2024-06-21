@@ -21,8 +21,8 @@
 typedef struct
 {
     double time;
-    unsigned long index;
-    unsigned long counter;
+    size_t index;
+    size_t counter;
 } SeqContext;
 
 static double seq_eval_abs(int count, Gen **args, double delta, void *context_)

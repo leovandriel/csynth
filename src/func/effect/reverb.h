@@ -17,14 +17,14 @@
 typedef struct
 {
     Buffer buffer;
-    unsigned long index;
+    size_t index;
 } ReverbContext;
 
 static double reverb_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
 {
     ReverbContext *context = (ReverbContext *)context_;
     double input = gen_eval(args[0]);
-    unsigned long size = (unsigned long)(gen_eval(args[1]) / delta + 0.5);
+    size_t size = (size_t)(gen_eval(args[1]) / delta + 0.5);
     double decay = gen_eval(args[2]);
     context->index = buffer_resize(&context->buffer, size, context->index, NULL);
     double *buffer = context->buffer.samples;

@@ -6,12 +6,13 @@
 
 #include <limits.h>
 #include <math.h>
+#include <stddef.h>
 
 #define RAND_STATE_INIT 1082269761
 
-static unsigned long rand_state_int = RAND_STATE_INIT;
+static size_t rand_state_int = RAND_STATE_INIT;
 
-static unsigned long rand_next(unsigned long reg)
+static size_t rand_next(size_t reg)
 {
     reg ^= reg << 13;
     reg ^= reg >> 7;
@@ -19,7 +20,7 @@ static unsigned long rand_next(unsigned long reg)
     return reg;
 }
 
-unsigned long rand_unsigned_long()
+size_t rand_unsigned_long()
 {
     rand_state_int = rand_next(rand_state_int);
     return rand_state_int;
@@ -40,7 +41,7 @@ double rand_gauss(double muu, double sigma)
     return sigma * sqrt(-2.0 * log(rand_uniform())) * cos(rand_uniform() * M_PI * 2) + muu;
 }
 
-void rand_seed(unsigned long seed)
+void rand_seed(size_t seed)
 {
     rand_state_int = seed + RAND_STATE_INIT;
 }

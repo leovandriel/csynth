@@ -25,7 +25,7 @@ csError writer_write_channels_no_cleanup(int channel_count, Func **channels, dou
     uint32_t buffer_samples = WRITER_BUFFER_SIZE / channel_count;
     while (sample_count)
     {
-        unsigned long samples = buffer_samples < sample_count ? buffer_samples : sample_count;
+        size_t samples = buffer_samples < sample_count ? buffer_samples : sample_count;
         sampler_sample(sampler, samples, buffer);
         size_t count = fwrite(buffer, sizeof(sample_t), channel_count * samples, file);
         if (count != channel_count * samples)
