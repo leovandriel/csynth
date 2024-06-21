@@ -84,19 +84,20 @@ static unsigned long buffer_resize_up(Buffer *buffer, unsigned long size, unsign
         buffer->capacity = capacity;
         buffer->samples = samples;
     }
-    unsigned long diff = size - buffer->size;
-    unsigned long too = index + diff;
+    unsigned long diff = buffer->size - index;
+    unsigned long too = size - diff;
     memmove(buffer->samples + too, buffer->samples + index, diff * sizeof(double));
     if (fill != NULL)
     {
-        for (unsigned long i = index, end = index + diff; i < end; i++)
+        for (unsigned long i = index, end = size - diff; i < end; i++)
         {
             buffer->samples[i] = fill(i);
         }
     }
     else
     {
-        memset(buffer->samples + index, 0, diff * sizeof(double));
+        unsigned long gap = size - buffer->size;
+        memset(buffer->samples + index, 0, gap * sizeof(double));
     }
     buffer->size = size;
     return index;
@@ -113,8 +114,7 @@ static unsigned long buffer_resize_down(Buffer *buffer, unsigned long size, unsi
     else if (index > size)
     {
         unsigned long diff = index - size;
-        unsigned long from = index - 1;
-        memmove(buffer->samples, buffer->samples + from, diff * sizeof(double));
+        memmove(buffer->samples, buffer->samples + size, diff * sizeof(double));
         index -= size;
     }
     else
