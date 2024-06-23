@@ -4,7 +4,7 @@
 
 void test_reverb()
 {
-    Func *time = reverb(saw_(1), const_(.5), const_(.5));
+    Func *time = reverb(saw_osc(), const_(.5), const_(.5));
     Gen *gen = gen_create(time);
     Eval eval = {.delta = 0.1};
     assert_double_equal(gen_eval(gen, eval), 0.00);

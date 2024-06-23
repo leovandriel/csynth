@@ -3,7 +3,7 @@
 
 void test_square()
 {
-    Func *time = square(const_(1));
+    Func *time = square_osc();
     Gen *gen = gen_create(time);
     Eval eval = {.delta = 0.1};
     assert_double_equal(gen_eval(gen, eval), 1.0);

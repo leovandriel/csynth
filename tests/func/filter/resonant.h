@@ -4,7 +4,7 @@
 
 void test_resonant()
 {
-    Func *time = resonant(square_(1), const_(2), const_(1));
+    Func *time = resonant(square_osc(), const_(2), const_(1));
     Gen *gen = gen_create(time);
     Eval eval = {.delta = 0.1};
     assert_double_equal(gen_eval(gen, eval), 1.0000000000000000);

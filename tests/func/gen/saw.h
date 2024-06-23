@@ -3,7 +3,7 @@
 
 void test_saw()
 {
-    Func *time = saw(const_(1));
+    Func *time = saw_osc();
     Gen *gen = gen_create(time);
     Eval eval = {.delta = 0.1};
     assert_double_equal(gen_eval(gen, eval), 0.0);

@@ -10,34 +10,23 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "./const.h"
 
 typedef struct
 {
     double phase;
-    double frequency;
 } SineContext;
 
-static double sine_eval(__U int count, Gen **args, Eval eval, void *context_)
+static double sine_eval(__U int count, __U Gen **args, Eval eval, void *context_)
 {
     SineContext *context = (SineContext *)context_;
-    double frequency = gen_eval(args[0], eval);
-    double step = M_PI * 2 * frequency * eval.delta;
-    if (frequency > FUNC_EPSILON)
-    {
-        context->phase *= context->frequency / frequency;
-    }
-    double output = sin(context->phase);
-    context->phase = fmod(context->phase + step, M_PI * 2);
-    context->frequency = frequency;
+    double output = sin(context->phase * M_PI * 2);
+    context->phase = fmod(context->phase + eval.delta, 1.0);
     return output;
 }
 
-Func *sine(Func *frequency)
+Func *sine_osc()
 {
-    return func_create(NULL, sine_eval, NULL, sizeof(SineContext), NULL, FuncFlagNone, 1, frequency);
+    return func_create(NULL, sine_eval, NULL, sizeof(SineContext), NULL, FuncFlagNone, 0);
 }
-
-Func *sine_(double frequency) { return sine(const_(frequency)); }
 
 #endif // CSYNTH_SINE_H

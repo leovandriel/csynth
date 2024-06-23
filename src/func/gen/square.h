@@ -16,27 +16,24 @@ typedef struct
     double output;
 } SquareContext;
 
-static double square_eval(__U int count, Gen **args, Eval eval, void *context_)
+static double square_eval(__U int count, __U Gen **args, Eval eval, void *context_)
 {
     SquareContext *context = (SquareContext *)context_;
-    double span = 1.0 / (gen_eval(args[0], eval) * 2.0);
-    if (context->time >= span)
+    if (context->time >= 0.5)
     {
-        context->time -= span;
+        context->time -= 0.5;
         context->output = -context->output;
     }
     context->time += eval.delta;
     return context->output;
 }
 
-Func *square(Func *frequency)
+Func *square_osc()
 {
     SquareContext initial = (SquareContext){
         .output = 1.0,
     };
-    return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, FuncFlagNone, 1, frequency);
+    return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, FuncFlagNone, 0);
 }
-
-Func *square_(double frequency) { return square(const_(frequency)); }
 
 #endif // CSYNTH_SQUARE_H

@@ -1,5 +1,5 @@
 #include "../../../src/func/filter/slope.h"
-#include "../../../src/func/gen/square.h"
+#include "../../../src/func/gen/gens.h"
 #include "../../util/test.h"
 
 void test_slope()

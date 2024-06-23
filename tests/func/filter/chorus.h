@@ -1,5 +1,5 @@
 #include "../../../src/func/filter/chorus.h"
-#include "../../../src/func/gen/sine.h"
+#include "../../../src/func/gen/gens.h"
 #include "../../util/test.h"
 
 void test_chorus()
