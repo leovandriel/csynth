@@ -7,7 +7,7 @@ void test_sine_const()
 {
     Func *time = sine_osc();
     Gen *gen = gen_create(time);
-    Eval eval = {.audio_step = 0.1};
+    Eval eval = {.audio_step = 0.1, .control_step = 0.1};
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, eval), 0.5877852522924731);
     assert_double_equal(gen_eval(gen, eval), 0.9510565162951535);
@@ -27,7 +27,7 @@ void test_sine_timer()
 {
     Func *time = sine(timer());
     Gen *gen = gen_create(time);
-    Eval eval = {.audio_step = 0.1};
+    Eval eval = {.audio_step = 0.1, .control_step = 0.1};
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, eval), 0.0627905195293134);

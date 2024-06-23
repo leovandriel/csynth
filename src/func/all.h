@@ -13,6 +13,7 @@
 #include "./effect/loop.h"
 #include "./effect/pitch.h"
 #include "./effect/reverb.h"
+#include "./effect/tempo.h"
 #include "./filter/chorus.h"
 #include "./filter/compressor.h"
 #include "./filter/distortion.h"

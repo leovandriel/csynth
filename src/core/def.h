@@ -22,6 +22,7 @@ typedef enum
 typedef struct
 {
     double audio_step;
+    double control_step;
 } Eval;
 
 typedef double (*eval_callback)(int count, Gen **args, Eval eval, void *context);

@@ -6,7 +6,7 @@ void test_reverb()
 {
     Func *time = reverb(saw_osc(), const_(.5), const_(.5));
     Gen *gen = gen_create(time);
-    Eval eval = {.audio_step = 0.1};
+    Eval eval = {.audio_step = 0.1, .control_step = 0.1};
     assert_double_equal(gen_eval(gen, eval), 0.00);
     assert_double_equal(gen_eval(gen, eval), 0.20);
     assert_double_equal(gen_eval(gen, eval), 0.40);
