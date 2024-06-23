@@ -11,6 +11,7 @@
 #include "./effect/delay.h"
 #include "./effect/effects.h"
 #include "./effect/loop.h"
+#include "./effect/pitch.h"
 #include "./effect/reverb.h"
 #include "./filter/chorus.h"
 #include "./filter/compressor.h"
