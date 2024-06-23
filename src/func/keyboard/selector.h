@@ -50,7 +50,7 @@ Func *selector_args(int key, int count, ...)
         .key = key,
         .count = count,
     };
-    Func *output = func_create_va(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FUNC_FLAG_SKIP_RESET, count, valist);
+    Func *output = func_create_va(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FuncFlagSkipReset, count, valist);
     va_end(valist);
     return output;
 }
@@ -64,7 +64,7 @@ Func *selector_array(int key, int count, Func **args)
         .key = key,
         .count = count,
     };
-    return func_create_array(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FUNC_FLAG_SKIP_RESET, count, args);
+    return func_create_array(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FuncFlagSkipReset, count, args);
 }
 
 #endif // CSYNTH_SELECTOR_H

@@ -46,7 +46,7 @@ static double adsr_eval(__U int count, Gen **args, __U double delta, __U void *c
 
 Func *adsr_op(Func *time, Func *attack, Func *decay, Func *sustain, Func *release, Func *duration)
 {
-    return func_create(NULL, adsr_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, 6, time, attack, decay, sustain, release, duration);
+    return func_create(NULL, adsr_eval, NULL, 0, NULL, FuncFlagNone, 6, time, attack, decay, sustain, release, duration);
 }
 Func *adsr_op_(Func *time, double attack, double decay, double sustain, double release, double duration) { return adsr_op(time, const_(attack), const_(decay), const_(sustain), const_(release), const_(duration)); }
 

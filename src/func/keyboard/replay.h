@@ -54,7 +54,7 @@ Func *replay(Func *func, const char *filename)
     ReplayContext initial = (ReplayContext){
         .filename = filename,
     };
-    return func_create(replay_init, replay_eval, replay_free, sizeof(ReplayContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
+    return func_create(replay_init, replay_eval, replay_free, sizeof(ReplayContext), &initial, FuncFlagNone, 1, func);
 }
 
 Func *replay_(Func *func)

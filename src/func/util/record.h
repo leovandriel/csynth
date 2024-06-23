@@ -85,7 +85,7 @@ Func *record_args(const char *filename, int sample_rate, int count, ...)
         .filename = filename,
         .sample_rate = sample_rate,
     };
-    Func *output = func_create_va(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FUNC_FLAG_DEFAULT, count, valist);
+    Func *output = func_create_va(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FuncFlagNone, count, valist);
     va_end(valist);
     return output;
 }
@@ -98,7 +98,7 @@ Func *record_array(const char *filename, int sample_rate, int count, Func **args
         .filename = filename,
         .sample_rate = sample_rate,
     };
-    return func_create_array(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FUNC_FLAG_DEFAULT, count, args);
+    return func_create_array(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FuncFlagNone, count, args);
 }
 
 Func *record(Func *input, const char *filename) { return record_channels(filename, CONFIG_DEFAULT_SAMPLE_RATE, input); }

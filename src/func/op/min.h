@@ -31,7 +31,7 @@ Func *min_args(int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    Func *output = func_create_va(NULL, min_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, count, valist);
+    Func *output = func_create_va(NULL, min_eval, NULL, 0, NULL, FuncFlagNone, count, valist);
     va_end(valist);
     return output;
 }
@@ -45,7 +45,7 @@ Func *min_(Func *input, double max)
 
 Func *min_array(int count, Func **args)
 {
-    return func_create_array(NULL, min_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, count, args);
+    return func_create_array(NULL, min_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
 
 #endif // CSYNTH_MIN_H

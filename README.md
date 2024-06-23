@@ -193,7 +193,7 @@ double step_filter(int count, Gen **args, double delta, void *context)
 
 int main()
 {
-    return play(func_create(NULL, step_filter, NULL, 0, NULL, FUNC_FLAG_DEFAULT, 1, sine(A4)));
+    return play(func_create(NULL, step_filter, NULL, 0, NULL, FuncFlagNone, 1, sine(A4)));
 }
 ```
 

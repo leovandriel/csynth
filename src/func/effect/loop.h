@@ -31,7 +31,7 @@ static double loop_eval(__U int count, Gen **args, double delta, void *context_)
 
 Func *loop(Func *input, Func *duration)
 {
-    return func_create(NULL, loop_eval, NULL, sizeof(LoopContext), NULL, FUNC_FLAG_DEFAULT, 2, input, duration);
+    return func_create(NULL, loop_eval, NULL, sizeof(LoopContext), NULL, FuncFlagNone, 2, input, duration);
 }
 
 Func *loop_(Func *input, double duration) { return loop(input, const_(duration)); }

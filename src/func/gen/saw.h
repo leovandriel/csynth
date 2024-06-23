@@ -30,7 +30,7 @@ static double saw_eval(__U int count, Gen **args, double delta, void *context_)
 
 Func *saw(Func *frequency)
 {
-    return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, FUNC_FLAG_DEFAULT, 1, frequency);
+    return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, FuncFlagNone, 1, frequency);
 }
 
 Func *saw_(double frequency) { return saw(const_(frequency)); }

@@ -24,7 +24,7 @@ static double timer_eval(__U int count, __U Gen **args, double delta, void *cont
 
 Func *timer()
 {
-    return func_create(NULL, timer_eval, NULL, sizeof(TimerContext), NULL, FUNC_FLAG_DEFAULT, 0);
+    return func_create(NULL, timer_eval, NULL, sizeof(TimerContext), NULL, FuncFlagNone, 0);
 }
 
 #endif // CSYNTH_TIMER_H

@@ -21,7 +21,7 @@ static double pow_eval(__U int count, Gen **args, __U double delta, __U void *co
 
 Func *pow_op(Func *base, Func *exponent)
 {
-    return func_create(NULL, pow_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, 2, base, exponent);
+    return func_create(NULL, pow_eval, NULL, 0, NULL, FuncFlagNone, 2, base, exponent);
 }
 
 Func *pow_op_(Func *input, double exponent) { return pow_op(input, const_(exponent)); }

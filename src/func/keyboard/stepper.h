@@ -97,7 +97,7 @@ Func *stepper_range(int key, double value, double step, double min, double max, 
         .max = max,
         .rel = rel,
     };
-    return func_create(stepper_init, stepper_eval, keyboard_event_free, sizeof(StepperContext), &initial, FUNC_FLAG_SKIP_RESET, 0);
+    return func_create(stepper_init, stepper_eval, keyboard_event_free, sizeof(StepperContext), &initial, FuncFlagSkipReset, 0);
 }
 
 Func *stepper(int key, double value, double delta)

@@ -30,7 +30,7 @@ static double lpf_eval(__U int count, Gen **args, double delta, void *context_)
 
 Func *lpf(Func *input, Func *frequency)
 {
-    return func_create(NULL, lpf_eval, NULL, sizeof(LowPassContext), NULL, FUNC_FLAG_DEFAULT, 2, input, frequency);
+    return func_create(NULL, lpf_eval, NULL, sizeof(LowPassContext), NULL, FuncFlagNone, 2, input, frequency);
 }
 
 Func *lpf_(Func *input, double frequency) { return lpf(input, const_(frequency)); }

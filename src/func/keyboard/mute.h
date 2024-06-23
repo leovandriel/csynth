@@ -48,7 +48,7 @@ Func *mute_(int key, Func *func, int muted)
         .key = key,
         .muted = muted,
     };
-    return func_create(mute_init, mute_eval, keyboard_event_free, sizeof(MuteContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
+    return func_create(mute_init, mute_eval, keyboard_event_free, sizeof(MuteContext), &initial, FuncFlagNone, 1, func);
 }
 
 Func *mute(int key, Func *func)

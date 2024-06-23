@@ -56,7 +56,7 @@ Func *pad(int channel, int pad, Func *func)
             .control = pad,
         },
     };
-    return func_create(pad_init, pad_eval, midi_event_free, sizeof(PadContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
+    return func_create(pad_init, pad_eval, midi_event_free, sizeof(PadContext), &initial, FuncFlagNone, 1, func);
 }
 
 #endif // CSYNTH_PAD_H

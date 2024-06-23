@@ -96,7 +96,7 @@ Func *seq_abs_args(int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    Func *output = func_create_va(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
+    Func *output = func_create_va(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, valist);
     va_end(valist);
     return output;
 }
@@ -105,7 +105,7 @@ Func *seq_rel_args(int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    Func *output = func_create_va(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
+    Func *output = func_create_va(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, valist);
     va_end(valist);
     return output;
 }
@@ -114,7 +114,7 @@ Func *seq_seq_args(int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    Func *output = func_create_va(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
+    Func *output = func_create_va(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, valist);
     va_end(valist);
     return output;
 }
@@ -123,7 +123,7 @@ Func *seq_fix_args(int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    Func *output = func_create_va(NULL, seq_eval_fix, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
+    Func *output = func_create_va(NULL, seq_eval_fix, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, valist);
     va_end(valist);
     return output;
 }
@@ -136,22 +136,22 @@ Func *seq_fix_args(int count, ...)
 
 Func *seq_abs_array(int count, Func **args)
 {
-    return func_create_array(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, args);
+    return func_create_array(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
 Func *seq_rel_array(int count, Func **args)
 {
-    return func_create_array(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, args);
+    return func_create_array(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
 Func *seq_seq_array(int count, Func **args)
 {
-    return func_create_array(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, args);
+    return func_create_array(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
 Func *seq_fix_array(int count, Func **args)
 {
-    return func_create_array(NULL, seq_eval_fix, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, args);
+    return func_create_array(NULL, seq_eval_fix, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
 #endif // CSYNTH_SEQ_H

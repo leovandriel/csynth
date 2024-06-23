@@ -32,7 +32,7 @@ Func *const_(double value)
     ConstContext initial = (ConstContext){
         .value = value,
     };
-    return func_create(NULL, const_eval, NULL, sizeof(ConstContext), &initial, FUNC_FLAG_DEFAULT, 0);
+    return func_create(NULL, const_eval, NULL, sizeof(ConstContext), &initial, FuncFlagNone, 0);
 }
 
 Func *_(double value) { return const_(value); }

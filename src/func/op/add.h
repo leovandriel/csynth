@@ -26,7 +26,7 @@ Func *add_args(int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    Func *output = func_create_va(NULL, add_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, count, valist);
+    Func *output = func_create_va(NULL, add_eval, NULL, 0, NULL, FuncFlagNone, count, valist);
     va_end(valist);
     return output;
 }
@@ -40,7 +40,7 @@ Func *add_(Func *input, double diff)
 
 Func *add_array(int count, Func **args)
 {
-    return func_create_array(NULL, add_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, count, args);
+    return func_create_array(NULL, add_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
 
 #endif // CSYNTH_ADD_H

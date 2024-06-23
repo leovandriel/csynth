@@ -66,7 +66,7 @@ Func *track(Func *func, const char *filename)
     TrackContext initial = (TrackContext){
         .filename = filename,
     };
-    return func_create(track_init, track_eval, track_free, sizeof(TrackContext), &initial, FUNC_FLAG_DEFAULT, 1, func);
+    return func_create(track_init, track_eval, track_free, sizeof(TrackContext), &initial, FuncFlagNone, 1, func);
 }
 
 Func *track_(Func *func)

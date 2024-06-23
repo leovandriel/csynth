@@ -20,7 +20,7 @@ static double step_eval(__U int count, Gen **args, __U double delta, __U void *c
 
 Func *step_op(Func *input, Func *edge)
 {
-    return func_create(NULL, step_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, 2, input, edge);
+    return func_create(NULL, step_eval, NULL, 0, NULL, FuncFlagNone, 2, input, edge);
 }
 Func *step_op_(Func *input, double edge) { return step_op(input, const_(edge)); }
 

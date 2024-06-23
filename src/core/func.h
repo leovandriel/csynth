@@ -115,7 +115,7 @@ Func *func_create_va(init_callback init_cb, eval_callback eval_cb, free_callback
  *
  * The function can have flags that control the behavior of the function. The
  * flags are defined in `def.h` and can be combined with the bitwise OR
- * operator. The default flags are `FUNC_FLAG_DEFAULT`.
+ * operator. The default flags are `FuncFlagNone`.
  *
  * The function can have any number of inputs. The inputs are passed as a
  * variable number of arguments, and must be of type `Func *`.

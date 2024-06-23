@@ -35,7 +35,7 @@ Func *wav_samples(ReaderSamples samples, int channel, Func *factor)
         .samples = samples,
         .channel = channel,
     };
-    return func_create(NULL, wav_eval, NULL, sizeof(WavContext), &initial, FUNC_FLAG_DEFAULT, 1, factor);
+    return func_create(NULL, wav_eval, NULL, sizeof(WavContext), &initial, FuncFlagNone, 1, factor);
 }
 
 Func *wav_samples_(ReaderSamples samples, int channel, double factor)

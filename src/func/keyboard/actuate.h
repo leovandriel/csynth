@@ -31,7 +31,7 @@ Func *actuate(int key)
     ActuateContext initial = (ActuateContext){
         .key = key,
     };
-    return func_create(NULL, actuate_eval, NULL, sizeof(ActuateContext), &initial, FUNC_FLAG_DEFAULT, 0);
+    return func_create(NULL, actuate_eval, NULL, sizeof(ActuateContext), &initial, FuncFlagNone, 0);
 }
 
 #endif // CSYNTH_ACTUATE_H

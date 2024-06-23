@@ -139,7 +139,7 @@ double gen_eval(Gen *gen)
 void gen_reset(Gen *gen)
 {
     Func *func = gen->func;
-    if (func->flags & FUNC_FLAG_STOP_RESET)
+    if (func->flags & FuncFlagStopReset)
     {
         return;
     }
@@ -147,7 +147,7 @@ void gen_reset(Gen *gen)
     {
         gen_reset(gen->args[i]);
     }
-    if (func->flags & FUNC_FLAG_SKIP_RESET)
+    if (func->flags & FuncFlagSkipReset)
     {
         return;
     }
