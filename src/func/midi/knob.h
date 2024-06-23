@@ -35,12 +35,14 @@ static void knob_handle_event(__U double time, MidiType type, uint8_t channel, u
     if (type == MidiTypeControlChange && channel == context->key.channel && data1 == context->key.control)
     {
         context->value = (double)data2 / 127.0;
+        state_event_broadcast(StateEventKeyTypeMidi, &context->key, StateEventValueTypeDouble, &context->value);
     }
 }
 
 static int knob_init(__U int count, __U Gen **args, __U double delta, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
+    state_event_broadcast(StateEventKeyTypeMidi, &context->key, StateEventValueTypeDouble, &context->value);
     csError error = midi_event_add(&context->parent);
     return error_catch(error);
 }

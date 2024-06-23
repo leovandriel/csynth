@@ -153,7 +153,7 @@ void display_render(DisplayElement *list)
 {
     if (list != NULL)
     {
-        fprintf(stdout, "\e[K\r ");
+        fprintf(stdout, "\r\e[K ");
     }
     for (DisplayElement *element = list; element != NULL; element = element->next)
     {

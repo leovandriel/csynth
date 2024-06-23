@@ -82,7 +82,7 @@ csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to get device info");
     }
-    fprintf(stdout, "Audio device: %s\n", device_info->name);
+    fprintf(stdout, "\r\e[KAudio device: %s\n", device_info->name);
     PaStreamParameters params = {
         .device = device,
         .channelCount = count,
@@ -118,7 +118,7 @@ csError player_play_channels_no_cleanup(int count, Func **channels, PlayerConfig
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to get stream info: %s", Pa_GetErrorText(pa_error), pa_error);
     }
-    fprintf(stdout, "Stream opened: %.1f ms, %.3f kHz\n", stream_info->outputLatency * 1000, stream_info->sampleRate / 1000);
+    fprintf(stdout, "\r\e[KStream opened: %.1f ms, %.3f kHz\n", stream_info->outputLatency * 1000, stream_info->sampleRate / 1000);
     pa_error = Pa_StartStream(stream);
     if (pa_error != paNoError)
     {
