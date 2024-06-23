@@ -31,7 +31,7 @@ static double gauge_eval(__U int count, Gen **args, Eval eval, void *context_)
         context->last = input;
         context->time = 0;
     }
-    context->time += eval.delta;
+    context->time += eval.audio_step;
     return input;
 }
 

@@ -25,7 +25,7 @@ static double loop_eval(__U int count, Gen **args, Eval eval, void *context_)
         gen_reset(args[0]);
     }
     double output = gen_eval(args[0], eval);
-    context->time += eval.delta;
+    context->time += eval.audio_step;
     return output;
 }
 

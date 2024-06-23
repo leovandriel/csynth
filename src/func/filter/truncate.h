@@ -26,7 +26,7 @@ static double truncate_eval(__U int count, __U Gen **args, Eval eval, void *cont
     }
     double output = gen_eval(args[0], eval);
     double decay = gen_eval(args[1], eval);
-    context->level = fmax(fabs(output), context->level * pow(decay, eval.delta));
+    context->level = fmax(fabs(output), context->level * pow(decay, eval.audio_step));
     return output * context->level;
 }
 

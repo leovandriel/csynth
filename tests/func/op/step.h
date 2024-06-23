@@ -6,7 +6,7 @@ void test_step()
 {
     Func *time = step_op(timer(), const_(0.5));
     Gen *gen = gen_create(time);
-    Eval eval = {.delta = 0.1};
+    Eval eval = {.audio_step = 0.1};
     assert_double_equal(gen_eval(gen, eval), 0.0);
     assert_double_equal(gen_eval(gen, eval), 0.0);
     assert_double_equal(gen_eval(gen, eval), 0.0);

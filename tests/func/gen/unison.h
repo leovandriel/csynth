@@ -7,7 +7,7 @@ void test_unison()
     rand_seed(0);
     Func *time = unison(const_(1), saw, 5, 0.1);
     Gen *gen = gen_create(time);
-    Eval eval = {.delta = 0.1};
+    Eval eval = {.audio_step = 0.1};
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, eval), 0.2049121307959254);
     assert_double_equal(gen_eval(gen, eval), 0.4098242615918508);

@@ -46,7 +46,7 @@ Sampler *sampler_create(int count, Func **roots, int sample_rate)
         }
         channels[index] = channel;
     }
-    Eval eval = {.delta = 1.0 / sample_rate};
+    Eval eval = {.audio_step = 1.0 / sample_rate};
     *sampler = (Sampler){.channels = channels, .count = count, .eval = eval};
     return sampler;
 }

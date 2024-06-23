@@ -4,7 +4,7 @@
 void test_notes()
 {
     Gen *gen = gen_create(G9);
-    Eval eval = {.delta = 0.1};
+    Eval eval = {.audio_step = 0.1};
     assert_double_equal(gen_eval(gen, eval), G9_);
     gen_free(gen);
     func_free();

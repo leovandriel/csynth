@@ -7,7 +7,7 @@ void test_continuous()
 {
     Func *time = loop_(continuous(linear_env_(0, 1, 1)), 2);
     Gen *gen = gen_create(time);
-    Eval eval = {.delta = 1};
+    Eval eval = {.audio_step = 1};
     assert_double_equal(gen_eval(gen, eval), 0);
     assert_double_equal(gen_eval(gen, eval), 1);
     assert_double_equal(gen_eval(gen, eval), 2);

@@ -23,7 +23,7 @@ static double resonant_eval(__U int count, Gen **args, Eval eval, void *context_
     double input = gen_eval(args[0], eval);
     double frequency = gen_eval(args[1], eval);
     double q_factor = gen_eval(args[2], eval);
-    double omega = M_PI * 2 * frequency * eval.delta;
+    double omega = M_PI * 2 * frequency * eval.audio_step;
     double alpha = sin(omega) / (2.0 * q_factor);
     double va0 = 1.0 + alpha;
     double va1 = -2.0 * sin(omega + M_PI_2);
