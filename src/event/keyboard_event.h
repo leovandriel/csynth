@@ -20,7 +20,7 @@ typedef struct
 
 typedef struct
 {
-    void *handler;
+    const void *handler;
     keyboard_handle_event handle_event;
 } KeyboardEventContext;
 
@@ -30,7 +30,7 @@ void keyboard_event_broadcast(double time, int key)
     event_broadcast(EventTypeKeyboard, &event);
 }
 
-void keyboard_handle_event_(EventType type, void *event_, void *context_)
+void keyboard_handle_event_(EventType type, const void *event_, void *context_)
 {
     KeyboardEventContext *context = (KeyboardEventContext *)context_;
     if (type == EventTypeKeyboard)
@@ -42,7 +42,7 @@ void keyboard_handle_event_(EventType type, void *event_, void *context_)
 
 csError keyboard_event_add(KeyboardEventContext *context)
 {
-    void *handler = event_add_handler(keyboard_handle_event_, context);
+    const void *handler = event_add_handler(keyboard_handle_event_, context);
     if (handler == NULL)
     {
         return error_type_message(csErrorInit, "Unable to add keyboard event handler");

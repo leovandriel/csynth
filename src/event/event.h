@@ -18,7 +18,7 @@ typedef enum
     EventTypeMidi = 3,
 } EventType;
 
-typedef void (*event_handle_event)(EventType type, void *event, void *context);
+typedef void (*event_handle_event)(EventType type, const void *event, void *context);
 
 typedef struct EventHandler
 {
@@ -29,7 +29,7 @@ typedef struct EventHandler
 
 EventHandler *event_handler_list = NULL;
 
-void *event_add_handler(event_handle_event handle_event, void *context)
+const void *event_add_handler(event_handle_event handle_event, void *context)
 {
     EventHandler *handler = (EventHandler *)malloc_(sizeof(EventHandler));
     if (handler == NULL)
@@ -41,7 +41,7 @@ void *event_add_handler(event_handle_event handle_event, void *context)
     return handler;
 }
 
-csError event_remove_handler(void *handler_)
+csError event_remove_handler(const void *handler_)
 {
     EventHandler **prev = &event_handler_list;
     for (EventHandler *handler = event_handler_list; handler; handler = handler->next)
@@ -67,7 +67,7 @@ void event_clear()
     }
 }
 
-void event_broadcast(EventType type, void *event)
+void event_broadcast(EventType type, const void *event)
 {
     for (EventHandler *handler = event_handler_list; handler; handler = handler->next)
     {

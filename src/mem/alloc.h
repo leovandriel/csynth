@@ -19,14 +19,14 @@
 typedef struct Alloc
 {
     size_t size;
-    void *ptr;
+    const void *ptr;
     const char *line;
     struct Alloc *next;
 } Alloc;
 
 Alloc *alloc_list = NULL;
 
-int alloc_list_add(void *ptr, size_t size, const char *line)
+int alloc_list_add(const void *ptr, size_t size, const char *line)
 {
     Alloc *alloc = (Alloc *)malloc(sizeof(Alloc));
     if (alloc == NULL)
@@ -41,7 +41,7 @@ int alloc_list_add(void *ptr, size_t size, const char *line)
     return 0;
 }
 
-int alloc_list_remove(void *ptr)
+int alloc_list_remove(const void *ptr)
 {
     Alloc **prev = &alloc_list;
     for (Alloc *alloc = alloc_list; alloc; alloc = alloc->next)
@@ -57,7 +57,7 @@ int alloc_list_remove(void *ptr)
     return -1;
 }
 
-Alloc *alloc_list_find(void *ptr)
+Alloc *alloc_list_find(const void *ptr)
 {
     for (Alloc *alloc = alloc_list; alloc; alloc = alloc->next)
     {

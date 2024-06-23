@@ -38,7 +38,7 @@ typedef struct
 
 typedef struct
 {
-    void *handler;
+    const void *handler;
     midi_handle_event handle_event;
 } MidiEventContext;
 
@@ -54,7 +54,7 @@ void midi_event_broadcast(double time, MidiType type, uint8_t channel, uint8_t d
     event_broadcast(EventTypeMidi, &event);
 }
 
-void midi_handle_event_(EventType type, void *event_, void *context_)
+void midi_handle_event_(EventType type, const void *event_, void *context_)
 {
     MidiEventContext *context = (MidiEventContext *)context_;
     if (type == EventTypeMidi)
@@ -66,7 +66,7 @@ void midi_handle_event_(EventType type, void *event_, void *context_)
 
 csError midi_event_add(MidiEventContext *context)
 {
-    void *handler = event_add_handler(midi_handle_event_, context);
+    const void *handler = event_add_handler(midi_handle_event_, context);
     if (handler == NULL)
     {
         return error_type_message(csErrorInit, "Unable to add MIDI event handler");

@@ -38,7 +38,7 @@ typedef struct
 
 typedef struct
 {
-    void *handler;
+    const void *handler;
     state_handle_event handle_event;
 } StateEventContext;
 
@@ -48,7 +48,7 @@ void state_event_broadcast(StateEventKeyType key_type, const void *key, StateEve
     event_broadcast(EventTypeState, &event);
 }
 
-void state_handle_event_(EventType type, void *event_, void *context_)
+void state_handle_event_(EventType type, const void *event_, void *context_)
 {
     StateEventContext *context = (StateEventContext *)context_;
     if (type == EventTypeState)
@@ -60,7 +60,7 @@ void state_handle_event_(EventType type, void *event_, void *context_)
 
 csError state_event_add(StateEventContext *context)
 {
-    void *handler = event_add_handler(state_handle_event_, context);
+    const void *handler = event_add_handler(state_handle_event_, context);
     if (handler == NULL)
     {
         return error_type_message(csErrorInit, "Unable to add state event handler");

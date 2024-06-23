@@ -14,7 +14,7 @@ typedef struct
 {
     KeyList list;
     const char *filename;
-    void *handler;
+    const void *handler;
 } TrackContext;
 
 static double track_eval(__U int count, Gen **args, __U double delta, __U void *context_)
@@ -23,7 +23,7 @@ static double track_eval(__U int count, Gen **args, __U double delta, __U void *
     return gen_eval(args[0]);
 }
 
-static void track_handle_event(EventType type, void *event_, void *context_)
+static void track_handle_event(EventType type, const void *event_, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
     if (type == EventTypeKeyboard)
@@ -41,7 +41,7 @@ static void track_handle_event(EventType type, void *event_, void *context_)
 static int track_init(__U int count, __U Gen **args, __U double delta, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
-    void *handler = event_add_handler(track_handle_event, context);
+    const void *handler = event_add_handler(track_handle_event, context);
     if (handler == NULL)
     {
         return error_catch_message(csErrorInit, "Unable to add track handler");
