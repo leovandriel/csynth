@@ -50,9 +50,9 @@ Func *selector_args(int key, int count, ...)
         .key = key,
         .count = count,
     };
-    Func *func = func_create_va(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FUNC_FLAG_SKIP_RESET, count, valist);
+    Func *output = func_create_va(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FUNC_FLAG_SKIP_RESET, count, valist);
     va_end(valist);
-    return func;
+    return output;
 }
 
 #define selector(key, ...) (selector_args(key, (sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))

@@ -31,9 +31,9 @@ Func *keyboard(keyboard_control_func control, gen_func generator, Func *frequenc
         Func *gen = generator(mul_(frequency, pow(2, i / 12.0)));
         array[i] = control(key, gen);
     }
-    Func *func = add_array(count, array);
+    Func *output = add_array(count, array);
     free_(array);
-    return func;
+    return output;
 }
 
 Func *keyboard_(keyboard_control_func control, gen_func generator, double frequency)

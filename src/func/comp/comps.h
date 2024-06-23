@@ -30,9 +30,9 @@ Func *pattern(const char *string, Func *input, Func *duration, Func *timing)
             array[index++] = input;
         }
     }
-    Func *func = seq_abs_array(index, array);
+    Func *output = seq_abs_array(index, array);
     free_(array);
-    return func;
+    return output;
 }
 
 Func *pattern_(const char *string, Func *input, double duration, double timing)

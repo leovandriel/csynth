@@ -31,9 +31,9 @@ Func *max_args(int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    Func *func = func_create_va(NULL, max_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, count, valist);
+    Func *output = func_create_va(NULL, max_eval, NULL, 0, NULL, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);
-    return func;
+    return output;
 }
 
 #define max(...) (max_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))

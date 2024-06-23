@@ -25,9 +25,9 @@ Func *unison(Func *frequency, gen_func generator, int count, double detune)
     {
         array[i] = generator(mul_(frequency, rand_range(1 - detune, 1 + detune)));
     }
-    Func *func = dvd_(add_array(count, array), count);
+    Func *output = dvd_(add_array(count, array), count);
     free_(array);
-    return func;
+    return output;
 }
 
 #endif // CSYNTH_UNISON_H

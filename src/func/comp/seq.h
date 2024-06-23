@@ -96,36 +96,36 @@ Func *seq_abs_args(int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    Func *func = func_create_va(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
+    Func *output = func_create_va(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);
-    return func;
+    return output;
 }
 
 Func *seq_rel_args(int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    Func *func = func_create_va(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
+    Func *output = func_create_va(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);
-    return func;
+    return output;
 }
 
 Func *seq_seq_args(int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    Func *func = func_create_va(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
+    Func *output = func_create_va(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);
-    return func;
+    return output;
 }
 
 Func *seq_fix_args(int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    Func *func = func_create_va(NULL, seq_eval_fix, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
+    Func *output = func_create_va(NULL, seq_eval_fix, NULL, sizeof(SeqContext), NULL, FUNC_FLAG_DEFAULT, count, valist);
     va_end(valist);
-    return func;
+    return output;
 }
 
 #define seq_abs(...) (seq_abs_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
