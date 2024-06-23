@@ -28,7 +28,7 @@ static double actuate_eval(__U int count, __U Gen **args, __U Eval eval, void *c
 
 Func *actuate(int key)
 {
-    ActuateContext initial = (ActuateContext){
+    ActuateContext initial = {
         .key = key,
     };
     return func_create(NULL, actuate_eval, NULL, sizeof(ActuateContext), &initial, FuncFlagNone, 0);

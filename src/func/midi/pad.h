@@ -49,9 +49,9 @@ static int pad_init(__U int count, __U Gen **args, void *context_)
 
 Func *pad(int channel, int pad, Func *func)
 {
-    PadContext initial = (PadContext){
+    PadContext initial = {
         .parent = {.handle_event = pad_handle_event},
-        .key = (MidiKey){
+        .key = {
             .channel = channel - 1,
             .control = pad,
         },

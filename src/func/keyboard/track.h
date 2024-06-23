@@ -63,7 +63,7 @@ static void track_free(__U int count, void *context_)
 
 Func *track(Func *func, const char *filename)
 {
-    TrackContext initial = (TrackContext){
+    TrackContext initial = {
         .filename = filename,
     };
     return func_create(track_init, track_eval, track_free, sizeof(TrackContext), &initial, FuncFlagNone, 1, func);

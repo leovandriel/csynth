@@ -29,7 +29,7 @@ static double const_eval(__U int count, __U Gen **args, __U Eval eval, void *con
 
 Func *const_(double value)
 {
-    ConstContext initial = (ConstContext){
+    ConstContext initial = {
         .value = value,
     };
     return func_create(NULL, const_eval, NULL, sizeof(ConstContext), &initial, FuncFlagNone, 0);

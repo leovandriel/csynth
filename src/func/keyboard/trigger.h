@@ -49,7 +49,7 @@ static int trigger_init(__U int count, __U Gen **args, void *context_)
 
 Func *trigger(int key, Func *func)
 {
-    TriggerContext initial = (TriggerContext){
+    TriggerContext initial = {
         .parent = {.handle_event = trigger_handle_event},
         .key = key,
     };

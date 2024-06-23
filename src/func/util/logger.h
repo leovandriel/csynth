@@ -78,7 +78,7 @@ static double logger_eval(__U int count, Gen **args, Eval eval, void *context_)
 
 Func *logger(Func *input, size_t count, size_t step)
 {
-    LoggerContext initial = (LoggerContext){
+    LoggerContext initial = {
         .min = -1,
         .max = -1,
         .zero0 = -1,

@@ -50,9 +50,9 @@ static int key_init(__U int count, __U Gen **args, void *context_)
 
 Func *key(int channel, int pitch, Func *func)
 {
-    KeyContext initial = (KeyContext){
+    KeyContext initial = {
         .parent = {.handle_event = key_handle_event},
-        .key = (MidiKey){
+        .key = {
             .channel = channel - 1,
             .control = pitch,
         },

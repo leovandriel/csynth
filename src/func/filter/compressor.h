@@ -39,7 +39,7 @@ static double compressor_eval(__U int count, Gen **args, Eval eval, void *contex
 
 Func *compressor(Func *input, Func *threshold, Func *ratio, Func *attack, Func *release)
 {
-    CompressorContext initial = (CompressorContext){
+    CompressorContext initial = {
         .gain = 1.0,
     };
     return func_create(NULL, compressor_eval, NULL, sizeof(CompressorContext), &initial, FuncFlagNone, 5, input, threshold, ratio, attack, release);

@@ -43,7 +43,7 @@ static int mute_init(__U int count, __U Gen **args, void *context_)
 
 Func *mute_(int key, Func *func, int muted)
 {
-    MuteContext initial = (MuteContext){
+    MuteContext initial = {
         .parent = {.handle_event = mute_handle_event},
         .key = key,
         .muted = muted,

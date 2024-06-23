@@ -45,7 +45,7 @@ Func *selector_args(int key, int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    SelectorContext initial = (SelectorContext){
+    SelectorContext initial = {
         .parent = {.handle_event = selector_handle_event},
         .key = key,
         .count = count,
@@ -59,7 +59,7 @@ Func *selector_args(int key, int count, ...)
 
 Func *selector_array(int key, int count, Func **args)
 {
-    SelectorContext initial = (SelectorContext){
+    SelectorContext initial = {
         .parent = {.handle_event = selector_handle_event},
         .key = key,
         .count = count,

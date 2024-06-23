@@ -88,7 +88,7 @@ static int stepper_init(__U int count, __U Gen **args, void *context_)
 
 Func *stepper_range(int key, double value, double step, double min, double max, int rel)
 {
-    StepperContext initial = (StepperContext){
+    StepperContext initial = {
         .parent = {.handle_event = stepper_handle_event},
         .key = key,
         .value = value,

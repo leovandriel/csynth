@@ -50,7 +50,7 @@ static int pause_init(__U int count, __U Gen **args, void *context_)
 
 Func *pause_play_(int key, Func *func, int play_reset, int paused)
 {
-    PauseContext initial = (PauseContext){
+    PauseContext initial = {
         .parent = {.handle_event = pause_handle_event},
         .key = key,
         .play_reset = play_reset,

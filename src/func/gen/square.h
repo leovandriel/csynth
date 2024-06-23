@@ -30,7 +30,7 @@ static double square_eval(__U int count, __U Gen **args, Eval eval, void *contex
 
 Func *square_osc()
 {
-    SquareContext initial = (SquareContext){
+    SquareContext initial = {
         .output = 1.0,
     };
     return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, FuncFlagNone, 0);

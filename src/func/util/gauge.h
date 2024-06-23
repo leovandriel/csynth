@@ -37,7 +37,7 @@ static double gauge_eval(__U int count, Gen **args, Eval eval, void *context_)
 
 Func *gauge_interval(Func *input, const char *label, double interval)
 {
-    GaugeContext initial = (GaugeContext){
+    GaugeContext initial = {
         .label = label,
         .interval = interval,
         .time = interval,

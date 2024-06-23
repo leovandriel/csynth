@@ -49,9 +49,9 @@ static int knob_init(__U int count, __U Gen **args, void *context_)
 
 Func *knob_ctrl(int channel, int control)
 {
-    KnobContext initial = (KnobContext){
+    KnobContext initial = {
         .parent = {.handle_event = knob_handle_event},
-        .key = (MidiKey){
+        .key = {
             .channel = channel - 1,
             .control = control,
         },

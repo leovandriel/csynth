@@ -51,7 +51,7 @@ static void replay_free(__U int count, void *context_)
 
 Func *replay(Func *func, const char *filename)
 {
-    ReplayContext initial = (ReplayContext){
+    ReplayContext initial = {
         .filename = filename,
     };
     return func_create(replay_init, replay_eval, replay_free, sizeof(ReplayContext), &initial, FuncFlagNone, 1, func);

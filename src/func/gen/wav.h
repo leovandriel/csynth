@@ -31,7 +31,7 @@ static double wav_eval(__U int count, Gen **args, Eval eval, void *context_)
 
 Func *wav_samples(ReaderSamples samples, int channel, Func *factor)
 {
-    WavContext initial = (WavContext){
+    WavContext initial = {
         .samples = samples,
         .channel = channel,
     };

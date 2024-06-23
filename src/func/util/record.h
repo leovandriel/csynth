@@ -81,7 +81,7 @@ Func *record_args(const char *filename, int sample_rate, int count, ...)
 {
     va_list valist = {0};
     va_start(valist, count);
-    RecordContext initial = (RecordContext){
+    RecordContext initial = {
         .filename = filename,
         .sample_rate = sample_rate,
     };
@@ -94,7 +94,7 @@ Func *record_args(const char *filename, int sample_rate, int count, ...)
 
 Func *record_array(const char *filename, int sample_rate, int count, Func **args)
 {
-    RecordContext initial = (RecordContext){
+    RecordContext initial = {
         .filename = filename,
         .sample_rate = sample_rate,
     };

@@ -44,7 +44,7 @@ Func *print(const char *text, Func *input)
         return error_null(csErrorMemoryAlloc);
     }
     strncpy(copy, text, size);
-    PrintContext initial = (PrintContext){
+    PrintContext initial = {
         .text = copy,
     };
     return func_create(NULL, print_eval, print_free, sizeof(PrintContext), &initial, FuncFlagNone, 1, input);

@@ -32,7 +32,7 @@ static double truncate_eval(__U int count, __U Gen **args, Eval eval, void *cont
 
 Func *truncate(Func *input, Func *decay)
 {
-    TruncateContext initial = (TruncateContext){
+    TruncateContext initial = {
         .level = 1.0,
     };
     return func_create(NULL, truncate_eval, NULL, sizeof(TruncateContext), &initial, FuncFlagNone, 2, input, decay);
