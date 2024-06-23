@@ -15,6 +15,7 @@ typedef struct
 {
     Gen **channels;
     int count;
+    Eval eval;
 } Sampler;
 
 Sampler *sampler_create(int count, Func **roots, int sample_rate)
@@ -32,7 +33,7 @@ Sampler *sampler_create(int count, Func **roots, int sample_rate)
     }
     for (int index = 0; index < count; index++)
     {
-        Gen *channel = gen_create(roots[index], 1.0 / sample_rate);
+        Gen *channel = gen_create(roots[index]);
         if (channel == NULL)
         {
             for (int i = 0; i < index; i++)
@@ -45,7 +46,8 @@ Sampler *sampler_create(int count, Func **roots, int sample_rate)
         }
         channels[index] = channel;
     }
-    *sampler = (Sampler){.channels = channels, .count = count};
+    Eval eval = {.delta = 1.0 / sample_rate};
+    *sampler = (Sampler){.channels = channels, .count = count, .eval = eval};
     return sampler;
 }
 
@@ -55,7 +57,7 @@ void sampler_sample(Sampler *sampler, size_t count, sample_t *buffer)
     {
         for (int index = 0; index < sampler->count; index++)
         {
-            double output = gen_eval(sampler->channels[index]);
+            double output = gen_eval(sampler->channels[index], sampler->eval);
             double clip = output > 1.0 ? 1.0 : (output < -1.0 ? -1.0 : output);
             *(buffer++) = (sample_t)(clip * 32767);
         }

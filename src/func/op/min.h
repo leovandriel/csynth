@@ -13,12 +13,12 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-static double min_eval(int count, Gen **args, __U double delta, __U void *context)
+static double min_eval(int count, Gen **args, Eval eval, __U void *context)
 {
     double min = FLT_MAX;
     for (int i = 0; i < count; i++)
     {
-        double input = gen_eval(args[i]);
+        double input = gen_eval(args[i], eval);
         if (min > input)
         {
             min = input;

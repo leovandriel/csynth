@@ -10,10 +10,10 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-static double distortion_eval(__U int count, Gen **args, __U double delta, __U void *context_)
+static double distortion_eval(__U int count, Gen **args, Eval eval, __U void *context_)
 {
-    double input = gen_eval(args[0]);
-    double shape = gen_eval(args[1]);
+    double input = gen_eval(args[0], eval);
+    double shape = gen_eval(args[1], eval);
     double exp_shape = expm1(shape);
     return (((1 + exp_shape) * input) / (1 + exp_shape * fabs(input)));
 }

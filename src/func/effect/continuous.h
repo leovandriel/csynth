@@ -15,9 +15,9 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double continuous_eval(__U int count, Gen **args, __U double delta, __U void *context)
+static double continuous_eval(__U int count, Gen **args, Eval eval, __U void *context)
 {
-    return gen_eval(args[0]);
+    return gen_eval(args[0], eval);
 }
 
 Func *continuous(Func *input)

@@ -19,13 +19,13 @@ typedef struct
     double time;
 } WavContext;
 
-static double wav_eval(__U int count, Gen **args, double delta, void *context_)
+static double wav_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     WavContext *context = (WavContext *)context_;
-    double factor = gen_eval(args[0]);
+    double factor = gen_eval(args[0], eval);
     sample_t sample = reader_sample(&context->samples, context->time * factor, context->channel);
     double output = (double)sample / 32767;
-    context->time += delta;
+    context->time += eval.delta;
     return output;
 }
 

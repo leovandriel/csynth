@@ -12,12 +12,12 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-static double add_eval(int count, Gen **args, __U double delta, __U void *context)
+static double add_eval(int count, Gen **args, Eval eval, __U void *context)
 {
     double sum = 0;
     for (int i = 0; i < count; i++)
     {
-        sum += gen_eval(args[i]);
+        sum += gen_eval(args[i], eval);
     }
     return sum;
 }

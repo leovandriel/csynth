@@ -16,11 +16,11 @@ typedef struct
     double output;
 } LimitContext;
 
-static double limit_eval(__U int count, Gen **args, double delta, void *context_)
+static double limit_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     LimitContext *context = (LimitContext *)context_;
-    double input = gen_eval(args[0]);
-    double diff = gen_eval(args[1]) * delta;
+    double input = gen_eval(args[0], eval);
+    double diff = gen_eval(args[1], eval) * eval.delta;
     if (input < context->output - diff)
     {
         input = context->output - diff;

@@ -62,7 +62,7 @@ csError keyboard_event_remove(KeyboardEventContext *context)
     return csErrorNone;
 }
 
-csError keyboard_event_init(__U int count, __U Gen **args, __U double delta, void *context)
+csError keyboard_event_init(__U int count, __U Gen **args, void *context)
 {
     return keyboard_event_add((KeyboardEventContext *)context);
 }

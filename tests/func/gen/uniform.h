@@ -5,8 +5,9 @@ void test_uniform()
 {
     for (int i = 0; i < 100; i++)
     {
-        Gen *gen = gen_create(uniform(), .1);
-        assert_gen_range(gen, -1.0, 1.0);
+        Gen *gen = gen_create(uniform());
+        Eval eval = {.delta = 0.1};
+        assert_double_range(gen_eval(gen, eval), -1.0, 1.0);
         gen_free(gen);
     }
     func_free();

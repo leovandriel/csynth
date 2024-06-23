@@ -12,9 +12,9 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-static double sin_eval(__U int count, Gen **args, __U double delta, __U void *context)
+static double sin_eval(__U int count, Gen **args, Eval eval, __U void *context)
 {
-    double input = gen_eval(args[0]);
+    double input = gen_eval(args[0], eval);
     return sin(input);
 }
 

@@ -10,11 +10,11 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-static double smooth_eval(__U int count, Gen **args, __U double delta, __U void *context_)
+static double smooth_eval(__U int count, Gen **args, Eval eval, __U void *context_)
 {
-    double input = gen_eval(args[0]);
-    double edge0 = gen_eval(args[1]);
-    double edge1 = gen_eval(args[2]);
+    double input = gen_eval(args[0], eval);
+    double edge0 = gen_eval(args[1], eval);
+    double edge1 = gen_eval(args[2], eval);
     if (input <= edge0)
     {
         return 0.0;

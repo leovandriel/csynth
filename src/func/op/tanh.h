@@ -10,9 +10,9 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-static double tanh_eval(__U int count, Gen **args, __U double delta, __U void *context)
+static double tanh_eval(__U int count, Gen **args, Eval eval, __U void *context)
 {
-    double input = gen_eval(args[0]);
+    double input = gen_eval(args[0], eval);
     return tanh(input);
 }
 

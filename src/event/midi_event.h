@@ -86,7 +86,7 @@ csError midi_event_remove(MidiEventContext *context)
     return csErrorNone;
 }
 
-int midi_event_init(__U int count, __U Gen **args, __U double delta, void *context)
+int midi_event_init(__U int count, __U Gen **args, void *context)
 {
     csError error = midi_event_add((MidiEventContext *)context);
     return error_catch(error);

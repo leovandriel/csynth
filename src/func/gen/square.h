@@ -16,16 +16,16 @@ typedef struct
     double output;
 } SquareContext;
 
-static double square_eval(__U int count, Gen **args, double delta, void *context_)
+static double square_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     SquareContext *context = (SquareContext *)context_;
-    double span = 1.0 / (gen_eval(args[0]) * 2.0);
+    double span = 1.0 / (gen_eval(args[0], eval) * 2.0);
     if (context->time >= span)
     {
         context->time -= span;
         context->output = -context->output;
     }
-    context->time += delta;
+    context->time += eval.delta;
     return context->output;
 }
 

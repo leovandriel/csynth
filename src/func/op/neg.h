@@ -9,9 +9,9 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double neg_eval(__U int count, Gen **args, __U double delta, __U void *context)
+static double neg_eval(__U int count, Gen **args, Eval eval, __U void *context)
 {
-    double output = gen_eval(args[0]);
+    double output = gen_eval(args[0], eval);
     return -output;
 }
 

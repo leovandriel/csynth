@@ -14,11 +14,11 @@ typedef struct
     double time;
 } TimerContext;
 
-static double timer_eval(__U int count, __U Gen **args, double delta, void *context_)
+static double timer_eval(__U int count, __U Gen **args, Eval eval, void *context_)
 {
     TimerContext *context = (TimerContext *)context_;
     double output = context->time;
-    context->time += delta;
+    context->time += eval.delta;
     return output;
 }
 

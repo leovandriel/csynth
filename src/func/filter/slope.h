@@ -13,11 +13,11 @@ typedef struct
     double last;
 } SlopeContext;
 
-static double slope_eval(__U int count, Gen **args, double delta, void *context_)
+static double slope_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     SlopeContext *context = (SlopeContext *)context_;
-    double input = gen_eval(args[0]);
-    double slope = gen_eval(args[1]) * delta;
+    double input = gen_eval(args[0], eval);
+    double slope = gen_eval(args[1], eval) * eval.delta;
     double diff = input - context->last;
     if (diff > slope)
     {

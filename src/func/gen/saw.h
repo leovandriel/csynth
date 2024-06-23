@@ -15,12 +15,12 @@ typedef struct
     double output;
 } SawContext;
 
-static double saw_eval(__U int count, Gen **args, double delta, void *context_)
+static double saw_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     SawContext *context = (SawContext *)context_;
-    double frequency = gen_eval(args[0]);
+    double frequency = gen_eval(args[0], eval);
     double output = context->output;
-    context->output += 2.0 * frequency * delta;
+    context->output += 2.0 * frequency * eval.delta;
     if (context->output > 1.0)
     {
         context->output -= 2.0;

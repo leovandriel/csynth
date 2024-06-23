@@ -16,14 +16,14 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-static double adsr_eval(__U int count, Gen **args, __U double delta, __U void *context_)
+static double adsr_eval(__U int count, Gen **args, Eval eval, __U void *context_)
 {
-    double time = gen_eval(args[0]);
-    double attack = gen_eval(args[1]);
-    double decay = gen_eval(args[2]);
-    double sustain = gen_eval(args[3]);
-    double release = gen_eval(args[4]);
-    double duration = gen_eval(args[5]);
+    double time = gen_eval(args[0], eval);
+    double attack = gen_eval(args[1], eval);
+    double decay = gen_eval(args[2], eval);
+    double sustain = gen_eval(args[3], eval);
+    double release = gen_eval(args[4], eval);
+    double duration = gen_eval(args[5], eval);
     double output = 0.0;
     if (time < attack)
     {

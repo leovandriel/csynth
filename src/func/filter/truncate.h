@@ -17,16 +17,16 @@ typedef struct
     double level;
 } TruncateContext;
 
-static double truncate_eval(__U int count, __U Gen **args, __U double delta, void *context_)
+static double truncate_eval(__U int count, __U Gen **args, Eval eval, void *context_)
 {
     TruncateContext *context = (TruncateContext *)context_;
     if (context->level < FUNC_AUDIBLE)
     {
         return 0.0;
     }
-    double output = gen_eval(args[0]);
-    double decay = gen_eval(args[1]);
-    context->level = fmax(fabs(output), context->level * pow(decay, delta));
+    double output = gen_eval(args[0], eval);
+    double decay = gen_eval(args[1], eval);
+    context->level = fmax(fabs(output), context->level * pow(decay, eval.delta));
     return output * context->level;
 }
 

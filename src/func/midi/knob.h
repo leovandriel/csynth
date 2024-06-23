@@ -23,7 +23,7 @@ typedef struct
     double value;
 } KnobContext;
 
-static double knob_eval(__U int count, __U Gen **args, __U double delta, void *context_)
+static double knob_eval(__U int count, __U Gen **args, __U Eval eval, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
     return context->value;
@@ -39,7 +39,7 @@ static void knob_handle_event(__U double time, MidiType type, uint8_t channel, u
     }
 }
 
-static int knob_init(__U int count, __U Gen **args, __U double delta, void *context_)
+static int knob_init(__U int count, __U Gen **args, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
     state_event_broadcast(StateEventKeyTypeMidi, &context->key, StateEventValueTypeDouble, &context->value);

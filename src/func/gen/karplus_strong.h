@@ -19,12 +19,12 @@ typedef struct
     size_t index;
 } KarplusStrongContext;
 
-static double karplus_strong_eval(__U int count, Gen **args, double delta, void *context_)
+static double karplus_strong_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
-    double frequency = gen_eval(args[0]);
-    size_t size = (size_t)(1.0 / (delta * frequency) + 0.5);
-    double decay = pow(gen_eval(args[1]), 1 / (double)size);
+    double frequency = gen_eval(args[0], eval);
+    size_t size = (size_t)(1.0 / (eval.delta * frequency) + 0.5);
+    double decay = pow(gen_eval(args[1], eval), 1 / (double)size);
     context->index = buffer_resize(&context->buffer, size, context->index, fill_rand_1_1);
     size_t next = (context->index + 1) % size;
     double *buffer = context->buffer.samples;

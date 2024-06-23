@@ -16,10 +16,10 @@ typedef struct
     int muted;
 } MuteContext;
 
-static double mute_eval(__U int count, __U Gen **args, __U double delta, void *context_)
+static double mute_eval(__U int count, __U Gen **args, Eval eval, void *context_)
 {
     MuteContext *context = (MuteContext *)context_;
-    double output = gen_eval(args[0]);
+    double output = gen_eval(args[0], eval);
     return context->muted ? 0 : output;
 }
 
@@ -33,7 +33,7 @@ static void mute_handle_event(int key, void *context_)
     }
 }
 
-static int mute_init(__U int count, __U Gen **args, __U double delta, void *context_)
+static int mute_init(__U int count, __U Gen **args, void *context_)
 {
     MuteContext *context = (MuteContext *)context_;
     state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeBoolInv, &context->muted);

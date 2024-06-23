@@ -21,13 +21,13 @@ typedef struct
     int sample_rate;
 } RecordContext;
 
-static double record_eval(int count, Gen **args, __U double delta, void *context_)
+static double record_eval(int count, Gen **args, Eval eval, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
     double sum = 0;
     for (int channel = 0; channel < count; channel++)
     {
-        double output = gen_eval(args[channel]);
+        double output = gen_eval(args[channel], eval);
         double clip = output > 1.0 ? 1.0 : (output < -1.0 ? -1.0 : output);
         context->buffer[context->offset++] = (sample_t)(clip * 32767);
         if (context->offset == WRITER_BUFFER_SIZE)
@@ -41,7 +41,7 @@ static double record_eval(int count, Gen **args, __U double delta, void *context
     return sum;
 }
 
-static int record_init(int count, __U Gen **args, __U double delta, void *context_)
+static int record_init(int count, __U Gen **args, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
     FILE *file = fopen(context->filename, "wb");

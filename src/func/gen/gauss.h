@@ -10,7 +10,7 @@
 #include "../../core/gen.h"
 #include "../../util/rand.h"
 
-static double gauss_eval(__U int count, __U Gen **args, __U double delta, __U void *context)
+static double gauss_eval(__U int count, __U Gen **args, __U Eval eval, __U void *context)
 {
     return rand_gauss(0, 1);
 }

@@ -17,17 +17,17 @@ typedef struct
     double time;
 } DelayContext;
 
-static double delay_eval(__U int count, Gen **args, double delta, void *context_)
+static double delay_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     DelayContext *context = (DelayContext *)context_;
-    double span = gen_eval(args[1]);
+    double span = gen_eval(args[1], eval);
     double output = 0.0;
     while (context->time >= span)
     {
-        output = gen_eval(args[0]);
-        context->time -= delta;
+        output = gen_eval(args[0], eval);
+        context->time -= eval.delta;
     }
-    context->time += delta;
+    context->time += eval.delta;
     return output;
 }
 

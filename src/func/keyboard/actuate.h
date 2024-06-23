@@ -15,7 +15,7 @@ typedef struct
     int completed;
 } ActuateContext;
 
-static double actuate_eval(__U int count, __U Gen **args, __U double delta, void *context_)
+static double actuate_eval(__U int count, __U Gen **args, __U Eval eval, void *context_)
 {
     ActuateContext *context = (ActuateContext *)context_;
     if (!context->completed)

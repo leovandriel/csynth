@@ -12,12 +12,12 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-static double mul_eval(int count, Gen **args, __U double delta, __U void *context)
+static double mul_eval(int count, Gen **args, Eval eval, __U void *context)
 {
     double output = 1.0;
     for (int i = 0; i < count; i++)
     {
-        output *= gen_eval(args[i]);
+        output *= gen_eval(args[i], eval);
     }
     return output;
 }

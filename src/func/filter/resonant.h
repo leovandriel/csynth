@@ -17,13 +17,13 @@ typedef struct
     double x1, x2, y1, y2;
 } ResonantContext;
 
-static double resonant_eval(__U int count, Gen **args, double delta, void *context_)
+static double resonant_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     ResonantContext *context = (ResonantContext *)context_;
-    double input = gen_eval(args[0]);
-    double frequency = gen_eval(args[1]);
-    double q_factor = gen_eval(args[2]);
-    double omega = M_PI * 2 * frequency * delta;
+    double input = gen_eval(args[0], eval);
+    double frequency = gen_eval(args[1], eval);
+    double q_factor = gen_eval(args[2], eval);
+    double omega = M_PI * 2 * frequency * eval.delta;
     double alpha = sin(omega) / (2.0 * q_factor);
     double va0 = 1.0 + alpha;
     double va1 = -2.0 * sin(omega + M_PI_2);

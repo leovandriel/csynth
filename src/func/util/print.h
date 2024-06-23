@@ -17,10 +17,10 @@ typedef struct
     const char *text;
 } PrintContext;
 
-static double print_eval(__U int count, Gen **args, __U double delta, void *context_)
+static double print_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     PrintContext *context = (PrintContext *)context_;
-    double output = gen_eval(args[0]);
+    double output = gen_eval(args[0], eval);
     if ((output > FUNC_EPSILON || output < -FUNC_EPSILON) && context->text != NULL)
     {
         fprintf(stderr, "%s\n", context->text);

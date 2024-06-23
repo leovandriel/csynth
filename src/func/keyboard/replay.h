@@ -19,7 +19,7 @@ typedef struct
     double time;
 } ReplayContext;
 
-static double replay_eval(__U int count, Gen **args, double delta, void *context_)
+static double replay_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     ReplayContext *context = (ReplayContext *)context_;
     while (context->current && context->current->time <= context->time)
@@ -27,11 +27,11 @@ static double replay_eval(__U int count, Gen **args, double delta, void *context
         keyboard_event_broadcast(context->current->time, context->current->key);
         context->current = context->current->next;
     }
-    context->time += delta;
-    return gen_eval(args[0]);
+    context->time += eval.delta;
+    return gen_eval(args[0], eval);
 }
 
-static int replay_init(__U int count, __U Gen **args, __U double delta, void *context_)
+static int replay_init(__U int count, __U Gen **args, void *context_)
 {
     ReplayContext *context = (ReplayContext *)context_;
     csError error = key_list_read_filename(&context->list, context->filename);

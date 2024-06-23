@@ -33,7 +33,7 @@ void gen_free(Gen *gen)
     free_(gen);
 }
 
-Gen *gen_create(Func *func, double delta)
+Gen *gen_create(Func *func)
 {
     void *context = NULL;
     if (func->size > 0)
@@ -90,7 +90,7 @@ Gen *gen_create(Func *func, double delta)
     }
     for (int i = 0; i < func->count; i++)
     {
-        Gen *arg = gen_create(func->args[i], delta);
+        Gen *arg = gen_create(func->args[i]);
         if (arg == NULL)
         {
             for (int j = 0; j < i; j++)
@@ -106,7 +106,7 @@ Gen *gen_create(Func *func, double delta)
     }
     if (func->init_cb != NULL)
     {
-        func->init_cb(func->count, args, delta, context);
+        func->init_cb(func->count, args, context);
         if (context != NULL && reset != NULL)
         {
             memcpy(reset, context, func->size);
@@ -123,17 +123,16 @@ Gen *gen_create(Func *func, double delta)
     *gen = (Gen){
         .func = func,
         .args = args,
-        .delta = delta,
         .context = context,
         .reset = reset,
     };
     return gen;
 }
 
-double gen_eval(Gen *gen)
+double gen_eval(Gen *gen, Eval eval)
 {
     Func *func = gen->func;
-    return func->eval_cb(func->count, gen->args, gen->delta, gen->context);
+    return func->eval_cb(func->count, gen->args, eval, gen->context);
 }
 
 void gen_reset(Gen *gen)

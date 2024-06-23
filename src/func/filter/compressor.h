@@ -22,17 +22,17 @@ typedef struct
     double gain;
 } CompressorContext;
 
-static double compressor_eval(__U int count, Gen **args, double delta, void *context_)
+static double compressor_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     CompressorContext *context = (CompressorContext *)context_;
-    double input = gen_eval(args[0]);
-    double threshold = gen_eval(args[1]);
-    double ratio = gen_eval(args[2]);
-    double attack = gen_eval(args[3]);
-    double release = gen_eval(args[4]);
+    double input = gen_eval(args[0], eval);
+    double threshold = gen_eval(args[1], eval);
+    double ratio = gen_eval(args[2], eval);
+    double attack = gen_eval(args[3], eval);
+    double release = gen_eval(args[4], eval);
     double level = fabs(input);
     double target = level > threshold ? pow(threshold / level, ratio) : 1.0;
-    double coeff = -expm1(-delta / (target < context->gain ? attack : release));
+    double coeff = -expm1(-eval.delta / (target < context->gain ? attack : release));
     context->gain += (target - context->gain) * coeff;
     return input * context->gain;
 }

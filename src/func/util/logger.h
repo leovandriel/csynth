@@ -24,10 +24,10 @@ typedef struct
     size_t index;
 } LoggerContext;
 
-static double logger_eval(__U int count, Gen **args, double delta, void *context_)
+static double logger_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     LoggerContext *context = (LoggerContext *)context_;
-    double input = gen_eval(args[0]);
+    double input = gen_eval(args[0], eval);
     int dir_up = context->index > 0 && context->output < input;
     int dir_down = context->index > 0 && context->output > input;
     int dir = dir_up ? '/' : (dir_down ? '\\' : (context->index > 0 ? '-' : '.'));
@@ -64,7 +64,7 @@ static double logger_eval(__U int count, Gen **args, double delta, void *context
     if (context->index < context->count * context->step && context->index % context->step == 0)
     {
         const char *pass = at_zero ? "zero" : (at_min ? "min" : (at_max ? "max" : ""));
-        double time = (double)context->index * delta;
+        double time = (double)context->index * eval.delta;
         char buffer[100];
         snprintf(buffer, 100, "%f", frequency);
         const char *freq = frequency >= 0 ? buffer : "";

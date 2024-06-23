@@ -186,9 +186,9 @@ implement a function from scratch using [func_create](src/core/func.h). For
 example, the above can also be implemented as:
 
 ```c
-double step_filter(int count, Gen **args, double delta, void *context)
+double step_filter(int count, Gen **args, Eval eval, void *context)
 {
-    return round(gen_eval(args[0]) * 10) / 10;
+    return round(gen_eval(args[0], eval) * 10) / 10;
 }
 
 int main()

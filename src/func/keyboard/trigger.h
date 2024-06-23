@@ -17,7 +17,7 @@ typedef struct
     int reset;
 } TriggerContext;
 
-static double trigger_eval(__U int count, __U Gen **args, __U double delta, void *context_)
+static double trigger_eval(__U int count, __U Gen **args, Eval eval, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
     if (context->reset != 0)
@@ -25,7 +25,7 @@ static double trigger_eval(__U int count, __U Gen **args, __U double delta, void
         gen_reset(args[0]);
         context->reset = 0;
     }
-    return context->on ? gen_eval(args[0]) : 0;
+    return context->on ? gen_eval(args[0], eval) : 0;
 }
 
 static void trigger_handle_event(int key, void *context_)
@@ -39,7 +39,7 @@ static void trigger_handle_event(int key, void *context_)
     }
 }
 
-static int trigger_init(__U int count, __U Gen **args, __U double delta, void *context_)
+static int trigger_init(__U int count, __U Gen **args, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
     state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeTrigger, &context->on);

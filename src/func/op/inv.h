@@ -9,9 +9,9 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double inv_eval(__U int count, Gen **args, __U double delta, __U void *context)
+static double inv_eval(__U int count, Gen **args, Eval eval, __U void *context)
 {
-    double value = gen_eval(args[0]);
+    double value = gen_eval(args[0], eval);
     if (value < FUNC_EPSILON && value > -FUNC_EPSILON)
     {
         value = value >= 0 ? FUNC_EPSILON : -FUNC_EPSILON;

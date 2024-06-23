@@ -17,10 +17,10 @@ typedef struct
     wrap_callback callback;
 } WrapFilterContext;
 
-static double wrap_eval(__U int count, Gen **args, __U double delta, void *context_)
+static double wrap_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     WrapFilterContext *context = (WrapFilterContext *)context_;
-    return context->callback(gen_eval(args[0]), delta);
+    return context->callback(gen_eval(args[0], eval), eval.delta);
 }
 
 Func *wrap(Func *input, wrap_callback callback)

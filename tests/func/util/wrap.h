@@ -12,8 +12,9 @@ static double test_wrap_add(double input, double delta)
 void test_wrap()
 {
     Func *fun = wrap(_(3), test_wrap_add);
-    Gen *gen = gen_create(fun, 0.1);
-    assert_gen_equal(gen, 7);
+    Gen *gen = gen_create(fun);
+    Eval eval = {.delta = 0.1};
+    assert_double_equal(gen_eval(gen, eval), 7);
     gen_free(gen);
     func_free();
 }

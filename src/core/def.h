@@ -19,8 +19,13 @@ typedef enum
     FuncFlagSkipReset = 1 << 2,
 } FuncFlag;
 
-typedef double (*eval_callback)(int count, Gen **args, double delta, void *context);
-typedef int (*init_callback)(int count, Gen **args, double delta, void *context);
+typedef struct
+{
+    double delta;
+} Eval;
+
+typedef double (*eval_callback)(int count, Gen **args, Eval eval, void *context);
+typedef int (*init_callback)(int count, Gen **args, void *context);
 typedef void (*free_callback)(int count, void *context);
 
 // Represents a function (R -> Rn) that takes one or more inputs and outputs a single value.
@@ -41,7 +46,6 @@ struct Gen
 {
     Func *func;
     Gen **args;
-    double delta;
     void *context;
     void *reset;
 };

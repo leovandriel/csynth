@@ -23,6 +23,7 @@
         }                                                      \
         assert(long_equal(__a, __b));                          \
     } while (0)
+
 #define assert_double_equal(_a, _b)                                                   \
     do                                                                                \
     {                                                                                 \
@@ -33,6 +34,7 @@
         }                                                                             \
         assert(double_equal(__a, __b));                                               \
     } while (0)
+
 #define assert_double_range(_a, _b, _c)                                                        \
     do                                                                                         \
     {                                                                                          \
@@ -44,9 +46,6 @@
         assert(double_range(__a, __b, __c));                                                   \
     } while (0)
 
-#define assert_gen_equal(_gen, _value) assert_double_equal(gen_eval(_gen), _value)
-#define assert_gen_range(_gen, _a, _b) assert_double_range(gen_eval(_gen), _a, _b)
-
 #define assert_msg(_cond, _msg)            \
     do                                     \
     {                                      \
@@ -57,12 +56,12 @@
         assert(_cond);                     \
     } while (0)
 
-void print_assert_gen_equal(Gen *gen)
+void print_assert_gen_equal(Gen *gen, Eval eval)
 {
     fprintf(stdout, "\n");
     for (int i = 0; i < 12; i++)
     {
-        fprintf(stdout, "    assert_gen_equal(gen, %.16f);\n", gen_eval(gen));
+        fprintf(stdout, "    assert_double_equal(gen_eval(gen, eval), %.16f);\n", gen_eval(gen, eval));
     }
     fprintf(stdout, "\n");
 }

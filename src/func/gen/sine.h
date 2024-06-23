@@ -18,11 +18,11 @@ typedef struct
     double frequency;
 } SineContext;
 
-static double sine_eval(__U int count, Gen **args, double delta, void *context_)
+static double sine_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     SineContext *context = (SineContext *)context_;
-    double frequency = gen_eval(args[0]);
-    double step = M_PI * 2 * frequency * delta;
+    double frequency = gen_eval(args[0], eval);
+    double step = M_PI * 2 * frequency * eval.delta;
     if (frequency > FUNC_EPSILON)
     {
         context->phase *= context->frequency / frequency;

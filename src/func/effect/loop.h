@@ -15,17 +15,17 @@ typedef struct
     double time;
 } LoopContext;
 
-static double loop_eval(__U int count, Gen **args, double delta, void *context_)
+static double loop_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     LoopContext *context = (LoopContext *)context_;
-    double duration = gen_eval(args[1]);
+    double duration = gen_eval(args[1], eval);
     if (context->time >= duration)
     {
         context->time -= duration;
         gen_reset(args[0]);
     }
-    double output = gen_eval(args[0]);
-    context->time += delta;
+    double output = gen_eval(args[0], eval);
+    context->time += eval.delta;
     return output;
 }
 
