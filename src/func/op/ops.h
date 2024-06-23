@@ -31,8 +31,11 @@ Func *clamp_(Func *input, double min, double max) { return clamp(input, const_(m
 Func *sub(Func *lhs, Func *rhs) { return add(lhs, neg(rhs)); }
 Func *sub_(Func *lhs, double rhs) { return sub(lhs, const_(rhs)); }
 
-Func *linear_op(Func *input, Func *left, Func *right, Func *span) { return add(mul(input, dvd(sub(right, left), span)), left); }
+Func *linear_op(Func *input, Func *left, Func *right, Func *span) { return add(mul(sub(right, left), dvd(input, span)), left); }
 Func *linear_op_(Func *input, double left, double right, double span) { return linear_op(input, const_(left), const_(right), const_(span)); }
+
+Func *exponent_op(Func *input, Func *left, Func *right, Func *span) { return mul(pow_op(dvd(right, left), dvd(input, span)), left); }
+Func *exponent_op_(Func *input, double left, double right, double span) { return exponent_op(input, const_(left), const_(right), const_(span)); }
 
 Func *ar(Func *input) { return sub_(mul_(input, 2), 1); }
 

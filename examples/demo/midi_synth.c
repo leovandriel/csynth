@@ -9,9 +9,9 @@ func note(func frequency)
 
 int main()
 {
-    func lpf_knob = knob_exp_(1, 70, 40000, 1);
+    func lpf_knob = knob_ex_(1, 70, 40000, 1);
     display_midi(1, 70, "lpf");
-    func hpf_knob = knob_exp_(1, 71, 1, 40000);
+    func hpf_knob = knob_ex_(1, 71, 1, 40000);
     display_midi(1, 71, "hpf");
     func distortion_knob = knob_(1, 72, 0, 10);
     display_midi(1, 72, "distort");

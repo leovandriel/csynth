@@ -31,6 +31,11 @@ Func *linear_env_(double left, double right, double span) { return linear_env(co
 Func *linear(Func *input, Func *left, Func *right, Func *span) { return mul(input, linear_env(left, right, span)); }
 Func *linear_(Func *input, double left, double right, double span) { return linear(input, const_(left), const_(right), const_(span)); }
 
+Func *exponent_env(Func *left, Func *right, Func *span) { return exponent_op(timer(), left, right, span); }
+Func *exponent_env_(double left, double right, double span) { return exponent_env(const_(left), const_(right), const_(span)); }
+Func *exponent(Func *input, Func *left, Func *right, Func *span) { return mul(input, exponent_env(left, right, span)); }
+Func *exponent_(Func *input, double left, double right, double span) { return exponent(input, const_(left), const_(right), const_(span)); }
+
 Func *step_env(Func *edge) { return step_op(timer(), edge); }
 Func *step_env_(double edge) { return step_env(const_(edge)); }
 Func *step(Func *input, Func *edge) { return mul(input, step_env(edge)); }
