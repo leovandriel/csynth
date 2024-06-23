@@ -9,18 +9,12 @@ func note(func frequency)
 
 int main()
 {
-    func lpf_knob = knob_ex_(1, 70, 40000, 1);
-    display_midi(1, 70, "lpf");
-    func hpf_knob = knob_ex_(1, 71, 1, 40000);
-    display_midi(1, 71, "hpf");
-    func distortion_knob = knob_(1, 72, 0, 10);
-    display_midi(1, 72, "distort");
-    func reverb_time = knob_(1, 75, 0, .5);
-    display_midi(1, 75, "rev-time");
-    func reverb_decay = knob_(1, 76, 0, .99);
-    display_midi(1, 76, "rev-decay");
-    func post_gain = knob_(1, 77, 1, 10);
-    display_midi(1, 77, "gain");
+    func lpf_knob = display(knob_ex_(1, 70, 40000, 1), "lpf");
+    func hpf_knob = display(knob_ex_(1, 71, 1, 40000), "hpf");
+    func distortion_knob = display(knob_(1, 72, 0, 10), "distort");
+    func reverb_time = display(knob_(1, 75, 0, .5), "rev-time");
+    func reverb_decay = display(knob_(1, 76, 0, .99), "rev-decay");
+    func post_gain = display(knob_(1, 77, 1, 10), "gain");
     func keys = midi_keyboard(1, key, note, C0);
     func keys_filtered = mul(reverb(lpf(hpf(distortion(keys, distortion_knob), hpf_knob), lpf_knob), reverb_time, reverb_decay), post_gain);
     func drums = add(pad(10, 40, snare()), pad(10, 41, bdrum()), pad(10, 42, hihat()));

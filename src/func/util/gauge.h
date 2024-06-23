@@ -1,0 +1,58 @@
+//
+// gauge.h - Broadcasts the output value for display
+//
+#ifndef CSYNTH_GAUGE_H
+#define CSYNTH_GAUGE_H
+
+#include <stdio.h>
+
+#include "../../core/func.h"
+#include "../../core/gen.h"
+#include "../../event/state_event.h"
+#include "../../ui/display.h"
+#include "../../util/config.h"
+
+typedef struct
+{
+    const char *label;
+    double last;
+    double time;
+    double interval;
+} GaugeContext;
+
+static double gauge_eval(__U int count, Gen **args, double delta, void *context_)
+{
+    GaugeContext *context = (GaugeContext *)context_;
+    double input = gen_eval(args[0]);
+    if (context->time >= context->interval && input != context->last)
+    {
+        state_event_broadcast(StateEventKeyTypeLabel, context->label, StateEventValueTypeDouble, &input);
+        context->last = input;
+        context->time = 0;
+    }
+    context->time += delta;
+    return input;
+}
+
+Func *gauge_interval(Func *input, const char *label, double interval)
+{
+    GaugeContext initial = (GaugeContext){
+        .label = label,
+        .interval = interval,
+        .time = interval,
+    };
+    display_label(label);
+    return func_create(NULL, gauge_eval, NULL, sizeof(GaugeContext), &initial, FuncFlagNone, 1, input);
+}
+
+Func *gauge(Func *input, const char *label)
+{
+    return gauge_interval(input, label, CONFIG_DEFAULT_DISPLAY_INTERVAL);
+}
+
+Func *display(Func *input, const char *label)
+{
+    return gauge(input, label);
+}
+
+#endif // CSYNTH_GAUGE_H

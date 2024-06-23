@@ -52,8 +52,9 @@ void display_clear()
     }
 }
 
-void display_set_value(DisplayElement *list, StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value)
+int display_set_value(DisplayElement *list, StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value)
 {
+    int modified = 0;
     for (DisplayElement *element = list; element != NULL; element = element->next)
     {
         if (element->key_type == key_type)
@@ -69,9 +70,15 @@ void display_set_value(DisplayElement *list, StateEventKeyType key_type, void *k
                 }
                 break;
             case StateEventKeyTypeMidi:
+                if (element->midi_key.control != ((MidiKey *)key)->control || element->midi_key.channel != ((MidiKey *)key)->channel)
+                {
+                    continue;
+                }
+                break;
+            case StateEventKeyTypeLabel:
             {
-                MidiKey midi_key = *(MidiKey *)key;
-                if (element->midi_key.control != midi_key.control || element->midi_key.channel != midi_key.channel)
+                const char *label = (const char *)key;
+                if (strcmp(element->label, label) != 0)
                 {
                     continue;
                 }
@@ -81,7 +88,7 @@ void display_set_value(DisplayElement *list, StateEventKeyType key_type, void *k
             switch (value_type)
             {
             case StateEventValueTypeNone:
-                break;
+                continue;
             case StateEventValueTypeBool:
             case StateEventValueTypeBoolInv:
             case StateEventValueTypeTrigger:
@@ -97,8 +104,10 @@ void display_set_value(DisplayElement *list, StateEventKeyType key_type, void *k
                 element->selected = value ? *(int *)value : 0;
                 break;
             }
+            modified = 1;
         }
     }
+    return modified;
 }
 
 void display_render_label(DisplayElement *element)
@@ -118,6 +127,9 @@ void display_render_label(DisplayElement *element)
             break;
         case StateEventKeyTypeMidi:
             fprintf(stdout, element->selected ? "{%d:%d}" : " %d:%d ", element->midi_key.channel, element->midi_key.control);
+            break;
+        case StateEventKeyTypeLabel:
+            fprintf(stdout, element->selected ? "{%s}" : " %s ", "?");
             break;
         }
     }
@@ -165,14 +177,20 @@ void display_render(DisplayElement *list)
     }
 }
 
-void display_handle_event(StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value, __U void *context)
+void display_handle_event(StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value, __U void *context)
 {
-    display_set_value(display_element_list, key_type, key, value_type, value);
-    display_render(display_element_list);
+    if (display_set_value(display_element_list, key_type, key, value_type, value))
+    {
+        display_render(display_element_list);
+    }
 }
 
 csError display_show()
 {
+    if (display_event_context.handle_event != NULL)
+    {
+        return error_type_message(csErrorInit, "Display already shown");
+    }
     display_event_context.handle_event = display_handle_event;
     csError error = state_event_add(&display_event_context);
     if (error != csErrorNone)
@@ -185,11 +203,16 @@ csError display_show()
 
 csError display_hide()
 {
+    if (display_event_context.handle_event == NULL)
+    {
+        return error_type_message(csErrorInit, "Display not shown");
+    }
     csError error = state_event_remove(&display_event_context);
     if (error != csErrorNone)
     {
         return error;
     }
+    display_event_context.handle_event = NULL;
     fprintf(stdout, "\r\e[K");
     return csErrorNone;
 }
@@ -221,6 +244,11 @@ csError display_midi(int channel, int control, const char *label)
 }
 
 csError display_midi_(int channel, int pitch) { return display_midi(channel, pitch, NULL); }
+
+csError display_label(const char *label)
+{
+    return display_element((DisplayElement){.key_type = StateEventKeyTypeLabel, .label = label});
+}
 
 csError display_row(const char *keys)
 {

@@ -9,6 +9,14 @@
 
 typedef enum
 {
+    StateEventKeyTypeNone = 0,
+    StateEventKeyTypeKeyboard = 1,
+    StateEventKeyTypeMidi = 2,
+    StateEventKeyTypeLabel = 3,
+} StateEventKeyType;
+
+typedef enum
+{
     StateEventValueTypeNone = 0,
     StateEventValueTypeBool = 1,
     StateEventValueTypeBoolInv = 2,
@@ -18,21 +26,14 @@ typedef enum
     StateEventValueTypeSelected = 6,
 } StateEventValueType;
 
-typedef enum
-{
-    StateEventKeyTypeNone = 0,
-    StateEventKeyTypeKeyboard = 1,
-    StateEventKeyTypeMidi = 2,
-} StateEventKeyType;
-
-typedef void (*state_handle_event)(StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value, void *context);
+typedef void (*state_handle_event)(StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value, void *context);
 
 typedef struct
 {
     StateEventKeyType key_type;
-    void *key;
+    const void *key;
     StateEventValueType value_type;
-    void *value;
+    const void *value;
 } StateEvent;
 
 typedef struct
@@ -41,7 +42,7 @@ typedef struct
     state_handle_event handle_event;
 } StateEventContext;
 
-void state_event_broadcast(StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value)
+void state_event_broadcast(StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value)
 {
     StateEvent event = {.key_type = key_type, .key = key, .value_type = value_type, .value = value};
     event_broadcast(EventTypeState, &event);

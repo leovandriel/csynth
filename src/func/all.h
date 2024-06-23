@@ -63,6 +63,7 @@
 #include "./op/smooth.h"
 #include "./op/step.h"
 #include "./op/tanh.h"
+#include "./util/gauge.h"
 #include "./util/logger.h"
 #include "./util/print.h"
 #include "./util/record.h"
