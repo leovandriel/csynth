@@ -13,7 +13,7 @@ typedef struct
     double last;
 } SlopeContext;
 
-static double slope_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
+static double slope_eval(__U int count, Gen **args, double delta, void *context_)
 {
     SlopeContext *context = (SlopeContext *)context_;
     double input = gen_eval(args[0]);

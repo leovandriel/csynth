@@ -21,7 +21,7 @@ typedef struct
     size_t index;
 } ChorusContext;
 
-static double chorus_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
+static double chorus_eval(__U int count, Gen **args, double delta, void *context_)
 {
     ChorusContext *context = (ChorusContext *)context_;
     double input = gen_eval(args[0]);
@@ -40,7 +40,7 @@ static double chorus_eval(__attribute__((unused)) int count, Gen **args, double 
     return output;
 }
 
-static void chorus_free(__attribute__((unused)) int count, void *context_)
+static void chorus_free(__U int count, void *context_)
 {
     ChorusContext *context = (ChorusContext *)context_;
     buffer_free(&context->buffer);

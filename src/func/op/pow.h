@@ -12,7 +12,7 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-static double pow_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double pow_eval(__U int count, Gen **args, __U double delta, __U void *context)
 {
     double base = gen_eval(args[0]);
     double exponent = gen_eval(args[1]);

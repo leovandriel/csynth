@@ -25,7 +25,7 @@ typedef struct
     int active;
 } StepperContext;
 
-static double stepper_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static double stepper_eval(__U int count, __U Gen **args, __U double delta, void *context_)
 {
     StepperContext *context = (StepperContext *)context_;
     return context->value;
@@ -78,7 +78,7 @@ static void stepper_handle_event(int key, void *context_)
     }
 }
 
-static int stepper_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int stepper_init(__U int count, __U Gen **args, __U double delta, void *context_)
 {
     StepperContext *context = (StepperContext *)context_;
     state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeDouble, &context->value);

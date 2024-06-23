@@ -18,7 +18,7 @@ typedef struct
     int play_reset;
 } PauseContext;
 
-static double pause_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static double pause_eval(__U int count, __U Gen **args, __U double delta, void *context_)
 {
     PauseContext *context = (PauseContext *)context_;
     if (context->reset != 0)
@@ -40,7 +40,7 @@ static void pause_handle_event(int key, void *context_)
     }
 }
 
-static int pause_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int pause_init(__U int count, __U Gen **args, __U double delta, void *context_)
 {
     PauseContext *context = (PauseContext *)context_;
     state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeBool, &context->paused);

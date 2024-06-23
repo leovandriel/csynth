@@ -19,7 +19,7 @@ typedef struct
     size_t index;
 } KarplusStrongContext;
 
-static double karplus_strong_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
+static double karplus_strong_eval(__U int count, Gen **args, double delta, void *context_)
 {
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
     double frequency = gen_eval(args[0]);
@@ -34,7 +34,7 @@ static double karplus_strong_eval(__attribute__((unused)) int count, Gen **args,
     return output;
 }
 
-static void karplus_strong_free(__attribute__((unused)) int count, void *context_)
+static void karplus_strong_free(__U int count, void *context_)
 {
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
     buffer_free(&context->buffer);

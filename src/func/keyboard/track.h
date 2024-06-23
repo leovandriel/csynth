@@ -17,7 +17,7 @@ typedef struct
     void *handler;
 } TrackContext;
 
-static double track_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context_)
+static double track_eval(__U int count, Gen **args, __U double delta, __U void *context_)
 {
     // TODO(leo): consider converting to non-func
     return gen_eval(args[0]);
@@ -38,7 +38,7 @@ static void track_handle_event(EventType type, void *event_, void *context_)
     }
 }
 
-static int track_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int track_init(__U int count, __U Gen **args, __U double delta, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
     void *handler = event_add_handler(track_handle_event, context);
@@ -51,7 +51,7 @@ static int track_init(__attribute__((unused)) int count, __attribute__((unused))
     return 0;
 }
 
-static void track_free(__attribute__((unused)) int count, void *context_)
+static void track_free(__U int count, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
     csError error = event_remove_handler(context->handler);

@@ -16,7 +16,7 @@ typedef struct
     int reset;
 } KeyContext;
 
-static double key_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static double key_eval(__U int count, __U Gen **args, __U double delta, void *context_)
 {
     KeyContext *context = (KeyContext *)context_;
     if (context->reset != 0)
@@ -31,7 +31,7 @@ static double key_eval(__attribute__((unused)) int count, __attribute__((unused)
     return 0.;
 }
 
-static void key_handle_event(__attribute__((unused)) double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
+static void key_handle_event(__U double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
 {
     KeyContext *context = (KeyContext *)context_;
     if ((type == MidiTypeNoteOff || type == MidiTypeNoteOn) && channel == context->key.channel && data1 == context->key.control)
@@ -41,7 +41,7 @@ static void key_handle_event(__attribute__((unused)) double time, MidiType type,
     }
 }
 
-static int key_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int key_init(__U int count, __U Gen **args, __U double delta, void *context_)
 {
     KeyContext *context = (KeyContext *)context_;
     csError error = midi_event_add(&context->parent);

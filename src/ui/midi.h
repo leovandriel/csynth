@@ -89,7 +89,7 @@ csError midi_terminate(MidiContext *context)
     return csErrorNone;
 }
 
-void midi_loop(__attribute__((unused)) double duration, int exit_key)
+void midi_loop(__U double duration, int exit_key)
 {
     MidiContext context = {0};
     csError error = midi_initialize(&context);

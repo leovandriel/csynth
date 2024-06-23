@@ -17,7 +17,7 @@ typedef struct
     wrap_callback callback;
 } WrapFilterContext;
 
-static double wrap_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, void *context_)
+static double wrap_eval(__U int count, Gen **args, __U double delta, void *context_)
 {
     WrapFilterContext *context = (WrapFilterContext *)context_;
     return context->callback(gen_eval(args[0]), delta);

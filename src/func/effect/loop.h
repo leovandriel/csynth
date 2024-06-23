@@ -15,7 +15,7 @@ typedef struct
     double time;
 } LoopContext;
 
-static double loop_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
+static double loop_eval(__U int count, Gen **args, double delta, void *context_)
 {
     LoopContext *context = (LoopContext *)context_;
     double duration = gen_eval(args[1]);

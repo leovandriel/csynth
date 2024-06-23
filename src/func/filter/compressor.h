@@ -22,7 +22,7 @@ typedef struct
     double gain;
 } CompressorContext;
 
-static double compressor_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
+static double compressor_eval(__U int count, Gen **args, double delta, void *context_)
 {
     CompressorContext *context = (CompressorContext *)context_;
     double input = gen_eval(args[0]);

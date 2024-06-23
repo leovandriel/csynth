@@ -62,12 +62,12 @@ csError keyboard_event_remove(KeyboardEventContext *context)
     return csErrorNone;
 }
 
-csError keyboard_event_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context)
+csError keyboard_event_init(__U int count, __U Gen **args, __U double delta, void *context)
 {
     return keyboard_event_add((KeyboardEventContext *)context);
 }
 
-void keyboard_event_free(__attribute__((unused)) int count, void *context)
+void keyboard_event_free(__U int count, void *context)
 {
     csError error = keyboard_event_remove((KeyboardEventContext *)context);
     error_catch(error);

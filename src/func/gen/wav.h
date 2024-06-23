@@ -19,7 +19,7 @@ typedef struct
     double time;
 } WavContext;
 
-static double wav_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
+static double wav_eval(__U int count, Gen **args, double delta, void *context_)
 {
     WavContext *context = (WavContext *)context_;
     double factor = gen_eval(args[0]);

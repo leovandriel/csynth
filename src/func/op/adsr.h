@@ -16,7 +16,7 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-static double adsr_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context_)
+static double adsr_eval(__U int count, Gen **args, __U double delta, __U void *context_)
 {
     double time = gen_eval(args[0]);
     double attack = gen_eval(args[1]);

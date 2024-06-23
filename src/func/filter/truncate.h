@@ -17,7 +17,7 @@ typedef struct
     double level;
 } TruncateContext;
 
-static double truncate_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static double truncate_eval(__U int count, __U Gen **args, __U double delta, void *context_)
 {
     TruncateContext *context = (TruncateContext *)context_;
     if (context->level < FUNC_AUDIBLE)

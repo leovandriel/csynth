@@ -15,7 +15,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double continuous_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double continuous_eval(__U int count, Gen **args, __U double delta, __U void *context)
 {
     return gen_eval(args[0]);
 }

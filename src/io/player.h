@@ -22,7 +22,7 @@ typedef struct
     int exit_key;
 } PlayerConfig;
 
-void player_event_loop_no_terminal(double duration, __attribute__((unused)) int exit_key)
+void player_event_loop_no_terminal(double duration, __U int exit_key)
 {
     if (duration <= 0)
     {
@@ -31,7 +31,7 @@ void player_event_loop_no_terminal(double duration, __attribute__((unused)) int 
     Pa_Sleep((long)(duration * 1000));
 }
 
-static int player_callback(__attribute__((unused)) const void *input, void *output_, size_t count, __attribute__((unused)) const PaStreamCallbackTimeInfo *info, __attribute__((unused)) PaStreamCallbackFlags flags, void *data)
+static int player_callback(__U const void *input, void *output_, size_t count, __U const PaStreamCallbackTimeInfo *info, __U PaStreamCallbackFlags flags, void *data)
 {
     sampler_sample((Sampler *)data, count, (int16_t *)output_);
     return paContinue;

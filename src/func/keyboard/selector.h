@@ -17,7 +17,7 @@ typedef struct
     int selected;
 } SelectorContext;
 
-static double selector_eval(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static double selector_eval(__U int count, __U Gen **args, __U double delta, void *context_)
 {
     SelectorContext *context = (SelectorContext *)context_;
     return gen_eval(args[context->selected]);
@@ -33,7 +33,7 @@ static void selector_handle_event(int key, void *context_)
     }
 }
 
-static int selector_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int selector_init(__U int count, __U Gen **args, __U double delta, void *context_)
 {
     SelectorContext *context = (SelectorContext *)context_;
     state_event_broadcast(StateEventKeyTypeKeyboard, &context->key, StateEventValueTypeInt, &context->selected);

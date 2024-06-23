@@ -9,7 +9,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double inv_eval(__attribute__((unused)) int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double inv_eval(__U int count, Gen **args, __U double delta, __U void *context)
 {
     double value = gen_eval(args[0]);
     if (value < FUNC_EPSILON && value > -FUNC_EPSILON)

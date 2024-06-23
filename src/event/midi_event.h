@@ -86,13 +86,13 @@ csError midi_event_remove(MidiEventContext *context)
     return csErrorNone;
 }
 
-int midi_event_init(__attribute__((unused)) int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context)
+int midi_event_init(__U int count, __U Gen **args, __U double delta, void *context)
 {
     csError error = midi_event_add((MidiEventContext *)context);
     return error_catch(error);
 }
 
-void midi_event_free(__attribute__((unused)) int count, void *context)
+void midi_event_free(__U int count, void *context)
 {
     csError error = midi_event_remove((MidiEventContext *)context);
     error_catch(error);

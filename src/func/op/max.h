@@ -13,7 +13,7 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-static double max_eval(int count, Gen **args, __attribute__((unused)) double delta, __attribute__((unused)) void *context)
+static double max_eval(int count, Gen **args, __U double delta, __U void *context)
 {
     double max = -FLT_MAX;
     for (int i = 0; i < count; i++)

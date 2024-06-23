@@ -17,7 +17,7 @@ typedef struct
     double output;
 } LowPassContext;
 
-static double lpf_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
+static double lpf_eval(__U int count, Gen **args, double delta, void *context_)
 {
     LowPassContext *context = (LowPassContext *)context_;
     double input = gen_eval(args[0]);

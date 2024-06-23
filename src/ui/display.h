@@ -165,7 +165,7 @@ void display_render(DisplayElement *list)
     }
 }
 
-void display_handle_event(StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value, __attribute__((unused)) void *context)
+void display_handle_event(StateEventKeyType key_type, void *key, StateEventValueType value_type, void *value, __U void *context)
 {
     display_set_value(display_element_list, key_type, key, value_type, value);
     display_render(display_element_list);

@@ -13,6 +13,7 @@ typedef struct Gen Gen;
 #define FUNC_FLAG_DEFAULT (0)
 #define FUNC_FLAG_STOP_RESET (1 << 1)
 #define FUNC_FLAG_SKIP_RESET (1 << 2)
+#define __U __attribute__((unused))
 
 typedef double (*eval_callback)(int count, Gen **args, double delta, void *context);
 typedef int (*init_callback)(int count, Gen **args, double delta, void *context);

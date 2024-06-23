@@ -62,7 +62,7 @@ static double seq_eval_rel(int count, Gen **args, double delta, void *context_)
     return output;
 }
 
-static double seq_eval_seq(int count, Gen **args, __attribute__((unused)) double delta, void *context_)
+static double seq_eval_seq(int count, Gen **args, __U double delta, void *context_)
 {
     SeqContext *context = (SeqContext *)context_;
     double output = gen_eval(args[context->index]);

@@ -21,7 +21,7 @@ typedef struct
     int sample_rate;
 } RecordContext;
 
-static double record_eval(int count, Gen **args, __attribute__((unused)) double delta, void *context_)
+static double record_eval(int count, Gen **args, __U double delta, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
     double sum = 0;
@@ -41,7 +41,7 @@ static double record_eval(int count, Gen **args, __attribute__((unused)) double 
     return sum;
 }
 
-static int record_init(int count, __attribute__((unused)) Gen **args, __attribute__((unused)) double delta, void *context_)
+static int record_init(int count, __U Gen **args, __U double delta, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
     FILE *file = fopen(context->filename, "wb");

@@ -20,7 +20,7 @@ typedef struct
     size_t index;
 } ReverbContext;
 
-static double reverb_eval(__attribute__((unused)) int count, Gen **args, double delta, void *context_)
+static double reverb_eval(__U int count, Gen **args, double delta, void *context_)
 {
     ReverbContext *context = (ReverbContext *)context_;
     double input = gen_eval(args[0]);
@@ -38,7 +38,7 @@ static double reverb_eval(__attribute__((unused)) int count, Gen **args, double 
     return output;
 }
 
-static void reverb_free(__attribute__((unused)) int count, void *context_)
+static void reverb_free(__U int count, void *context_)
 {
     ReverbContext *context = (ReverbContext *)context_;
     buffer_free(&context->buffer);

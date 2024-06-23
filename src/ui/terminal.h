@@ -31,7 +31,7 @@ void terminal_restore(struct termios term)
     tcsetattr(fileno(stdin), TCSANOW, &term);
 }
 
-static void terminal_handler(__attribute__((unused)) int signal)
+static void terminal_handler(__U int signal)
 {
     terminal_signal = 1;
 }
