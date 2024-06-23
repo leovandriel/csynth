@@ -9,7 +9,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../io/writer.h"
-#include "../../util/config.h"
+#include "../../util/default.h"
 
 typedef struct
 {
@@ -101,9 +101,9 @@ Func *record_array(const char *filename, int sample_rate, int count, Func **args
     return func_create_array(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FuncFlagNone, count, args);
 }
 
-Func *record(Func *input, const char *filename) { return record_channels(filename, CONFIG_DEFAULT_SAMPLE_RATE, input); }
-Func *record_(Func *input) { return record(input, CONFIG_DEFAULT_WAV_FILENAME); }
-Func *record_stereo(Func *left, Func *right, const char *filename) { return record_channels(filename, CONFIG_DEFAULT_SAMPLE_RATE, left, right); }
-Func *record_stereo_(Func *left, Func *right) { return record_stereo(left, right, CONFIG_DEFAULT_WAV_FILENAME); }
+Func *record(Func *input, const char *filename) { return record_channels(filename, DEFAULT_SAMPLE_RATE, input); }
+Func *record_(Func *input) { return record(input, DEFAULT_WAV_FILENAME); }
+Func *record_stereo(Func *left, Func *right, const char *filename) { return record_channels(filename, DEFAULT_SAMPLE_RATE, left, right); }
+Func *record_stereo_(Func *left, Func *right) { return record_stereo(left, right, DEFAULT_WAV_FILENAME); }
 
 #endif // CSYNTH_RECORD_H

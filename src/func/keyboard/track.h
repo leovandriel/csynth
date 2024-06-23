@@ -8,7 +8,7 @@
 #include "../../core/gen.h"
 #include "../../event/keyboard_event.h"
 #include "../../mem/key_list.h"
-#include "../../util/config.h"
+#include "../../util/default.h"
 
 typedef struct
 {
@@ -71,7 +71,7 @@ Func *track(Func *func, const char *filename)
 
 Func *track_(Func *func)
 {
-    return track(func, CONFIG_DEFAULT_REC_FILENAME);
+    return track(func, DEFAULT_REC_FILENAME);
 }
 
 #endif // CSYNTH_TRACK_H

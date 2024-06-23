@@ -157,14 +157,26 @@ csError player_play_with_cleanup(int count, Func **channels, PlayerConfig config
     return error;
 }
 
-const PlayerConfig player_config_terminal = {.loop = terminal_loop, .duration = 0, .sample_rate = CONFIG_DEFAULT_SAMPLE_RATE, .exit_key = CONFIG_DEFAULT_EXIT_KEY};
-const PlayerConfig player_config_no_terminal = {.loop = player_event_loop_no_terminal, .duration = 0, .sample_rate = CONFIG_DEFAULT_SAMPLE_RATE, .exit_key = CONFIG_DEFAULT_EXIT_KEY};
+const PlayerConfig player_config_terminal = {.loop = terminal_loop, .duration = 0, .sample_rate = DEFAULT_SAMPLE_RATE, .exit_key = DEFAULT_EXIT_KEY};
+const PlayerConfig player_config_no_terminal = {.loop = player_event_loop_no_terminal, .duration = 0, .sample_rate = DEFAULT_SAMPLE_RATE, .exit_key = DEFAULT_EXIT_KEY};
 
 int play(Func *root) { return player_play_with_cleanup(1, (Func *[]){root}, player_config_terminal); }
 int play_stereo(Func *left, Func *right) { return player_play_with_cleanup(2, (Func *[]){left, right}, player_config_terminal); }
 
-int play_duration(Func *root, double duration) { return player_play_with_cleanup(1, (Func *[]){root}, (PlayerConfig){player_event_loop_no_terminal, duration, CONFIG_DEFAULT_SAMPLE_RATE, CONFIG_DEFAULT_EXIT_KEY}); }
+int play_duration(Func *root, double duration)
+{
+    PlayerConfig config = player_config_no_terminal;
+    config.duration = duration;
+    return player_play_with_cleanup(1, (Func *[]){root}, config);
+}
+
 int play_(Func *root, double duration) { return play_duration(root, duration); }
-int play_stereo_duration(Func *left, Func *right, double duration) { return player_play_with_cleanup(2, (Func *[]){left, right}, (PlayerConfig){player_event_loop_no_terminal, duration, CONFIG_DEFAULT_SAMPLE_RATE, CONFIG_DEFAULT_EXIT_KEY}); }
+
+int play_stereo_duration(Func *left, Func *right, double duration)
+{
+    PlayerConfig config = player_config_no_terminal;
+    config.duration = duration;
+    return player_play_with_cleanup(2, (Func *[]){left, right}, config);
+}
 
 #endif // CSYNTH_PLAYER_H

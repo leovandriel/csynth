@@ -6,7 +6,7 @@
 
 #include "../src/util/error.h"
 
-#define BUFFER_SIZE 1024
+#define MIDI_EVENT_BUFFER_SIZE 1024
 
 const char *message_type(uint8_t type)
 {
@@ -61,13 +61,13 @@ int main()
         printf("    isVirtual: %s\n", info->is_virtual ? "yes" : "no");
     }
     PortMidiStream *stream = NULL;
-    pm_error = Pm_OpenInput(&stream, device_input_default, NULL, BUFFER_SIZE, NULL, NULL);
+    pm_error = Pm_OpenInput(&stream, device_input_default, NULL, MIDI_EVENT_BUFFER_SIZE, NULL, NULL);
     if (pm_error != pmNoError)
     {
         return error_catch_message(csErrorPortMidi, "Unable to open input: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
     }
     printf("Use MIDI device to log events. Ctrl+C to exit\n");
-    PmEvent buffer[BUFFER_SIZE];
+    PmEvent buffer[MIDI_EVENT_BUFFER_SIZE];
     for (;;)
     {
         int count = Pm_Read(stream, buffer, 1024);

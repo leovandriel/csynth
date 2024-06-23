@@ -8,7 +8,7 @@
 #include "../../core/gen.h"
 #include "../../event/keyboard_event.h"
 #include "../../mem/key_list.h"
-#include "../../util/config.h"
+#include "../../util/default.h"
 
 typedef struct
 {
@@ -59,7 +59,7 @@ Func *replay(Func *func, const char *filename)
 
 Func *replay_(Func *func)
 {
-    return replay(func, CONFIG_DEFAULT_REC_FILENAME);
+    return replay(func, DEFAULT_REC_FILENAME);
 }
 
 #endif // CSYNTH_REPLAY_H

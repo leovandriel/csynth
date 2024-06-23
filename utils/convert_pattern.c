@@ -9,7 +9,7 @@
 #include "../src/core/gen.h"
 #include "../src/event/keyboard_event.h"
 #include "../src/mem/key_list.h"
-#include "../src/util/config.h"
+#include "../src/util/default.h"
 
 void write(KeyList list, double step, int key, FILE *file)
 {
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        const char *filename = argc >= 4 ? argv[3] : CONFIG_DEFAULT_REC_FILENAME;
+        const char *filename = argc >= 4 ? argv[3] : DEFAULT_REC_FILENAME;
         file = fopen(filename, "r");
         if (file == NULL)
         {

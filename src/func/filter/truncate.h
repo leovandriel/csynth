@@ -10,7 +10,7 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 
-#define TRUNCATE_DEFAULT_DECAY 0.1
+#define TRUNCATE_DEFAULT_DECAY 0.1 // 10%/sec
 
 typedef struct
 {

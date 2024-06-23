@@ -13,7 +13,7 @@
 #include "../op/add.h"
 #include "../op/mul.h"
 
-#define MIDI_NOTE_COUNT 100
+#define MIDI_NOTE_COUNT 0x80
 
 typedef Func *(*midi_control_func)(int channel, int key, Func *frequency);
 

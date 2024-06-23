@@ -10,7 +10,8 @@
 #include "../../core/gen.h"
 #include "../../event/state_event.h"
 #include "../../ui/display.h"
-#include "../../util/config.h"
+
+#define GAUGE_DEFAULT_DISPLAY_INTERVAL 0.01 // 100 FPS
 
 typedef struct
 {
@@ -47,7 +48,7 @@ Func *gauge_interval(Func *input, const char *label, double interval)
 
 Func *gauge(Func *input, const char *label)
 {
-    return gauge_interval(input, label, CONFIG_DEFAULT_DISPLAY_INTERVAL);
+    return gauge_interval(input, label, GAUGE_DEFAULT_DISPLAY_INTERVAL);
 }
 
 Func *display(Func *input, const char *label)

@@ -10,7 +10,7 @@
 #include "../event/midi_event.h"
 #include "./terminal.h"
 
-#define MIDI_EVENT_BUFFER_SIZE 64
+#define MIDI_EVENT_BUFFER_SIZE 128
 
 typedef struct
 {

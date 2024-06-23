@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../util/config.h"
+#include "../util/default.h"
 #include "./wav_header.h"
 
 typedef struct

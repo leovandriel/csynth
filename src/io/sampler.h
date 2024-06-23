@@ -6,7 +6,7 @@
 
 #include "../core/func.h"
 #include "../core/gen.h"
-#include "../util/config.h"
+#include "../util/default.h"
 #include "../util/error.h"
 
 typedef int16_t sample_t;
