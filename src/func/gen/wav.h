@@ -19,48 +19,47 @@ typedef struct
     double time;
 } WavContext;
 
-static double wav_eval(__U int count, Gen **args, Eval eval, void *context_)
+static double wav_eval(__U int count, __U Gen **args, Eval eval, void *context_)
 {
     WavContext *context = (WavContext *)context_;
-    double factor = gen_eval(args[0], eval);
-    sample_t sample = reader_sample(&context->samples, context->time * factor, context->channel);
+    sample_t sample = reader_sample(&context->samples, context->time, context->channel);
     double output = (double)sample / 32767;
     context->time += eval.audio_step;
     return output;
 }
 
-Func *wav_samples(ReaderSamples samples, int channel, Func *factor)
+Func *wav_samples(ReaderSamples samples, int channel)
 {
     WavContext initial = {
         .samples = samples,
         .channel = channel,
     };
-    return func_create(NULL, wav_eval, NULL, sizeof(WavContext), &initial, FuncFlagNone, 1, factor);
+    return func_create(NULL, wav_eval, NULL, sizeof(WavContext), &initial, FuncFlagNone, 0);
 }
 
-Func *wav_samples_(ReaderSamples samples, int channel, double factor)
+Func *wav_samples_(ReaderSamples samples, int channel)
 {
-    return wav_samples(samples, channel, const_(factor));
+    return wav_samples(samples, channel);
 }
 
-Func *wav_filename(const char *filename, int channel, Func *factor)
+Func *wav_filename(const char *filename, int channel)
 {
     ReaderSamples samples;
     if (reader_read_filename(&samples, filename) != csErrorNone)
     {
         return NULL;
     }
-    return wav_samples(samples, channel, factor);
+    return wav_samples(samples, channel);
 }
 
-Func *wav_filename_(const char *filename, int channel, double factor)
+Func *wav_filename_(const char *filename, int channel)
 {
-    return wav_filename(filename, channel, const_(factor));
+    return wav_filename(filename, channel);
 }
 
 Func *wav(const char *filename)
 {
-    return wav_filename_(filename, 0, 1);
+    return wav_filename_(filename, 0);
 }
 
 Func *wav_()
