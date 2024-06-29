@@ -19,7 +19,7 @@ static double saw_eval(__U int count, __U Gen **args, Eval eval, void *context_)
 {
     SawContext *context = (SawContext *)context_;
     double output = context->output;
-    context->output += 2.0 * eval.audio_step;
+    context->output += 2.0 * eval.step[EvalStepAudio];
     if (context->output > 1.0)
     {
         context->output -= 2.0;

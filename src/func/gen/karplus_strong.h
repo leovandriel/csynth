@@ -23,11 +23,11 @@ static double karplus_strong_eval(__U int count, Gen **args, Eval eval, void *co
 {
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
     double decay = gen_eval(args[0], eval);
-    size_t size = (size_t)(1.0 / eval.audio_step + 0.5);
+    size_t size = (size_t)(1.0 / eval.step[EvalStepAudio] + 0.5);
     context->index = buffer_resize(&context->buffer, size, context->index, fill_rand_1_1);
     size_t next = (context->index + 1) % size;
     double *buffer = context->buffer.samples;
-    buffer[context->index] = 0.5 * (buffer[context->index] + buffer[next]) * pow(decay, eval.audio_step);
+    buffer[context->index] = 0.5 * (buffer[context->index] + buffer[next]) * pow(decay, eval.step[EvalStepAudio]);
     double output = buffer[context->index];
     context->index = next;
     return output;

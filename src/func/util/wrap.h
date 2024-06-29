@@ -20,7 +20,7 @@ typedef struct
 static double wrap_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     WrapFilterContext *context = (WrapFilterContext *)context_;
-    return context->callback(gen_eval(args[0], eval), eval.audio_step);
+    return context->callback(gen_eval(args[0], eval), eval.step[EvalStepAudio]);
 }
 
 Func *wrap(Func *input, wrap_callback callback)

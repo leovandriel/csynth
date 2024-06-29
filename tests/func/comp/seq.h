@@ -6,7 +6,7 @@ void test_seq()
 {
     Func *time = seq_rel(const_(1), const_(0.2), const_(-1), const_(0.3));
     Gen *gen = gen_create(time);
-    Eval eval = {.audio_step = 0.1, .control_step = 0.1};
+    Eval eval = {.step = {0.1, 0.1}};
     assert_double_equal(gen_eval(gen, eval), 1.0);
     assert_double_equal(gen_eval(gen, eval), 1.0);
     assert_double_equal(gen_eval(gen, eval), -1.0);

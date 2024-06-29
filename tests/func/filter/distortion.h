@@ -6,7 +6,7 @@ void test_distortion_pos()
 {
     Func *time = distortion(saw_osc(), const_(1));
     Gen *gen = gen_create(time);
-    Eval eval = {.audio_step = 0.1, .control_step = 0.1};
+    Eval eval = {.step = {0.1, 0.1}};
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, eval), 0.4046096751916897);
     assert_double_equal(gen_eval(gen, eval), 0.6444049826448045);
@@ -27,7 +27,7 @@ void test_distortion_neg()
 {
     Func *time = distortion(saw_osc(), const_(-1));
     Gen *gen = gen_create(time);
-    Eval eval = {.audio_step = 0.1, .control_step = 0.1};
+    Eval eval = {.step = {0.1, 0.1}};
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, eval), 0.0842238084008974);
     assert_double_equal(gen_eval(gen, eval), 0.1969503133139719);

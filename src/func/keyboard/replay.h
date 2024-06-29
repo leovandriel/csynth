@@ -27,7 +27,7 @@ static double replay_eval(__U int count, Gen **args, Eval eval, void *context_)
         keyboard_event_broadcast(context->current->time, context->current->key);
         context->current = context->current->next;
     }
-    context->time += eval.audio_step;
+    context->time += eval.step[EvalStepAudio];
     return gen_eval(args[0], eval);
 }
 

@@ -19,10 +19,16 @@ typedef enum
     FuncFlagSkipReset = 1 << 2,
 } FuncFlag;
 
+typedef enum
+{
+    EvalStepAudio = 0,
+    EvalStepControl = 1,
+    EvalStepLength // last
+} EvalStep;
+
 typedef struct
 {
-    double audio_step;
-    double control_step;
+    double step[EvalStepLength];
 } Eval;
 
 typedef double (*eval_callback)(int count, Gen **args, Eval eval, void *context);

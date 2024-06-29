@@ -24,7 +24,7 @@ static double square_eval(__U int count, __U Gen **args, Eval eval, void *contex
         context->time -= 0.5;
         context->output = -context->output;
     }
-    context->time += eval.audio_step;
+    context->time += eval.step[EvalStepAudio];
     return context->output;
 }
 

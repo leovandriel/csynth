@@ -6,7 +6,7 @@ void test_slope()
 {
     Func *output = slope(square_(2), const_(1));
     Gen *gen = gen_create(output);
-    Eval eval = {.audio_step = 0.1, .control_step = 0.1};
+    Eval eval = {.step = {0.1, 0.1}};
     assert_double_equal(gen_eval(gen, eval), 0.1);
     assert_double_equal(gen_eval(gen, eval), 0.2);
     assert_double_equal(gen_eval(gen, eval), 0.3);

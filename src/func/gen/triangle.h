@@ -20,7 +20,7 @@ static double triangle_eval(__U int count, __U Gen **args, Eval eval, void *cont
 {
     TriangleContext *context = (TriangleContext *)context_;
     double output = context->last;
-    context->last += context->direction * eval.audio_step;
+    context->last += context->direction * eval.step[EvalStepAudio];
     if (context->last > 1.0)
     {
         context->last = 2.0 - context->last;

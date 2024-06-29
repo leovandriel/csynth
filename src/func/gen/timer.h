@@ -18,7 +18,7 @@ static double timer_eval(__U int count, __U Gen **args, Eval eval, void *context
 {
     TimerContext *context = (TimerContext *)context_;
     double output = context->time;
-    context->time += eval.audio_step;
+    context->time += eval.step[EvalStepAudio];
     return output;
 }
 

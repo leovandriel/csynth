@@ -10,7 +10,7 @@
 
 static double tempo_eval(__U int count, Gen **args, Eval eval, __U void *context_)
 {
-    eval.control_step *= gen_eval(args[1], eval);
+    eval.step[EvalStepControl] *= gen_eval(args[1], eval);
     return gen_eval(args[0], eval);
 }
 

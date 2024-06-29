@@ -25,9 +25,9 @@ static double delay_eval(__U int count, Gen **args, Eval eval, void *context_)
     while (context->time >= span)
     {
         output = gen_eval(args[0], eval);
-        context->time -= eval.audio_step;
+        context->time -= eval.step[EvalStepAudio];
     }
-    context->time += eval.audio_step;
+    context->time += eval.step[EvalStepAudio];
     return output;
 }
 
