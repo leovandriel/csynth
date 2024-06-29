@@ -34,7 +34,7 @@ static double slope_eval(__U int count, Gen **args, Eval eval, void *context_)
 
 Func *slope(Func *input, Func *frequency)
 {
-    return func_create(NULL, slope_eval, NULL, sizeof(SlopeContext), NULL, FuncFlagNone, 2, input, frequency);
+    return func_create(NULL, slope_eval, NULL, sizeof(SlopeContext), NULL, FuncFlagNone, FUNCS(input, frequency));
 }
 
 Func *slope_(Func *input, double derivative) { return slope(input, const_(derivative)); }

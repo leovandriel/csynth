@@ -17,7 +17,7 @@ static double crack_eval(__U int count, Gen **args, Eval eval, __U void *context
 
 Func *crack(Func *probability)
 {
-    return func_create(NULL, crack_eval, NULL, 0, NULL, FuncFlagNone, 1, probability);
+    return func_create(NULL, crack_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(probability));
 }
 
 Func *crack_(double probability) { return crack(const_(probability)); }

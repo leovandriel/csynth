@@ -32,7 +32,7 @@ static double hpf_eval(__U int count, Gen **args, Eval eval, void *context_)
 
 Func *hpf(Func *input, Func *frequency)
 {
-    return func_create(NULL, hpf_eval, NULL, sizeof(HighPassContext), NULL, FuncFlagNone, 2, input, frequency);
+    return func_create(NULL, hpf_eval, NULL, sizeof(HighPassContext), NULL, FuncFlagNone, FUNCS(input, frequency));
 }
 
 Func *hpf_(Func *input, double frequency) { return hpf(input, const_(frequency)); }

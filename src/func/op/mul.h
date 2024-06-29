@@ -24,7 +24,7 @@ static double mul_eval(int count, Gen **args, Eval eval, __U void *context)
 
 Func *mul_array(int count, Func **args)
 {
-    return func_create_array(NULL, mul_eval, NULL, 0, NULL, FuncFlagNone, count, args);
+    return func_create(NULL, mul_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
 
 #define mul(...) (mul_array(FUNCS(__VA_ARGS__)))

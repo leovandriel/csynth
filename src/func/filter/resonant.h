@@ -40,7 +40,7 @@ static double resonant_eval(__U int count, Gen **args, Eval eval, void *context_
 
 Func *resonant(Func *input, Func *frequency, Func *q_factor)
 {
-    return func_create(NULL, resonant_eval, NULL, sizeof(ResonantContext), NULL, FuncFlagNone, 3, input, frequency, q_factor);
+    return func_create(NULL, resonant_eval, NULL, sizeof(ResonantContext), NULL, FuncFlagNone, FUNCS(input, frequency, q_factor));
 }
 
 Func *resonant_(Func *input, double frequency, double q_factor) { return resonant(input, const_(frequency), const_(q_factor)); }

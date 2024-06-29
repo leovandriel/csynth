@@ -94,22 +94,22 @@ static double seq_eval_fix(int count, Gen **args, Eval eval, void *context_)
 
 Func *seq_abs_array(int count, Func **args)
 {
-    return func_create_array(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
+    return func_create(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
 Func *seq_rel_array(int count, Func **args)
 {
-    return func_create_array(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
+    return func_create(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
 Func *seq_seq_array(int count, Func **args)
 {
-    return func_create_array(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
+    return func_create(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
 Func *seq_fix_array(int count, Func **args)
 {
-    return func_create_array(NULL, seq_eval_fix, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
+    return func_create(NULL, seq_eval_fix, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
 #define seq_abs(...) (seq_abs_array(FUNCS(__VA_ARGS__)))

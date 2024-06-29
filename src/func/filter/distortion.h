@@ -20,7 +20,7 @@ static double distortion_eval(__U int count, Gen **args, Eval eval, __U void *co
 
 Func *distortion(Func *input, Func *shape)
 {
-    return func_create(NULL, distortion_eval, NULL, 0, NULL, FuncFlagNone, 2, input, shape);
+    return func_create(NULL, distortion_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(input, shape));
 }
 
 Func *distortion_(Func *input, double shape) { return distortion(input, const_(shape)); }

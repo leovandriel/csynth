@@ -48,7 +48,7 @@ Func *selector_array(int key, int count, Func **args)
         .key = key,
         .count = count,
     };
-    return func_create_array(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FuncFlagSkipReset, count, args);
+    return func_create(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FuncFlagSkipReset, count, args);
 }
 
 #define selector(key, ...) (selector_array(key, FUNCS(__VA_ARGS__)))

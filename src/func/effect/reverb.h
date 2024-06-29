@@ -46,7 +46,7 @@ static void reverb_free(__U int count, void *context_)
 
 Func *reverb(Func *input, Func *interval, Func *decay)
 {
-    return func_create(NULL, reverb_eval, reverb_free, sizeof(ReverbContext), NULL, FuncFlagNone, 3, input, interval, decay);
+    return func_create(NULL, reverb_eval, reverb_free, sizeof(ReverbContext), NULL, FuncFlagNone, FUNCS(input, interval, decay));
 }
 
 Func *reverb_(Func *input, double interval, double decay) { return reverb(input, const_(interval), const_(decay)); }

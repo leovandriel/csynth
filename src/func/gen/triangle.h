@@ -39,7 +39,7 @@ Func *triangle_osc()
     TriangleContext initial = {
         .direction = 4.0,
     };
-    return func_create(NULL, triangle_eval, NULL, sizeof(TriangleContext), &initial, FuncFlagNone, 0);
+    return func_create(NULL, triangle_eval, NULL, sizeof(TriangleContext), &initial, FuncFlagNone, FUNCS());
 }
 
 #endif // CSYNTH_TRIANGLE_H

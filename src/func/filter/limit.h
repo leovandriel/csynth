@@ -35,7 +35,7 @@ static double limit_eval(__U int count, Gen **args, Eval eval, void *context_)
 
 Func *limit(Func *input, Func *diff)
 {
-    return func_create(NULL, limit_eval, NULL, sizeof(LimitContext), NULL, FuncFlagNone, 2, input, diff);
+    return func_create(NULL, limit_eval, NULL, sizeof(LimitContext), NULL, FuncFlagNone, FUNCS(input, diff));
 }
 
 Func *limit_(Func *input, double diff) { return limit(input, const_(diff)); }

@@ -56,7 +56,7 @@ Func *knob_ctrl(int channel, int control)
             .control = control,
         },
     };
-    return func_create(knob_init, knob_eval, midi_event_free, sizeof(KnobContext), &initial, FuncFlagSkipReset, 0);
+    return func_create(knob_init, knob_eval, midi_event_free, sizeof(KnobContext), &initial, FuncFlagSkipReset, FUNCS());
 }
 
 Func *knob_smooth(int channel, int control, Func *derivative) { return slope(knob_ctrl(channel, control), derivative); }

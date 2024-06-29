@@ -83,7 +83,7 @@ Func *record_array(const char *filename, int sample_rate, int count, Func **args
         .filename = filename,
         .sample_rate = sample_rate,
     };
-    return func_create_array(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FuncFlagNone, count, args);
+    return func_create(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FuncFlagNone, count, args);
 }
 
 #define record_channels(_filename, _sample_rate, ...) (record_array(_filename, _sample_rate, FUNCS(__VA_ARGS__)))

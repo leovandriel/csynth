@@ -29,7 +29,7 @@ static double min_eval(int count, Gen **args, Eval eval, __U void *context)
 
 Func *min_array(int count, Func **args)
 {
-    return func_create_array(NULL, min_eval, NULL, 0, NULL, FuncFlagNone, count, args);
+    return func_create(NULL, min_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
 
 #define min(...) (min_array(FUNCS(__VA_ARGS__)))

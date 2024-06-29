@@ -193,7 +193,7 @@ double step_filter(int count, Gen **args, Eval eval, void *context)
 
 int main()
 {
-    return play(func_create(NULL, step_filter, NULL, 0, NULL, FuncFlagNone, 1, sine(A4)));
+    return play(func_create(NULL, step_filter, NULL, 0, NULL, FuncFlagNone, FUNCS(sine(A4))));
 }
 ```
 

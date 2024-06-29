@@ -35,7 +35,7 @@ Func *truncate(Func *input, Func *decay)
     TruncateContext initial = {
         .level = 1.0,
     };
-    return func_create(NULL, truncate_eval, NULL, sizeof(TruncateContext), &initial, FuncFlagNone, 2, input, decay);
+    return func_create(NULL, truncate_eval, NULL, sizeof(TruncateContext), &initial, FuncFlagNone, FUNCS(input, decay));
 }
 
 Func *truncate_(Func *input, double decay)

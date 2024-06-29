@@ -43,7 +43,7 @@ Func *gauge_interval(Func *input, const char *label, double interval)
         .time = interval,
     };
     display_label(label);
-    return func_create(NULL, gauge_eval, NULL, sizeof(GaugeContext), &initial, FuncFlagNone, 1, input);
+    return func_create(NULL, gauge_eval, NULL, sizeof(GaugeContext), &initial, FuncFlagNone, FUNCS(input));
 }
 
 Func *gauge(Func *input, const char *label)

@@ -12,6 +12,11 @@
 #include "../util/error.h"
 #include "./def.h"
 
+#define ARRAY(__type, ...) ((__type[]){__VA_ARGS__})
+#define ARRAY_SIZE(__array) (sizeof((__array)) / sizeof((__array)[0]))
+#define ARRAY_ARGS(__array) ARRAY_SIZE(__array), (__array)
+#define FUNCS(...) ARRAY_ARGS(ARRAY(Func *, __VA_ARGS__))
+
 static const double FUNC_EPSILON = DBL_EPSILON * 2;
 static const double FUNC_AUDIBLE = 1e-3;
 
@@ -59,7 +64,7 @@ Func *func_list = NULL;
  * @param inputs The inputs to the function.
  * @return The function output.
  */
-Func *func_create_array(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, unsigned int flags, int count, Func **inputs)
+Func *func_create(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, unsigned int flags, int count, Func **inputs)
 {
     void *initial = NULL;
     if (size > 0 && context != NULL)
@@ -113,8 +118,6 @@ Func *func_create_array(init_callback init_cb, eval_callback eval_cb, free_callb
     func_list = func;
     return func;
 }
-
-#define func_create(__init_cb, __eval_cb, __free_cb, __size, __context, __flags, __unused, ...) func_create_array(__init_cb, __eval_cb, __free_cb, __size, __context, __flags, __FUNCS(__VA_ARGS__))
 
 void func_free()
 {

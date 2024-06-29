@@ -22,7 +22,7 @@ static double continuous_eval(__U int count, Gen **args, Eval eval, __U void *co
 
 Func *continuous(Func *input)
 {
-    return func_create(NULL, continuous_eval, NULL, 0, NULL, FuncFlagStopReset, 1, input);
+    return func_create(NULL, continuous_eval, NULL, 0, NULL, FuncFlagStopReset, FUNCS(input));
 }
 
 #endif // CSYNTH_CONTINUOUS_H

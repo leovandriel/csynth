@@ -18,7 +18,7 @@ static double tanh_eval(__U int count, Gen **args, Eval eval, __U void *context)
 
 Func *tanh_op(Func *input)
 {
-    return func_create(NULL, tanh_eval, NULL, 0, NULL, FuncFlagNone, 1, input);
+    return func_create(NULL, tanh_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(input));
 }
 
 #endif // CSYNTH_TANH_H

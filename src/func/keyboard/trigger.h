@@ -53,7 +53,7 @@ Func *trigger(int key, Func *func)
         .parent = {.handle_event = trigger_handle_event},
         .key = key,
     };
-    return func_create(trigger_init, trigger_eval, keyboard_event_free, sizeof(TriggerContext), &initial, FuncFlagNone, 1, func);
+    return func_create(trigger_init, trigger_eval, keyboard_event_free, sizeof(TriggerContext), &initial, FuncFlagNone, FUNCS(func));
 }
 
 #endif // CSYNTH_TRIGGER_H

@@ -29,7 +29,7 @@ static double smooth_eval(__U int count, Gen **args, Eval eval, __U void *contex
 
 Func *smooth_op(Func *input, Func *edge0, Func *edge1)
 {
-    return func_create(NULL, smooth_eval, NULL, 0, NULL, FuncFlagNone, 3, input, edge0, edge1);
+    return func_create(NULL, smooth_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(input, edge0, edge1));
 }
 
 Func *smooth_op_(Func *input, double edge0, double edge1) { return smooth_op(input, const_(edge0), const_(edge1)); }

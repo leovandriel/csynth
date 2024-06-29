@@ -29,7 +29,7 @@ static double saw_eval(__U int count, __U Gen **args, Eval eval, void *context_)
 
 Func *saw_osc()
 {
-    return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, FuncFlagNone, 0);
+    return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, FuncFlagNone, FUNCS());
 }
 
 #endif // CSYNTH_SAW_H

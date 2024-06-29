@@ -28,7 +28,7 @@ Func *wrap(Func *input, wrap_callback callback)
     WrapFilterContext initial = {
         .callback = callback,
     };
-    return func_create(NULL, wrap_eval, NULL, sizeof(WrapFilterContext), &initial, FuncFlagNone, 1, input);
+    return func_create(NULL, wrap_eval, NULL, sizeof(WrapFilterContext), &initial, FuncFlagNone, FUNCS(input));
 }
 
 Func *wrap_(wrap_callback callback) { return wrap(timer(), callback); }

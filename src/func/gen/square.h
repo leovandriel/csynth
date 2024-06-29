@@ -33,7 +33,7 @@ Func *square_osc()
     SquareContext initial = {
         .output = 1.0,
     };
-    return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, FuncFlagNone, 0);
+    return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, FuncFlagNone, FUNCS());
 }
 
 #endif // CSYNTH_SQUARE_H

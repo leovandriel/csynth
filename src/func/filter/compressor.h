@@ -42,7 +42,7 @@ Func *compressor(Func *input, Func *threshold, Func *ratio, Func *attack, Func *
     CompressorContext initial = {
         .gain = 1.0,
     };
-    return func_create(NULL, compressor_eval, NULL, sizeof(CompressorContext), &initial, FuncFlagNone, 5, input, threshold, ratio, attack, release);
+    return func_create(NULL, compressor_eval, NULL, sizeof(CompressorContext), &initial, FuncFlagNone, FUNCS(input, threshold, ratio, attack, release));
 }
 
 Func *compressor_(Func *input, double threshold, double ratio, double attack, double release)

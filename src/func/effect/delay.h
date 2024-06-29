@@ -33,7 +33,7 @@ static double delay_eval(__U int count, Gen **args, Eval eval, void *context_)
 
 Func *delay(Func *input, Func *duration)
 {
-    return func_create(NULL, delay_eval, NULL, sizeof(DelayContext), NULL, FuncFlagNone, 2, input, duration);
+    return func_create(NULL, delay_eval, NULL, sizeof(DelayContext), NULL, FuncFlagNone, FUNCS(input, duration));
 }
 
 Func *delay_(Func *input, double duration) { return delay(input, const_(duration)); }

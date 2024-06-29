@@ -41,7 +41,7 @@ static void karplus_strong_free(__U int count, void *context_)
 
 Func *karplus_strong_osc(Func *decay)
 {
-    return func_create(NULL, karplus_strong_eval, karplus_strong_free, sizeof(KarplusStrongContext), NULL, FuncFlagNone, 1, decay);
+    return func_create(NULL, karplus_strong_eval, karplus_strong_free, sizeof(KarplusStrongContext), NULL, FuncFlagNone, FUNCS(decay));
 }
 
 #endif // CSYNTH_KARPLUS_STRONG_H

@@ -24,7 +24,7 @@ static double add_eval(int count, Gen **args, Eval eval, __U void *context)
 
 Func *add_array(int count, Func **args)
 {
-    return func_create_array(NULL, add_eval, NULL, 0, NULL, FuncFlagNone, count, args);
+    return func_create(NULL, add_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
 
 #define add(...) (add_array(FUNCS(__VA_ARGS__)))

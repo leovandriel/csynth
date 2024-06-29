@@ -86,7 +86,7 @@ Func *logger(Func *input, size_t count, size_t step)
         .count = count,
         .step = step,
     };
-    return func_create(NULL, logger_eval, NULL, sizeof(LoggerContext), &initial, FuncFlagNone, 1, input);
+    return func_create(NULL, logger_eval, NULL, sizeof(LoggerContext), &initial, FuncFlagNone, FUNCS(input));
 }
 
 Func *log20(Func *input)
