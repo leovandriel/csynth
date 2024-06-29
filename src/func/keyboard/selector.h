@@ -41,22 +41,6 @@ static int selector_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *selector_args(int key, int count, ...)
-{
-    va_list valist = {0};
-    va_start(valist, count);
-    SelectorContext initial = {
-        .parent = {.handle_event = selector_handle_event},
-        .key = key,
-        .count = count,
-    };
-    Func *output = func_create_va(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FuncFlagSkipReset, count, valist);
-    va_end(valist);
-    return output;
-}
-
-#define selector(key, ...) (selector_args(key, (sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
-
 Func *selector_array(int key, int count, Func **args)
 {
     SelectorContext initial = {
@@ -66,5 +50,7 @@ Func *selector_array(int key, int count, Func **args)
     };
     return func_create_array(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FuncFlagSkipReset, count, args);
 }
+
+#define selector(key, ...) (selector_array(key, FUNCS(__VA_ARGS__)))
 
 #endif // CSYNTH_SELECTOR_H

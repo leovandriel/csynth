@@ -17,80 +17,6 @@ static const double FUNC_AUDIBLE = 1e-3;
 
 Func *func_list = NULL;
 
-Func *func_create_int(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, unsigned int flags, int count)
-{
-    void *initial = NULL;
-    if (size > 0 && context != NULL)
-    {
-        initial = malloc_(size);
-        if (initial == NULL)
-        {
-            return error_null(csErrorMemoryAlloc);
-        }
-    }
-    if (initial != NULL)
-    {
-        if (context != NULL)
-        {
-            memcpy(initial, context, size);
-        }
-        else
-        {
-            memset(initial, 0, size);
-        }
-    }
-    Func **args = NULL;
-    if (count > 0)
-    {
-        args = (Func **)malloc_(count * sizeof(Func *));
-        if (args == NULL)
-        {
-            free_(initial);
-            return error_null(csErrorMemoryAlloc);
-        }
-    }
-    Func *func = (Func *)malloc_(sizeof(Func));
-    if (func == NULL)
-    {
-        free_(initial);
-        free_(args);
-        return error_null(csErrorMemoryAlloc);
-    }
-    *func = (Func){
-        .args = args,
-        .count = count,
-        .size = size,
-        .initial = initial,
-        .init_cb = init_cb,
-        .eval_cb = eval_cb,
-        .free_cb = free_cb,
-        .flags = flags,
-        .next = func_list,
-    };
-    func_list = func;
-    return func;
-}
-
-Func *func_create_array(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, unsigned int flags, int count, Func **args)
-{
-    Func *func = func_create_int(init_cb, eval_cb, free_cb, size, context, flags, count);
-    if (func->args != NULL)
-    {
-        memcpy(func->args, args, count * sizeof(Func *));
-    }
-    return func;
-}
-
-Func *func_create_va(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, unsigned int flags, int count, va_list valist)
-{
-    Func *func = func_create_int(init_cb, eval_cb, free_cb, size, context, flags, count);
-    for (int i = 0; i < count; i++)
-    {
-        func->args[i] = va_arg(valist, Func *);
-    }
-    return func;
-}
-
 /**
  * Create a function with a variable number of arguments.
  *
@@ -130,17 +56,65 @@ Func *func_create_va(init_callback init_cb, eval_callback eval_cb, free_callback
  * @param context The initial value of the context.
  * @param flags Flags that control the behavior of the function.
  * @param count The number of inputs.
- * @param ... The inputs to the function.
+ * @param inputs The inputs to the function.
  * @return The function output.
  */
-Func *func_create(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, unsigned int flags, int count, ...)
+Func *func_create_array(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, unsigned int flags, int count, Func **inputs)
 {
-    va_list valist = {0};
-    va_start(valist, count);
-    Func *func = func_create_va(init_cb, eval_cb, free_cb, size, context, flags, count, valist);
-    va_end(valist);
+    void *initial = NULL;
+    if (size > 0 && context != NULL)
+    {
+        initial = malloc_(size);
+        if (initial == NULL)
+        {
+            return error_null(csErrorMemoryAlloc);
+        }
+    }
+    if (initial != NULL)
+    {
+        if (context != NULL)
+        {
+            memcpy(initial, context, size);
+        }
+        else
+        {
+            memset(initial, 0, size);
+        }
+    }
+    Func **args = NULL;
+    if (count > 0)
+    {
+        args = (Func **)malloc_(count * sizeof(Func *));
+        if (args == NULL)
+        {
+            free_(initial);
+            return error_null(csErrorMemoryAlloc);
+        }
+        memcpy(args, inputs, count * sizeof(Func *));
+    }
+    Func *func = (Func *)malloc_(sizeof(Func));
+    if (func == NULL)
+    {
+        free_(initial);
+        free_(args);
+        return error_null(csErrorMemoryAlloc);
+    }
+    *func = (Func){
+        .args = args,
+        .count = count,
+        .size = size,
+        .initial = initial,
+        .init_cb = init_cb,
+        .eval_cb = eval_cb,
+        .free_cb = free_cb,
+        .flags = flags,
+        .next = func_list,
+    };
+    func_list = func;
     return func;
 }
+
+#define func_create(__init_cb, __eval_cb, __free_cb, __size, __context, __flags, __unused, ...) func_create_array(__init_cb, __eval_cb, __free_cb, __size, __context, __flags, __FUNCS(__VA_ARGS__))
 
 void func_free()
 {

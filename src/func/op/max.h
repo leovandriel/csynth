@@ -27,25 +27,16 @@ static double max_eval(int count, Gen **args, Eval eval, __U void *context)
     return max;
 }
 
-Func *max_args(int count, ...)
+Func *max_array(int count, Func **args)
 {
-    va_list valist = {0};
-    va_start(valist, count);
-    Func *output = func_create_va(NULL, max_eval, NULL, 0, NULL, FuncFlagNone, count, valist);
-    va_end(valist);
-    return output;
+    return func_create_array(NULL, max_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
 
-#define max(...) (max_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
+#define max(...) (max_array(FUNCS(__VA_ARGS__)))
 
 Func *max_(Func *input, double min)
 {
     return max(input, const_(min));
-}
-
-Func *max_array(int count, Func **args)
-{
-    return func_create_array(NULL, max_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
 
 #endif // CSYNTH_MAX_H

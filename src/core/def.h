@@ -8,6 +8,11 @@
 
 #define __U __attribute__((unused))
 
+#define ARRAY(__type, ...) ((__type[]){__VA_ARGS__})
+#define ARRAY_SIZE(__array) (sizeof((__array)) / sizeof((__array)[0]))
+#define ARRAY_ARGS(__array) ARRAY_SIZE(__array), (__array)
+#define FUNCS(...) ARRAY_ARGS(ARRAY(Func *, __VA_ARGS__))
+
 typedef struct Func Func;
 typedef Func *func;
 typedef struct Gen Gen;

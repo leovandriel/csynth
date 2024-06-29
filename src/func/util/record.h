@@ -77,21 +77,6 @@ static void record_free(int count, void *context_)
     }
 }
 
-Func *record_args(const char *filename, int sample_rate, int count, ...)
-{
-    va_list valist = {0};
-    va_start(valist, count);
-    RecordContext initial = {
-        .filename = filename,
-        .sample_rate = sample_rate,
-    };
-    Func *output = func_create_va(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FuncFlagNone, count, valist);
-    va_end(valist);
-    return output;
-}
-
-#define record_channels(_filename, _sample_rate, ...) (record_args(_filename, _sample_rate, (sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
-
 Func *record_array(const char *filename, int sample_rate, int count, Func **args)
 {
     RecordContext initial = {
@@ -100,6 +85,8 @@ Func *record_array(const char *filename, int sample_rate, int count, Func **args
     };
     return func_create_array(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FuncFlagNone, count, args);
 }
+
+#define record_channels(_filename, _sample_rate, ...) (record_array(_filename, _sample_rate, FUNCS(__VA_ARGS__)))
 
 Func *record(Func *input, const char *filename) { return record_channels(filename, DEFAULT_SAMPLE_RATE, input); }
 Func *record_(Func *input) { return record(input, DEFAULT_WAV_FILENAME); }

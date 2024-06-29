@@ -22,25 +22,16 @@ static double mul_eval(int count, Gen **args, Eval eval, __U void *context)
     return output;
 }
 
-Func *mul_args(int count, ...)
+Func *mul_array(int count, Func **args)
 {
-    va_list valist = {0};
-    va_start(valist, count);
-    Func *output = func_create_va(NULL, mul_eval, NULL, 0, NULL, FuncFlagNone, count, valist);
-    va_end(valist);
-    return output;
+    return func_create_array(NULL, mul_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
 
-#define mul(...) (mul_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
+#define mul(...) (mul_array(FUNCS(__VA_ARGS__)))
 
 Func *mul_(Func *input, double factor)
 {
     return mul(input, const_(factor));
-}
-
-Func *mul_array(int count, Func **args)
-{
-    return func_create_array(NULL, mul_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
 
 #endif // CSYNTH_MUL_H

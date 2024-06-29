@@ -27,25 +27,16 @@ static double min_eval(int count, Gen **args, Eval eval, __U void *context)
     return min;
 }
 
-Func *min_args(int count, ...)
+Func *min_array(int count, Func **args)
 {
-    va_list valist = {0};
-    va_start(valist, count);
-    Func *output = func_create_va(NULL, min_eval, NULL, 0, NULL, FuncFlagNone, count, valist);
-    va_end(valist);
-    return output;
+    return func_create_array(NULL, min_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
 
-#define min(...) (min_args((sizeof((Func *[]){__VA_ARGS__}) / sizeof(Func **)), __VA_ARGS__))
+#define min(...) (min_array(FUNCS(__VA_ARGS__)))
 
 Func *min_(Func *input, double max)
 {
     return min(input, const_(max));
-}
-
-Func *min_array(int count, Func **args)
-{
-    return func_create_array(NULL, min_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
 
 #endif // CSYNTH_MIN_H
