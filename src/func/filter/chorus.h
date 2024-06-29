@@ -28,9 +28,9 @@ static double chorus_eval(__U int count, Gen **args, Eval eval, void *context_)
     double modulation = gen_eval(args[1], eval);
     double delay = gen_eval(args[2], eval);
     double depth = gen_eval(args[3], eval);
-    size_t size = (size_t)(delay / eval.step[EvalStepAudio] + 0.5);
-    size_t offset = (size_t)(depth / eval.step[EvalStepAudio] * modulation + (double)size * 0.5 + 0.5);
-    // size_t offset = (size_t)(depth / eval.step[EvalStepAudio] * (modulation + 1) * 0.5 + 0.5);
+    size_t size = (size_t)(delay / eval.tick[EvalTickPitch] + 0.5);
+    size_t offset = (size_t)(depth / eval.tick[EvalTickPitch] * modulation + (double)size * 0.5 + 0.5);
+    // size_t offset = (size_t)(depth / eval.tick[EvalTickPitch] * (modulation + 1) * 0.5 + 0.5);
     size_t index = (context->index + size - offset) % size;
     context->index = buffer_resize(&context->buffer, size, context->index, NULL);
     double *buffer = context->buffer.samples;

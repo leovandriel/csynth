@@ -24,7 +24,7 @@ static double wav_eval(__U int count, __U Gen **args, Eval eval, void *context_)
     WavContext *context = (WavContext *)context_;
     sample_t sample = reader_sample(&context->samples, context->time, context->channel);
     double output = (double)sample / 32767;
-    context->time += eval.step[EvalStepAudio];
+    context->time += eval.tick[EvalTickPitch];
     return output;
 }
 

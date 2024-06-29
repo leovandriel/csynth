@@ -1,12 +1,12 @@
 #include "../../../src/func/filter/distortion.h"
-#include "../../../src/func/gen/saw.h"
+#include "../../../src/func/gen/gens.h"
 #include "../../util/test.h"
 
 void test_distortion_pos()
 {
-    Func *time = distortion(saw_osc(), const_(1));
+    Func *time = distortion(saw_(1), const_(1));
     Gen *gen = gen_create(time);
-    Eval eval = {.step = {0.1, 0.1}};
+    Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, eval), 0.4046096751916897);
     assert_double_equal(gen_eval(gen, eval), 0.6444049826448045);
@@ -25,9 +25,9 @@ void test_distortion_pos()
 
 void test_distortion_neg()
 {
-    Func *time = distortion(saw_osc(), const_(-1));
+    Func *time = distortion(saw_(1), const_(-1));
     Gen *gen = gen_create(time);
-    Eval eval = {.step = {0.1, 0.1}};
+    Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, eval), 0.0842238084008974);
     assert_double_equal(gen_eval(gen, eval), 0.1969503133139719);

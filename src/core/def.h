@@ -21,14 +21,15 @@ typedef enum
 
 typedef enum
 {
-    EvalStepAudio = 0,
-    EvalStepControl = 1,
-    EvalStepLength // last
-} EvalStep;
+    EvalTickPitch,
+    EvalTickTempo,
+    EvalTickSustain,
+    EvalTickLength // last
+} EvalTick;
 
 typedef struct
 {
-    double step[EvalStepLength];
+    double tick[EvalTickLength];
 } Eval;
 
 typedef double (*eval_callback)(int count, Gen **args, Eval eval, void *context);

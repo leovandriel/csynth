@@ -39,7 +39,7 @@ static double seq_eval_abs(int count, Gen **args, Eval eval, void *context_)
             break;
         }
     }
-    context->time += eval.step[EvalStepAudio];
+    context->time += eval.tick[EvalTickPitch];
     return output;
 }
 
@@ -58,7 +58,7 @@ static double seq_eval_rel(int count, Gen **args, Eval eval, void *context_)
             break;
         }
     }
-    context->time += eval.step[EvalStepAudio];
+    context->time += eval.tick[EvalTickPitch];
     return output;
 }
 
@@ -88,7 +88,7 @@ static double seq_eval_fix(int count, Gen **args, Eval eval, void *context_)
     double duration = gen_eval(args[0], eval);
     // TODO(leo): use context->index and track time per interval (allowing variable duration)
     int index = (int)(context->time / duration) + 1;
-    context->time += eval.step[EvalStepAudio];
+    context->time += eval.tick[EvalTickPitch];
     return index < count ? gen_eval(args[index], eval) : 0;
 }
 

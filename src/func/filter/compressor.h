@@ -32,7 +32,7 @@ static double compressor_eval(__U int count, Gen **args, Eval eval, void *contex
     double release = gen_eval(args[4], eval);
     double level = fabs(input);
     double target = level > threshold ? pow(threshold / level, ratio) : 1.0;
-    double coeff = -expm1(-eval.step[EvalStepAudio] / (target < context->gain ? attack : release));
+    double coeff = -expm1(-eval.tick[EvalTickPitch] / (target < context->gain ? attack : release));
     context->gain += (target - context->gain) * coeff;
     return input * context->gain;
 }

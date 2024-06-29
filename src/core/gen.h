@@ -163,4 +163,14 @@ void gen_reset(Gen *gen)
     }
 }
 
+Eval eval_create(double value)
+{
+    Eval eval = {0};
+    for (EvalTick tick = 0; tick < EvalTickLength; tick++)
+    {
+        eval.tick[tick] = value;
+    }
+    return eval;
+}
+
 #endif // CSYNTH_GEN_H

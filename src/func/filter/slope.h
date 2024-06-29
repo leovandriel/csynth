@@ -17,7 +17,7 @@ static double slope_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     SlopeContext *context = (SlopeContext *)context_;
     double input = gen_eval(args[0], eval);
-    double slope = gen_eval(args[1], eval) * eval.step[EvalStepAudio];
+    double slope = gen_eval(args[1], eval) * eval.tick[EvalTickPitch];
     double diff = input - context->last;
     if (diff > slope)
     {

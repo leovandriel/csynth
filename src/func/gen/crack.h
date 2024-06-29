@@ -11,7 +11,7 @@
 
 static double crack_eval(__U int count, Gen **args, Eval eval, __U void *context_)
 {
-    double probability = gen_eval(args[0], eval) * eval.step[EvalStepAudio];
+    double probability = gen_eval(args[0], eval) * eval.tick[EvalTickPitch];
     return rand_range(0, 1) < probability ? rand_range(-1, 1) : 0;
 }
 

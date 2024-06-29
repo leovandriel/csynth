@@ -16,7 +16,7 @@ typedef struct
     double output;
 } SquareContext;
 
-static double square_eval(__U int count, __U Gen **args, Eval eval, void *context_)
+static double square_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     SquareContext *context = (SquareContext *)context_;
     if (context->time >= 0.5)
@@ -24,16 +24,16 @@ static double square_eval(__U int count, __U Gen **args, Eval eval, void *contex
         context->time -= 0.5;
         context->output = -context->output;
     }
-    context->time += eval.step[EvalStepAudio];
+    context->time += gen_eval(args[0], eval);
     return context->output;
 }
 
-Func *square_osc()
+Func *square_osc(Func *tick)
 {
     SquareContext initial = {
         .output = 1.0,
     };
-    return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, FuncFlagNone, FUNCS());
+    return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, FuncFlagNone, FUNCS(tick));
 }
 
 #endif // CSYNTH_SQUARE_H

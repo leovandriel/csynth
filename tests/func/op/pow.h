@@ -7,7 +7,7 @@ void test_pow()
     Gen *gen2 = gen_create(pow_op(const_(1), const_(2)));
     Gen *gen3 = gen_create(pow_op(const_(2), const_(1)));
     Gen *gen4 = gen_create(pow_op(const_(2), const_(2)));
-    Eval eval = {.step = {0.1, 0.1}};
+    Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen1, eval), 1.0);
     assert_double_equal(gen_eval(gen2, eval), 1.0);
     assert_double_equal(gen_eval(gen3, eval), 2.0);

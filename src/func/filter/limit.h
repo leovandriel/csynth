@@ -20,7 +20,7 @@ static double limit_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     LimitContext *context = (LimitContext *)context_;
     double input = gen_eval(args[0], eval);
-    double diff = gen_eval(args[1], eval) * eval.step[EvalStepAudio];
+    double diff = gen_eval(args[1], eval) * eval.tick[EvalTickPitch];
     if (input < context->output - diff)
     {
         input = context->output - diff;

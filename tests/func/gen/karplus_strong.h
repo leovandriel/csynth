@@ -7,7 +7,7 @@ void test_karplus_strong()
     rand_seed(0);
     Func *time = karplus_strong_(const_(2), 0.5);
     Gen *gen = gen_create(time);
-    Eval eval = {.step = {0.1, 0.1}};
+    Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), -0.2886412523525353);
     assert_double_equal(gen_eval(gen, eval), 0.4912185886479782);
     assert_double_equal(gen_eval(gen, eval), 0.4195619192984845);

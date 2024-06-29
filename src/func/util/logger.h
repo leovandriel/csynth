@@ -64,7 +64,7 @@ static double logger_eval(__U int count, Gen **args, Eval eval, void *context_)
     if (context->index < context->count * context->step && context->index % context->step == 0)
     {
         const char *pass = at_zero ? "zero" : (at_min ? "min" : (at_max ? "max" : ""));
-        double time = (double)context->index * eval.step[EvalStepAudio];
+        double time = (double)context->index * eval.tick[EvalTickPitch];
         char buffer[100];
         snprintf(buffer, 100, "%f", frequency);
         const char *freq = frequency >= 0 ? buffer : "";
