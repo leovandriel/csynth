@@ -6,5 +6,5 @@ int main()
 {
     // white noise
     func fun = uniform();
-    return play(mul_(fun, .2));
+    return play(mul_(.2, fun));
 }

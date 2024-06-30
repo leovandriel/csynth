@@ -5,6 +5,6 @@
 int main()
 {
     // press space to key note
-    func note = key(50, 0, decay_(sine(C4), .5));
-    return play_midi(mul_(note, .5));
+    func note = key(50, 0, decay_(0.5, sine(C4)));
+    return play_midi(mul_(0.5, note));
 }

@@ -16,27 +16,25 @@ typedef struct
 static double slope_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     SlopeContext *context = (SlopeContext *)context_;
-    double input = gen_eval(args[0], eval);
-    double slope = gen_eval(args[1], eval) * eval.tick[EvalTickPitch];
+    double tick = gen_eval(args[0], eval);
+    double input = gen_eval(args[1], eval);
     double diff = input - context->last;
-    if (diff > slope)
+    if (diff > tick)
     {
-        diff = slope;
+        diff = tick;
     }
-    else if (diff < -slope)
+    else if (diff < -tick)
     {
-        diff = -slope;
+        diff = -tick;
     }
     double output = context->last + diff;
     context->last = output;
     return output;
 }
 
-Func *slope(Func *input, Func *frequency)
+Func *slope_filter(Func *tick, Func *input)
 {
-    return func_create(NULL, slope_eval, NULL, sizeof(SlopeContext), NULL, FuncFlagNone, FUNCS(input, frequency));
+    return func_create(NULL, slope_eval, NULL, sizeof(SlopeContext), NULL, FuncFlagNone, FUNCS(tick, input));
 }
-
-Func *slope_(Func *input, double derivative) { return slope(input, const_(derivative)); }
 
 #endif // CSYNTH_SLOPE_H

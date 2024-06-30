@@ -48,7 +48,7 @@ static int key_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *key(int channel, int pitch, Func *func)
+Func *key(int channel, int pitch, Func *input)
 {
     KeyContext initial = {
         .parent = {.handle_event = key_handle_event},
@@ -57,7 +57,7 @@ Func *key(int channel, int pitch, Func *func)
             .control = pitch,
         },
     };
-    return func_create(key_init, key_eval, midi_event_free, sizeof(KeyContext), &initial, FuncFlagNone, FUNCS(func));
+    return func_create(key_init, key_eval, midi_event_free, sizeof(KeyContext), &initial, FuncFlagNone, FUNCS(input));
 }
 
 #endif // CSYNTH_KEY_H

@@ -11,49 +11,36 @@
 #include "../../event/state_event.h"
 #include "../../ui/display.h"
 
-#define GAUGE_DEFAULT_DISPLAY_INTERVAL 0.01 // 100 FPS
-
 typedef struct
 {
     const char *label;
     double last;
     double time;
-    double interval;
 } GaugeContext;
 
 static double gauge_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     GaugeContext *context = (GaugeContext *)context_;
-    double input = gen_eval(args[0], eval);
-    if (context->time >= context->interval && input != context->last)
+    double input = gen_eval(args[1], eval);
+    if (context->time >= 1.0 && input != context->last)
     {
         state_event_broadcast(StateEventKeyTypeLabel, context->label, StateEventValueTypeDouble, &input);
         context->last = input;
         context->time = 0;
     }
-    context->time += eval.tick[EvalTickPitch];
+    double tick = gen_eval(args[0], eval);
+    context->time += tick;
     return input;
 }
 
-Func *gauge_interval(Func *input, const char *label, double interval)
+Func *gauge_interval(const char *label, Func *tick, Func *input)
 {
     GaugeContext initial = {
         .label = label,
-        .interval = interval,
-        .time = interval,
+        .time = 1.0,
     };
     display_label(label);
-    return func_create(NULL, gauge_eval, NULL, sizeof(GaugeContext), &initial, FuncFlagNone, FUNCS(input));
-}
-
-Func *gauge(Func *input, const char *label)
-{
-    return gauge_interval(input, label, GAUGE_DEFAULT_DISPLAY_INTERVAL);
-}
-
-Func *display(Func *input, const char *label)
-{
-    return gauge(input, label);
+    return func_create(NULL, gauge_eval, NULL, sizeof(GaugeContext), &initial, FuncFlagNone, FUNCS(tick, input));
 }
 
 #endif // CSYNTH_GAUGE_H

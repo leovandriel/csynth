@@ -15,9 +15,9 @@
 
 #define MIDI_NOTE_COUNT 0x80
 
-typedef Func *(*midi_control_func)(int channel, int key, Func *frequency);
+typedef Func *(*midi_control_func)(int channel, int key, Func *input);
 
-Func *midi_keyboard(int channel, midi_control_func control, gen_func generator, Func *frequency)
+Func *midi_keyboard(int channel, midi_control_func control, Func *input)
 {
     Func **array = (Func **)malloc_(MIDI_NOTE_COUNT * sizeof(Func *));
     if (array == NULL)
@@ -26,17 +26,12 @@ Func *midi_keyboard(int channel, midi_control_func control, gen_func generator, 
     }
     for (int i = 0; i < MIDI_NOTE_COUNT; i++)
     {
-        Func *gen = generator(mul_(frequency, pow(2, i / 12.0)));
-        array[i] = control(channel, i, gen);
+        Func *pitched = pitch_(exp2(i / 12.0), input);
+        array[i] = control(channel, i, pitched);
     }
     Func *output = add_array(MIDI_NOTE_COUNT, array);
     free_(array);
     return output;
-}
-
-Func *midi_keyboard_(int channel, midi_control_func control, gen_func generator, double frequency)
-{
-    return midi_keyboard(channel, control, generator, const_(frequency));
 }
 
 #endif // CSYNTH_MIDIS_H

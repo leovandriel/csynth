@@ -4,7 +4,7 @@
 
 void test_chorus()
 {
-    Func *time = chorus_(sine_(10), sine_(.2), 0.2, 0.2);
+    Func *time = chorus_(sine_(.2), 0.2, 0.2, sine_(10));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), 0.0);

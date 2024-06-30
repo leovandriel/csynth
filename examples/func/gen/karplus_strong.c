@@ -2,15 +2,11 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-Func *note(Func *frequency)
-{
-    return karplus_strong_(frequency, .3);
-}
-
 int main()
 {
     // strings keyboard
-    func fun = (keyboard(trigger, note, C4));
+    func note = karplus_strong_(C4, .3);
+    func fun = keyboard(trigger, note);
     printf("keyboard keys: %s\n", keyboard_keys);
-    return play(mul_(fun, .5));
+    return play(mul_(.5, fun));
 }

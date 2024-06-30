@@ -34,9 +34,9 @@ Func *max_array(int count, Func **args)
 
 #define max(...) (max_array(FUNCS(__VA_ARGS__)))
 
-Func *max_(Func *input, double min)
+Func *max_(double min, Func *input)
 {
-    return max(input, const_(min));
+    return max(const_(min), input);
 }
 
 #endif // CSYNTH_MAX_H

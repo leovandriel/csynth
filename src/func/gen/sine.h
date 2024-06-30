@@ -25,7 +25,7 @@ static double sine_eval(__U int count, Gen **args, Eval eval, void *context_)
     return output;
 }
 
-Func *sine_osc(Func *tick)
+Func *sine_gen(Func *tick)
 {
     return func_create(NULL, sine_eval, NULL, sizeof(SineContext), NULL, FuncFlagNone, FUNCS(tick));
 }

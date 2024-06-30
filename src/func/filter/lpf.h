@@ -11,6 +11,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../gen/const.h"
+#include "../time/times.h"
 
 typedef struct
 {
@@ -20,19 +21,16 @@ typedef struct
 static double lpf_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     LowPassContext *context = (LowPassContext *)context_;
-    double input = gen_eval(args[0], eval);
-    double frequency = gen_eval(args[1], eval);
-    double factor = 1 / (M_PI * 2 * frequency * eval.tick[EvalTickPitch]) + 1.0;
+    double factor = 1 / (M_PI * 2 * gen_eval(args[0], eval)) + 1.0;
+    double input = gen_eval(args[1], eval);
     double output = context->output;
     context->output = context->output + (input - context->output) / factor;
     return output;
 }
 
-Func *lpf(Func *input, Func *frequency)
+Func *lpf_filter(Func *tick, Func *input)
 {
-    return func_create(NULL, lpf_eval, NULL, sizeof(LowPassContext), NULL, FuncFlagNone, FUNCS(input, frequency));
+    return func_create(NULL, lpf_eval, NULL, sizeof(LowPassContext), NULL, FuncFlagNone, FUNCS(tick, input));
 }
-
-Func *lpf_(Func *input, double frequency) { return lpf(input, const_(frequency)); }
 
 #endif // CSYNTH_LPF_H

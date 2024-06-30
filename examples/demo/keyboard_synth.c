@@ -3,17 +3,13 @@
 #include "../../src/io/player.h"
 #include "../../src/ui/display.h"
 
-func note(func frequency)
-{
-    return decay_(unison(frequency, saw, 5, 0.01), 0.5);
-}
-
 int main()
 {
     func drums = add(
         trigger('q', bdrum()),
         trigger('w', snare()),
         trigger('e', hihat()));
-    func keys = mul_(keyboard(trigger, note, C4), .5);
+    func note = decay_(0.5, unison_(5, 0.01, saw(C4)));
+    func keys = mul_(.5, keyboard(trigger, note));
     return play(add(drums, keys));
 }

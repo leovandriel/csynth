@@ -163,14 +163,14 @@ const PlayerConfig player_config_no_terminal = {.loop = player_event_loop_no_ter
 int play(Func *root) { return player_play_with_cleanup(1, (Func *[]){root}, player_config_terminal); }
 int play_stereo(Func *left, Func *right) { return player_play_with_cleanup(2, (Func *[]){left, right}, player_config_terminal); }
 
-int play_duration(Func *root, double duration)
+int play_duration(double duration, Func *root)
 {
     PlayerConfig config = player_config_no_terminal;
     config.duration = duration;
     return player_play_with_cleanup(1, (Func *[]){root}, config);
 }
 
-int play_(Func *root, double duration) { return play_duration(root, duration); }
+int play_(double duration, Func *root) { return play_duration(duration, root); }
 
 int play_stereo_duration(Func *left, Func *right, double duration)
 {

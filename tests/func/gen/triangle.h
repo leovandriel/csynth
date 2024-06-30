@@ -4,7 +4,7 @@
 
 void test_triangle()
 {
-    Func *time = triangle_osc(pitch_tick());
+    Func *time = triangle_gen(pitch_ticker_(1));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), 0.0);

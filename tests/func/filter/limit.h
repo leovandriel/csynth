@@ -1,3 +1,4 @@
+#include "../../../src/func/filter/filters.h"
 #include "../../../src/func/filter/limit.h"
 #include "../../../src/func/gen/square.h"
 #include "../../../src/func/time/times.h"
@@ -5,7 +6,7 @@
 
 void test_limit()
 {
-    Func *time = limit(square_osc(pitch_tick()), const_(3));
+    Func *time = limit(const_(3), square_gen(pitch_ticker_(1)));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), 0.30);

@@ -1,12 +1,12 @@
 #include "../../../src/func/gen/gens.h"
 #include "../../../src/func/gen/sine.h"
-#include "../../../src/func/gen/timer.h"
-#include "../../../src/func/time/tick.h"
+#include "../../../src/func/time/ticker.h"
+#include "../../../src/func/time/times.h"
 #include "../../util/test.h"
 
 void test_sine_const()
 {
-    Func *time = sine_osc(pitch_tick());
+    Func *time = sine_gen(pitch_ticker_(1));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);
@@ -26,7 +26,7 @@ void test_sine_const()
 
 void test_sine_timer()
 {
-    Func *time = sine(timer());
+    Func *time = sine(pitch_timer_(1));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);

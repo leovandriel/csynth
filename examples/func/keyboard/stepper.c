@@ -6,5 +6,5 @@ int main()
 {
     // press space, followed by up/down to change frequency wit 10 HZ
     func note = sine(stepper(' ', C4_, 10));
-    return play(mul_(note, .5));
+    return play(mul_(0.5, note));
 }

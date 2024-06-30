@@ -8,8 +8,8 @@ static func strum(int count, const double *freqs, double span, double decay)
     for (int i = 0; i < count; i++)
     {
         func note = karplus_strong_(_(freqs[i]), decay);
-        note = lpf_(note, freqs[i]);
-        note = delay_(note, span * (span < 0 ? i - count : i));
+        note = lpf_(freqs[i], note);
+        note = delay_(span * (span < 0 ? i - count : i), note);
         notes[i] = note;
     }
     return add_array(count, notes);
@@ -18,8 +18,8 @@ static func strum(int count, const double *freqs, double span, double decay)
 static func pluck(func frequency)
 {
     func note = karplus_strong_(frequency, .6);
-    note = clamp_(mul_(note, 10), -1, 1);
-    note = lpf(note, dvd_(frequency, 2));
+    note = clamp_(-1, 1, mul_(10, note));
+    note = lpf(dvd_(frequency, 2), note);
     return note;
 }
 
@@ -47,7 +47,7 @@ int main()
         t(0), pluck(D5),
         t(1), pluck(E5),
         t(2), pluck(D5),
-        t(3), smooth_inv(pluck(A4), t(1), t(1.5)));
+        t(3), smooth_inv(t(1), t(1.5), pluck(A4)));
 
     func guitar1 = seq_abs(
         t(0), gg1,
@@ -88,5 +88,5 @@ int main()
     func guitar = seq_abs(
         t(0), gg0,
         t(18), add(guitar1, guitar2));
-    return play_(guitar, 24);
+    return play_(24, guitar);
 }

@@ -44,10 +44,12 @@ static double adsr_eval(__U int count, Gen **args, Eval eval, __U void *context_
     return output;
 }
 
+// TODO(leo): remove time and sustain
 Func *adsr_op(Func *time, Func *attack, Func *decay, Func *sustain, Func *release, Func *duration)
 {
     return func_create(NULL, adsr_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(time, attack, decay, sustain, release, duration));
 }
+
 Func *adsr_op_(Func *time, double attack, double decay, double sustain, double release, double duration) { return adsr_op(time, const_(attack), const_(decay), const_(sustain), const_(release), const_(duration)); }
 
 #endif // CSYNTH_ADSR_H

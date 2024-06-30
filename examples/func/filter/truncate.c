@@ -7,9 +7,9 @@ int main()
     // note at increasing intervals, triggering truncation, after which the note
     // is no longer generated
     func tone = sine(A4);
-    func note = rect_(tone, 0, .1);
-    func length = linear_env_(.4, .8, 1);
-    func looped = loop(note, length);
-    func truncated = trunc_(looped);
-    return play(mul_(truncated, .5));
+    func note = rect_(0, .1, tone);
+    func length = linear_env_(1, .4, .8);
+    func looped = loop(length, note);
+    func truncated = truncate_(1, looped);
+    return play(mul_(.5, truncated));
 }

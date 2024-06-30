@@ -19,9 +19,9 @@ static double inv_eval(__U int count, Gen **args, Eval eval, __U void *context)
     return 1.0 / value;
 }
 
-Func *inv(Func *value)
+Func *inv(Func *input)
 {
-    return func_create(NULL, inv_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(value));
+    return func_create(NULL, inv_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(input));
 }
 
 #endif // CSYNTH_INV_H

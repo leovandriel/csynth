@@ -4,6 +4,8 @@
 // `limit(input, limit)` with input and limit functions and limit the amplitude
 // delta. This can be used to prevent clicks and pops.
 //
+// TODO(leo): merge into slope
+//
 #ifndef CSYNTH_LIMIT_H
 #define CSYNTH_LIMIT_H
 
@@ -19,25 +21,23 @@ typedef struct
 static double limit_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     LimitContext *context = (LimitContext *)context_;
-    double input = gen_eval(args[0], eval);
-    double diff = gen_eval(args[1], eval) * eval.tick[EvalTickPitch];
-    if (input < context->output - diff)
+    double tick = gen_eval(args[0], eval);
+    double input = gen_eval(args[1], eval);
+    if (input < context->output - tick)
     {
-        input = context->output - diff;
+        input = context->output - tick;
     }
-    else if (input > context->output + diff)
+    else if (input > context->output + tick)
     {
-        input = context->output + diff;
+        input = context->output + tick;
     }
     context->output = input;
     return input;
 }
 
-Func *limit(Func *input, Func *diff)
+Func *limit_filter(Func *tick, Func *input)
 {
-    return func_create(NULL, limit_eval, NULL, sizeof(LimitContext), NULL, FuncFlagNone, FUNCS(input, diff));
+    return func_create(NULL, limit_eval, NULL, sizeof(LimitContext), NULL, FuncFlagNone, FUNCS(tick, input));
 }
-
-Func *limit_(Func *input, double diff) { return limit(input, const_(diff)); }
 
 #endif // CSYNTH_LIMIT_H

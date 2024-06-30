@@ -1,10 +1,11 @@
+#include "../../../src/func/effect/effects.h"
 #include "../../../src/func/effect/reverb.h"
 #include "../../../src/func/gen/gens.h"
 #include "../../util/test.h"
 
 void test_reverb()
 {
-    Func *time = reverb(saw_(1), const_(.5), const_(.5));
+    Func *time = reverb(const_(.5), const_(.5), saw_(1));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), 0.00);

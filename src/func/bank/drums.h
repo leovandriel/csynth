@@ -7,24 +7,24 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../filter/envelopes.h"
-#include "../filter/hpf.h"
+#include "../filter/filters.h"
 #include "../gen/sine.h"
 #include "../gen/uniform.h"
 
 Func *bdrum()
 {
-    Func *freq = linear_env_(60, 30, 1);
-    return decay_(sine(freq), .05);
+    Func *freq = linear_env_(1, 60, 30);
+    return decay_(.05, sine(freq));
 }
 
 Func *hihat()
 {
-    return decay_(hpf_(dvd_(uniform(), 2), 20000), .05);
+    return decay_(.05, hpf_(20000, dvd_(uniform(), 2)));
 }
 
 Func *snare()
 {
-    return decay_(dvd_(uniform(), 4), .05);
+    return decay_(.05, dvd_(uniform(), 4));
 }
 
 #endif // CSYNTH_DRUMS_H

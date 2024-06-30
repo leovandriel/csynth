@@ -4,7 +4,7 @@
 
 void test_distortion_pos()
 {
-    Func *time = distortion(saw_(1), const_(1));
+    Func *time = distortion(const_(1), saw_(1));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);
@@ -25,7 +25,7 @@ void test_distortion_pos()
 
 void test_distortion_neg()
 {
-    Func *time = distortion(saw_(1), const_(-1));
+    Func *time = distortion(const_(-1), saw_(1));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);

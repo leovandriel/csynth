@@ -47,13 +47,13 @@ static int trigger_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *trigger(int key, Func *func)
+Func *trigger(int key, Func *input)
 {
     TriggerContext initial = {
         .parent = {.handle_event = trigger_handle_event},
         .key = key,
     };
-    return func_create(trigger_init, trigger_eval, keyboard_event_free, sizeof(TriggerContext), &initial, FuncFlagNone, FUNCS(func));
+    return func_create(trigger_init, trigger_eval, keyboard_event_free, sizeof(TriggerContext), &initial, FuncFlagNone, FUNCS(input));
 }
 
 #endif // CSYNTH_TRIGGER_H

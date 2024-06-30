@@ -34,9 +34,9 @@ Func *min_array(int count, Func **args)
 
 #define min(...) (min_array(FUNCS(__VA_ARGS__)))
 
-Func *min_(Func *input, double max)
+Func *min_(double max, Func *input)
 {
-    return min(input, const_(max));
+    return min(const_(max), input);
 }
 
 #endif // CSYNTH_MIN_H

@@ -20,22 +20,20 @@ typedef struct
 static double delay_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     DelayContext *context = (DelayContext *)context_;
-    double span = gen_eval(args[1], eval);
+    double tick = gen_eval(args[0], eval);
     double output = 0.0;
-    while (context->time >= span)
+    while (context->time >= 1)
     {
-        output = gen_eval(args[0], eval);
-        context->time -= eval.tick[EvalTickPitch];
+        output = gen_eval(args[1], eval);
+        context->time -= tick;
     }
-    context->time += eval.tick[EvalTickPitch];
+    context->time += tick;
     return output;
 }
 
-Func *delay(Func *input, Func *duration)
+Func *delay_effect(Func *tick, Func *input)
 {
-    return func_create(NULL, delay_eval, NULL, sizeof(DelayContext), NULL, FuncFlagNone, FUNCS(input, duration));
+    return func_create(NULL, delay_eval, NULL, sizeof(DelayContext), NULL, FuncFlagNone, FUNCS(tick, input));
 }
-
-Func *delay_(Func *input, double duration) { return delay(input, const_(duration)); }
 
 #endif // CSYNTH_DELAY_H

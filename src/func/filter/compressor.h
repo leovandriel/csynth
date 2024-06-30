@@ -25,29 +25,22 @@ typedef struct
 static double compressor_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     CompressorContext *context = (CompressorContext *)context_;
-    double input = gen_eval(args[0], eval);
-    double threshold = gen_eval(args[1], eval);
-    double ratio = gen_eval(args[2], eval);
-    double attack = gen_eval(args[3], eval);
-    double release = gen_eval(args[4], eval);
+    double threshold = gen_eval(args[0], eval);
+    double ratio = gen_eval(args[1], eval);
+    double attack_tick = gen_eval(args[2], eval);
+    double release_tick = gen_eval(args[3], eval);
+    double input = gen_eval(args[4], eval);
     double level = fabs(input);
     double target = level > threshold ? pow(threshold / level, ratio) : 1.0;
-    double coeff = -expm1(-eval.tick[EvalTickPitch] / (target < context->gain ? attack : release));
+    double coeff = -expm1(target < context->gain ? -attack_tick : -release_tick);
     context->gain += (target - context->gain) * coeff;
     return input * context->gain;
 }
 
-Func *compressor(Func *input, Func *threshold, Func *ratio, Func *attack, Func *release)
+Func *compressor_filter(Func *threshold, Func *ratio, Func *attack_tick, Func *release_tick, Func *input)
 {
-    CompressorContext initial = {
-        .gain = 1.0,
-    };
-    return func_create(NULL, compressor_eval, NULL, sizeof(CompressorContext), &initial, FuncFlagNone, FUNCS(input, threshold, ratio, attack, release));
-}
-
-Func *compressor_(Func *input, double threshold, double ratio, double attack, double release)
-{
-    return compressor(input, const_(threshold), const_(ratio), const_(attack), const_(release));
+    CompressorContext initial = {.gain = 1.0};
+    return func_create(NULL, compressor_eval, NULL, sizeof(CompressorContext), &initial, FuncFlagNone, FUNCS(threshold, ratio, attack_tick, release_tick, input));
 }
 
 #endif // CSYNTH_COMPRESSOR_H

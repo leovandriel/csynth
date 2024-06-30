@@ -27,7 +27,7 @@ static double saw_eval(__U int count, Gen **args, Eval eval, void *context_)
     return output;
 }
 
-Func *saw_osc(Func *tick)
+Func *saw_gen(Func *tick)
 {
     return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, FuncFlagNone, FUNCS(tick));
 }

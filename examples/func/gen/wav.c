@@ -2,15 +2,10 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-func meow(func factor)
-{
-    return pitch(wav_filename("examples/meow.wav", 0), factor);
-}
-
 int main()
 {
     // play meow keyboard
-    func fun = keyboard_(trigger, meow, 1);
+    func fun = keyboard(trigger, wav("examples/meow.wav"));
     printf("keyboard keys: %s\n", keyboard_keys);
-    return play(mul_(fun, .5));
+    return play(mul_(.5, fun));
 }

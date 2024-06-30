@@ -6,22 +6,22 @@ static float deg2rad = M_PI / 180;
 
 func ear(func angle)
 {
-    return mul_(add_(sin_op(mul_(angle, deg2rad)), 1.1), 0.3);
+    return mul_(0.3, add_(1.1, sin_op(mul_(deg2rad, angle))));
 }
 
 int main()
 {
-    func hihat_ = loop_(hihat(), .25);
-    func snare_ = loop_(delay_(snare(), .5), 1);
-    func bdrum_ = loop_(mul(bdrum(), _(3)), 1);
-    func angle = mul_(timer(), 60);
+    func hihat_ = loop_(.25, hihat());
+    func snare_ = loop_(1, delay_(.5, snare()));
+    func bdrum_ = loop_(1, mul(bdrum(), _(3)));
+    func angle = pitch_timer_(60);
     func left = add(
-        mul(hihat_, ear(add_(angle, 0))),
-        mul(snare_, ear(add_(angle, 120))),
-        mul(bdrum_, ear(add_(angle, 240))));
+        mul(hihat_, ear(add_(0, angle))),
+        mul(snare_, ear(add_(120, angle))),
+        mul(bdrum_, ear(add_(240, angle))));
     func right = add(
-        mul(hihat_, ear(add_(angle, 180))),
-        mul(snare_, ear(add_(angle, 300))),
-        mul(bdrum_, ear(add_(angle, 60))));
+        mul(hihat_, ear(add_(180, angle))),
+        mul(snare_, ear(add_(300, angle))),
+        mul(bdrum_, ear(add_(60, angle))));
     return play_stereo(left, right);
 }

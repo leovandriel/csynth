@@ -11,6 +11,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../gen/const.h"
+#include "../time/times.h"
 
 typedef struct
 {
@@ -21,20 +22,17 @@ typedef struct
 static double hpf_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     HighPassContext *context = (HighPassContext *)context_;
-    double input = gen_eval(args[0], eval);
-    double frequency = gen_eval(args[1], eval);
-    double factor = (M_PI * 2 * frequency * eval.tick[EvalTickPitch]) + 1.0;
+    double factor = (M_PI * 2 * gen_eval(args[0], eval)) + 1.0;
+    double input = gen_eval(args[1], eval);
     double output = context->output;
     context->output = (context->output + input - context->input) / factor;
     context->input = input;
     return output;
 }
 
-Func *hpf(Func *input, Func *frequency)
+Func *hpf_filter(Func *tick, Func *input)
 {
-    return func_create(NULL, hpf_eval, NULL, sizeof(HighPassContext), NULL, FuncFlagNone, FUNCS(input, frequency));
+    return func_create(NULL, hpf_eval, NULL, sizeof(HighPassContext), NULL, FuncFlagNone, FUNCS(tick, input));
 }
-
-Func *hpf_(Func *input, double frequency) { return hpf(input, const_(frequency)); }
 
 #endif // CSYNTH_HPF_H

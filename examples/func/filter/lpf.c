@@ -5,6 +5,6 @@
 int main()
 {
     // low-pass filter with exponentially decreasing frequency
-    func note = lpf(saw(C4), expo(linear_env_(10, 0, 4)));
-    return play(mul_(note, .1));
+    func note = lpf(expo(linear_env_(4, 10, 0)), saw(C4));
+    return play(mul_(.1, note));
 }

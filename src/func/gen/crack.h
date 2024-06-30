@@ -11,15 +11,13 @@
 
 static double crack_eval(__U int count, Gen **args, Eval eval, __U void *context_)
 {
-    double probability = gen_eval(args[0], eval) * eval.tick[EvalTickPitch];
+    double probability = gen_eval(args[0], eval);
     return rand_range(0, 1) < probability ? rand_range(-1, 1) : 0;
 }
 
-Func *crack(Func *probability)
+Func *crack_gen(Func *tick)
 {
-    return func_create(NULL, crack_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(probability));
+    return func_create(NULL, crack_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(tick));
 }
-
-Func *crack_(double probability) { return crack(const_(probability)); }
 
 #endif // CSYNTH_CRACK_H

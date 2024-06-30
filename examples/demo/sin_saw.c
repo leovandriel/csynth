@@ -5,13 +5,13 @@
 int main()
 {
     func high = sine(A4);
-    func low = mul_(saw(A2), .5);
-    func beep = rect_(high, 0, .1);
-    func boop1 = rect_(low, .4, .5);
-    func boop2 = rect_(low, 1, 1.1);
+    func low = mul_(.5, saw(A2));
+    func beep = rect_(0, .1, high);
+    func boop1 = rect_(.4, .5, low);
+    func boop2 = rect_(1, 1.1, low);
     func melody = add(beep, boop1, boop2);
-    func looped = loop_(melody, 1.6);
-    func echoed = reverb_(looped, .2, .5);
-    func scaled = mul_(echoed, .1);
+    func looped = loop_(1.6, melody);
+    func echoed = reverb_(.2, .5, looped);
+    func scaled = mul_(.1, echoed);
     return play(scaled);
 }

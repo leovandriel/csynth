@@ -24,10 +24,10 @@ typedef struct
 static double chorus_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     ChorusContext *context = (ChorusContext *)context_;
-    double input = gen_eval(args[0], eval);
-    double modulation = gen_eval(args[1], eval);
-    double delay = gen_eval(args[2], eval);
-    double depth = gen_eval(args[3], eval);
+    double modulation = gen_eval(args[0], eval);
+    double delay = gen_eval(args[1], eval);
+    double depth = gen_eval(args[2], eval);
+    double input = gen_eval(args[3], eval);
     size_t size = (size_t)(delay / eval.tick[EvalTickPitch] + 0.5);
     size_t offset = (size_t)(depth / eval.tick[EvalTickPitch] * modulation + (double)size * 0.5 + 0.5);
     // size_t offset = (size_t)(depth / eval.tick[EvalTickPitch] * (modulation + 1) * 0.5 + 0.5);
@@ -46,11 +46,11 @@ static void chorus_free(__U int count, void *context_)
     buffer_free(&context->buffer);
 }
 
-Func *chorus(Func *input, Func *modulation, Func *delay, Func *depth)
+Func *chorus(Func *modulation, Func *delay, Func *depth, Func *input)
 {
-    return func_create(NULL, chorus_eval, chorus_free, sizeof(ChorusContext), NULL, FuncFlagNone, FUNCS(input, modulation, delay, depth));
+    return func_create(NULL, chorus_eval, chorus_free, sizeof(ChorusContext), NULL, FuncFlagNone, FUNCS(modulation, delay, depth, input));
 }
 
-Func *chorus_(Func *input, Func *modulation, double delay, double depth) { return chorus(input, modulation, const_(delay), const_(depth)); }
+Func *chorus_(Func *modulation, double delay, double depth, Func *input) { return chorus(modulation, const_(delay), const_(depth), input); }
 
 #endif // CSYNTH_CHORUS_H

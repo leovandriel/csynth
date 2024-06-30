@@ -88,9 +88,9 @@ Func *record_array(const char *filename, int sample_rate, int count, Func **args
 
 #define record_channels(_filename, _sample_rate, ...) (record_array(_filename, _sample_rate, FUNCS(__VA_ARGS__)))
 
-Func *record(Func *input, const char *filename) { return record_channels(filename, DEFAULT_SAMPLE_RATE, input); }
-Func *record_(Func *input) { return record(input, DEFAULT_WAV_FILENAME); }
-Func *record_stereo(Func *left, Func *right, const char *filename) { return record_channels(filename, DEFAULT_SAMPLE_RATE, left, right); }
-Func *record_stereo_(Func *left, Func *right) { return record_stereo(left, right, DEFAULT_WAV_FILENAME); }
+Func *record(const char *filename, Func *input) { return record_channels(filename, DEFAULT_SAMPLE_RATE, input); }
+Func *record_(Func *input) { return record(DEFAULT_WAV_FILENAME, input); }
+Func *record_stereo(const char *filename, Func *left, Func *right) { return record_channels(filename, DEFAULT_SAMPLE_RATE, left, right); }
+Func *record_stereo_(Func *left, Func *right) { return record_stereo(DEFAULT_WAV_FILENAME, left, right); }
 
 #endif // CSYNTH_RECORD_H

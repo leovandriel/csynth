@@ -29,9 +29,6 @@ Func *add_array(int count, Func **args)
 
 #define add(...) (add_array(FUNCS(__VA_ARGS__)))
 
-Func *add_(Func *input, double diff)
-{
-    return add(input, const_(diff));
-}
+Func *add_(double diff, Func *input) { return add(const_(diff), input); }
 
 #endif // CSYNTH_ADD_H

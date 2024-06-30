@@ -27,8 +27,8 @@ static double replay_eval(__U int count, Gen **args, Eval eval, void *context_)
         keyboard_event_broadcast(context->current->time, context->current->key);
         context->current = context->current->next;
     }
-    context->time += eval.tick[EvalTickPitch];
-    return gen_eval(args[0], eval);
+    context->time += gen_eval(args[0], eval);
+    return gen_eval(args[1], eval);
 }
 
 static int replay_init(__U int count, __U Gen **args, void *context_)
@@ -49,17 +49,10 @@ static void replay_free(__U int count, void *context_)
     key_list_clear(&context->list);
 }
 
-Func *replay(Func *func, const char *filename)
+Func *replay_tick(const char *filename, Func *tick, Func *input)
 {
-    ReplayContext initial = {
-        .filename = filename,
-    };
-    return func_create(replay_init, replay_eval, replay_free, sizeof(ReplayContext), &initial, FuncFlagNone, FUNCS(func));
-}
-
-Func *replay_(Func *func)
-{
-    return replay(func, DEFAULT_REC_FILENAME);
+    ReplayContext initial = {.filename = filename};
+    return func_create(replay_init, replay_eval, replay_free, sizeof(ReplayContext), &initial, FuncFlagNone, FUNCS(tick, input));
 }
 
 #endif // CSYNTH_REPLAY_H

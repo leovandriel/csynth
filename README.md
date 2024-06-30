@@ -49,7 +49,7 @@ That probably sounded quite loud. Let's bring it down a little to save our ears:
 
 ```c
     func tone = sine(A4);
-    play(mul_(tone, .5));
+    play(mul_(.5, tone));
 ```
 
 Here we introduce `mul`, which multiplies both arguments together. By
@@ -63,8 +63,8 @@ Next, add a rectangular envelope to turn this into a 0.3 second note:
 
 ```c
     func tone = sine(A4);
-    func note = rect_(tone, 0, .3);
-    play(mul_(note, .5));
+    func note = rect_(0, .3, tone);
+    play(mul_(.5, note));
 ```
 
 This adds `rect`, which multiplies tone by 1 during the interval [0, 0.3] and 0
@@ -74,25 +74,25 @@ Next, add the note in a 1.5 second loop:
 
 ```c
     func tone = sine(A4);
-    func note = rect_(tone, 0, .3);
-    func looped = loop_(note, 1.5);
-    play(mul_(looped, .5));
+    func note = rect_(0, .3, tone);
+    func looped = loop_(1.5, note);
+    play(mul_(.5, looped));
 ```
 
 Finally, add reverb (interval .4s, decay .2):
 
 ```c
     func tone = sine(A4);
-    func note = rect_(tone, 0, .3);
-    func looped = loop_(note, 1.5);
-    func revved = reverb_(looped, .4, .2);
-    play(mul_(revved, .5));
+    func note = rect_(0, .3, tone);
+    func looped = loop_(1.5, note);
+    func revved = reverb_(.4, .2, looped);
+    play(mul_(.5, revved));
 ```
 
 Or, to make it more compact:
 
 ```c
-    play(mul_(reverb_(loop_(rect_(sine(A4),0,.3),1.5),.4,.2),.5));
+    play(mul_(.5,reverb_(.4,.2,loop_(1.5, rect_(0,.3,sine(A4))))));
 ```
 
 To listen to the result:
@@ -125,7 +125,7 @@ a few helper functions, like [ar and kr](src/func/op/ops.h) that scale the input
 to respective domains:
 
 ```c
-    play(sine(kr_scale(sine_(2), A4)));
+    play(sine(kr_scale(A4, sine_(2))));
 ```
 
 Here [sine](src/func/gen/sine.h) has the `_` suffix, to allow the argument to be
@@ -144,7 +144,7 @@ variations of a function, including helpful short-hands. Examples for
 [mul](src/func/op/mul.h):
 
 ```c
-    mul_(sine(A4), .5)
+    mul_(.5, sine(A4))
     mul(sine(A4), _(.5))
     mul(sine(A4), sine(B4), _(.5))
     mul_array(4, (Func *[]){sine(A4), sine(B4), sine(C4), _(.5)})
@@ -159,9 +159,9 @@ synthesize the sound of a G chord on the guitar using
     func notes[6];
     for (int i = 0; i < 6; i++)
     {
-        notes[i] = delay_(karplus_strong_(chord[i], .1), .1 * i);
+        notes[i] = delay_(.1 * i, karplus_strong_(chord[i], .1));
     }
-    play(mul_(add_array(6, notes), .5));
+    play(mul_(.5, add_array(6, notes)));
 ```
 
 This uses the [Karplus–Strong](src/func/gen/karplus_strong.h) method for string
@@ -177,7 +177,7 @@ double step_filter(double input, double delta)
 
 int main()
 {
-    return play(wrap(sine(A4), step_filter));
+    return play(wrap(step_filter, sine(A4)));
 }
 ```
 
@@ -229,7 +229,7 @@ To emulate a key on a keyboard or drum pad, use the
 on every key press:
 
 ```c
-    play(trigger(' ', decay_(sine(A4), .1)));
+    play(trigger(' ', decay_(.1, sine(A4))));
 ```
 
 There is also [stepper](src/func/keyboard/stepper.h) and
@@ -243,14 +243,9 @@ These controls can be combined to create a
 [keyboard](src/func/keyboard/keyboards.h):
 
 ```c
-func note(func frequency)
-{
-    return decay_(sine(frequency), .1);
-}
-
 int main()
 {
-    return play(keyboard(trigger, note, C4));
+    return play(keyboard(trigger, decay_(.1, sine(C4))));
 }
 ```
 
@@ -263,7 +258,7 @@ To visualize the state of controls, basic [display](src/ui/display.h)
 functionality is included for switches and numerical values.
 
 ```c
-    display(' ', "select frequency");
+    display("select frequency", ' ');
     return play(selector(' ', sine(A4), sine(A5), sine(A6)));
 ```
 
@@ -277,7 +272,7 @@ program. It comes in a few variants:
 
 ```c
     play(sine(A4));
-    play_(sine(A4), 10); // 10 seconds
+    play_(10, sine(A4)); // 10 seconds
     play_stereo(sine(A4), sine(B4));
     play_stereo_duration(sine(A4), sine(B4), 10);
     player_play_channels(4, (Func *[]){sine(A4), sine(B4), sine(C4), sine(D4)}, 10);
@@ -287,8 +282,8 @@ Instead of playing the audio, we can also write things to a wav file using
 [write](src/io/writer.h):
 
 ```c
-    write(sine(A4), 10, "output/sine.wav");
-    write_(sine(A4), 10); // writes to output/default.wav
+    write(10, "output/sine.wav", sine(A4));
+    write_(10, sine(A4)); // writes to output/default.wav
     write_stereo(sine(A4), sine(A4), 10, "output/sine.wav");
     writer_write_channels(2, (Func *[]){sine(A4), sine(B4)}, 10, stdout);
 ```

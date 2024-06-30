@@ -41,24 +41,17 @@ static int mute_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *mute_(int key, Func *func, int muted)
+Func *mute_(int key, int muted, Func *input)
 {
     MuteContext initial = {
         .parent = {.handle_event = mute_handle_event},
         .key = key,
         .muted = muted,
     };
-    return func_create(mute_init, mute_eval, keyboard_event_free, sizeof(MuteContext), &initial, FuncFlagNone, FUNCS(func));
+    return func_create(mute_init, mute_eval, keyboard_event_free, sizeof(MuteContext), &initial, FuncFlagNone, FUNCS(input));
 }
 
-Func *mute(int key, Func *func)
-{
-    return mute_(key, func, 0);
-}
-
-Func *unmute(int key, Func *func)
-{
-    return mute_(key, func, 1);
-}
+Func *mute(int key, Func *input) { return mute_(key, 0, input); }
+Func *unmute(int key, Func *input) { return mute_(key, 1, input); }
 
 #endif // CSYNTH_MUTE_H

@@ -28,7 +28,7 @@ static double square_eval(__U int count, Gen **args, Eval eval, void *context_)
     return context->output;
 }
 
-Func *square_osc(Func *tick)
+Func *square_gen(Func *tick)
 {
     SquareContext initial = {
         .output = 1.0,

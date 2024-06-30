@@ -66,18 +66,18 @@ csError writer_write_file(int channel_count, Func **channels, double duration, c
     return csErrorNone;
 }
 
-csError write(Func *input, double duration, const char *filename)
+csError write(double duration, const char *filename, Func *input)
 {
     return writer_write_file(1, (Func *[]){input}, duration, filename, DEFAULT_SAMPLE_RATE);
 }
 
-csError write_(Func *input, double duration) { return write(input, duration, DEFAULT_WAV_FILENAME); }
+csError write_(double duration, Func *input) { return write(duration, DEFAULT_WAV_FILENAME, input); }
 
 csError write_stereo(Func *left, Func *right, double duration, const char *filename)
 {
     return writer_write_file(2, (Func *[]){left, right}, duration, filename, DEFAULT_SAMPLE_RATE);
 }
 
-csError write_mono(Func *input, double duration, const char *filename) { return write(input, duration, filename); }
+csError write_mono(double duration, const char *filename, Func *input) { return write(duration, filename, input); }
 
 #endif // CSYNTH_WRITER_H

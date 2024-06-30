@@ -100,14 +100,7 @@ Func *stepper_range(int key, double value, double step, double min, double max, 
     return func_create(stepper_init, stepper_eval, keyboard_event_free, sizeof(StepperContext), &initial, FuncFlagSkipReset, FUNCS());
 }
 
-Func *stepper(int key, double value, double delta)
-{
-    return stepper_range(key, value, delta, -FLT_MAX, FLT_MAX, 0);
-}
-
-Func *stepper_rel(int key, double value, double perc)
-{
-    return stepper_range(key, value, perc, -FLT_MAX, FLT_MAX, 1);
-}
+Func *stepper(int key, double value, double delta) { return stepper_range(key, value, delta, -FLT_MAX, FLT_MAX, 0); }
+Func *stepper_rel(int key, double value, double perc) { return stepper_range(key, value, perc, -FLT_MAX, FLT_MAX, 1); }
 
 #endif // CSYNTH_STEPPER_H

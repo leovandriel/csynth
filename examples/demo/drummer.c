@@ -5,9 +5,9 @@
 
 int main()
 {
-    func snare = loop_(delay_(decay_(uniform(), .05), .5), 1);
-    func bdrum = loop_(mul(decay_(sine(linear_env_(60, 30, 1)), .05), _(3)), 1);
-    func hihat = loop_(decay_(hpf_(uniform(), 20000), .05), .25);
-    func drummer = mul_(add(snare, bdrum, hihat), .4);
+    func snare = loop_(1, delay_(.5, decay_(.05, uniform())));
+    func bdrum = loop_(1, mul(decay_(.05, sine(linear_env_(1, 60, 30))), _(3)));
+    func hihat = loop_(.25, decay_(.05, hpf_(20000, uniform())));
+    func drummer = mul_(0.4, add(snare, bdrum, hihat));
     return play(drummer);
 }

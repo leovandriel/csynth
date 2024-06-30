@@ -1,8 +1,6 @@
 //
 // timer.h - The sample time
 //
-// `timer()` returns accumulated time deltas
-//
 #ifndef CSYNTH_TIMER_H
 #define CSYNTH_TIMER_H
 
@@ -14,17 +12,17 @@ typedef struct
     double time;
 } TimerContext;
 
-static double timer_eval(__U int count, __U Gen **args, Eval eval, void *context_)
+static double timer_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     TimerContext *context = (TimerContext *)context_;
     double output = context->time;
-    context->time += eval.tick[EvalTickPitch];
+    context->time += gen_eval(args[0], eval);
     return output;
 }
 
-Func *timer()
+Func *timer_tick(Func *tick)
 {
-    return func_create(NULL, timer_eval, NULL, sizeof(TimerContext), NULL, FuncFlagNone, FUNCS());
+    return func_create(NULL, timer_eval, NULL, sizeof(TimerContext), NULL, FuncFlagNone, FUNCS(tick));
 }
 
 #endif // CSYNTH_TIMER_H

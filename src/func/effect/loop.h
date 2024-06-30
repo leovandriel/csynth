@@ -18,22 +18,20 @@ typedef struct
 static double loop_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     LoopContext *context = (LoopContext *)context_;
-    double duration = gen_eval(args[1], eval);
-    if (context->time >= duration)
+    if (context->time >= 1)
     {
-        context->time -= duration;
-        gen_reset(args[0]);
+        context->time -= 1;
+        gen_reset(args[1]);
     }
-    double output = gen_eval(args[0], eval);
-    context->time += eval.tick[EvalTickPitch];
-    return output;
+    double tick = gen_eval(args[0], eval);
+    double input = gen_eval(args[1], eval);
+    context->time += tick;
+    return input;
 }
 
-Func *loop(Func *input, Func *duration)
+Func *loop_effect(Func *tick, Func *input)
 {
-    return func_create(NULL, loop_eval, NULL, sizeof(LoopContext), NULL, FuncFlagNone, FUNCS(input, duration));
+    return func_create(NULL, loop_eval, NULL, sizeof(LoopContext), NULL, FuncFlagNone, FUNCS(tick, input));
 }
-
-Func *loop_(Func *input, double duration) { return loop(input, const_(duration)); }
 
 #endif // CSYNTH_LOOP_H

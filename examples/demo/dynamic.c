@@ -8,27 +8,27 @@
 static func beep_dynamic(func pitch, func speed)
 {
     func tone = sine(P(A4));
-    func note = mul(rect(tone, T(0), T(.3)), _(.5));
-    func looped = loop(note, T(1.5));
-    func revved = reverb(looped, T(.4), _(.2));
+    func note = mul(rect(T(0), T(.3), tone), _(.5));
+    func looped = loop(T(1.5), note);
+    func revved = reverb(T(.4), _(.2), looped);
     return revved;
 }
 
 func wobble_both()
 {
-    func wobble = continuous(add_(mul_(sine_(.1), .1), 1));
+    func wobble = continuous(add_(1, mul_(0.1, sine_(.1))));
     return beep_dynamic(wobble, wobble);
 }
 
 func modulate_pitch()
 {
-    func modulate = continuous(add_(mul_(timer(), .5), .01));
+    func modulate = continuous(add_(0.01, pitch_timer_(.5)));
     return beep_dynamic(modulate, ONE);
 }
 
 func modulate_speed()
 {
-    func modulate = continuous(add_(mul_(timer(), .5), .01));
+    func modulate = continuous(add_(.01, pitch_timer_(.5)));
     return beep_dynamic(ONE, modulate);
 }
 

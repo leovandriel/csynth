@@ -47,7 +47,7 @@ static int pad_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *pad(int channel, int pad, Func *func)
+Func *pad(int channel, int pad, Func *input)
 {
     PadContext initial = {
         .parent = {.handle_event = pad_handle_event},
@@ -56,7 +56,7 @@ Func *pad(int channel, int pad, Func *func)
             .control = pad,
         },
     };
-    return func_create(pad_init, pad_eval, midi_event_free, sizeof(PadContext), &initial, FuncFlagNone, FUNCS(func));
+    return func_create(pad_init, pad_eval, midi_event_free, sizeof(PadContext), &initial, FuncFlagNone, FUNCS(input));
 }
 
 #endif // CSYNTH_PAD_H

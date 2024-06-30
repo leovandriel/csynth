@@ -6,6 +6,6 @@ int main()
 {
     // square wave filtered with decreasing limit on slope
     func tone = square(A4);
-    func sloped = slope(tone, expo(linear_env_(10, 0, 10)));
-    return play(mul_(sloped, .2));
+    func sloped = slope(tone, expo(linear_env_(10, 10, 0)));
+    return play(mul_(.2, sloped));
 }

@@ -6,5 +6,5 @@ int main()
 {
     // press space to mute note
     func note = mute(' ', sine(C4));
-    return play(mul_(note, .5));
+    return play(mul_(0.5, note));
 }

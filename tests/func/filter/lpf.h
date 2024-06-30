@@ -1,9 +1,10 @@
+#include "../../../src/func/filter/filters.h"
 #include "../../../src/func/filter/lpf.h"
 #include "../../util/test.h"
 
 void test_lpf()
 {
-    Func *time = lpf(const_(1), const_(10));
+    Func *time = lpf(const_(10), const_(1));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);

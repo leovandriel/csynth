@@ -23,9 +23,10 @@ typedef struct
 static double reverb_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     ReverbContext *context = (ReverbContext *)context_;
-    double input = gen_eval(args[0], eval);
-    size_t size = (size_t)(gen_eval(args[1], eval) / eval.tick[EvalTickPitch] + 0.5);
-    double decay = gen_eval(args[2], eval);
+    double tick = gen_eval(args[0], eval);
+    double decay = gen_eval(args[1], eval);
+    double input = gen_eval(args[2], eval);
+    size_t size = (size_t)(1.0 / tick + 0.5);
     context->index = buffer_resize(&context->buffer, size, context->index, NULL);
     double *buffer = context->buffer.samples;
     double output = input;
@@ -44,11 +45,9 @@ static void reverb_free(__U int count, void *context_)
     buffer_free(&context->buffer);
 }
 
-Func *reverb(Func *input, Func *interval, Func *decay)
+Func *reverb_filter(Func *tick, Func *decay, Func *input)
 {
-    return func_create(NULL, reverb_eval, reverb_free, sizeof(ReverbContext), NULL, FuncFlagNone, FUNCS(input, interval, decay));
+    return func_create(NULL, reverb_eval, reverb_free, sizeof(ReverbContext), NULL, FuncFlagNone, FUNCS(tick, decay, input));
 }
-
-Func *reverb_(Func *input, double interval, double decay) { return reverb(input, const_(interval), const_(decay)); }
 
 #endif // CSYNTH_REVERB_H

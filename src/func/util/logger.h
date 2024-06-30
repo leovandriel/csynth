@@ -64,11 +64,10 @@ static double logger_eval(__U int count, Gen **args, Eval eval, void *context_)
     if (context->index < context->count * context->step && context->index % context->step == 0)
     {
         const char *pass = at_zero ? "zero" : (at_min ? "min" : (at_max ? "max" : ""));
-        double time = (double)context->index * eval.tick[EvalTickPitch];
         char buffer[100];
         snprintf(buffer, 100, "%f", frequency);
         const char *freq = frequency >= 0 ? buffer : "";
-        fprintf(stderr, "index: %lu  time: %f  value: %f  diff: %f  dir: %c %s %s\n", context->index, time, input, diff, dir, pass, freq);
+        fprintf(stderr, "index: %lu  value: %f  diff: %f  dir: %c %s %s\n", context->index, input, diff, dir, pass, freq);
     }
     context->dir = dir;
     context->output = input;
@@ -76,7 +75,7 @@ static double logger_eval(__U int count, Gen **args, Eval eval, void *context_)
     return input;
 }
 
-Func *logger(Func *input, size_t count, size_t step)
+Func *logger(size_t count, size_t step, Func *input)
 {
     LoggerContext initial = {
         .min = -1,
@@ -91,17 +90,17 @@ Func *logger(Func *input, size_t count, size_t step)
 
 Func *log20(Func *input)
 {
-    return logger(input, 20, 1);
+    return logger(20, 1, input);
 }
 
 Func *log1k(Func *input)
 {
-    return logger(input, 1000, 1);
+    return logger(1000, 1, input);
 }
 
 Func *log10sec(Func *input)
 {
-    return logger(input, 10, 4410);
+    return logger(10, 4410, input);
 }
 
 #endif // CSYNTH_LOGGER_H

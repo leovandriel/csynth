@@ -1,13 +1,17 @@
 //
-// sampler.h - Sampling multiple channels, like stereophonic sound.
+// sampler.h - Sampling multiple channels, e.g. stereophonic sound.
 //
 #ifndef CSYNTH_SAMPLER_H
 #define CSYNTH_SAMPLER_H
 
 #include "../core/func.h"
 #include "../core/gen.h"
+#include "../func/time/scale.h"
 #include "../util/default.h"
 #include "../util/error.h"
+
+#define DISPLAY_RATE 100 // 100 FPS
+#define CONTROL_RATE 100 // 100 FPS
 
 typedef int16_t sample_t;
 
@@ -33,7 +37,10 @@ Sampler *sampler_create(int count, Func **roots, int sample_rate)
     }
     for (int index = 0; index < count; index++)
     {
-        Gen *channel = gen_create(roots[index]);
+        Func *root = roots[index];
+        root = scale_(EvalTickControl, CONTROL_RATE, root);
+        root = scale_(EvalTickDisplay, DISPLAY_RATE, root);
+        Gen *channel = gen_create(root);
         if (channel == NULL)
         {
             for (int i = 0; i < index; i++)

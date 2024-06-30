@@ -34,7 +34,7 @@ static double triangle_eval(__U int count, Gen **args, Eval eval, void *context_
     return output;
 }
 
-Func *triangle_osc(Func *tick)
+Func *triangle_gen(Func *tick)
 {
     TriangleContext initial = {
         .direction = 4.0,

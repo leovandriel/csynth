@@ -1,11 +1,11 @@
 #include "../../../src/func/effect/continuous.h"
-#include "../../../src/func/effect/loop.h"
+#include "../../../src/func/effect/effects.h"
 #include "../../../src/func/filter/envelopes.h"
 #include "../../util/test.h"
 
 void test_continuous()
 {
-    Func *time = loop_(continuous(linear_env_(0, 1, 1)), 2);
+    Func *time = loop_(2, continuous(linear_env_(1, 0, 1)));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(1.0);
     assert_double_equal(gen_eval(gen, eval), 0);

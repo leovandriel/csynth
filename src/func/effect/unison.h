@@ -9,12 +9,13 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../util/rand.h"
+#include "../gen/gens.h"
+#include "../gen/sample.h"
 #include "../op/add.h"
 #include "../op/mul.h"
 #include "../op/ops.h"
-#include "./gens.h"
 
-Func *unison(Func *frequency, gen_func generator, int count, double detune)
+Func *unison_split(int count, Func *input)
 {
     Func **array = (Func **)malloc_(count * sizeof(Func *));
     if (array == NULL)
@@ -23,11 +24,17 @@ Func *unison(Func *frequency, gen_func generator, int count, double detune)
     }
     for (int i = 0; i < count; i++)
     {
-        array[i] = generator(mul_(frequency, rand_range(1 - detune, 1 + detune)));
+        array[i] = input;
     }
     Func *output = dvd_(add_array(count, array), count);
     free_(array);
     return output;
 }
+
+Func *unison(int count, Func *detune, Func *input)
+{
+    return unison_split(count, pitch(add_(1, mul(detune, sample())), input));
+}
+Func *unison_(int count, double detune, Func *input) { return unison(count, const_(detune), input); }
 
 #endif // CSYNTH_UNISON_H

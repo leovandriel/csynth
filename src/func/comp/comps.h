@@ -13,7 +13,7 @@
 #include "../op/mul.h"
 #include "./seq.h"
 
-Func *pattern(const char *string, Func *input, Func *duration, Func *timing)
+Func *pattern(const char *string, Func *duration, Func *timing, Func *input)
 {
     int length = (int)strlen(string);
     Func **array = (Func **)malloc_(length * 2 * sizeof(Func *));
@@ -26,7 +26,7 @@ Func *pattern(const char *string, Func *input, Func *duration, Func *timing)
     {
         if (string[i] == '.')
         {
-            array[index++] = add(mul_(duration, i), mul_(timing, rand_gauss(0, 1)));
+            array[index++] = add(mul_(i, duration), mul_(rand_gauss(0, 1), timing));
             array[index++] = input;
         }
     }
@@ -35,9 +35,9 @@ Func *pattern(const char *string, Func *input, Func *duration, Func *timing)
     return output;
 }
 
-Func *pattern_(const char *string, Func *input, double duration, double timing)
+Func *pattern_(const char *string, double duration, double timing, Func *input)
 {
-    return pattern(string, input, const_(duration), const_(timing));
+    return pattern(string, const_(duration), const_(timing), input);
 }
 
 #endif // CSYNTH_COMPS_H

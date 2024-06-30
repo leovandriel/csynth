@@ -5,6 +5,6 @@
 int main()
 {
     // play frequency that increases 100 Hz every second
-    func fun = sine(mul_(timer(), 100));
-    return play(mul_(fun, .5));
+    func fun = sine(pitch_timer_(100));
+    return play(mul_(.5, fun));
 }

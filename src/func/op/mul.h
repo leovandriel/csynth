@@ -29,9 +29,9 @@ Func *mul_array(int count, Func **args)
 
 #define mul(...) (mul_array(FUNCS(__VA_ARGS__)))
 
-Func *mul_(Func *input, double factor)
+Func *mul_(double factor, Func *input)
 {
-    return mul(input, const_(factor));
+    return mul(const_(factor), input);
 }
 
 #endif // CSYNTH_MUL_H

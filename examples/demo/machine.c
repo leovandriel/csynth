@@ -9,9 +9,9 @@ int main()
         trigger('w', snare()),
         trigger('e', bdrum()));
     func patterns = add(
-        pattern_("................", actuate('q'), .25, .001),
-        pattern_("  .   .   .   . ", actuate('w'), .25, .001),
-        pattern_(".    .  .    .  ", actuate('e'), .25, .001));
-    func machine = add(triggers, loop_(patterns, 4));
-    return play(mul_(machine, .4));
+        pattern_("................", .25, .001, actuate('q')),
+        pattern_("  .   .   .   . ", .25, .001, actuate('w')),
+        pattern_(".    .  .    .  ", .25, .001, actuate('e')));
+    func machine = add(triggers, loop_(4, patterns));
+    return play(mul_(.4, machine));
 }

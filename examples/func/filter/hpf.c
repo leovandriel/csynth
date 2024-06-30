@@ -5,6 +5,6 @@
 int main()
 {
     // high-pass filter with exponentially increasing frequency
-    func note = hpf(saw(C4), expo(linear_env_(0, 10, 4)));
-    return play(mul_(note, .1));
+    func note = hpf(saw(C4), expo(linear_env_(4, 0, 10)));
+    return play(mul_(.1, note));
 }

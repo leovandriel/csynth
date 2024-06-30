@@ -4,5 +4,5 @@
 
 void test_writer()
 {
-    write(const_(1), 1, "output/test.wav");
+    write(1, "output/test.wav", const_(1));
 }
