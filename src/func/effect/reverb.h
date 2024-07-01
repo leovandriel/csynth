@@ -25,7 +25,7 @@ static double reverb_eval(__U int count, Gen **args, Eval eval, void *context_)
     double tick = gen_eval(args[0], eval);
     double decay = gen_eval(args[1], eval);
     double input = gen_eval(args[2], eval);
-    size_t size = (size_t)(1.0 / tick + 0.5);
+    size_t size = (size_t)(1.0 / tick);
     context->index = buffer_resize(&context->buffer, size, context->index, NULL);
     double *buffer = context->buffer.samples;
     double output = input;

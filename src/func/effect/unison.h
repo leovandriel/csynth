@@ -22,7 +22,7 @@ Func *unison_split(int count, Func *input)
     {
         array[i] = input;
     }
-    Func *output = dvd_(add_create(count, array), count);
+    Func *output = avg_create(count, array);
     free_(array);
     return output;
 }

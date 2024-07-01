@@ -22,7 +22,7 @@ static double karplus_strong_eval(__U int count, Gen **args, Eval eval, void *co
 {
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
     double pitch_tick = gen_eval(args[0], eval);
-    size_t size = (size_t)round(1.0 / pitch_tick);
+    size_t size = (size_t)(1.0 / pitch_tick);
     context->index = buffer_resize(&context->buffer, size, context->index, fill_rand_1_1);
     size_t next = (context->index + 1) % size;
     double *buffer = context->buffer.samples;

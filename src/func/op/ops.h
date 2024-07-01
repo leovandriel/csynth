@@ -33,6 +33,8 @@ Func *mul_(double factor, Func *input) { return mul(const_(factor), input); }
 Func *inv(Func *input) { return inv_create(input); }
 Func *dvd(Func *lhs, Func *rhs) { return mul(lhs, inv(rhs)); }
 Func *dvd_(Func *lhs, double rhs) { return dvd(lhs, const_(rhs)); }
+Func *avg_create(int count, Func **inputs) { return dvd_(add_create(count, inputs), count); }
+#define avg(...) (avg_create(FUNCS(__VA_ARGS__)))
 
 Func *pow_op(Func *base, Func *exponent) { return pow_create(base, exponent); }
 Func *pow_op_(double exponent, Func *input) { return pow_op(const_(exponent), input); }
