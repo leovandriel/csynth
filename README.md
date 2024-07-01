@@ -45,38 +45,28 @@ Taking a closer look, there are three pieces here: the `A4` constant represents
 440 Hz, `sine` generates a sine wave at that frequency, and `play` samples the
 sine function to your speakers.
 
-That probably sounded quite loud. Let's bring it down a little to save our ears:
-
-```c
-    func tone = sine(A4);
-    play(mul_(.5, tone));
-```
-
-Here we introduce `mul`, which is function that multiplies both arguments. By
-multiplying by 0.5, the volume becomes less. This also adds `func`, which
-indicates a function variable `tone`, allowing us split things across two lines.
-
-Note the underscore `_`. By default, all functions take other functions as
-arguments. By appending `_` to the name, you can pass in a number instead.
-
-Next, add a rectangular envelope to turn this into a 0.3 second note:
+To turn the continuous tone into a 0.3 second note, add a rectangular envelope:
 
 ```c
     func tone = sine(A4);
     func note = rect_(0, .3, tone);
-    play(mul_(.5, note));
+    play(note);
 ```
 
 This adds `rect`, which multiplies `tone` by 1 during the interval [0, 0.3] and
-0 elsewhere, resulting in a 0.3 second A4 note.
+0 elsewhere, resulting in a 0.3 second A4 note. We also use `func`, which
+indicates a function variable `tone`, allowing us split things across two lines.
 
-Next, add the note in a 1.5 second loop:
+Notice the underscore `_`. By default, all functions take other functions as
+arguments. By appending `_` to the name, you can pass in a number instead.
+
+Next, place the note in a 1.5 second loop:
 
 ```c
     func tone = sine(A4);
     func note = rect_(0, .3, tone);
     func looped = loop_(1.5, note);
-    play(mul_(.5, looped));
+    play(looped);
 ```
 
 Finally, add reverb (interval 0.4s, decay 0.2):
@@ -86,13 +76,13 @@ Finally, add reverb (interval 0.4s, decay 0.2):
     func note = rect_(0, .3, tone);
     func looped = loop_(1.5, note);
     func revved = reverb_(.4, .2, looped);
-    play(mul_(.5, revved));
+    play(revved);
 ```
 
 Or, to make it more compact:
 
 ```c
-    play(mul_(.5,reverb_(.4,.2,loop_(1.5,rect_(0,.3,sine(A4))))));
+    play(reverb_(.4,.2,loop_(1.5,rect_(0,.3,sine(A4)))));
 ```
 
 To listen to the result:
@@ -162,7 +152,7 @@ synthesize the sound of a G chord on the guitar using
         notes[i] = delay_(.1 * i, karplus_strong_(chord[i], .5));
     }
     func strum = add_create(6, notes);
-    play(mul_(.5, strum));
+    play(strum);
 ```
 
 This uses the [Karplus–Strong](src/func/gen/karplus_strong.h) method for string
@@ -201,8 +191,8 @@ int main()
 }
 ```
 
-While this looks a bit more convoluted, it does come with the full range of
-available arguments and configuration. These are all explained in detail in
+While this looks more convoluted, it does come with the full range of available
+arguments and configuration. These are all explained in detail in
 [func.h](src/core/func.h).
 
 Another way to learn more about `func_create` is to look at the implementation
@@ -221,8 +211,8 @@ system that broadcasts keyboard input and state changes.
 
 Keyboard input is read by [terminal](src/ui/terminal.h) and broadcasted to
 gating functions. The most basic example of this is
-[mute](src/func/contro/mute), which multiplies input by 1 and 0 alternating at
-every space bar press.
+[mute](src/func/keyboard/mute.h), which multiplies input by 1 and 0 alternating
+at every space bar press.
 
 ```c
     play(mute(' ', sine(A4)));
@@ -247,7 +237,7 @@ These controls can be combined to create a
 [keyboard](src/func/keyboard/keyboard.h):
 
 ```c
-    play(mul_(0.3, keyboard(trigger, decay_(.5, sine(C4)))));
+    play(keyboard(trigger, decay_(.5, sine(C4))));
 ```
 
 Keyboard strokes can also be recorded and replayed with
@@ -265,8 +255,8 @@ functionality is included for switches and numerical values.
 
 ## I/O
 
-Most of the examples above use [play](src/io/player.h) to sample a function to
-the system audio buffer. [play](src/io/player.h) takes care of setting up
+Most of the examples above use [player](src/io/player.h) to sample a function to
+the system audio buffer. A [player](src/io/player.h) takes care of setting up
 [PortAudio](https://www.portaudio.com/), the [sampler](src/io/sampler.h), the
 [terminal](src/ui/terminal.h), and it cleans things up before exiting the
 program. It comes in a few variants:
