@@ -35,6 +35,21 @@ csError buffer_init(Buffer *buffer, size_t size)
     return csErrorNone;
 }
 
+void buffer_fill(Buffer *buffer, double (*fill)(size_t))
+{
+    if (fill != NULL)
+    {
+        for (size_t i = 0; i < buffer->size; i++)
+        {
+            buffer->samples[i] = fill(i);
+        }
+    }
+    else
+    {
+        memset(buffer->samples, 0, buffer->size * sizeof(double));
+    }
+}
+
 static size_t buffer_resize_from_zero(Buffer *buffer, size_t size, double (*fill)(size_t))
 {
     double *samples = (double *)malloc_(size * sizeof(double));
@@ -44,20 +59,10 @@ static size_t buffer_resize_from_zero(Buffer *buffer, size_t size, double (*fill
         // TODO(leo): handle error
         return 0;
     }
-    if (fill != NULL)
-    {
-        for (size_t i = 0; i < size; i++)
-        {
-            samples[i] = fill(i);
-        }
-    }
-    else
-    {
-        memset(samples, 0, size * sizeof(double));
-    }
     buffer->samples = samples;
     buffer->capacity = size;
     buffer->size = size;
+    buffer_fill(buffer, fill);
     return 0;
 }
 
