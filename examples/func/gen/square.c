@@ -5,7 +5,7 @@
 int main()
 {
     // square wave keyboard
-    func fun = keyboard(unmute, square(C4));
+    func fun = keyboard(unmute, mul_(.2, square(C4)));
     printf("keyboard keys: %s\n", keyboard_keys);
-    return play(mul_(.1, fun));
+    return play(fun);
 }

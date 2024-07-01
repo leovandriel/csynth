@@ -6,7 +6,7 @@ static float deg2rad = M_PI / 180;
 
 func ear(func angle)
 {
-    return mul_(0.3, add_(1.1, sin_op(mul_(deg2rad, angle))));
+    return mul_(.3, add_(1.1, sin_op(mul_(deg2rad, angle))));
 }
 
 int main()

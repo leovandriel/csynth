@@ -5,7 +5,7 @@
 int main()
 {
     // play meow keyboard
-    func fun = keyboard(trigger, wav("examples/meow.wav"));
+    func note = keyboard(trigger, wav("examples/meow.wav"));
     printf("keyboard keys: %s\n", keyboard_keys);
-    return play(mul_(.5, fun));
+    return play(note);
 }

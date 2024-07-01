@@ -6,5 +6,5 @@ int main()
 {
     // press space to pause/play
     func note = pause_play(' ', sine(mul(C4, sine_(.1))));
-    return play(mul_(0.5, note));
+    return play(note);
 }

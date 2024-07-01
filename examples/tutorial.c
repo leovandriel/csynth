@@ -4,5 +4,6 @@
 
 int main()
 {
-    return play(sine(A4));
+    func tone = sine(A4);
+    return play(tone);
 }

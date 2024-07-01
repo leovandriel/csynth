@@ -12,6 +12,7 @@
 
 #define DISPLAY_RATE 10  // 10 FPS
 #define CONTROL_RATE 100 // 100 FPS
+#define VOLUME_MULTIPLIER 0.5
 
 typedef int16_t sample_t;
 
@@ -64,7 +65,7 @@ void sampler_sample(Sampler *sampler, size_t count, sample_t *buffer)
     {
         for (int index = 0; index < sampler->count; index++)
         {
-            double output = gen_eval(sampler->channels[index], sampler->eval);
+            double output = gen_eval(sampler->channels[index], sampler->eval) * VOLUME_MULTIPLIER;
             double clip = output > 1.0 ? 1.0 : (output < -1.0 ? -1.0 : output);
             *(buffer++) = (sample_t)(clip * 32767);
         }

@@ -6,5 +6,5 @@ int main()
 {
     // ONE and ZERO are shortcuts for const_(1) and const_(0)
     func fun = crack(ONE);
-    return play(mul_(.5, fun));
+    return play(fun);
 }

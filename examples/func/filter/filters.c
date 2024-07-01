@@ -6,5 +6,5 @@ int main()
 {
     // TODO(leo): Implement
     func note = hush(sine(C4));
-    return play(mul_(0.5, note));
+    return play(note);
 }

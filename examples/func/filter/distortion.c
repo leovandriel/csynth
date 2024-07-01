@@ -5,6 +5,6 @@
 int main()
 {
     // distortion filter with oscillating shape
-    func note = distortion(mul_(10, sine_(.3)), sine(C4));
-    return play(mul_(.1, note));
+    func note = mul_(.5, distortion(mul_(10, sine_(.3)), sine(C4)));
+    return play(note);
 }

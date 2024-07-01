@@ -2,15 +2,15 @@
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
 
-double speed = 0.4;
+double speed = .4;
 
 static func A(func frequency, double duration)
 {
     double delta = speed * duration;
     func note = saw(frequency);
-    note = chorus_(sine_(.2), 0.02, 0.003, note);
+    note = chorus_(sine_(.2), .02, .003, note);
     note = lpf(A2, note);
-    note = adsr_(delta / 4, delta / 8, 0.8, delta / 8, delta, note);
+    note = adsr_(delta / 4, delta / 8, .8, delta / 8, delta, note);
     return note;
 }
 
@@ -18,8 +18,8 @@ static func B(func frequency, double duration)
 {
     double delta = speed * duration;
     func note = add(
-        mul_(0.2, sine(mul_(2, frequency))),
-        mul_(0.2, sine(dvd_(frequency, 2))));
+        mul_(.2, sine(mul_(2, frequency))),
+        mul_(.2, sine(dvd_(frequency, 2))));
     note = rect_(0, delta, note);
     return add(note, A(frequency, duration));
 }
@@ -27,11 +27,11 @@ static func B(func frequency, double duration)
 static func C(func frequency, double duration)
 {
     double delta = speed * duration;
-    func note = karplus_strong_(frequency, 0.8);
+    func note = karplus_strong_(frequency, .8);
     note = lpf(frequency, note);
     note = rect_(0, delta, note);
     note = distortion_(5, note);
-    note = mul_(0.05, note);
+    note = mul_(.05, note);
     return add(note, A(frequency, duration));
 }
 
@@ -144,6 +144,6 @@ int main()
         C(D5, 2),
         C(C5, 4));
     func sequence = seq_rel(ff1, _(48.5 * speed), ff2, _(48.5 * speed), ff3, _(98 * speed));
-    func spangled = reverb_(0.1, 0.5, sequence);
+    func spangled = reverb_(.1, .5, sequence);
     return play_duration(80, spangled);
 }

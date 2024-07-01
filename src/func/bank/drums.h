@@ -14,17 +14,17 @@
 Func *bdrum()
 {
     Func *freq = linear_env_(1, 60, 30);
-    return decay_(.05, sine(freq));
+    return decay_(0.05, sine(freq));
 }
 
 Func *hihat()
 {
-    return decay_(.05, hpf_(20000, dvd_(uniform(), 2)));
+    return decay_(0.05, hpf_(20000, dvd_(uniform(), 2)));
 }
 
 Func *snare()
 {
-    return decay_(.05, dvd_(uniform(), 4));
+    return decay_(0.05, dvd_(uniform(), 4));
 }
 
 #endif // CSYNTH_DRUMS_H

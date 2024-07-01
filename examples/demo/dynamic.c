@@ -16,13 +16,13 @@ static func beep_dynamic(func pitch, func speed)
 
 func wobble_both()
 {
-    func wobble = continuous(add_(1, mul_(0.1, sine_(.1))));
+    func wobble = continuous(add_(1, mul_(.1, sine_(.1))));
     return beep_dynamic(wobble, wobble);
 }
 
 func modulate_pitch()
 {
-    func modulate = continuous(add_(0.01, pitch_timer_(.5)));
+    func modulate = continuous(add_(.01, pitch_timer_(.5)));
     return beep_dynamic(modulate, ONE);
 }
 

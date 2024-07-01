@@ -5,5 +5,5 @@
 int main()
 {
     func tone = sine(knob_ex(70, 0, C0, C9));
-    return play_midi(mul_(.5, tone));
+    return play_midi(tone);
 }

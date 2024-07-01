@@ -6,5 +6,5 @@ int main()
 {
     // play a constant frequency, same as sine(_(440)) or simply sine_(440)
     func note = sine(const_(440));
-    return play(mul_(0.5, note));
+    return play(note);
 }

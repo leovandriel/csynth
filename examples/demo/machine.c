@@ -13,5 +13,5 @@ int main()
         pattern_("  .   .   .   . ", .25, .001, actuate('w')),
         pattern_(".    .  .    .  ", .25, .001, actuate('e')));
     func machine = add(triggers, loop_(4, patterns));
-    return play(mul_(.4, machine));
+    return play(machine);
 }

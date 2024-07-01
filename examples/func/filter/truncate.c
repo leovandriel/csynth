@@ -11,5 +11,5 @@ int main()
     func length = linear_env_(1, .4, .8);
     func looped = loop(length, note);
     func truncated = truncate_(1, looped);
-    return play(mul_(.5, truncated));
+    return play(truncated);
 }

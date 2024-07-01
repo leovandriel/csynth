@@ -4,7 +4,7 @@
 
 int main()
 {
-    func note = unison_(5, 0.01, saw(C4));
+    func note = unison_(5, .01, saw(C4));
     func keyboard = midi_keyboard(0, key, note);
-    return play_midi(mul_(.5, keyboard));
+    return play_midi(keyboard);
 }

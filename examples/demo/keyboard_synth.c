@@ -9,7 +9,7 @@ int main()
         trigger('q', bdrum()),
         trigger('w', snare()),
         trigger('e', hihat()));
-    func note = decay_(0.5, unison_(5, 0.01, saw(C4)));
+    func note = decay_(.5, unison_(5, .01, saw(C4)));
     func keys = mul_(.5, keyboard(trigger, note));
     return play(add(drums, keys));
 }
