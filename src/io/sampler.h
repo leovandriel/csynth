@@ -10,7 +10,7 @@
 #include "../util/default.h"
 #include "../util/error.h"
 
-#define DISPLAY_RATE 100 // 100 FPS
+#define DISPLAY_RATE 10  // 10 FPS
 #define CONTROL_RATE 100 // 100 FPS
 
 typedef int16_t sample_t;
