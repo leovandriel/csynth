@@ -8,7 +8,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 static double smooth_eval(__U int count, Gen **args, Eval eval, __U void *context_)
 {
@@ -27,11 +26,9 @@ static double smooth_eval(__U int count, Gen **args, Eval eval, __U void *contex
     return ratio * ratio * (3.0 - 2.0 * ratio);
 }
 
-Func *smooth_op(Func *edge0, Func *edge1, Func *input)
+Func *smooth_create(Func *edge0, Func *edge1, Func *input)
 {
     return func_create(NULL, smooth_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(edge0, edge1, input));
 }
-
-Func *smooth_op_(double edge0, double edge1, Func *input) { return smooth_op(const_(edge0), const_(edge1), input); }
 
 #endif // CSYNTH_SMOOTH_H

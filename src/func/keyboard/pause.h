@@ -48,7 +48,7 @@ static int pause_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *pause_play_(int key, int play_reset, int paused, Func *input)
+Func *pause_create(int key, int play_reset, int paused, Func *input)
 {
     PauseContext initial = {
         .parent = {.handle_event = pause_handle_event},
@@ -58,10 +58,5 @@ Func *pause_play_(int key, int play_reset, int paused, Func *input)
     };
     return func_create(pause_init, pause_eval, keyboard_event_free, sizeof(PauseContext), &initial, FuncFlagNone, FUNCS(input));
 }
-
-Func *pause_play(int key, Func *input) { return pause_play_(key, 0, 0, input); }
-Func *play_pause(int key, Func *input) { return pause_play_(key, 0, 1, input); }
-Func *pause_reset(int key, Func *input) { return pause_play_(key, 1, 0, input); }
-Func *reset_pause(int key, Func *input) { return pause_play_(key, 1, 1, input); }
 
 #endif // CSYNTH_PAUSE_H

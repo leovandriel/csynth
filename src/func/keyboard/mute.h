@@ -19,8 +19,8 @@ typedef struct
 static double mute_eval(__U int count, __U Gen **args, Eval eval, void *context_)
 {
     MuteContext *context = (MuteContext *)context_;
-    double output = gen_eval(args[0], eval);
-    return context->muted ? 0 : output;
+    double input = gen_eval(args[0], eval);
+    return context->muted ? 0 : input;
 }
 
 static void mute_handle_event(int key, void *context_)
@@ -41,7 +41,7 @@ static int mute_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *mute_(int key, int muted, Func *input)
+Func *mute_create(int key, int muted, Func *input)
 {
     MuteContext initial = {
         .parent = {.handle_event = mute_handle_event},
@@ -50,8 +50,5 @@ Func *mute_(int key, int muted, Func *input)
     };
     return func_create(mute_init, mute_eval, keyboard_event_free, sizeof(MuteContext), &initial, FuncFlagNone, FUNCS(input));
 }
-
-Func *mute(int key, Func *input) { return mute_(key, 0, input); }
-Func *unmute(int key, Func *input) { return mute_(key, 1, input); }
 
 #endif // CSYNTH_MUTE_H

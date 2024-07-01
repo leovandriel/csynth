@@ -11,13 +11,12 @@
 
 static double neg_eval(__U int count, Gen **args, Eval eval, __U void *context)
 {
-    double output = gen_eval(args[0], eval);
-    return -output;
+    double input = gen_eval(args[0], eval);
+    return -input;
 }
 
-Func *neg(Func *input)
+Func *neg_create(Func *input)
 {
     return func_create(NULL, neg_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(input));
 }
-
 #endif // CSYNTH_NEG_H

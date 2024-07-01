@@ -4,15 +4,19 @@
 #ifndef CSYNTH_TIMES_H
 #define CSYNTH_TIMES_H
 
-#include "../op/inv.h"
+#include "../gen/const.h"
+#include "../op/ops.h"
 #include "./scale.h"
 #include "./ticker.h"
 #include "./timer.h"
 
-Func *ticker(EvalTick tick, Func *factor) { return scale(tick, factor, ticker_time(tick)); }
+Func *scale(EvalTick tick, Func *factor, Func *input) { return scale_create(tick, factor, input); }
+Func *scale_(EvalTick tick, double factor, Func *input) { return scale(tick, const_(factor), input); }
+
+Func *ticker(EvalTick tick, Func *factor) { return scale(tick, factor, ticker_create(tick)); }
 Func *ticker_(EvalTick tick, double factor) { return ticker(tick, const_(factor)); }
 
-Func *timer(EvalTick tick, Func *factor) { return timer_tick(ticker(tick, factor)); }
+Func *timer(EvalTick tick, Func *factor) { return timer_create(ticker(tick, factor)); }
 Func *timer_(EvalTick tick, double factor) { return timer(tick, const_(factor)); }
 
 Func *pitch_ticker(Func *factor) { return ticker(EvalTickPitch, factor); }

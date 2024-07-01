@@ -6,7 +6,7 @@
 
 #include "../core/func.h"
 #include "../core/gen.h"
-#include "../func/time/scale.h"
+#include "../func/time/times.h"
 #include "../util/default.h"
 #include "../util/error.h"
 

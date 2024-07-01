@@ -18,7 +18,7 @@ static double ticker_eval(__U int count, __U Gen **args, Eval eval, void *contex
     return eval.tick[context->tick];
 }
 
-Func *ticker_time(EvalTick tick)
+Func *ticker_create(EvalTick tick)
 {
     TickerContext initial = {.tick = tick};
     return func_create(NULL, ticker_eval, NULL, sizeof(TickerContext), &initial, FuncFlagNone, FUNCS());

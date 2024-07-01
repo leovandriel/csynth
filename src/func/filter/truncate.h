@@ -8,7 +8,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 typedef struct
 {
@@ -28,7 +27,7 @@ static double truncate_eval(__U int count, __U Gen **args, Eval eval, void *cont
     return input * context->level;
 }
 
-Func *truncate_filter(Func *tick, Func *input)
+Func *truncate_create(Func *tick, Func *input)
 {
     TruncateContext initial = {.level = 1.0};
     return func_create(NULL, truncate_eval, NULL, sizeof(TruncateContext), &initial, FuncFlagNone, FUNCS(tick, input));

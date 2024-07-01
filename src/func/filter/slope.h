@@ -6,7 +6,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 typedef struct
 {
@@ -32,7 +31,7 @@ static double slope_eval(__U int count, Gen **args, Eval eval, void *context_)
     return output;
 }
 
-Func *slope_filter(Func *tick, Func *input)
+Func *slope_create(Func *tick, Func *input)
 {
     return func_create(NULL, slope_eval, NULL, sizeof(SlopeContext), NULL, FuncFlagNone, FUNCS(tick, input));
 }

@@ -92,30 +92,24 @@ static double seq_eval_fix(int count, Gen **args, Eval eval, void *context_)
     return index < count ? gen_eval(args[index], eval) : 0;
 }
 
-Func *seq_abs_array(int count, Func **args)
+Func *seq_abs_create(int count, Func **args)
 {
     return func_create(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
-Func *seq_rel_array(int count, Func **args)
+Func *seq_rel_create(int count, Func **args)
 {
     return func_create(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
-Func *seq_seq_array(int count, Func **args)
+Func *seq_seq_create(int count, Func **args)
 {
     return func_create(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
-Func *seq_fix_array(int count, Func **args)
+Func *seq_fix_create(int count, Func **args)
 {
     return func_create(NULL, seq_eval_fix, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
-
-#define seq_abs(...) (seq_abs_array(FUNCS(__VA_ARGS__)))
-#define seq_rel(...) (seq_rel_array(FUNCS(__VA_ARGS__)))
-#define seq_seq(...) (seq_seq_array(FUNCS(__VA_ARGS__)))
-#define seq_fix(...) (seq_fix_array(FUNCS(__VA_ARGS__)))
-#define seq_fix_(_duration, ...) (seq_fix_array(FUNCS(const_(_duration), __VA_ARGS__)))
 
 #endif // CSYNTH_SEQ_H

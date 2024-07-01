@@ -8,7 +8,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "./const.h"
 
 typedef struct
 {
@@ -24,15 +23,14 @@ static double square_eval(__U int count, Gen **args, Eval eval, void *context_)
         context->time -= 0.5;
         context->output = -context->output;
     }
-    context->time += gen_eval(args[0], eval);
+    double tick = gen_eval(args[0], eval);
+    context->time += tick;
     return context->output;
 }
 
-Func *square_gen(Func *tick)
+Func *square_create(Func *tick)
 {
-    SquareContext initial = {
-        .output = 1.0,
-    };
+    SquareContext initial = {.output = 1.0};
     return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, FuncFlagNone, FUNCS(tick));
 }
 

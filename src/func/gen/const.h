@@ -27,14 +27,13 @@ static double const_eval(__U int count, __U Gen **args, __U Eval eval, void *con
     return context->value;
 }
 
-Func *const_(double value)
+Func *const_create(double value)
 {
-    ConstContext initial = {
-        .value = value,
-    };
+    ConstContext initial = {.value = value};
     return func_create(NULL, const_eval, NULL, sizeof(ConstContext), &initial, FuncFlagNone, FUNCS());
 }
 
+Func *const_(double value) { return const_create(value); }
 Func *_(double value) { return const_(value); }
 
 #endif // CSYNTH_CONST_H

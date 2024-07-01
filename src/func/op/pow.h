@@ -10,7 +10,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 static double pow_eval(__U int count, Gen **args, Eval eval, __U void *context)
 {
@@ -19,11 +18,9 @@ static double pow_eval(__U int count, Gen **args, Eval eval, __U void *context)
     return pow(base, exponent);
 }
 
-Func *pow_op(Func *base, Func *exponent)
+Func *pow_create(Func *base, Func *exponent)
 {
     return func_create(NULL, pow_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(base, exponent));
 }
-
-Func *pow_op_(double exponent, Func *input) { return pow_op(const_(exponent), input); }
 
 #endif // CSYNTH_POW_H

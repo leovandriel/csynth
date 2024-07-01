@@ -41,7 +41,7 @@ static int selector_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *selector_array(int key, int count, Func **args)
+Func *selector_create(int key, int count, Func **args)
 {
     SelectorContext initial = {
         .parent = {.handle_event = selector_handle_event},
@@ -50,7 +50,5 @@ Func *selector_array(int key, int count, Func **args)
     };
     return func_create(selector_init, selector_eval, keyboard_event_free, sizeof(SelectorContext), &initial, FuncFlagSkipReset, count, args);
 }
-
-#define selector(key, ...) (selector_array(key, FUNCS(__VA_ARGS__)))
 
 #endif // CSYNTH_SELECTOR_H

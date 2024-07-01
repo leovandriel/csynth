@@ -11,7 +11,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 static double min_eval(int count, Gen **args, Eval eval, __U void *context)
 {
@@ -27,16 +26,9 @@ static double min_eval(int count, Gen **args, Eval eval, __U void *context)
     return min;
 }
 
-Func *min_array(int count, Func **args)
+Func *min_create(int count, Func **args)
 {
     return func_create(NULL, min_eval, NULL, 0, NULL, FuncFlagNone, count, args);
-}
-
-#define min(...) (min_array(FUNCS(__VA_ARGS__)))
-
-Func *min_(double max, Func *input)
-{
-    return min(const_(max), input);
 }
 
 #endif // CSYNTH_MIN_H

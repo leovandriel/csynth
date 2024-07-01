@@ -27,7 +27,8 @@ static double pad_eval(__U int count, __U Gen **args, Eval eval, void *context_)
         gen_reset(args[0]);
         context->reset = 0;
     }
-    return gen_eval(args[0], eval) * context->value;
+    double input = gen_eval(args[0], eval);
+    return input * context->value;
 }
 
 static void pad_handle_event(__U double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
@@ -47,7 +48,7 @@ static int pad_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *pad(int channel, int pad, Func *input)
+Func *pad_create(int channel, int pad, Func *input)
 {
     PadContext initial = {
         .parent = {.handle_event = pad_handle_event},

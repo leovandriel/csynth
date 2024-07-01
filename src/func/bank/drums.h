@@ -8,8 +8,8 @@
 #include "../../core/gen.h"
 #include "../filter/envelopes.h"
 #include "../filter/filters.h"
+#include "../gen/gens.h"
 #include "../gen/sine.h"
-#include "../gen/uniform.h"
 
 Func *bdrum()
 {

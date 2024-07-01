@@ -6,7 +6,7 @@
 
 void test_sine_const()
 {
-    Func *time = sine_gen(pitch_ticker_(1));
+    Func *time = sine_create(pitch_ticker_(1));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, eval), 0.0000000000000000);

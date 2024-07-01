@@ -1,4 +1,5 @@
 #include "../../../src/func/op/add.h"
+#include "../../../src/func/op/ops.h"
 #include "../../util/test.h"
 
 void test_add()

@@ -8,10 +8,9 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
-
 #include "../../event/keyboard_event.h"
 #include "../../event/state_event.h"
+#include "../gen/const.h"
 
 typedef struct
 {
@@ -86,7 +85,7 @@ static int stepper_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *stepper_range(int key, double value, double step, double min, double max, int rel)
+Func *stepper_create(int key, double value, double step, double min, double max, int rel)
 {
     StepperContext initial = {
         .parent = {.handle_event = stepper_handle_event},
@@ -99,8 +98,5 @@ Func *stepper_range(int key, double value, double step, double min, double max, 
     };
     return func_create(stepper_init, stepper_eval, keyboard_event_free, sizeof(StepperContext), &initial, FuncFlagSkipReset, FUNCS());
 }
-
-Func *stepper(int key, double value, double delta) { return stepper_range(key, value, delta, -FLT_MAX, FLT_MAX, 0); }
-Func *stepper_rel(int key, double value, double perc) { return stepper_range(key, value, perc, -FLT_MAX, FLT_MAX, 1); }
 
 #endif // CSYNTH_STEPPER_H

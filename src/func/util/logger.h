@@ -75,7 +75,7 @@ static double logger_eval(__U int count, Gen **args, Eval eval, void *context_)
     return input;
 }
 
-Func *logger(size_t count, size_t step, Func *input)
+Func *logger_create(size_t count, size_t step, Func *input)
 {
     LoggerContext initial = {
         .min = -1,
@@ -86,21 +86,6 @@ Func *logger(size_t count, size_t step, Func *input)
         .step = step,
     };
     return func_create(NULL, logger_eval, NULL, sizeof(LoggerContext), &initial, FuncFlagNone, FUNCS(input));
-}
-
-Func *log20(Func *input)
-{
-    return logger(20, 1, input);
-}
-
-Func *log1k(Func *input)
-{
-    return logger(1000, 1, input);
-}
-
-Func *log10sec(Func *input)
-{
-    return logger(10, 4410, input);
 }
 
 #endif // CSYNTH_LOGGER_H

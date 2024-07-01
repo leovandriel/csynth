@@ -8,7 +8,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "./const.h"
 
 typedef struct
 {
@@ -19,7 +18,8 @@ static double saw_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     SawContext *context = (SawContext *)context_;
     double output = context->output;
-    context->output += 2.0 * gen_eval(args[0], eval);
+    double tick = gen_eval(args[0], eval);
+    context->output += 2.0 * tick;
     if (context->output > 1.0)
     {
         context->output -= 2.0;
@@ -27,7 +27,7 @@ static double saw_eval(__U int count, Gen **args, Eval eval, void *context_)
     return output;
 }
 
-Func *saw_gen(Func *tick)
+Func *saw_create(Func *tick)
 {
     return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, FuncFlagNone, FUNCS(tick));
 }

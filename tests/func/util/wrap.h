@@ -1,4 +1,5 @@
 #include "../../../src/func/gen/const.h"
+#include "../../../src/func/util/utils.h"
 #include "../../../src/func/util/wrap.h"
 #include "../../util/test.h"
 

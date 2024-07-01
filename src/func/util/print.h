@@ -20,13 +20,13 @@ typedef struct
 static double print_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     PrintContext *context = (PrintContext *)context_;
-    double output = gen_eval(args[0], eval);
-    if ((output > FUNC_EPSILON || output < -FUNC_EPSILON) && context->text != NULL)
+    double input = gen_eval(args[0], eval);
+    if ((input > FUNC_EPSILON || input < -FUNC_EPSILON) && context->text != NULL)
     {
         fprintf(stderr, "%s\n", context->text);
         context->text = NULL;
     }
-    return output;
+    return input;
 }
 
 static void print_free(__U int count, void *context_)
@@ -35,7 +35,7 @@ static void print_free(__U int count, void *context_)
     free_((char *)context->text);
 }
 
-Func *print(const char *text, Func *input)
+Func *print_create(const char *text, Func *input)
 {
     size_t size = strlen(text) + 1;
     char *copy = malloc_(size);
@@ -44,9 +44,7 @@ Func *print(const char *text, Func *input)
         return error_null(csErrorMemoryAlloc);
     }
     strncpy(copy, text, size);
-    PrintContext initial = {
-        .text = copy,
-    };
+    PrintContext initial = {.text = copy};
     return func_create(NULL, print_eval, print_free, sizeof(PrintContext), &initial, FuncFlagNone, FUNCS(input));
 }
 

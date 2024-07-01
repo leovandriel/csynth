@@ -23,7 +23,7 @@ static double sample_eval(__U int count, __U Gen **args, __U Eval eval, void *co
     return context->sample;
 }
 
-Func *sample()
+Func *sample_create()
 {
     return func_create(NULL, sample_eval, NULL, sizeof(SampleContext), NULL, FuncFlagNone, FUNCS());
 }

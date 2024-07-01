@@ -13,7 +13,6 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../mem/buffer.h"
-#include "../gen/const.h"
 
 typedef struct
 {
@@ -46,11 +45,9 @@ static void chorus_free(__U int count, void *context_)
     buffer_free(&context->buffer);
 }
 
-Func *chorus(Func *modulation, Func *delay, Func *depth, Func *input)
+Func *chorus_create(Func *modulation, Func *delay, Func *depth, Func *input)
 {
     return func_create(NULL, chorus_eval, chorus_free, sizeof(ChorusContext), NULL, FuncFlagNone, FUNCS(modulation, delay, depth, input));
 }
-
-Func *chorus_(Func *modulation, double delay, double depth, Func *input) { return chorus(modulation, const_(delay), const_(depth), input); }
 
 #endif // CSYNTH_CHORUS_H

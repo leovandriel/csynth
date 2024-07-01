@@ -9,8 +9,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
-#include "../op/neg.h"
 
 typedef struct
 {
@@ -31,7 +29,7 @@ static double delay_eval(__U int count, Gen **args, Eval eval, void *context_)
     return output;
 }
 
-Func *delay_effect(Func *tick, Func *input)
+Func *delay_create(Func *tick, Func *input)
 {
     return func_create(NULL, delay_eval, NULL, sizeof(DelayContext), NULL, FuncFlagNone, FUNCS(tick, input));
 }

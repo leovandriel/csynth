@@ -16,11 +16,12 @@ static double timer_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     TimerContext *context = (TimerContext *)context_;
     double output = context->time;
-    context->time += gen_eval(args[0], eval);
+    double tick = gen_eval(args[0], eval);
+    context->time += tick;
     return output;
 }
 
-Func *timer_tick(Func *tick)
+Func *timer_create(Func *tick)
 {
     return func_create(NULL, timer_eval, NULL, sizeof(TimerContext), NULL, FuncFlagNone, FUNCS(tick));
 }

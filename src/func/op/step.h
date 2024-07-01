@@ -8,7 +8,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 static double step_eval(__U int count, Gen **args, Eval eval, __U void *context_)
 {
@@ -18,10 +17,9 @@ static double step_eval(__U int count, Gen **args, Eval eval, __U void *context_
     return value;
 }
 
-Func *step_op(Func *edge, Func *input)
+Func *step_create(Func *edge, Func *input)
 {
     return func_create(NULL, step_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(edge, input));
 }
-Func *step_op_(double edge, Func *input) { return step_op(const_(edge), input); }
 
 #endif // CSYNTH_STEP_H

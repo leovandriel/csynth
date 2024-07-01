@@ -9,7 +9,6 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../event/state_event.h"
-#include "../../ui/display.h"
 
 typedef struct
 {
@@ -33,13 +32,12 @@ static double gauge_eval(__U int count, Gen **args, Eval eval, void *context_)
     return input;
 }
 
-Func *gauge_interval(const char *label, Func *tick, Func *input)
+Func *gauge_create(const char *label, Func *tick, Func *input)
 {
     GaugeContext initial = {
         .label = label,
         .time = 1.0,
     };
-    display_label(label);
     return func_create(NULL, gauge_eval, NULL, sizeof(GaugeContext), &initial, FuncFlagNone, FUNCS(tick, input));
 }
 

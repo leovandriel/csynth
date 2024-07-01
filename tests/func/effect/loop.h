@@ -1,6 +1,6 @@
 #include "../../../src/func/effect/effects.h"
 #include "../../../src/func/effect/loop.h"
-#include "../../../src/func/op/step.h"
+#include "../../../src/func/op/ops.h"
 #include "../../../src/func/time/times.h"
 #include "../../util/test.h"
 

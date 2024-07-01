@@ -10,8 +10,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
-#include "../time/times.h"
 
 typedef struct
 {
@@ -22,7 +20,8 @@ typedef struct
 static double hpf_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     HighPassContext *context = (HighPassContext *)context_;
-    double factor = (M_PI * 2 * gen_eval(args[0], eval)) + 1.0;
+    double tick = gen_eval(args[0], eval);
+    double factor = (M_PI * 2 * tick) + 1.0;
     double input = gen_eval(args[1], eval);
     double output = context->output;
     context->output = (context->output + input - context->input) / factor;
@@ -30,7 +29,7 @@ static double hpf_eval(__U int count, Gen **args, Eval eval, void *context_)
     return output;
 }
 
-Func *hpf_filter(Func *tick, Func *input)
+Func *hpf_create(Func *tick, Func *input)
 {
     return func_create(NULL, hpf_eval, NULL, sizeof(HighPassContext), NULL, FuncFlagNone, FUNCS(tick, input));
 }

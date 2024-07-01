@@ -147,12 +147,12 @@ variations of a function, including helpful short-hands. Examples for
     mul_(.5, sine(A4))
     mul(sine(A4), _(.5))
     mul(sine(A4), sine(B4), _(.5))
-    mul_array(4, (Func *[]){sine(A4), sine(B4), sine(C4), _(.5)})
+    mul_create(4, (Func *[]){sine(A4), sine(B4), sine(C4), _(.5)})
 ```
 
 The latter opens the door to programmatic building of sound. For example, to
 synthesize the sound of a G chord on the guitar using
-[add_array](src/func/op/add.h):
+[add_create](src/func/op/add.h):
 
 ```c
     func chord[] = {G2, B2, D3, G3, B3, G4};
@@ -161,7 +161,7 @@ synthesize the sound of a G chord on the guitar using
     {
         notes[i] = delay_(.1 * i, karplus_strong_(chord[i], .1));
     }
-    play(mul_(.5, add_array(6, notes)));
+    play(mul_(.5, add_create(6, notes)));
 ```
 
 This uses the [Karplus–Strong](src/func/gen/karplus_strong.h) method for string

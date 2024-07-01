@@ -15,7 +15,7 @@ static double gauss_eval(__U int count, __U Gen **args, __U Eval eval, __U void 
     return rand_gauss(0, 1);
 }
 
-Func *gauss()
+Func *gauss_create()
 {
     return func_create(NULL, gauss_eval, NULL, 0, NULL, FuncFlagNone, FUNCS());
 }

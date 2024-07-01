@@ -1,3 +1,4 @@
+#include "../../../src/func/op/ops.h"
 #include "../../../src/func/op/smooth.h"
 #include "../../../src/func/time/times.h"
 #include "../../util/test.h"

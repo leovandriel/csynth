@@ -10,7 +10,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 typedef struct
 {
@@ -20,8 +19,8 @@ typedef struct
 static double resonant_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
     ResonantContext *context = (ResonantContext *)context_;
-    double omega = M_PI * 2 * gen_eval(args[0], eval);
-    ;
+    double tick = gen_eval(args[0], eval);
+    double omega = M_PI * 2 * tick;
     double q_factor = gen_eval(args[1], eval);
     double alpha = sin(omega) / (2.0 * q_factor);
     double va0 = 1.0 + alpha;
@@ -38,7 +37,7 @@ static double resonant_eval(__U int count, Gen **args, Eval eval, void *context_
     return output;
 }
 
-Func *resonant_filter(Func *tick, Func *q_factor, Func *input)
+Func *resonant_create(Func *tick, Func *q_factor, Func *input)
 {
     return func_create(NULL, resonant_eval, NULL, sizeof(ResonantContext), NULL, FuncFlagNone, FUNCS(tick, q_factor, input));
 }

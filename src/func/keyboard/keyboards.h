@@ -9,36 +9,37 @@
 #include "../../core/func.h"
 #include "../../util/error.h"
 #include "../gen/gens.h"
-#include "../gen/notes.h"
-#include "../op/add.h"
-#include "../op/mul.h"
+#include "../op/ops.h"
 #include "../time/times.h"
+#include "./actuate.h"
+#include "./mute.h"
+#include "./pause.h"
 #include "./replay.h"
+#include "./selector.h"
+#include "./stepper.h"
+#include "./track.h"
+#include "./trigger.h"
 
-typedef Func *(*keyboard_control_func)(int key, Func *input);
+Func *trigger(int key, Func *input) { return trigger_create(key, input); }
 
-const char *keyboard_keys = "zsxdcvgbhnjm,l.;/";
+Func *mute(int key, Func *input) { return mute_create(key, 0, input); }
+Func *unmute(int key, Func *input) { return mute_create(key, 1, input); }
 
-Func *keyboard(keyboard_control_func control, Func *input)
-{
-    int count = (int)strlen(keyboard_keys);
-    Func **array = (Func **)malloc_(count * sizeof(Func *));
-    if (array == NULL)
-    {
-        return error_null(csErrorMemoryAlloc);
-    }
-    for (int i = 0; i < count; i++)
-    {
-        char key = keyboard_keys[i];
-        Func *pitched = pitch_(exp2(i / 12.0), input);
-        array[i] = control(key, pitched);
-    }
-    Func *output = add_array(count, array);
-    free_(array);
-    return output;
-}
+Func *pause_play(int key, Func *input) { return pause_create(key, 0, 0, input); }
+Func *play_pause(int key, Func *input) { return pause_create(key, 0, 1, input); }
+Func *pause_reset(int key, Func *input) { return pause_create(key, 1, 0, input); }
+Func *reset_pause(int key, Func *input) { return pause_create(key, 1, 1, input); }
 
-Func *replay(const char *filename, Func *input) { return replay_tick(filename, tempo_ticker_(1), input); }
+#define selector(key, ...) (selector_create(key, FUNCS(__VA_ARGS__)))
+
+Func *stepper(int key, double value, double delta) { return stepper_create(key, value, delta, -FLT_MAX, FLT_MAX, 0); }
+Func *stepper_rel(int key, double value, double perc) { return stepper_create(key, value, perc, -FLT_MAX, FLT_MAX, 1); }
+
+Func *track(const char *filename, Func *input) { return track_create(filename, input); }
+Func *track_(Func *input) { return track(DEFAULT_REC_FILENAME, input); }
+Func *replay(const char *filename, Func *input) { return replay_create(filename, tempo_ticker_(1), input); }
 Func *replay_(Func *input) { return replay(DEFAULT_REC_FILENAME, input); }
+
+Func *actuate(int key) { return actuate_create(key); }
 
 #endif // CSYNTH_KEYBOARDS_H

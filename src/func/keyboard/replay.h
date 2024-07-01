@@ -8,7 +8,6 @@
 #include "../../core/gen.h"
 #include "../../event/keyboard_event.h"
 #include "../../mem/key_list.h"
-#include "../../util/default.h"
 
 typedef struct
 {
@@ -27,7 +26,8 @@ static double replay_eval(__U int count, Gen **args, Eval eval, void *context_)
         keyboard_event_broadcast(context->current->time, context->current->key);
         context->current = context->current->next;
     }
-    context->time += gen_eval(args[0], eval);
+    double tick = gen_eval(args[0], eval);
+    context->time += tick;
     return gen_eval(args[1], eval);
 }
 
@@ -49,7 +49,7 @@ static void replay_free(__U int count, void *context_)
     key_list_clear(&context->list);
 }
 
-Func *replay_tick(const char *filename, Func *tick, Func *input)
+Func *replay_create(const char *filename, Func *tick, Func *input)
 {
     ReplayContext initial = {.filename = filename};
     return func_create(replay_init, replay_eval, replay_free, sizeof(ReplayContext), &initial, FuncFlagNone, FUNCS(tick, input));

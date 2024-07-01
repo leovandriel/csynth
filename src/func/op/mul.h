@@ -10,7 +10,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 static double mul_eval(int count, Gen **args, Eval eval, __U void *context)
 {
@@ -22,16 +21,9 @@ static double mul_eval(int count, Gen **args, Eval eval, __U void *context)
     return output;
 }
 
-Func *mul_array(int count, Func **args)
+Func *mul_create(int count, Func **args)
 {
     return func_create(NULL, mul_eval, NULL, 0, NULL, FuncFlagNone, count, args);
-}
-
-#define mul(...) (mul_array(FUNCS(__VA_ARGS__)))
-
-Func *mul_(double factor, Func *input)
-{
-    return mul(const_(factor), input);
 }
 
 #endif // CSYNTH_MUL_H

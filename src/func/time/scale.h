@@ -6,7 +6,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 typedef struct
 {
@@ -22,12 +21,10 @@ static double scale_eval(__U int count, __U Gen **args, Eval eval, void *context
     return input;
 }
 
-Func *scale(EvalTick tick, Func *factor, Func *input)
+Func *scale_create(EvalTick tick, Func *factor, Func *input)
 {
     ScaleContext initial = {.tick = tick};
     return func_create(NULL, scale_eval, NULL, sizeof(ScaleContext), &initial, FuncFlagNone, FUNCS(factor, input));
 }
-
-Func *scale_(EvalTick tick, double factor, Func *input) { return scale(tick, const_(factor), input); }
 
 #endif // CSYNTH_SCALE_H

@@ -47,7 +47,7 @@ static int trigger_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *trigger(int key, Func *input)
+Func *trigger_create(int key, Func *input)
 {
     TriggerContext initial = {
         .parent = {.handle_event = trigger_handle_event},

@@ -20,7 +20,7 @@ static double continuous_eval(__U int count, Gen **args, Eval eval, __U void *co
     return gen_eval(args[0], eval);
 }
 
-Func *continuous(Func *input)
+Func *continuous_create(Func *input)
 {
     return func_create(NULL, continuous_eval, NULL, 0, NULL, FuncFlagStopReset, FUNCS(input));
 }

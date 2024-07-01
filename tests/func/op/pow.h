@@ -1,3 +1,4 @@
+#include "../../../src/func/op/ops.h"
 #include "../../../src/func/op/pow.h"
 #include "../../util/test.h"
 

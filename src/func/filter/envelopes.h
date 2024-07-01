@@ -8,13 +8,9 @@
 #include "../../core/gen.h"
 #include "../gen/const.h"
 #include "../gen/gens.h"
-#include "../op/adsr.h"
-#include "../op/inv.h"
-#include "../op/neg.h"
 #include "../op/ops.h"
-#include "../op/smooth.h"
-#include "../op/step.h"
 #include "../time/times.h"
+#include "./adsr.h"
 
 Func *decay_env(Func *factor) { return expo(dvd(neg(pitch_timer_(1)), factor)); }
 Func *decay_env_(double factor) { return decay_env(const_(factor)); }
@@ -33,7 +29,7 @@ Func *linear_(double span, double left, double right, Func *input) { return line
 
 Func *exponent_env(Func *span, Func *left, Func *right) { return exponent_op(span, left, right, pitch_timer_(1)); }
 Func *exponent_env_(double span, double left, double right) { return exponent_env(const_(span), const_(left), const_(right)); }
-Func *exponent(Func *span, Func *left, Func *right, Func *input) { return mul(span, exponent_env(left, right, input)); }
+Func *exponent(Func *span, Func *left, Func *right, Func *input) { return mul(exponent_env(span, left, right), input); }
 Func *exponent_(double span, double left, double right, Func *input) { return exponent(const_(span), const_(left), const_(right), input); }
 
 Func *step_env(Func *edge) { return step_op(edge, pitch_timer_(1)); }
@@ -66,6 +62,8 @@ Func *rounded_env_(double edge0, double edge1, double edge2, double edge3) { ret
 Func *rounded(Func *edge0, Func *edge1, Func *edge2, Func *edge3, Func *input) { return mul(rounded_env(edge0, edge1, edge2, edge3), input); }
 Func *rounded_(double edge0, double edge1, double edge2, double edge3, Func *input) { return rounded(const_(edge0), const_(edge1), const_(edge2), const_(edge3), input); }
 
+Func *adsr_op(Func *time, Func *attack, Func *decay, Func *sustain, Func *release, Func *duration) { return adsr_create(time, attack, decay, sustain, release, duration); }
+Func *adsr_op_(Func *time, double attack, double decay, double sustain, double release, double duration) { return adsr_op(time, const_(attack), const_(decay), const_(sustain), const_(release), const_(duration)); }
 Func *adsr_env(Func *attack, Func *decay, Func *sustain, Func *release, Func *duration) { return adsr_op(pitch_timer_(1), attack, decay, sustain, release, duration); }
 Func *adsr_env_(double attack, double decay, double sustain, double release, double duration) { return adsr_env(const_(attack), const_(decay), const_(sustain), const_(release), const_(duration)); }
 Func *adsr(Func *attack, Func *decay, Func *sustain, Func *release, Func *duration, Func *input) { return mul(adsr_env(attack, decay, sustain, release, duration), input); }

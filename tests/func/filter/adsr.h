@@ -1,4 +1,5 @@
-#include "../../../src/func/op/adsr.h"
+#include "../../../src/func/filter/adsr.h"
+#include "../../../src/func/filter/envelopes.h"
 #include "../../../src/func/time/times.h"
 #include "../../util/test.h"
 

@@ -1,3 +1,4 @@
+#include "../../../src/func/gen/gens.h"
 #include "../../../src/func/gen/uniform.h"
 #include "../../util/test.h"
 

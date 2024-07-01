@@ -12,7 +12,7 @@ static func strum(int count, const double *freqs, double span, double decay)
         note = delay_(span * (span < 0 ? i - count : i), note);
         notes[i] = note;
     }
-    return add_array(count, notes);
+    return add_create(count, notes);
 }
 
 static func pluck(func frequency)

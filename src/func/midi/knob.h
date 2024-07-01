@@ -11,10 +11,6 @@
 #include "../../core/gen.h"
 #include "../../event/midi_event.h"
 #include "../../event/state_event.h"
-#include "../filter/filters.h"
-#include "../gen/const.h"
-#include "../op/mul.h"
-#include "../op/ops.h"
 
 typedef struct
 {
@@ -47,7 +43,7 @@ static int knob_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *knob_ctrl(int channel, int control)
+Func *knob_create(int channel, int control)
 {
     KnobContext initial = {
         .parent = {.handle_event = knob_handle_event},
@@ -58,13 +54,5 @@ Func *knob_ctrl(int channel, int control)
     };
     return func_create(knob_init, knob_eval, midi_event_free, sizeof(KnobContext), &initial, FuncFlagSkipReset, FUNCS());
 }
-
-Func *knob_smooth(int channel, int control, Func *derivative) { return slope(derivative, knob_ctrl(channel, control)); }
-
-Func *knob(int channel, int control, Func *min, Func *max) { return linear_op(const_(1), min, max, knob_smooth(channel, control, const_(1))); }
-Func *knob_(int channel, int control, double min, double max) { return knob(channel, control, const_(min), const_(max)); }
-
-Func *knob_ex(int channel, int control, Func *min, Func *max) { return exponent_op(const_(1), min, max, knob_smooth(channel, control, const_(1))); }
-Func *knob_ex_(int channel, int control, double min, double max) { return knob_ex(channel, control, const_(min), const_(max)); }
 
 #endif // CSYNTH_KNOB_H

@@ -10,7 +10,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 static double add_eval(int count, Gen **args, Eval eval, __U void *context)
 {
@@ -22,13 +21,9 @@ static double add_eval(int count, Gen **args, Eval eval, __U void *context)
     return sum;
 }
 
-Func *add_array(int count, Func **args)
+Func *add_create(int count, Func **args)
 {
     return func_create(NULL, add_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
-
-#define add(...) (add_array(FUNCS(__VA_ARGS__)))
-
-Func *add_(double diff, Func *input) { return add(const_(diff), input); }
 
 #endif // CSYNTH_ADD_H

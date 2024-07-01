@@ -12,7 +12,6 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../mem/buffer.h"
-#include "../gen/const.h"
 
 typedef struct
 {
@@ -45,7 +44,7 @@ static void reverb_free(__U int count, void *context_)
     buffer_free(&context->buffer);
 }
 
-Func *reverb_filter(Func *tick, Func *decay, Func *input)
+Func *reverb_create(Func *tick, Func *decay, Func *input)
 {
     return func_create(NULL, reverb_eval, reverb_free, sizeof(ReverbContext), NULL, FuncFlagNone, FUNCS(tick, decay, input));
 }

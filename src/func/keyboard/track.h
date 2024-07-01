@@ -8,7 +8,6 @@
 #include "../../core/gen.h"
 #include "../../event/keyboard_event.h"
 #include "../../mem/key_list.h"
-#include "../../util/default.h"
 
 typedef struct
 {
@@ -61,12 +60,10 @@ static void track_free(__U int count, void *context_)
     key_list_clear(&context->list);
 }
 
-Func *track(const char *filename, Func *input)
+Func *track_create(const char *filename, Func *input)
 {
     TrackContext initial = {.filename = filename};
     return func_create(track_init, track_eval, track_free, sizeof(TrackContext), &initial, FuncFlagNone, FUNCS(input));
 }
-
-Func *track_(Func *input) { return track(DEFAULT_REC_FILENAME, input); }
 
 #endif // CSYNTH_TRACK_H

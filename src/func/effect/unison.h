@@ -8,11 +8,7 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../util/rand.h"
 #include "../gen/gens.h"
-#include "../gen/sample.h"
-#include "../op/add.h"
-#include "../op/mul.h"
 #include "../op/ops.h"
 
 Func *unison_split(int count, Func *input)
@@ -26,7 +22,7 @@ Func *unison_split(int count, Func *input)
     {
         array[i] = input;
     }
-    Func *output = dvd_(add_array(count, array), count);
+    Func *output = dvd_(add_create(count, array), count);
     free_(array);
     return output;
 }

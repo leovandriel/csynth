@@ -11,7 +11,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 typedef struct
 {
@@ -35,7 +34,7 @@ static double limit_eval(__U int count, Gen **args, Eval eval, void *context_)
     return input;
 }
 
-Func *limit_filter(Func *tick, Func *input)
+Func *limit_create(Func *tick, Func *input)
 {
     return func_create(NULL, limit_eval, NULL, sizeof(LimitContext), NULL, FuncFlagNone, FUNCS(tick, input));
 }

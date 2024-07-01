@@ -26,7 +26,8 @@ static double key_eval(__U int count, __U Gen **args, Eval eval, void *context_)
     }
     if (context->active != 0)
     {
-        return gen_eval(args[0], eval) * (double)context->active / 64.0;
+        double input = gen_eval(args[0], eval);
+        return input * (double)context->active / 64.0;
     }
     return 0.;
 }
@@ -48,7 +49,7 @@ static int key_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *key(int channel, int pitch, Func *input)
+Func *key_create(int channel, int pitch, Func *input)
 {
     KeyContext initial = {
         .parent = {.handle_event = key_handle_event},

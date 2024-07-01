@@ -15,7 +15,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 typedef struct
 {
@@ -37,7 +36,7 @@ static double compressor_eval(__U int count, Gen **args, Eval eval, void *contex
     return input * context->gain;
 }
 
-Func *compressor_filter(Func *threshold, Func *ratio, Func *attack_tick, Func *release_tick, Func *input)
+Func *compressor_create(Func *threshold, Func *ratio, Func *attack_tick, Func *release_tick, Func *input)
 {
     CompressorContext initial = {.gain = 1.0};
     return func_create(NULL, compressor_eval, NULL, sizeof(CompressorContext), &initial, FuncFlagNone, FUNCS(threshold, ratio, attack_tick, release_tick, input));

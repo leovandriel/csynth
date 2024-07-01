@@ -8,7 +8,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 typedef struct
 {
@@ -29,7 +28,7 @@ static double loop_eval(__U int count, Gen **args, Eval eval, void *context_)
     return input;
 }
 
-Func *loop_effect(Func *tick, Func *input)
+Func *loop_create(Func *tick, Func *input)
 {
     return func_create(NULL, loop_eval, NULL, sizeof(LoopContext), NULL, FuncFlagNone, FUNCS(tick, input));
 }

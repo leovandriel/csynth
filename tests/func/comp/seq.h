@@ -1,3 +1,4 @@
+#include "../../../src/func/comp/comps.h"
 #include "../../../src/func/comp/seq.h"
 #include "../../../src/func/gen/const.h"
 #include "../../util/test.h"

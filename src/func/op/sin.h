@@ -10,7 +10,6 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/const.h"
 
 static double sin_eval(__U int count, Gen **args, Eval eval, __U void *context)
 {
@@ -18,7 +17,7 @@ static double sin_eval(__U int count, Gen **args, Eval eval, __U void *context)
     return sin(input);
 }
 
-Func *sin_op(Func *input)
+Func *sin_create(Func *input)
 {
     return func_create(NULL, sin_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(input));
 }
