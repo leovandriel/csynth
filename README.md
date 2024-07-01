@@ -52,12 +52,12 @@ That probably sounded quite loud. Let's bring it down a little to save our ears:
     play(mul_(.5, tone));
 ```
 
-Here we introduce `mul`, which multiplies both arguments together. By
+Here we introduce `mul`, which is function that multiplies both arguments. By
 multiplying by 0.5, the volume becomes less. This also adds `func`, which
 indicates a function variable `tone`, allowing us split things across two lines.
 
 Note the underscore `_`. By default, all functions take other functions as
-arguments. By appending `_`, you can pass in a fixed value instead.
+arguments. By appending `_` to the name, you can pass in a number instead.
 
 Next, add a rectangular envelope to turn this into a 0.3 second note:
 
@@ -67,8 +67,8 @@ Next, add a rectangular envelope to turn this into a 0.3 second note:
     play(mul_(.5, note));
 ```
 
-This adds `rect`, which multiplies tone by 1 during the interval [0, 0.3] and 0
-elsewhere, resulting in a 0.3 second A4 note.
+This adds `rect`, which multiplies `tone` by 1 during the interval [0, 0.3] and
+0 elsewhere, resulting in a 0.3 second A4 note.
 
 Next, add the note in a 1.5 second loop:
 
@@ -79,7 +79,7 @@ Next, add the note in a 1.5 second loop:
     play(mul_(.5, looped));
 ```
 
-Finally, add reverb (interval .4s, decay .2):
+Finally, add reverb (interval 0.4s, decay 0.2):
 
 ```c
     func tone = sine(A4);
@@ -92,7 +92,7 @@ Finally, add reverb (interval .4s, decay .2):
 Or, to make it more compact:
 
 ```c
-    play(mul_(.5,reverb_(.4,.2,loop_(1.5, rect_(0,.3,sine(A4))))));
+    play(mul_(.5,reverb_(.4,.2,loop_(1.5,rect_(0,.3,sine(A4))))));
 ```
 
 To listen to the result:
@@ -111,29 +111,29 @@ including nesting of function in unconventional ways. The tutorial started with
 `play(sine(A4))`, but you can also:
 
 ```c
-    play(sine(sine(A4)));
+    play(sine(mul(A4, sine_(1))));
 ```
 
-Or even (although it will be hard to hear):
+Or even:
 
 ```c
-    play(sine(sine(sine(A4))));
+    play(sine(mul(A4, sine(sine(sine_(1))))));
 ```
 
-There is no distinction between audio and control (e.g. AR vs KR), but there are
-a few helper functions, like [ar and kr](src/func/op/ops.h) that scale the input
+Here, there is no distinction between audio and control (AR vs KR). There are a
+few helper functions, like [ar and kr](src/func/op/ops.h) that scale the input
 to respective domains:
 
 ```c
-    play(sine(kr_scale(A4, sine_(2))));
+    play(sine(kr_scale(A4, sine_(1))));
 ```
 
-Here [sine](src/func/gen/sine.h) has the `_` suffix, to allow the argument to be
-a fixed value, instead of a function. Some function take multiple arguments in
-which case you may want to mix functions and values. This is done by wrapping
-the value in `_(..)`, turning it into a function with that value (see
-[const](src/func/gen/const.h)). This is most often the case with functions like
-[mul](src/func/op/mul.h) which can take any number of function arguments:
+The [sine](src/func/gen/sine.h) function has the `_` suffix to allow the
+argument to be a number instead of a function. Some function take multiple
+arguments in which case you may want to mix functions and numbers. This is done
+by wrapping the number in `_(..)`, turning it into a function with that value
+(see [const](src/func/gen/const.h)). This is most often the case with functions
+like [mul](src/func/op/mul.h), which can take any number of function arguments:
 
 ```c
     play(mul(sine(A4), sine_(1), _(.5)));
@@ -145,9 +145,9 @@ variations of a function, including helpful short-hands. Examples for
 
 ```c
     mul_(.5, sine(A4))
-    mul(sine(A4), _(.5))
-    mul(sine(A4), sine(B4), _(.5))
-    mul_create(4, (Func *[]){sine(A4), sine(B4), sine(C4), _(.5)})
+    mul(_(.5), sine(A4))
+    mul(_(.5), sine(A4), sine(B4))
+    mul_create(3, (func[]){_(.5), sine(A4), sine(B4)})
 ```
 
 The latter opens the door to programmatic building of sound. For example, to
@@ -159,9 +159,10 @@ synthesize the sound of a G chord on the guitar using
     func notes[6];
     for (int i = 0; i < 6; i++)
     {
-        notes[i] = delay_(.1 * i, karplus_strong_(chord[i], .1));
+        notes[i] = delay_(.1 * i, karplus_strong_(chord[i], .5));
     }
-    play(mul_(.5, add_create(6, notes)));
+    func strum = add_create(6, notes);
+    play(mul_(.5, strum));
 ```
 
 This uses the [Karplus–Strong](src/func/gen/karplus_strong.h) method for string
@@ -170,30 +171,33 @@ to go beyond combining existing functions. The easiest way to do this is to use
 [wrap](src/func/util/wrap.h), which takes a C function as input:
 
 ```c
-double step_filter(double input, double delta)
+double phone_filter(double input, void *context)
 {
     return round(input * 10) / 10;
 }
 
 int main()
 {
-    return play(wrap(step_filter, sine(A4)));
+    return play(wrap(phone_filter, sine(A4), NULL));
 }
 ```
 
 This approach has its limits, and in most cases the best approach is to
-implement a function from scratch using [func_create](src/core/func.h). For
-example, the above can also be implemented as:
+implement a function using [func_create](src/core/func.h). For example, the
+above can also be implemented as:
 
 ```c
-double step_filter(int count, Gen **args, Eval eval, void *context)
+double phone_filter(int count, Gen **args, Eval eval, void *context)
 {
-    return round(gen_eval(args[0], eval) * 10) / 10;
+    double input = gen_eval(args[0], eval);
+    return round(input * 10) / 10;
 }
 
 int main()
 {
-    return play(func_create(NULL, step_filter, NULL, 0, NULL, FuncFlagNone, FUNCS(sine(A4))));
+    func tone = sine(A4);
+    func phone = func_create(NULL, phone_filter, NULL, 0, NULL, FuncFlagNone, FUNCS(tone));
+    return play(phone);
 }
 ```
 
@@ -217,11 +221,11 @@ system that broadcasts keyboard input and state changes.
 
 Keyboard input is read by [terminal](src/ui/terminal.h) and broadcasted to
 gating functions. The most basic example of this is
-[unmute](src/func/contro/unmute), which multiplies input by 0 and 1 alternating
-at every space bar press.
+[mute](src/func/contro/mute), which multiplies input by 1 and 0 alternating at
+every space bar press.
 
 ```c
-    play(unmute(' ', sine(A4)));
+    play(mute(' ', sine(A4)));
 ```
 
 To emulate a key on a keyboard or drum pad, use the
@@ -229,37 +233,34 @@ To emulate a key on a keyboard or drum pad, use the
 on every key press:
 
 ```c
-    play(trigger(' ', decay_(.1, sine(A4))));
+    play(trigger(' ', decay_(.5, sine(A4))));
 ```
 
-There is also [stepper](src/func/keyboard/stepper.h) and
-[selector](src/func/keyboard/selector.h) to switch between functions:
+There is also [stepper](src/func/keyboard/stepper.h) to control with the up/down
+keys and [selector](src/func/keyboard/selector.h) to switch between functions:
 
 ```c
-    play(selector(' ', sine(A4), sine(A5), sine(A6)));
+    play(selector(' ', sine(A3), sine(A4), sine(A5)));
 ```
 
 These controls can be combined to create a
-[keyboard](src/func/keyboard/keyboards.h):
+[keyboard](src/func/keyboard/keyboard.h):
 
 ```c
-int main()
-{
-    return play(keyboard(trigger, decay_(.1, sine(C4))));
-}
+    play(mul_(0.3, keyboard(trigger, decay_(.5, sine(C4)))));
 ```
 
-Keyboard strokes can also be recorded and replay with
+Keyboard strokes can also be recorded and replayed with
 [track](src/func/keyboard/track.h) and [replay](src/func/keyboard/replay.h). Key
-events are managed by [keyboard_event](src/event/keyboard_event.h). To exit,
-`Esc` is directly handled by `play`.
+events are managed by [keyboard_event](src/event/keyboard_event.h). To exit, the
+`Esc` key is directly handled by `play`.
 
 To visualize the state of controls, basic [display](src/ui/display.h)
 functionality is included for switches and numerical values.
 
 ```c
-    display("select frequency", ' ');
-    return play(selector(' ', sine(A4), sine(A5), sine(A6)));
+    display_keyboard(' ', "select frequency");
+    return play(selector(' ', sine(A3), sine(A4), sine(A5)));
 ```
 
 ## I/O
@@ -272,10 +273,10 @@ program. It comes in a few variants:
 
 ```c
     play(sine(A4));
-    play_(10, sine(A4)); // 10 seconds
+    play_duration(10, sine(A4)); // 10 seconds
     play_stereo(sine(A4), sine(B4));
-    play_stereo_duration(sine(A4), sine(B4), 10);
-    player_play_channels(4, (Func *[]){sine(A4), sine(B4), sine(C4), sine(D4)}, 10);
+    play_stereo_duration(10, sine(A4), sine(B4));
+    play_channels(4, (func[]){sine(A4), sine(B4), sine(C4), sine(D4)});
 ```
 
 Instead of playing the audio, we can also write things to a wav file using
@@ -284,15 +285,15 @@ Instead of playing the audio, we can also write things to a wav file using
 ```c
     write(10, "output/sine.wav", sine(A4));
     write_(10, sine(A4)); // writes to output/default.wav
-    write_stereo(sine(A4), sine(A4), 10, "output/sine.wav");
-    writer_write_channels(2, (Func *[]){sine(A4), sine(B4)}, 10, stdout);
+    write_stereo(10, "output/sine.wav", sine(A4), sine(A4));
+    write_channels(10, stdout, 4, (func[]){sine(A4), sine(B4), sine(C4), sine(D4)});
 ```
 
-Under the hood, `play` and `write` use [sampler](src/io/sampler.h). This makes
-it easy to implement a custom audio player:
+Under the hood, `play` and `write` use [sampler](src/io/sampler.h), which
+samples functions to an audio buffer. To implement a custom audio player:
 
 ```c
-    Sampler *sampler = sampler_create(channel_count, channels, 44100);
+    Sampler *sampler = sampler_create(44100, channel_count, channels);
     for (;;) {
         sample_t buffer = ...;
         sampler_sample(sampler, sample_count, buffer);
@@ -319,6 +320,19 @@ transformed into a tree of generators, together with a sample rate (as a time
 
 All of the above logic is defined in [func.h](src/core/func.h) and
 [gen.h](src/core/gen.h).
+
+## Dependencies
+
+Almost all of CSynth is built with zero dependencies, besides the standard
+library. This includes all the audio synth functions file system I/O, allowing
+for the full range of audio synthesis.
+
+Only functionality to stream to and from audio and midi devices relies on
+additional dependencies. We use [PortAudio](https://www.portaudio.com/) for
+playback, included from [player.h](src/io/player.h), and
+[PortMidi](https://github.com/PortMidi/portmidi) for midi, included from
+[midi_player.h](src/io/midi_player.h). Outside of examples, these headers are
+not included elsewhere.
 
 ## Development
 
