@@ -50,6 +50,7 @@
 #include "./keyboard/stepper.h"
 #include "./keyboard/track.h"
 #include "./keyboard/trigger.h"
+#include "./midi/blend.h"
 #include "./midi/key.h"
 #include "./midi/knob.h"
 #include "./midi/midis.h"

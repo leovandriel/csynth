@@ -15,6 +15,7 @@ int main()
     func post_gain = gauge("gain", knob_(1, 77, 1, 10));
     func note = unison(5, detune_knob, saw(C0));
     func synth = midi_keyboard(1, key, note);
+    synth = blend_(1, 2, synth);
     // synth = overtone(-5, overtone_knob, synth);
     synth = distortion(distortion_knob, synth);
     synth = hpf(hpf_knob, synth);
