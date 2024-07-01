@@ -8,6 +8,7 @@
 #include "./continuous.h"
 #include "./delay.h"
 #include "./loop.h"
+#include "./looper.h"
 #include "./reverb.h"
 
 Func *reverb(Func *interval, Func *decay, Func *input) { return reverb_create(sustain_ticker(interval), decay, input); }
@@ -21,6 +22,9 @@ Func *delay_(double duration, Func *input) { return delay(const_(duration), inpu
 
 Func *skip(Func *duration, Func *input) { return delay(neg(duration), input); }
 Func *skip_(double duration, Func *input) { return skip(const_(duration), input); }
+
+Func *looper(int key, Func *interval, Func *input) { return looper_create(key, tempo_ticker(inv(interval)), input); }
+Func *looper_(int key, double interval, Func *input) { return looper(key, const_(interval), input); }
 
 Func *continuous(Func *input) { return continuous_create(input); }
 

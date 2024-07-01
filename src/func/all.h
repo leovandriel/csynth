@@ -12,6 +12,7 @@
 #include "./effect/delay.h"
 #include "./effect/effects.h"
 #include "./effect/loop.h"
+#include "./effect/looper.h"
 #include "./effect/overtone.h"
 #include "./effect/reverb.h"
 #include "./effect/unison.h"
