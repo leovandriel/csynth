@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/key -Wall -Wextra -O3 -lm -lportaudio -lportmidi && ./bin/key "$@"; exit $?
+//usr/bin/gcc "$0" -o bin/blend -Wall -Wextra -O3 -lm -lportaudio -lportmidi && ./bin/blend "$@"; exit $?
 #include "../../../src/func/all.h"
 #include "../../../src/io/midi_player.h"
 

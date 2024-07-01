@@ -7,11 +7,11 @@
 #include "../core/func.h"
 #include "../core/gen.h"
 #include "../func/time/times.h"
-#include "../util/default.h"
 #include "../util/error.h"
 
-#define DISPLAY_RATE 10  // 10 FPS
-#define CONTROL_RATE 100 // 100 FPS
+#define SAMPLE_RATE 44100 // 44.1 kHz
+#define DISPLAY_RATE 10   // 10 FPS
+#define CONTROL_RATE 100  // 100 FPS
 #define VOLUME_MULTIPLIER 0.5
 
 typedef int16_t sample_t;

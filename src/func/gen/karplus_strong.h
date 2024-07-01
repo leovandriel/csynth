@@ -27,7 +27,7 @@ static double karplus_strong_eval(__U int count, Gen **args, Eval eval, void *co
     size_t next = (context->index + 1) % size;
     double *buffer = context->buffer.samples;
     double decay_tick = gen_eval(args[1], eval);
-    buffer[context->index] = 0.5 * (buffer[context->index] + buffer[next]) / exp2(decay_tick * size);
+    buffer[context->index] = 0.5 * (buffer[context->index] + buffer[next]) / exp2(decay_tick * (double)size);
     double output = buffer[context->index];
     context->index = next;
     return output;

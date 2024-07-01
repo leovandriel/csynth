@@ -4,7 +4,6 @@
 #ifndef CSYNTH_GENS_H
 #define CSYNTH_GENS_H
 
-#include "../../util/default.h"
 #include "../op/inv.h"
 #include "../time/times.h"
 #include "./const.h"

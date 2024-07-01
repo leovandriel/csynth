@@ -20,6 +20,8 @@
 #include "./track.h"
 #include "./trigger.h"
 
+#define DEFAULT_REC_FILENAME "output/default.rec"
+
 Func *trigger(int key, Func *input) { return trigger_create(key, input); }
 
 Func *mute(int key, Func *input) { return mute_create(key, 0, input); }

@@ -9,7 +9,6 @@
 #include <termios.h>
 
 #include "../event/keyboard_event.h"
-#include "../util/default.h"
 #include "../util/time.h"
 
 static volatile int terminal_signal = 0;

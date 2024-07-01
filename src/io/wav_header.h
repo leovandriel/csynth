@@ -10,6 +10,8 @@
 
 #include "./sampler.h"
 
+#define DEFAULT_WAV_FILENAME "output/default.wav"
+
 typedef struct
 {
     char riff_type[4];

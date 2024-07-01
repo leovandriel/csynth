@@ -12,6 +12,8 @@
 #include "../util/cleanup.h"
 #include "./sampler.h"
 
+#define EXIT_KEY '\e' // ESC key
+
 typedef void (*player_event_loop)(double duration, int exit_key);
 
 typedef struct
@@ -157,8 +159,8 @@ csError player_play_with_cleanup(PlayerConfig config, int count, Func **channels
     return error;
 }
 
-const PlayerConfig player_config_terminal = {.loop = terminal_loop, .duration = 0, .sample_rate = DEFAULT_SAMPLE_RATE, .exit_key = DEFAULT_EXIT_KEY};
-const PlayerConfig player_config_no_terminal = {.loop = player_event_loop_no_terminal, .duration = 0, .sample_rate = DEFAULT_SAMPLE_RATE, .exit_key = DEFAULT_EXIT_KEY};
+const PlayerConfig player_config_terminal = {.loop = terminal_loop, .duration = 0, .sample_rate = SAMPLE_RATE, .exit_key = EXIT_KEY};
+const PlayerConfig player_config_no_terminal = {.loop = player_event_loop_no_terminal, .duration = 0, .sample_rate = SAMPLE_RATE, .exit_key = EXIT_KEY};
 
 int play_channels(int count, Func **channels) { return player_play_with_cleanup(player_config_terminal, count, channels); }
 int play(Func *input) { return play_channels(FUNCS(input)); }
