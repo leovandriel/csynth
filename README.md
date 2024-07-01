@@ -7,7 +7,7 @@ _A simple synth in C._
 ## Usage
 
 To get started, check out the [examples](examples) folder. Each C file is
-executable, e.g. to run `beep.c`, simply run:
+executable, e.g. to run `beep.c`:
 
 ```shell
 ./examples/demo/beep.c
@@ -16,6 +16,18 @@ executable, e.g. to run `beep.c`, simply run:
 This requires GCC (or clang) and [PortAudio](https://www.portaudio.com/)
 binaries to be installed. You can also use CSynth without PortAudio; just
 replace `play(..)` with `write(..)` to write to a WAV file.
+
+Emulate a basic keyboard using the bottom row (Z, X, C, ..):
+
+```shell
+./examples/demo/keyboard_synth.c
+```
+
+Or, if you have a MIDI keyboard:
+
+```shell
+./examples/demo/midi_synth.c
+```
 
 ## Tutorial
 
