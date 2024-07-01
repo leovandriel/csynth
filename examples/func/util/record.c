@@ -4,7 +4,8 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
-    return play(note);
+    // record the keyboard output
+    func fun = keyboard(trigger, decay_(.3, sine(C4)));
+    func recorded = record("output/record.wav", fun);
+    return play(recorded);
 }

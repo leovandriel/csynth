@@ -27,8 +27,7 @@ static double record_eval(int count, Gen **args, Eval eval, void *context_)
     for (int channel = 0; channel < count; channel++)
     {
         double output = gen_eval(args[channel], eval);
-        double clip = output > 1.0 ? 1.0 : (output < -1.0 ? -1.0 : output);
-        context->buffer[context->offset++] = (sample_t)(clip * 32767);
+        context->buffer[context->offset++] = sampler_quantize(output);
         if (context->offset == WRITER_BUFFER_SIZE)
         {
             fwrite(context->buffer, sizeof(sample_t), context->offset, context->file);

@@ -59,15 +59,21 @@ Sampler *sampler_create(int sample_rate, int count, Func **inputs)
     return sampler;
 }
 
+sample_t sampler_quantize(double output)
+{
+    double scaled = output * VOLUME_MULTIPLIER;
+    double clip = scaled > 1.0 ? 1.0 : (scaled < -1.0 ? -1.0 : scaled);
+    return (sample_t)(clip * 32767);
+}
+
 void sampler_sample(Sampler *sampler, size_t count, sample_t *buffer)
 {
     for (size_t frame = 0; frame < count; frame++)
     {
         for (int index = 0; index < sampler->count; index++)
         {
-            double output = gen_eval(sampler->channels[index], sampler->eval) * VOLUME_MULTIPLIER;
-            double clip = output > 1.0 ? 1.0 : (output < -1.0 ? -1.0 : output);
-            *(buffer++) = (sample_t)(clip * 32767);
+            double output = gen_eval(sampler->channels[index], sampler->eval);
+            *(buffer++) = sampler_quantize(output);
         }
     }
 }
