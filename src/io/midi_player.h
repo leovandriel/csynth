@@ -9,7 +9,7 @@
 
 const PlayerConfig player_config_midi = {.loop = midi_loop, .duration = 0, .sample_rate = DEFAULT_SAMPLE_RATE, .exit_key = DEFAULT_EXIT_KEY};
 
-int play_midi(Func *root) { return player_play_with_cleanup(1, (Func *[]){root}, player_config_midi); }
-int play_midi_stereo(Func *left, Func *right) { return player_play_with_cleanup(2, (Func *[]){left, right}, player_config_midi); }
+int play_midi(Func *input) { return player_play_with_cleanup(player_config_midi, FUNCS(input)); }
+int play_midi_stereo(Func *left, Func *right) { return player_play_with_cleanup(player_config_midi, FUNCS(left, right)); }
 
 #endif // CSYNTH_MIDI_PLAYER_H

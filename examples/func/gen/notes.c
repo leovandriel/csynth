@@ -6,5 +6,5 @@ int main()
 {
     // play C, D, E, C5
     func fun = seq_fix_(1, saw(C4), saw(D4), saw(E4), saw(C5));
-    return play_(4, mul_(.1, fun));
+    return play_duration(4, mul_(.1, fun));
 }

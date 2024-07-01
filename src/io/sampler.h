@@ -22,7 +22,7 @@ typedef struct
     Eval eval;
 } Sampler;
 
-Sampler *sampler_create(int count, Func **roots, int sample_rate)
+Sampler *sampler_create(int sample_rate, int count, Func **inputs)
 {
     Sampler *sampler = (Sampler *)malloc_(sizeof(Sampler));
     if (sampler == NULL)
@@ -37,10 +37,10 @@ Sampler *sampler_create(int count, Func **roots, int sample_rate)
     }
     for (int index = 0; index < count; index++)
     {
-        Func *root = roots[index];
-        root = scale_(EvalTickControl, CONTROL_RATE, root);
-        root = scale_(EvalTickDisplay, DISPLAY_RATE, root);
-        Gen *channel = gen_create(root);
+        Func *input = inputs[index];
+        input = scale_(EvalTickControl, CONTROL_RATE, input);
+        input = scale_(EvalTickDisplay, DISPLAY_RATE, input);
+        Gen *channel = gen_create(input);
         if (channel == NULL)
         {
             for (int i = 0; i < index; i++)

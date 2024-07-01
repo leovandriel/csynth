@@ -145,5 +145,5 @@ int main()
         C(C5, 4));
     func sequence = seq_rel(ff1, _(48.5 * speed), ff2, _(48.5 * speed), ff3, _(98 * speed));
     func spangled = reverb_(0.1, 0.5, sequence);
-    return play_(80, spangled);
+    return play_duration(80, spangled);
 }

@@ -88,5 +88,5 @@ int main()
     func guitar = seq_abs(
         t(0), gg0,
         t(18), add(guitar1, guitar2));
-    return play_(24, guitar);
+    return play_duration(24, guitar);
 }

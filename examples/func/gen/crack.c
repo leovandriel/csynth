@@ -9,5 +9,5 @@ int main()
         print("crack(1)", crack_(1)), _(4),
         print("crack(10)", crack_(10)), _(4),
         print("crack(100)", crack_(100)), _(4));
-    return play_(12, mul_(.5, fun));
+    return play_duration(12, mul_(.5, fun));
 }

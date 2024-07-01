@@ -12,7 +12,7 @@
 
 #define WRITER_BUFFER_SIZE 4096
 
-csError writer_write_channels_no_cleanup(int channel_count, Func **channels, double duration, FILE *file, int sample_rate)
+csError writer_write_channels_no_cleanup(double duration, FILE *file, int sample_rate, int channel_count, Func **channels)
 {
     uint32_t sample_count = (uint32_t)(duration * sample_rate + 0.5);
     csError error = wav_header_write(sample_count, channel_count, file, sample_rate);
@@ -20,7 +20,7 @@ csError writer_write_channels_no_cleanup(int channel_count, Func **channels, dou
     {
         return error;
     }
-    Sampler *sampler = sampler_create(channel_count, channels, sample_rate);
+    Sampler *sampler = sampler_create(sample_rate, channel_count, channels);
     sample_t buffer[WRITER_BUFFER_SIZE];
     uint32_t buffer_samples = WRITER_BUFFER_SIZE / channel_count;
     while (sample_count)
@@ -39,21 +39,21 @@ csError writer_write_channels_no_cleanup(int channel_count, Func **channels, dou
     return csErrorNone;
 }
 
-csError writer_write_channels(int count, Func **channels, double duration, FILE *file, int sample_rate)
+csError writer_write_channels(double duration, FILE *file, int sample_rate, int count, Func **channels)
 {
-    csError error = writer_write_channels_no_cleanup(count, channels, duration, file, sample_rate);
+    csError error = writer_write_channels_no_cleanup(duration, file, sample_rate, count, channels);
     cleanup_all();
     return error;
 }
 
-csError writer_write_file(int channel_count, Func **channels, double duration, const char *filename, int sample_rate)
+csError writer_write_file(double duration, const char *filename, int sample_rate, int channel_count, Func **channels)
 {
     FILE *file = fopen(filename, "wb");
     if (file == NULL)
     {
         return error_type_message(csErrorFileOpen, "Unable to open file: %s", filename);
     }
-    csError error = writer_write_channels(channel_count, channels, duration, file, sample_rate);
+    csError error = writer_write_channels(duration, file, sample_rate, channel_count, channels);
     if (error != csErrorNone)
     {
         fclose(file);
@@ -66,18 +66,9 @@ csError writer_write_file(int channel_count, Func **channels, double duration, c
     return csErrorNone;
 }
 
-csError write(double duration, const char *filename, Func *input)
-{
-    return writer_write_file(1, (Func *[]){input}, duration, filename, DEFAULT_SAMPLE_RATE);
-}
-
+csError write_channels(double duration, const char *filename, int count, Func **channels) { return writer_write_file(duration, filename, DEFAULT_SAMPLE_RATE, count, channels); }
+csError write(double duration, const char *filename, Func *input) { return write_channels(duration, filename, FUNCS(input)); }
 csError write_(double duration, Func *input) { return write(duration, DEFAULT_WAV_FILENAME, input); }
-
-csError write_stereo(Func *left, Func *right, double duration, const char *filename)
-{
-    return writer_write_file(2, (Func *[]){left, right}, duration, filename, DEFAULT_SAMPLE_RATE);
-}
-
-csError write_mono(double duration, const char *filename, Func *input) { return write(duration, filename, input); }
+csError write_stereo(double duration, const char *filename, Func *left, Func *right) { return write_channels(duration, filename, FUNCS(left, right)); }
 
 #endif // CSYNTH_WRITER_H
