@@ -1,10 +1,10 @@
 //
-// logger.h - Logs the samples plus some metrics
+// dump.h - Logs the samples plus some metrics
 //
-// `logger(input, count)` with count the maximum number of log to be logged.
+// `dump(input, count)` with count the maximum number of log to be logged.
 //
-#ifndef CSYNTH_LOGGER_H
-#define CSYNTH_LOGGER_H
+#ifndef CSYNTH_DUMP_H
+#define CSYNTH_DUMP_H
 
 #include <stdio.h>
 
@@ -22,11 +22,11 @@ typedef struct
     size_t count;
     size_t step;
     size_t index;
-} LoggerContext;
+} DumpContext;
 
-static double logger_eval(__U int count, Gen **args, Eval eval, void *context_)
+static double dump_eval(__U int count, Gen **args, Eval eval, void *context_)
 {
-    LoggerContext *context = (LoggerContext *)context_;
+    DumpContext *context = (DumpContext *)context_;
     double input = gen_eval(args[0], eval);
     int dir_up = context->index > 0 && context->output < input;
     int dir_down = context->index > 0 && context->output > input;
@@ -75,9 +75,9 @@ static double logger_eval(__U int count, Gen **args, Eval eval, void *context_)
     return input;
 }
 
-Func *logger_create(size_t count, size_t step, Func *input)
+Func *dump_create(size_t count, size_t step, Func *input)
 {
-    LoggerContext initial = {
+    DumpContext initial = {
         .min = -1,
         .max = -1,
         .zero0 = -1,
@@ -85,7 +85,7 @@ Func *logger_create(size_t count, size_t step, Func *input)
         .count = count,
         .step = step,
     };
-    return func_create(NULL, logger_eval, NULL, sizeof(LoggerContext), &initial, FuncFlagNone, FUNCS(input));
+    return func_create(NULL, dump_eval, NULL, sizeof(DumpContext), &initial, FuncFlagNone, FUNCS(input));
 }
 
-#endif // CSYNTH_LOGGER_H
+#endif // CSYNTH_DUMP_H

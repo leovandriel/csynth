@@ -6,8 +6,8 @@
 
 #include "../op/inv.h"
 #include "../time/times.h"
+#include "./dump.h"
 #include "./gauge.h"
-#include "./logger.h"
 #include "./print.h"
 #include "./record.h"
 #include "./wrap.h"
@@ -27,9 +27,9 @@ Func *record_(Func *input) { return record(DEFAULT_WAV_FILENAME, input); }
 Func *record_stereo(const char *filename, Func *left, Func *right) { return record_channels(filename, SAMPLE_RATE, left, right); }
 Func *record_stereo_(Func *left, Func *right) { return record_stereo(DEFAULT_WAV_FILENAME, left, right); }
 
-Func *log20(Func *input) { return logger_create(20, 1, input); }
-Func *log1k(Func *input) { return logger_create(1000, 1, input); }
-Func *log10sec(Func *input) { return logger_create(10, 4410, input); }
+Func *log20(Func *input) { return dump_create(20, 1, input); }
+Func *log1k(Func *input) { return dump_create(1000, 1, input); }
+Func *log10sec(Func *input) { return dump_create(10, 4410, input); }
 
 Func *print(const char *text, Func *input) { return print_create(text, input); }
 
