@@ -7,6 +7,6 @@ int main()
     // strings keyboard
     func note = karplus_strong_(C4, .3);
     func fun = keyboard(trigger, note);
-    printf("keyboard keys: %s\n", keyboard_keys);
+    log_info("keyboard keys: %s", keyboard_keys);
     return play(fun);
 }

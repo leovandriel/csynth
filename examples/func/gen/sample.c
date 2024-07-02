@@ -6,6 +6,6 @@ int main()
 {
     // TODO(leo): implement
     func fun = keyboard(unmute, mul_(.3, saw(C4)));
-    printf("keyboard keys: %s\n", keyboard_keys);
+    log_info("keyboard keys: %s", keyboard_keys);
     return play(fun);
 }

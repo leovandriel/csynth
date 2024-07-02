@@ -6,6 +6,6 @@ int main()
 {
     // sine wave keyboard
     func fun = keyboard(unmute, sine(C4));
-    printf("keyboard keys: %s\n", keyboard_keys);
+    log_info("keyboard keys: %s", keyboard_keys);
     return play(fun);
 }

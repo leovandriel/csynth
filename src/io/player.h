@@ -10,6 +10,7 @@
 #include "../ui/display.h"
 #include "../ui/terminal.h"
 #include "../util/cleanup.h"
+#include "../util/logger.h"
 #include "./sampler.h"
 
 #define EXIT_KEY '\e' // ESC key
@@ -84,7 +85,7 @@ csError player_play_channels_no_cleanup(PlayerConfig config, int count, Func **c
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to get device info");
     }
-    fprintf(stdout, "\r\e[KAudio device: %s\n", device_info->name);
+    log_info("Audio device: %s", device_info->name);
     PaStreamParameters params = {
         .device = device,
         .channelCount = count,
@@ -120,7 +121,7 @@ csError player_play_channels_no_cleanup(PlayerConfig config, int count, Func **c
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to get stream info: %s", Pa_GetErrorText(pa_error), pa_error);
     }
-    fprintf(stdout, "\r\e[KStream opened: %.1f ms, %.3f kHz\n", stream_info->outputLatency * 1000, stream_info->sampleRate / 1000);
+    log_info("Stream opened: %.1f ms, %.3f kHz", stream_info->outputLatency * 1000, stream_info->sampleRate / 1000);
     pa_error = Pa_StartStream(stream);
     if (pa_error != paNoError)
     {

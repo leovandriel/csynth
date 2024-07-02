@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "./logger.h"
+
 typedef enum
 {
     csErrorNone = 0,
@@ -66,22 +68,9 @@ const char *error_message(csError type)
     }
 }
 
-static void error_report(csError type, const char *file, int line, const char *message, ...)
-{
-    va_list args = {0};
-    va_start(args, message);
-    if (type != csErrorNone)
-    {
-        fprintf(stderr, "error: ");
-        vfprintf(stderr, message, args);
-        fprintf(stderr, " (%d) at %s:%d \n", type, strrchr(file, '/') + 1, line);
-    }
-    va_end(args);
-}
-
-#define error_type_message(__type, __message, ...) (error_report(__type, "/"__FILE__, __LINE__, __message, ##__VA_ARGS__), (__type))
-#define error_null_message(__type, __message, ...) (error_report(__type, "/"__FILE__, __LINE__, __message, ##__VA_ARGS__), NULL)
-#define error_catch_message(__type, __message, ...) (error_report(__type, "/"__FILE__, __LINE__, __message, ##__VA_ARGS__), ((__type) != csErrorNone))
+#define error_type_message(__type, ...) (log_warn(__VA_ARGS__), (__type))
+#define error_null_message(__type, ...) (log_warn(__VA_ARGS__), NULL)
+#define error_catch_message(__type, ...) ((__type) != csErrorNone && log_error(__VA_ARGS__), ((__type) != csErrorNone))
 
 #define error_type(__type) error_type_message(__type, error_message(__type))
 #define error_null(__type) error_null_message(__type, error_message(__type))

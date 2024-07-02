@@ -8,6 +8,7 @@
 #include <porttime.h>
 
 #include "../event/control_event.h"
+#include "../util/logger.h"
 #include "./terminal.h"
 
 #define MIDI_EVENT_BUFFER_SIZE 1024
@@ -48,7 +49,7 @@ csError midi_initialize(MidiContext *context)
         Pm_Terminate();
         return error_type_message(csErrorPortMidi, "Unable to terminate: %s", Pm_GetErrorText(pm_error));
     }
-    fprintf(stdout, "\r\e[KMIDI initialized: %s, %s\n", info->name, info->interf);
+    log_info("MIDI initialized: %s, %s", info->name, info->interf);
     return csErrorNone;
 }
 
@@ -61,7 +62,7 @@ csError midi_read_broadcast(MidiContext *context)
         PmError pm_error = count;
         if (pm_error == pmBufferOverflow)
         {
-            fprintf(stderr, "MIDI buffer overflow, events were lost\n");
+            log_error("MIDI buffer overflow, events were lost");
             return csErrorNone;
         }
         else
