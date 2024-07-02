@@ -19,4 +19,15 @@ find . -name "*.c" -type f  -not -path "./tests/.test.c" -print0 | while read -d
     fi
 done
 
+find ./src -name "*.h" -type f -print0 | while read -d $'\0' file; do
+    filename=$(basename "$file")
+    name="${filename%.*}"
+    upper=$(echo "$name" | tr '[:lower:]' '[:upper:]')
+    found=$(grep "CSYNTH_${upper}_H" "$file" | tee)
+    if [[ ! "$found" ]]; then
+        printf "\r\e[KInvalid include guard: $file\n" >&2
+        exit 1
+    fi
+done
+
 find . -name '*.c' -o -name '*.h' | xargs clang-tidy
