@@ -53,24 +53,24 @@ static double looper_eval(__U int count, Gen **args, Eval eval, void *context_)
     return output;
 }
 
-static void looper_handle_event(ControlEvent event, void *context_)
+static void looper_handle_event(ControlEvent *event, void *context_)
 {
     LooperContext *context = (LooperContext *)context_;
-    if (control_event_key_equal(event.key, context->key) && (event.key.type != ControlEventTypeMidi || event.key.midi.data2 != 0))
+    if (control_event_key_equal(event->key, context->key) && (event->key.type != ControlEventTypeMidi || event->key.midi.data2 != 0))
     {
         context->recording = !context->recording;
         if (context->recording)
         {
             context->reset = 1;
         }
-        state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeBoolInv, &context->recording);
+        state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeBoolInv, &context->recording);
     }
 }
 
 static int looper_init(__U int count, __U Gen **args, void *context_)
 {
     LooperContext *context = (LooperContext *)context_;
-    state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeBoolInv, &context->recording);
+    state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeBoolInv, &context->recording);
     csError error = control_event_add(&context->parent);
     return error_catch(error);
 }

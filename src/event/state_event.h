@@ -25,15 +25,16 @@ typedef enum
     StateEventValueTypeSelected = 6,
 } StateEventValueType;
 
-typedef void (*state_handle_event)(StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value, void *context);
-
 typedef struct
 {
+    double time;
     StateEventKeyType key_type;
     const void *key;
     StateEventValueType value_type;
     const void *value;
 } StateEvent;
+
+typedef void (*state_handle_event)(StateEvent *event, void *context);
 
 typedef struct
 {
@@ -41,9 +42,15 @@ typedef struct
     state_handle_event handle_event;
 } StateEventContext;
 
-void state_event_broadcast(StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value)
+void state_event_broadcast(double time, StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value)
 {
-    StateEvent event = {.key_type = key_type, .key = key, .value_type = value_type, .value = value};
+    StateEvent event = {
+        .time = time,
+        .key_type = key_type,
+        .key = key,
+        .value_type = value_type,
+        .value = value,
+    };
     event_broadcast(EventTypeState, &event);
 }
 
@@ -53,7 +60,7 @@ void state_handle_event_(EventType type, const void *event_, void *context_)
     if (type == EventTypeState)
     {
         StateEvent *event = (StateEvent *)event_;
-        context->handle_event(event->key_type, event->key, event->value_type, event->value, context);
+        context->handle_event(event, context);
     }
 }
 

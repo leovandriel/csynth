@@ -28,21 +28,21 @@ static double trigger_eval(__U int count, __U Gen **args, Eval eval, void *conte
     return context->on ? gen_eval(args[0], eval) : 0;
 }
 
-static void trigger_handle_event(ControlEvent event, void *context_)
+static void trigger_handle_event(ControlEvent *event, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
-    if (control_event_key_equal(event.key, context->key))
+    if (control_event_key_equal(event->key, context->key))
     {
         context->on = 1;
         context->reset = 1;
-        state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeTrigger, &context->on);
+        state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeTrigger, &context->on);
     }
 }
 
 static int trigger_init(__U int count, __U Gen **args, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
-    state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeTrigger, &context->on);
+    state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeTrigger, &context->on);
     csError error = control_event_add(&context->parent);
     return error_catch(error);
 }

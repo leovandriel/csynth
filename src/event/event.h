@@ -35,7 +35,11 @@ const void *event_add_handler(event_handle_event handle_event, void *context)
     {
         return error_null(csErrorMemoryAlloc);
     }
-    *handler = (EventHandler){.handle_event = handle_event, .context = context, .next = event_handler_list};
+    *handler = (EventHandler){
+        .handle_event = handle_event,
+        .context = context,
+        .next = event_handler_list,
+    };
     event_handler_list = handler;
     return handler;
 }

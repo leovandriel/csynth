@@ -23,20 +23,20 @@ static double selector_eval(__U int count, __U Gen **args, Eval eval, void *cont
     return gen_eval(args[context->selected], eval);
 }
 
-static void selector_handle_event(ControlEvent event, void *context_)
+static void selector_handle_event(ControlEvent *event, void *context_)
 {
     SelectorContext *context = (SelectorContext *)context_;
-    if (control_event_key_equal(event.key, context->key))
+    if (control_event_key_equal(event->key, context->key))
     {
         context->selected = (context->selected + 1) % context->count;
-        state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeInt, &context->selected);
+        state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeInt, &context->selected);
     }
 }
 
 static int selector_init(__U int count, __U Gen **args, void *context_)
 {
     SelectorContext *context = (SelectorContext *)context_;
-    state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeInt, &context->selected);
+    state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeInt, &context->selected);
     csError error = control_event_add(&context->parent);
     return error_catch(error);
 }

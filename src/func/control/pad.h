@@ -31,12 +31,12 @@ static double pad_eval(__U int count, __U Gen **args, Eval eval, void *context_)
     return input * context->value;
 }
 
-static void pad_handle_event(ControlEvent event, void *context_)
+static void pad_handle_event(ControlEvent *event, void *context_)
 {
     PadContext *context = (PadContext *)context_;
-    if (control_event_key_equal(event.key, context->key) && event.key.midi.type == MidiTypeNoteOn)
+    if (control_event_key_equal(event->key, context->key) && event->key.midi.type == MidiTypeNoteOn)
     {
-        context->value = (double)event.key.midi.data2 / 127.0;
+        context->value = (double)event->key.midi.data2 / 127.0;
         context->reset = 1;
     }
 }

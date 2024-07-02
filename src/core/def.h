@@ -31,6 +31,8 @@ typedef enum
 
 typedef struct
 {
+    double wall_time;
+    double wall_tick;
     double tick[EvalTickLength];
 } Eval;
 

@@ -53,7 +53,7 @@ typedef struct
     ControlEventKey key;
 } ControlEvent;
 
-typedef void (*control_handle_event)(ControlEvent event, void *context);
+typedef void (*control_handle_event)(ControlEvent *event, void *context);
 
 typedef struct
 {
@@ -134,7 +134,7 @@ void control_handle_event_(EventType type, const void *event_, void *context_)
     if (type == EventTypeControl)
     {
         ControlEvent *event = (ControlEvent *)event_;
-        context->handle_event(*event, context);
+        context->handle_event(event, context);
     }
 }
 

@@ -29,21 +29,21 @@ static double pause_eval(__U int count, __U Gen **args, Eval eval, void *context
     return context->paused ? 0 : gen_eval(args[0], eval);
 }
 
-static void pause_handle_event(ControlEvent event, void *context_)
+static void pause_handle_event(ControlEvent *event, void *context_)
 {
     PauseContext *context = (PauseContext *)context_;
-    if (control_event_key_equal(event.key, context->key))
+    if (control_event_key_equal(event->key, context->key))
     {
         context->paused = !context->paused;
         context->reset = context->play_reset;
-        state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeBool, &context->paused);
+        state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeBool, &context->paused);
     }
 }
 
 static int pause_init(__U int count, __U Gen **args, void *context_)
 {
     PauseContext *context = (PauseContext *)context_;
-    state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeBool, &context->paused);
+    state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeBool, &context->paused);
     csError error = control_event_add(&context->parent);
     return error_catch(error);
 }

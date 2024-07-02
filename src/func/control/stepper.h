@@ -30,15 +30,15 @@ static double stepper_eval(__U int count, __U Gen **args, __U Eval eval, void *c
     return context->value;
 }
 
-static void stepper_handle_event(ControlEvent event, void *context_)
+static void stepper_handle_event(ControlEvent *event, void *context_)
 {
     StepperContext *context = (StepperContext *)context_;
-    if (control_event_key_equal(event.key, context->key) && !context->active)
+    if (control_event_key_equal(event->key, context->key) && !context->active)
     {
         context->active = 1;
-        state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeSelected, &context->active);
+        state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeSelected, &context->active);
     }
-    else if (context->active && event.key.keyboard == KEYBOARD_EVENT_UP)
+    else if (context->active && event->key.keyboard == KEYBOARD_EVENT_UP)
     {
         if (context->rel != 0)
         {
@@ -52,9 +52,9 @@ static void stepper_handle_event(ControlEvent event, void *context_)
         {
             context->value = context->max;
         }
-        state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
+        state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
     }
-    else if (context->active && event.key.keyboard == KEYBOARD_EVENT_DOWN)
+    else if (context->active && event->key.keyboard == KEYBOARD_EVENT_DOWN)
     {
         if (context->rel != 0)
         {
@@ -68,19 +68,19 @@ static void stepper_handle_event(ControlEvent event, void *context_)
         {
             context->value = context->min;
         }
-        state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
+        state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
     }
     else
     {
         context->active = 0;
-        state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeSelected, &context->active);
+        state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeSelected, &context->active);
     }
 }
 
 static int stepper_init(__U int count, __U Gen **args, void *context_)
 {
     StepperContext *context = (StepperContext *)context_;
-    state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
+    state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
     csError error = control_event_add(&context->parent);
     return error_catch(error);
 }

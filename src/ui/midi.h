@@ -89,6 +89,11 @@ csError midi_terminate(MidiContext *context)
     return csErrorNone;
 }
 
+double midi_time()
+{
+    return (double)Pt_Time() / 1000.0;
+}
+
 void midi_loop(__U double duration, int exit_key)
 {
     MidiContext context = {0};
@@ -105,7 +110,7 @@ void midi_loop(__U double duration, int exit_key)
         int key = terminal_read(exit_key);
         if (key > 0)
         {
-            control_event_broadcast_keyboard(time_wall(), key);
+            control_event_broadcast_keyboard(midi_time(), key);
         }
         else if (key < 0)
         {

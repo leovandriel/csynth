@@ -27,12 +27,12 @@ static double blend_eval(__U int count, __U Gen **args, Eval eval, void *context
     return input;
 }
 
-static void blend_handle_event(ControlEvent event, void *context_)
+static void blend_handle_event(ControlEvent *event, void *context_)
 {
     BlendContext *context = (BlendContext *)context_;
-    if (control_event_key_equal(event.key, context->key))
+    if (control_event_key_equal(event->key, context->key))
     {
-        uint16_t data = ((uint16_t)event.key.midi.data2 << 7) | event.key.midi.data1;
+        uint16_t data = ((uint16_t)event->key.midi.data2 << 7) | event->key.midi.data1;
         context->value = 2.0 * (double)data / 16383.0 - 1;
     }
 }

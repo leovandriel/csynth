@@ -25,20 +25,20 @@ static double knob_eval(__U int count, __U Gen **args, __U Eval eval, void *cont
     return context->value;
 }
 
-static void knob_handle_event(ControlEvent event, void *context_)
+static void knob_handle_event(ControlEvent *event, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
-    if (control_event_key_equal(event.key, context->key))
+    if (control_event_key_equal(event->key, context->key))
     {
-        context->value = (double)event.key.midi.data2 / 127.0;
-        state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
+        context->value = (double)event->key.midi.data2 / 127.0;
+        state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
     }
 }
 
 static int knob_init(__U int count, __U Gen **args, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
-    state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
+    state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
     csError error = control_event_add(&context->parent);
     return error_catch(error);
 }

@@ -7,7 +7,6 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../../event/control_event.h"
-#include "../../util/time.h"
 
 typedef struct
 {
@@ -20,7 +19,7 @@ static double actuate_eval(__U int count, __U Gen **args, __U Eval eval, void *c
     ActuateContext *context = (ActuateContext *)context_;
     if (!context->completed)
     {
-        control_event_broadcast_keyboard(time_wall(), context->key);
+        control_event_broadcast_keyboard(eval.wall_time, context->key);
         context->completed = 1;
     }
     return 0.0;

@@ -49,7 +49,10 @@ csError key_list_read_file(KeyList *list, FILE *file)
     int stamp = 0;
     while (fscanf(file, "%d %d\n", &key, &stamp) == 2)
     {
-        TimedKeyboardEvent event = {.key = key, .time = stamp / 1000.0};
+        TimedKeyboardEvent event = {
+            .key = key,
+            .time = stamp / 1000.0,
+        };
         csError error = key_list_add(list, event);
         if (error != csErrorNone)
         {

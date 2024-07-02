@@ -23,20 +23,20 @@ static double mute_eval(__U int count, __U Gen **args, Eval eval, void *context_
     return context->muted ? 0 : input;
 }
 
-static void mute_handle_event(ControlEvent event, void *context_)
+static void mute_handle_event(ControlEvent *event, void *context_)
 {
     MuteContext *context = (MuteContext *)context_;
-    if (control_event_key_equal(event.key, context->key))
+    if (control_event_key_equal(event->key, context->key))
     {
         context->muted = !context->muted;
-        state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeBoolInv, &context->muted);
+        state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeBoolInv, &context->muted);
     }
 }
 
 static int mute_init(__U int count, __U Gen **args, void *context_)
 {
     MuteContext *context = (MuteContext *)context_;
-    state_event_broadcast(StateEventKeyTypeControl, &context->key, StateEventValueTypeBoolInv, &context->muted);
+    state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeBoolInv, &context->muted);
     csError error = control_event_add(&context->parent);
     return error_catch(error);
 }

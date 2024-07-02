@@ -32,13 +32,13 @@ static double key_eval(__U int count, __U Gen **args, Eval eval, void *context_)
     return 0.;
 }
 
-static void key_handle_event(ControlEvent event, void *context_)
+static void key_handle_event(ControlEvent *event, void *context_)
 {
     KeyContext *context = (KeyContext *)context_;
-    if (control_event_key_equal(event.key, context->key))
+    if (control_event_key_equal(event->key, context->key))
     {
-        context->active = (int)event.key.midi.data2;
-        context->reset = event.key.midi.data2 ? 1 : 0;
+        context->active = (int)event->key.midi.data2;
+        context->reset = event->key.midi.data2 ? 1 : 0;
     }
 }
 

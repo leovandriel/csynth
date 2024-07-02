@@ -165,7 +165,7 @@ void gen_reset(Gen *gen)
 
 Eval eval_create(double value)
 {
-    Eval eval = {0};
+    Eval eval = {.wall_tick = value};
     for (EvalTick tick = 0; tick < EvalTickLength; tick++)
     {
         eval.tick[tick] = value;

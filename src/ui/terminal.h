@@ -7,9 +7,9 @@
 #include <signal.h>
 #include <stdio.h>
 #include <termios.h>
+#include <time.h>
 
 #include "../event/control_event.h"
-#include "../util/time.h"
 
 static volatile int terminal_signal = 0;
 
@@ -87,15 +87,22 @@ int terminal_signaled()
     return terminal_signal;
 }
 
+double terminal_time()
+{
+    struct timespec spec;
+    timespec_get(&spec, TIME_UTC);
+    return (double)spec.tv_sec + (double)spec.tv_nsec / 1e9;
+}
+
 void terminal_loop(double duration, int exit_key)
 {
     struct termios term = terminal_setup(1);
     signal(SIGINT, terminal_handler);
-    double start = time_wall();
+    double start = terminal_time();
     while (!terminal_signaled())
     {
         int key = terminal_read(exit_key);
-        double time = time_wall();
+        double time = terminal_time();
         if (key > 0)
         {
             control_event_broadcast_keyboard(time, key);

@@ -55,7 +55,11 @@ Sampler *sampler_create(int sample_rate, int count, Func **inputs)
         channels[index] = channel;
     }
     Eval eval = eval_create(1.0 / sample_rate);
-    *sampler = (Sampler){.channels = channels, .count = count, .eval = eval};
+    *sampler = (Sampler){
+        .channels = channels,
+        .count = count,
+        .eval = eval,
+    };
     return sampler;
 }
 
@@ -72,6 +76,7 @@ void sampler_sample(Sampler *sampler, size_t count, sample_t *buffer)
     {
         for (int index = 0; index < sampler->count; index++)
         {
+            sampler->eval.wall_time += sampler->eval.wall_tick;
             double output = gen_eval(sampler->channels[index], sampler->eval);
             *(buffer++) = sampler_quantize(output);
         }

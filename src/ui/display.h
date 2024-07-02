@@ -168,9 +168,9 @@ void display_render(DisplayElement *list)
     }
 }
 
-void display_handle_event(StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value, __U void *context)
+void display_handle_event(StateEvent *event, __U void *context)
 {
-    if (display_set_value(display_element_list, key_type, key, value_type, value))
+    if (display_set_value(display_element_list, event->key_type, event->key, event->value_type, event->value))
     {
         display_render(display_element_list);
     }
@@ -256,7 +256,10 @@ csError display_midi_(int channel, int control) { return display_midi(channel, c
 
 csError display_label(const char *label)
 {
-    return display_element((DisplayElement){.key_type = StateEventKeyTypeLabel, .label = label});
+    return display_element((DisplayElement){
+        .key_type = StateEventKeyTypeLabel,
+        .label = label,
+    });
 }
 
 #endif // CSYNTH_DISPLAY_H

@@ -23,7 +23,7 @@ static double gauge_eval(__U int count, Gen **args, Eval eval, void *context_)
     double input = gen_eval(args[1], eval);
     if (context->time >= 1.0 && input != context->last)
     {
-        state_event_broadcast(StateEventKeyTypeLabel, context->label, StateEventValueTypeDouble, &input);
+        state_event_broadcast(eval.wall_time, StateEventKeyTypeLabel, context->label, StateEventValueTypeDouble, &input);
         context->last = input;
         context->time = 0;
     }
