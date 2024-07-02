@@ -56,7 +56,7 @@ static double looper_eval(__U int count, Gen **args, Eval eval, void *context_)
 static void looper_handle_event(ControlEvent event, void *context_)
 {
     LooperContext *context = (LooperContext *)context_;
-    if (control_event_key_equal(event.key, context->key))
+    if (control_event_key_equal(event.key, context->key) && (event.key.type != ControlEventTypeMidi || event.key.midi.data2 != 0))
     {
         context->recording = !context->recording;
         if (context->recording)
@@ -81,13 +81,29 @@ static void looper_free(__U int count, void *context_)
     buffer_free(&context->buffer);
 }
 
-Func *looper_create(int key, Func *tick, Func *input)
+Func *looper_keyboard_create(int key, Func *tick, Func *input)
 {
     LooperContext initial = {
         .parent = {.handle_event = looper_handle_event},
         .key = {
             .type = ControlEventTypeKeyboard,
             .keyboard = key,
+        },
+    };
+    return func_create(looper_init, looper_eval, looper_free, sizeof(LooperContext), &initial, FuncFlagNone, FUNCS(tick, input));
+}
+
+Func *looper_midi_create(int channel, int control, Func *tick, Func *input)
+{
+    LooperContext initial = {
+        .parent = {.handle_event = looper_handle_event},
+        .key = {
+            .type = ControlEventTypeMidi,
+            .midi = {
+                .type = MidiTypeControlChange,
+                .channel = channel - 1,
+                .data1 = control,
+            },
         },
     };
     return func_create(looper_init, looper_eval, looper_free, sizeof(LooperContext), &initial, FuncFlagNone, FUNCS(tick, input));
