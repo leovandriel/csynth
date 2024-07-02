@@ -7,7 +7,7 @@
 
 #include "../src/core/func.h"
 #include "../src/core/gen.h"
-#include "../src/event/keyboard_event.h"
+#include "../src/event/control_event.h"
 #include "../src/func/keyboard/keyboards.h"
 #include "../src/mem/key_list.h"
 

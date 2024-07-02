@@ -7,7 +7,7 @@
 #include <portmidi.h>
 #include <porttime.h>
 
-#include "../event/midi_event.h"
+#include "../event/control_event.h"
 #include "./terminal.h"
 
 #define MIDI_EVENT_BUFFER_SIZE 128
@@ -69,7 +69,7 @@ csError midi_read_broadcast(MidiContext *context)
         uint8_t channel = status & 0x0F;
         uint8_t data1 = Pm_MessageData1(buffer[i].message);
         uint8_t data2 = Pm_MessageData2(buffer[i].message);
-        midi_event_broadcast(time, type, channel, data1, data2);
+        control_event_broadcast_midi(time, type, channel, data1, data2);
     }
     return csErrorNone;
 }
@@ -105,7 +105,7 @@ void midi_loop(__U double duration, int exit_key)
         int key = terminal_read(exit_key);
         if (key > 0)
         {
-            keyboard_event_broadcast(time_wall(), key);
+            control_event_broadcast_keyboard(time_wall(), key);
         }
         else if (key < 0)
         {

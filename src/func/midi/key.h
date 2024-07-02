@@ -6,12 +6,12 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../event/midi_event.h"
+#include "../../event/control_event.h"
 
 typedef struct
 {
-    MidiEventContext parent;
-    MidiKey key;
+    ControlEventContext parent;
+    ControlEventKey key;
     int active;
     int reset;
 } KeyContext;
@@ -32,20 +32,20 @@ static double key_eval(__U int count, __U Gen **args, Eval eval, void *context_)
     return 0.;
 }
 
-static void key_handle_event(__U double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
+static void key_handle_event(ControlEvent event, void *context_)
 {
     KeyContext *context = (KeyContext *)context_;
-    if ((type == MidiTypeNoteOff || type == MidiTypeNoteOn) && channel == context->key.channel && data1 == context->key.control)
+    if (control_event_key_equal(event.key, context->key))
     {
-        context->active = (int)data2;
-        context->reset = data2 ? 1 : 0;
+        context->active = (int)event.key.midi.data2;
+        context->reset = event.key.midi.data2 ? 1 : 0;
     }
 }
 
 static int key_init(__U int count, __U Gen **args, void *context_)
 {
     KeyContext *context = (KeyContext *)context_;
-    csError error = midi_event_add(&context->parent);
+    csError error = control_event_add(&context->parent);
     return error_catch(error);
 }
 
@@ -54,11 +54,14 @@ Func *key_create(int channel, int pitch, Func *input)
     KeyContext initial = {
         .parent = {.handle_event = key_handle_event},
         .key = {
-            .channel = channel - 1,
-            .control = pitch,
-        },
+            .type = ControlEventTypeMidi,
+            .midi = {
+                .type = MidiTypeNoteOff,
+                .channel = channel - 1,
+                .data1 = pitch,
+            }},
     };
-    return func_create(key_init, key_eval, midi_event_free, sizeof(KeyContext), &initial, FuncFlagNone, FUNCS(input));
+    return func_create(key_init, key_eval, control_event_free, sizeof(KeyContext), &initial, FuncFlagNone, FUNCS(input));
 }
 
 #endif // CSYNTH_KEY_H

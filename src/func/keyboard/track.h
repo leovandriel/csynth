@@ -6,7 +6,7 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../event/keyboard_event.h"
+#include "../../event/control_event.h"
 #include "../../mem/key_list.h"
 
 typedef struct
@@ -25,15 +25,18 @@ static double track_eval(__U int count, Gen **args, Eval eval, __U void *context
 static void track_handle_event(EventType type, const void *event_, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
-    if (type == EventTypeKeyboard)
+    if (type == EventTypeControl)
     {
-        KeyboardEvent *event = (KeyboardEvent *)event_;
-        TimedKeyboardEvent timed_event = {
-            .key = event->key,
-            .time = event->time,
-        };
-        csError error = key_list_add(&context->list, timed_event);
-        error_catch(error);
+        ControlEvent *event = (ControlEvent *)event_;
+        if (event->key.type == ControlEventTypeKeyboard)
+        {
+            TimedKeyboardEvent timed_event = {
+                .key = event->key.keyboard,
+                .time = event->time,
+            };
+            csError error = key_list_add(&context->list, timed_event);
+            error_catch(error);
+        }
     }
 }
 

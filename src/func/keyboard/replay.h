@@ -6,7 +6,7 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../event/keyboard_event.h"
+#include "../../event/control_event.h"
 #include "../../mem/key_list.h"
 
 typedef struct
@@ -23,7 +23,7 @@ static double replay_eval(__U int count, Gen **args, Eval eval, void *context_)
     ReplayContext *context = (ReplayContext *)context_;
     while (context->current && context->current->time <= context->time)
     {
-        keyboard_event_broadcast(context->current->time, context->current->key);
+        control_event_broadcast_keyboard(context->current->time, context->current->key);
         context->current = context->current->next;
     }
     double tick = gen_eval(args[0], eval);

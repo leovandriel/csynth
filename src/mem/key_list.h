@@ -8,8 +8,8 @@
 #include <string.h>
 #include <sys/time.h>
 
+#include "../event/control_event.h"
 #include "../event/event.h"
-#include "../event/keyboard_event.h"
 
 typedef struct TimedKeyboardEvent
 {

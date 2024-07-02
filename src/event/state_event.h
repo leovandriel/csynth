@@ -10,9 +10,8 @@
 typedef enum
 {
     StateEventKeyTypeNone = 0,
-    StateEventKeyTypeKeyboard = 1,
-    StateEventKeyTypeMidi = 2,
-    StateEventKeyTypeLabel = 3,
+    StateEventKeyTypeControl = 1,
+    StateEventKeyTypeLabel = 4,
 } StateEventKeyType;
 
 typedef enum

@@ -8,13 +8,13 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../event/midi_event.h"
+#include "../../event/control_event.h"
 #include "../../event/state_event.h"
 
 typedef struct
 {
-    MidiEventContext parent;
-    MidiKey key;
+    ControlEventContext parent;
+    ControlEventKey key;
     double value;
 } BlendContext;
 
@@ -27,12 +27,12 @@ static double blend_eval(__U int count, __U Gen **args, Eval eval, void *context
     return input;
 }
 
-static void blend_handle_event(__U double time, MidiType type, uint8_t channel, uint8_t data1, uint8_t data2, void *context_)
+static void blend_handle_event(ControlEvent event, void *context_)
 {
     BlendContext *context = (BlendContext *)context_;
-    if (type == MidiTypePitchBend && channel == context->key.channel)
+    if (control_event_key_equal(event.key, context->key))
     {
-        uint16_t data = ((uint16_t)data2 << 7) | data1;
+        uint16_t data = ((uint16_t)event.key.midi.data2 << 7) | event.key.midi.data1;
         context->value = 2.0 * (double)data / 16383.0 - 1;
     }
 }
@@ -40,7 +40,7 @@ static void blend_handle_event(__U double time, MidiType type, uint8_t channel, 
 static int blend_init(__U int count, __U Gen **args, void *context_)
 {
     BlendContext *context = (BlendContext *)context_;
-    csError error = midi_event_add(&context->parent);
+    csError error = control_event_add(&context->parent);
     return error_catch(error);
 }
 
@@ -48,9 +48,15 @@ Func *blend_create(int channel, Func *factor, Func *input)
 {
     BlendContext initial = {
         .parent = {.handle_event = blend_handle_event},
-        .key = {.channel = channel - 1},
+        .key = {
+            .type = ControlEventTypeMidi,
+            .midi = {
+                .type = MidiTypePitchBend,
+                .channel = channel - 1,
+            },
+        },
     };
-    return func_create(blend_init, blend_eval, midi_event_free, sizeof(BlendContext), &initial, FuncFlagNone, FUNCS(factor, input));
+    return func_create(blend_init, blend_eval, control_event_free, sizeof(BlendContext), &initial, FuncFlagNone, FUNCS(factor, input));
 }
 
 #endif // CSYNTH_BLEND_H

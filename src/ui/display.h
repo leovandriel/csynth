@@ -4,7 +4,7 @@
 #ifndef CSYNTH_DISPLAY_H
 #define CSYNTH_DISPLAY_H
 
-#include "../event/midi_event.h"
+#include "../event/control_event.h"
 #include "../event/state_event.h"
 #include "../util/error.h"
 
@@ -13,26 +13,14 @@ typedef struct DisplayElement
     StateEventKeyType key_type;
     union
     {
-        struct
-        {
-            int keyboard_key;
-        };
-        struct
-        {
-            MidiKey midi_key;
-        };
+        ControlEventKey control_key;
+        const char *label_key;
     };
     StateEventValueType value_type;
     union
     {
-        struct
-        {
-            int int_value;
-        };
-        struct
-        {
-            double double_value;
-        };
+        int int_value;
+        double double_value;
     };
     const char *label;
     int selected;
@@ -63,14 +51,8 @@ int display_set_value(DisplayElement *list, StateEventKeyType key_type, const vo
             {
             case StateEventKeyTypeNone:
                 continue;
-            case StateEventKeyTypeKeyboard:
-                if (element->keyboard_key != *(int *)key)
-                {
-                    continue;
-                }
-                break;
-            case StateEventKeyTypeMidi:
-                if (element->midi_key.control != ((MidiKey *)key)->control || element->midi_key.channel != ((MidiKey *)key)->channel)
+            case StateEventKeyTypeControl:
+                if (!control_event_key_equal(element->control_key, *(ControlEventKey *)key))
                 {
                     continue;
                 }
@@ -122,12 +104,21 @@ void display_render_label(DisplayElement *element)
         {
         case StateEventKeyTypeNone:
             break;
-        case StateEventKeyTypeKeyboard:
-            fprintf(stdout, element->selected ? "{%c}" : " %c ", element->keyboard_key);
-            break;
-        case StateEventKeyTypeMidi:
-            fprintf(stdout, element->selected ? "{%d:%d}" : " %d:%d ", element->midi_key.channel, element->midi_key.control);
-            break;
+        case StateEventKeyTypeControl:
+        {
+            ControlEventKey *key = &element->control_key;
+            switch (key->type)
+            {
+            case ControlEventTypeNone:
+                break;
+            case ControlEventTypeKeyboard:
+                fprintf(stdout, element->selected ? "{%c}" : " %c ", key->keyboard);
+                break;
+            case ControlEventTypeMidi:
+                fprintf(stdout, element->selected ? "{%d:%d}" : " %d:%d ", key->midi.channel, key->midi.data1);
+                break;
+            }
+        }
         case StateEventKeyTypeLabel:
             fprintf(stdout, element->selected ? "{%s}" : " %s ", "?");
             break;
@@ -232,35 +223,40 @@ csError display_element(DisplayElement element_)
 
 csError display_keyboard(int key, const char *label)
 {
-    return display_element((DisplayElement){.key_type = StateEventKeyTypeKeyboard, .keyboard_key = key, .label = label});
+    DisplayElement element = {
+        .key_type = StateEventKeyTypeControl,
+        .control_key = {
+            .type = ControlEventTypeKeyboard,
+            .keyboard = key,
+        },
+        .label = label,
+    };
+    return display_element(element);
 }
 
 csError display_keyboard_(int key) { return display_keyboard(key, NULL); }
 
 csError display_midi(int channel, int control, const char *label)
 {
-    MidiKey key = {.channel = channel - 1, .control = control};
-    return display_element((DisplayElement){.key_type = StateEventKeyTypeMidi, .midi_key = key, .label = label});
+    DisplayElement element = {
+        .key_type = StateEventKeyTypeControl,
+        .control_key = {
+            .type = ControlEventTypeMidi,
+            .midi = {
+                .channel = channel - 1,
+                .data1 = control,
+            },
+        },
+        .label = label,
+    };
+    return display_element(element);
 }
 
-csError display_midi_(int channel, int pitch) { return display_midi(channel, pitch, NULL); }
+csError display_midi_(int channel, int control) { return display_midi(channel, control, NULL); }
 
 csError display_label(const char *label)
 {
     return display_element((DisplayElement){.key_type = StateEventKeyTypeLabel, .label = label});
-}
-
-csError display_row(const char *keys)
-{
-    for (size_t i = 0; i < strlen(keys); i++)
-    {
-        csError error = display_keyboard_(keys[i]);
-        if (error != csErrorNone)
-        {
-            return error;
-        }
-    }
-    return csErrorNone;
 }
 
 #endif // CSYNTH_DISPLAY_H

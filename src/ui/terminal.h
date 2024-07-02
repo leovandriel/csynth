@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <termios.h>
 
-#include "../event/keyboard_event.h"
+#include "../event/control_event.h"
 #include "../util/time.h"
 
 static volatile int terminal_signal = 0;
@@ -98,7 +98,7 @@ void terminal_loop(double duration, int exit_key)
         double time = time_wall();
         if (key > 0)
         {
-            keyboard_event_broadcast(time, key);
+            control_event_broadcast_keyboard(time, key);
         }
         else if (key < 0)
         {
