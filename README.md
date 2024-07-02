@@ -223,7 +223,7 @@ system that broadcasts keyboard input and state changes.
 
 Keyboard input is read by [terminal](src/ui/terminal.h) and broadcasted to
 gating functions. The most basic example of this is
-[mute](src/func/keyboard/mute.h), which multiplies input by 1 and 0 alternating
+[mute](src/func/control/mute.h), which multiplies input by 1 and 0 alternating
 at every space bar press.
 
 ```c
@@ -231,29 +231,29 @@ at every space bar press.
 ```
 
 To emulate a key on a keyboard or drum pad, use the
-[trigger](src/func/keyboard/trigger.h) function, which resets to initial state
+[trigger](src/func/control/trigger.h) function, which resets to initial state
 on every key press:
 
 ```c
     play(trigger(' ', decay_(.5, sine(A4))));
 ```
 
-There is also [stepper](src/func/keyboard/stepper.h) to control with the up/down
-keys and [selector](src/func/keyboard/selector.h) to switch between functions:
+There is also [stepper](src/func/control/stepper.h) to control with the up/down
+keys and [selector](src/func/control/selector.h) to switch between functions:
 
 ```c
     play(selector(' ', sine(A3), sine(A4), sine(A5)));
 ```
 
 These controls can be combined to create a
-[keyboard](src/func/keyboard/keyboard.h):
+[keyboard](src/func/control/keyboard.h):
 
 ```c
     play(keyboard(trigger, decay_(.5, sine(C4))));
 ```
 
 Keyboard strokes can also be recorded and replayed with
-[track](src/func/keyboard/track.h) and [replay](src/func/keyboard/replay.h). Key
+[track](src/func/control/track.h) and [replay](src/func/control/replay.h). Key
 events are managed by [keyboard_event](src/event/keyboard_event.h). To exit, the
 `Esc` key is directly handled by `play`.
 

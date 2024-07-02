@@ -1,13 +1,27 @@
 //
 // all.h - A single include file for all the functions.
 //
-#ifndef CSYNTH_FUNC_ALL_H
-#define CSYNTH_FUNC_ALL_H
+#ifndef CSYNTH_ALL_H
+#define CSYNTH_ALL_H
 
 #include "./bank/drums.h"
 #include "./comp/comps.h"
 #include "./comp/pattern.h"
 #include "./comp/seq.h"
+#include "./control/actuate.h"
+#include "./control/blend.h"
+#include "./control/controls.h"
+#include "./control/key.h"
+#include "./control/keyboard.h"
+#include "./control/knob.h"
+#include "./control/mute.h"
+#include "./control/pad.h"
+#include "./control/pause.h"
+#include "./control/replay.h"
+#include "./control/selector.h"
+#include "./control/stepper.h"
+#include "./control/track.h"
+#include "./control/trigger.h"
 #include "./effect/continuous.h"
 #include "./effect/delay.h"
 #include "./effect/effects.h"
@@ -41,21 +55,6 @@
 #include "./gen/triangle.h"
 #include "./gen/uniform.h"
 #include "./gen/wav.h"
-#include "./keyboard/actuate.h"
-#include "./keyboard/keyboard.h"
-#include "./keyboard/keyboards.h"
-#include "./keyboard/mute.h"
-#include "./keyboard/pause.h"
-#include "./keyboard/replay.h"
-#include "./keyboard/selector.h"
-#include "./keyboard/stepper.h"
-#include "./keyboard/track.h"
-#include "./keyboard/trigger.h"
-#include "./midi/blend.h"
-#include "./midi/key.h"
-#include "./midi/knob.h"
-#include "./midi/midis.h"
-#include "./midi/pad.h"
 #include "./op/add.h"
 #include "./op/inv.h"
 #include "./op/max.h"
@@ -79,4 +78,4 @@
 #include "./util/utils.h"
 #include "./util/wrap.h"
 
-#endif // CSYNTH_FUNC_ALL_H
+#endif // CSYNTH_ALL_H

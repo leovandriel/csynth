@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/keyboards -Wall -Wextra -O3 -lm -lportaudio && ./bin/keyboards "$@"; exit $?
+//usr/bin/gcc "$0" -o bin/controls -Wall -Wextra -O3 -lm -lportaudio && ./bin/controls "$@"; exit $?
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
