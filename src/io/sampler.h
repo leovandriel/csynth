@@ -20,7 +20,7 @@ typedef struct
 {
     Gen **channels;
     int count;
-    Eval eval;
+    EvalContext eval;
 } Sampler;
 
 Sampler *sampler_create(int sample_rate, int count, Func **inputs)
@@ -54,7 +54,7 @@ Sampler *sampler_create(int sample_rate, int count, Func **inputs)
         }
         channels[index] = channel;
     }
-    Eval eval = eval_create(1.0 / sample_rate);
+    EvalContext eval = eval_create(1.0 / sample_rate);
     *sampler = (Sampler){
         .channels = channels,
         .count = count,
@@ -74,10 +74,10 @@ void sampler_sample(Sampler *sampler, size_t count, sample_t *buffer)
 {
     for (size_t frame = 0; frame < count; frame++)
     {
+        sampler->eval.wall_time += sampler->eval.wall_tick;
         for (int index = 0; index < sampler->count; index++)
         {
-            sampler->eval.wall_time += sampler->eval.wall_tick;
-            double output = gen_eval(sampler->channels[index], sampler->eval);
+            double output = gen_eval(sampler->channels[index], &sampler->eval);
             *(buffer++) = sampler_quantize(output);
         }
     }

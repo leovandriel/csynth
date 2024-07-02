@@ -15,7 +15,7 @@ typedef struct
     double direction;
 } TriangleContext;
 
-static double triangle_eval(__U int count, Gen **args, Eval eval, void *context_)
+static double triangle_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
 {
     TriangleContext *context = (TriangleContext *)context_;
     double output = context->last;

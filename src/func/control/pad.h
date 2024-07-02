@@ -19,7 +19,7 @@ typedef struct
     int reset;
 } PadContext;
 
-static double pad_eval(__U int count, __U Gen **args, Eval eval, void *context_)
+static double pad_eval(__U int count, __U Gen **args, EvalContext *eval, void *context_)
 {
     PadContext *context = (PadContext *)context_;
     if (context->reset != 0)

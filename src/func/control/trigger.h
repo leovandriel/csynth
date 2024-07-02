@@ -17,7 +17,7 @@ typedef struct
     int reset;
 } TriggerContext;
 
-static double trigger_eval(__U int count, __U Gen **args, Eval eval, void *context_)
+static double trigger_eval(__U int count, __U Gen **args, EvalContext *eval, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
     if (context->reset != 0)

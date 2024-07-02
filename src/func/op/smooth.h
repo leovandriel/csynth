@@ -9,7 +9,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double smooth_eval(__U int count, Gen **args, Eval eval, __U void *context_)
+static double smooth_eval(__U int count, Gen **args, EvalContext *eval, __U void *context_)
 {
     double edge0 = gen_eval(args[0], eval);
     double edge1 = gen_eval(args[1], eval);

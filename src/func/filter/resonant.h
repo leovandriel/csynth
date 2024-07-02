@@ -16,7 +16,7 @@ typedef struct
     double x1, x2, y1, y2;
 } ResonantContext;
 
-static double resonant_eval(__U int count, Gen **args, Eval eval, void *context_)
+static double resonant_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
 {
     ResonantContext *context = (ResonantContext *)context_;
     double tick = gen_eval(args[0], eval);

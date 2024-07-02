@@ -12,12 +12,14 @@ typedef struct
     EvalTick tick;
 } ScaleContext;
 
-static double scale_eval(__U int count, __U Gen **args, Eval eval, void *context_)
+static double scale_eval(__U int count, __U Gen **args, EvalContext *eval, void *context_)
 {
     ScaleContext *context = (ScaleContext *)context_;
     double factor = gen_eval(args[0], eval);
-    eval.tick[context->tick] *= factor;
+    double restore = eval->tick[context->tick];
+    eval->tick[context->tick] = restore * factor;
     double input = gen_eval(args[1], eval);
+    eval->tick[context->tick] = restore;
     return input;
 }
 

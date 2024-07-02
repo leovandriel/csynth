@@ -17,7 +17,7 @@ typedef struct
     double time;
 } WavContext;
 
-static double wav_eval(__U int count, Gen **args, Eval eval, void *context_)
+static double wav_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
 {
     WavContext *context = (WavContext *)context_;
     sample_t sample = reader_sample(&context->samples, context->time, context->channel);

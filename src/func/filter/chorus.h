@@ -20,7 +20,7 @@ typedef struct
     size_t index;
 } ChorusContext;
 
-static double chorus_eval(__U int count, Gen **args, Eval eval, void *context_)
+static double chorus_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
 {
     ChorusContext *context = (ChorusContext *)context_;
     double modulation = gen_eval(args[0], eval);
@@ -28,7 +28,8 @@ static double chorus_eval(__U int count, Gen **args, Eval eval, void *context_)
     double depth = gen_eval(args[2], eval);
     double input = gen_eval(args[3], eval);
     size_t size = (size_t)(delay / eval.tick[EvalTickPitch]);
-    size_t offset = (size_t)(depth / eval.tick[EvalTickPitch] * modulation + (double)size * 0.5);
+    size_t size = (size_t)(delay / eval->tick[EvalTickPitch]);
+    size_t offset = (size_t)(depth / eval->tick[EvalTickPitch] * modulation + (double)size * 0.5);
     // size_t offset = (size_t)(depth / eval.tick[EvalTickPitch] * (modulation + 1) * 0.5);
     size_t index = (context->index + size - offset) % size;
     context->index = buffer_resize(&context->buffer, size, context->index, NULL);

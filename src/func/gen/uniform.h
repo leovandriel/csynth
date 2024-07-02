@@ -10,7 +10,7 @@
 #include "../../core/gen.h"
 #include "../../util/rand.h"
 
-static double uniform_eval(__U int count, __U Gen **args, __U Eval eval, __U void *context)
+static double uniform_eval(__U int count, __U Gen **args, __U EvalContext *eval, __U void *context)
 {
     return rand_range(-1, 1);
 }

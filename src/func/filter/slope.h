@@ -12,7 +12,7 @@ typedef struct
     double last;
 } SlopeContext;
 
-static double slope_eval(__U int count, Gen **args, Eval eval, void *context_)
+static double slope_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
 {
     SlopeContext *context = (SlopeContext *)context_;
     double tick = gen_eval(args[0], eval);

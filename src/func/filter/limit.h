@@ -17,7 +17,7 @@ typedef struct
     double output;
 } LimitContext;
 
-static double limit_eval(__U int count, Gen **args, Eval eval, void *context_)
+static double limit_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
 {
     LimitContext *context = (LimitContext *)context_;
     double tick = gen_eval(args[0], eval);

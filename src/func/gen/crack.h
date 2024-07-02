@@ -8,7 +8,7 @@
 #include "../../core/gen.h"
 #include "../../util/rand.h"
 
-static double crack_eval(__U int count, Gen **args, Eval eval, __U void *context_)
+static double crack_eval(__U int count, Gen **args, EvalContext *eval, __U void *context_)
 {
     double tick = gen_eval(args[0], eval);
     return rand_range(0, 1) < tick ? rand_range(-1, 1) : 0;

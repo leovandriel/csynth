@@ -15,7 +15,7 @@ typedef struct
     double output;
 } SquareContext;
 
-static double square_eval(__U int count, Gen **args, Eval eval, void *context_)
+static double square_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
 {
     SquareContext *context = (SquareContext *)context_;
     if (context->time >= 0.5)

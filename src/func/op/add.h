@@ -11,7 +11,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double add_eval(int count, Gen **args, Eval eval, __U void *context)
+static double add_eval(int count, Gen **args, EvalContext *eval, __U void *context)
 {
     double sum = 0;
     for (int i = 0; i < count; i++)

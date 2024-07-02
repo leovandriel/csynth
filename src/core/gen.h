@@ -129,7 +129,7 @@ Gen *gen_create(Func *func)
     return gen;
 }
 
-double gen_eval(Gen *gen, Eval eval)
+double gen_eval(Gen *gen, EvalContext *eval)
 {
     Func *func = gen->func;
     return func->eval_cb(func->count, gen->args, eval, gen->context);
@@ -163,9 +163,9 @@ void gen_reset(Gen *gen)
     }
 }
 
-Eval eval_create(double value)
+EvalContext eval_create(double value)
 {
-    Eval eval = {.wall_tick = value};
+    EvalContext eval = {.wall_tick = value};
     for (EvalTick tick = 0; tick < EvalTickLength; tick++)
     {
         eval.tick[tick] = value;

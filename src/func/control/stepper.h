@@ -24,7 +24,7 @@ typedef struct
     int active;
 } StepperContext;
 
-static double stepper_eval(__U int count, __U Gen **args, __U Eval eval, void *context_)
+static double stepper_eval(__U int count, __U Gen **args, __U EvalContext *eval, void *context_)
 {
     StepperContext *context = (StepperContext *)context_;
     return context->value;

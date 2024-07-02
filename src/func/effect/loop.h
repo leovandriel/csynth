@@ -14,7 +14,7 @@ typedef struct
     double time;
 } LoopContext;
 
-static double loop_eval(__U int count, Gen **args, Eval eval, void *context_)
+static double loop_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
 {
     LoopContext *context = (LoopContext *)context_;
     if (context->time >= 1)

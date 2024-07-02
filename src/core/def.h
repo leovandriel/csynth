@@ -34,9 +34,10 @@ typedef struct
     double wall_time;
     double wall_tick;
     double tick[EvalTickLength];
-} Eval;
+    size_t gen_count;
+} EvalContext;
 
-typedef double (*eval_callback)(int count, Gen **args, Eval eval, void *context);
+typedef double (*eval_callback)(int count, Gen **args, EvalContext *eval, void *context);
 typedef int (*init_callback)(int count, Gen **args, void *context);
 typedef void (*free_callback)(int count, void *context);
 

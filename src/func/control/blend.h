@@ -18,12 +18,14 @@ typedef struct
     double value;
 } BlendContext;
 
-static double blend_eval(__U int count, __U Gen **args, Eval eval, void *context_)
+static double blend_eval(__U int count, __U Gen **args, EvalContext *eval, void *context_)
 {
     BlendContext *context = (BlendContext *)context_;
     double factor = gen_eval(args[0], eval);
-    eval.tick[EvalTickPitch] *= pow(factor, context->value);
+    double restore = eval->tick[EvalTickPitch];
+    eval->tick[EvalTickPitch] = restore * pow(factor, context->value);
     double input = gen_eval(args[1], eval);
+    eval->tick[EvalTickPitch] = restore;
     return input;
 }
 

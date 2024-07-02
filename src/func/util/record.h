@@ -20,7 +20,7 @@ typedef struct
     int sample_rate;
 } RecordContext;
 
-static double record_eval(int count, Gen **args, Eval eval, void *context_)
+static double record_eval(int count, Gen **args, EvalContext *eval, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
     double sum = 0;

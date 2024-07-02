@@ -25,7 +25,7 @@ typedef struct
     size_t counter;
 } SeqContext;
 
-static double seq_eval_abs(int count, Gen **args, Eval eval, void *context_)
+static double seq_eval_abs(int count, Gen **args, EvalContext *eval, void *context_)
 {
     SeqContext *context = (SeqContext *)context_;
     double output = 0.0;
@@ -39,11 +39,11 @@ static double seq_eval_abs(int count, Gen **args, Eval eval, void *context_)
             break;
         }
     }
-    context->time += eval.tick[EvalTickTempo];
+    context->time += eval->tick[EvalTickTempo];
     return output;
 }
 
-static double seq_eval_rel(int count, Gen **args, Eval eval, void *context_)
+static double seq_eval_rel(int count, Gen **args, EvalContext *eval, void *context_)
 {
     SeqContext *context = (SeqContext *)context_;
     double offset = 0.0;
@@ -58,11 +58,11 @@ static double seq_eval_rel(int count, Gen **args, Eval eval, void *context_)
             break;
         }
     }
-    context->time += eval.tick[EvalTickTempo];
+    context->time += eval->tick[EvalTickTempo];
     return output;
 }
 
-static double seq_eval_seq(int count, Gen **args, Eval eval, void *context_)
+static double seq_eval_seq(int count, Gen **args, EvalContext *eval, void *context_)
 {
     SeqContext *context = (SeqContext *)context_;
     double output = gen_eval(args[context->index], eval);
@@ -82,13 +82,13 @@ static double seq_eval_seq(int count, Gen **args, Eval eval, void *context_)
     return output;
 }
 
-static double seq_eval_fix(int count, Gen **args, Eval eval, void *context_)
+static double seq_eval_fix(int count, Gen **args, EvalContext *eval, void *context_)
 {
     SeqContext *context = (SeqContext *)context_;
     double duration = gen_eval(args[0], eval);
     // TODO(leo): use context->index and track time per interval (allowing variable duration)
     int index = (int)(context->time / duration) + 1;
-    context->time += eval.tick[EvalTickTempo];
+    context->time += eval->tick[EvalTickTempo];
     return index < count ? gen_eval(args[index], eval) : 0;
 }
 

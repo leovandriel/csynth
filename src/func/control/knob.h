@@ -19,7 +19,7 @@ typedef struct
     double value;
 } KnobContext;
 
-static double knob_eval(__U int count, __U Gen **args, __U Eval eval, void *context_)
+static double knob_eval(__U int count, __U Gen **args, __U EvalContext *eval, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
     return context->value;

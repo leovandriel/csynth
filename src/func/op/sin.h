@@ -11,7 +11,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double sin_eval(__U int count, Gen **args, Eval eval, __U void *context)
+static double sin_eval(__U int count, Gen **args, EvalContext *eval, __U void *context)
 {
     double input = gen_eval(args[0], eval);
     return sin(input);

@@ -16,7 +16,7 @@ typedef struct
     int reset;
 } KeyContext;
 
-static double key_eval(__U int count, __U Gen **args, Eval eval, void *context_)
+static double key_eval(__U int count, __U Gen **args, EvalContext *eval, void *context_)
 {
     KeyContext *context = (KeyContext *)context_;
     if (context->reset != 0)
