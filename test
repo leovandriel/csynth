@@ -15,7 +15,7 @@ rm -f ./tests/.test.c
 # compile and all tests individually
 find ./tests -regex "$pattern" -print0 | while read -d $'\0' file; do
     name=$(basename "$file" .h)
-    printf "#define ALLOC_TRACE\\n#include \".$file\"\\nint main() { test_$name(); alloc_list_dump(); assert_msg(alloc_list_is_empty(),\"$file\"); return 0; }" > ./tests/.test.c
+    printf "#define ALLOC_TRACE\\n#include \".$file\"\\nint main() { $name(); alloc_list_dump(); assert_msg(alloc_list_is_empty(),\"$file\"); return 0; }" > ./tests/.test.c
     gcc ./tests/.test.c -o bin/test -Wall -Wextra -lm
     ./bin/test
     echo -n "."
@@ -24,7 +24,8 @@ done
 if [ $# -eq 0 ]; then
     # check if all source files have a corresponding test
     find ./src -type f -not -name "all.h" -print0 | while read -d $'\0' file; do
-        test="${file/src/tests}"
+        test="${file%/*}/test_${file##*/}"
+        test="${test/src/tests}"
         if [ ! -f "$test" ]; then
             printf "\r\e[KTest missing: ${test} (because ${file})\n" >&2
             exit 1
