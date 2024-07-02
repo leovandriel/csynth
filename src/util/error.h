@@ -74,7 +74,7 @@ static void error_report(csError type, const char *file, int line, const char *m
     {
         fprintf(stderr, "error: ");
         vfprintf(stderr, message, args);
-        fprintf(stderr, " (%d) at %s:%d\n", type, strrchr(file, '/') + 1, line);
+        fprintf(stderr, " (%d) at %s:%d \n", type, strrchr(file, '/') + 1, line);
     }
     va_end(args);
 }

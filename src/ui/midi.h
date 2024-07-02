@@ -10,7 +10,7 @@
 #include "../event/control_event.h"
 #include "./terminal.h"
 
-#define MIDI_EVENT_BUFFER_SIZE 128
+#define MIDI_EVENT_BUFFER_SIZE 1024
 
 typedef struct
 {
@@ -59,7 +59,15 @@ csError midi_read_broadcast(MidiContext *context)
     if (count < 0)
     {
         PmError pm_error = count;
-        return error_type_message(csErrorPortMidi, "Unable to read: %s", Pm_GetErrorText(pm_error));
+        if (pm_error == pmBufferOverflow)
+        {
+            fprintf(stderr, "MIDI buffer overflow, events were lost\n");
+            return csErrorNone;
+        }
+        else
+        {
+            return error_type_message(csErrorPortMidi, "Unable to read: %s", Pm_GetErrorText(pm_error));
+        }
     }
     for (int i = 0; i < count; i++)
     {
