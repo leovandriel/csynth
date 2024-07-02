@@ -21,6 +21,7 @@ typedef enum
 
 typedef enum
 {
+    EvalTickNone,
     EvalTickPitch,
     EvalTickTempo,
     EvalTickSustain,

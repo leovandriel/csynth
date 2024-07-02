@@ -79,6 +79,7 @@ int display_set_value(DisplayElement *list, StateEventKeyType key_type, const vo
                 element->int_value = value ? *(int *)value : 0;
                 break;
             case StateEventValueTypeDouble:
+            case StateEventValueTypeScientific:
                 element->value_type = value_type;
                 element->double_value = value ? *(double *)value : 0.;
                 break;
@@ -148,6 +149,9 @@ void display_render_element(DisplayElement *element)
         break;
     case StateEventValueTypeDouble:
         fprintf(stdout, "[%.2f] ", element->double_value);
+        break;
+    case StateEventValueTypeScientific:
+        fprintf(stdout, "[%.2e] ", element->double_value);
         break;
     }
 }

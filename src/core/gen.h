@@ -131,6 +131,7 @@ Gen *gen_create(Func *func)
 
 double gen_eval(Gen *gen, EvalContext *eval)
 {
+    eval->gen_count++;
     Func *func = gen->func;
     return func->eval_cb(func->count, gen->args, eval, gen->context);
 }

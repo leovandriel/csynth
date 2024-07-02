@@ -22,7 +22,8 @@ typedef enum
     StateEventValueTypeTrigger = 3,
     StateEventValueTypeInt = 4,
     StateEventValueTypeDouble = 5,
-    StateEventValueTypeSelected = 6,
+    StateEventValueTypeScientific = 6,
+    StateEventValueTypeSelected = 7,
 } StateEventValueType;
 
 typedef struct

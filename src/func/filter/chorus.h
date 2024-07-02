@@ -27,7 +27,7 @@ static double chorus_eval(__U int count, Gen **args, EvalContext *eval, void *co
     double delay = gen_eval(args[1], eval);
     double depth = gen_eval(args[2], eval);
     double input = gen_eval(args[3], eval);
-    size_t size = (size_t)(delay / eval.tick[EvalTickPitch]);
+    // TODO(leo): use tick
     size_t size = (size_t)(delay / eval->tick[EvalTickPitch]);
     size_t offset = (size_t)(depth / eval->tick[EvalTickPitch] * modulation + (double)size * 0.5);
     // size_t offset = (size_t)(depth / eval.tick[EvalTickPitch] * (modulation + 1) * 0.5);

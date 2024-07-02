@@ -7,6 +7,7 @@
 #include "../op/inv.h"
 #include "../time/times.h"
 #include "./dump.h"
+#include "./fps.h"
 #include "./gauge.h"
 #include "./print.h"
 #include "./record.h"
@@ -32,5 +33,10 @@ Func *log1k(Func *input) { return dump_create(1000, 1, input); }
 Func *log10sec(Func *input) { return dump_create(10, 4410, input); }
 
 Func *print(const char *text, Func *input) { return print_create(text, input); }
+Func *fps(const char *label, Func *input)
+{
+    display_label(label);
+    return fps_create(label, input);
+}
 
 #endif // CSYNTH_UTILS_H

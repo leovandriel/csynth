@@ -72,6 +72,7 @@
 #include "./time/timer.h"
 #include "./time/times.h"
 #include "./util/dump.h"
+#include "./util/fps.h"
 #include "./util/gauge.h"
 #include "./util/print.h"
 #include "./util/record.h"
