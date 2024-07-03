@@ -10,6 +10,7 @@
 #include <time.h>
 
 #include "../event/control_event.h"
+#include "./display.h"
 
 static volatile int terminal_signal = 0;
 
@@ -103,19 +104,19 @@ void terminal_loop(double duration, int exit_key)
     {
         int key = terminal_read(exit_key);
         double time = terminal_time();
+        if (key < 0)
+        {
+            break;
+        }
+        if (duration > 0 && time > start + duration)
+        {
+            break;
+        }
         if (key > 0)
         {
             control_event_broadcast_keyboard(time, key);
         }
-        else if (key < 0)
-        {
-            break;
-        }
-        double elapsed = time - start;
-        if (duration > 0 && elapsed > duration)
-        {
-            break;
-        }
+        display_render();
     }
     terminal_restore(term);
 }

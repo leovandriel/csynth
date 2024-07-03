@@ -12,10 +12,11 @@ int main()
     func reverb_time = gauge("rev-time", knob_(1, 75, 0, .5));
     func reverb_decay = gauge("rev-decay", knob_ex_(1, 76, .01, .99));
     func post_gain = gauge("gain", knob_(1, 77, 1, 10));
-    func note = unison(5, detune_knob, saw(C0));
+    func note = saw(C0);
+    note = overtone(-4, overtone_knob, note);
+    note = unison(5, detune_knob, note);
     func synth = midi_keyboard(1, key, note);
     synth = blend_(1, 1.06, synth);
-    synth = overtone(-4, overtone_knob, synth);
     synth = distortion(distortion_knob, synth);
     synth = hpf(hpf_knob, synth);
     synth = lpf(lpf_knob, synth);

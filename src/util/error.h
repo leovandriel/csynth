@@ -25,6 +25,7 @@ typedef enum
     csErrorAudio,
     csErrorMidi,
     csErrorWav,
+    csErrorDisplay,
     csErrorPortAudio,
     csErrorPortMidi,
 } csError;
@@ -59,6 +60,8 @@ const char *error_message(csError type)
         return "MIDI error";
     case csErrorWav:
         return "WAV error";
+    case csErrorDisplay:
+        return "Display error";
     case csErrorPortAudio:
         return "PortAudio error";
     case csErrorPortMidi:

@@ -27,8 +27,9 @@ typedef struct DisplayElement
     struct DisplayElement *next;
 } DisplayElement;
 
-DisplayElement *display_element_list = NULL;
-StateEventContext display_event_context = {0};
+static DisplayElement *display_element_list = NULL;
+static StateEventContext display_event_context = {0};
+static int display_needs_render = 0;
 
 void display_clear()
 {
@@ -40,7 +41,7 @@ void display_clear()
     }
 }
 
-int display_set_value(DisplayElement *list, StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value)
+static int display_set_value(DisplayElement *list, StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value)
 {
     int modified = 0;
     for (DisplayElement *element = list; element != NULL; element = element->next)
@@ -93,7 +94,7 @@ int display_set_value(DisplayElement *list, StateEventKeyType key_type, const vo
     return modified;
 }
 
-void display_render_label(DisplayElement *element)
+static void display_render_label(DisplayElement *element)
 {
     if (element->label != NULL)
     {
@@ -127,7 +128,7 @@ void display_render_label(DisplayElement *element)
     }
 }
 
-void display_render_element(DisplayElement *element)
+static void display_render_element(DisplayElement *element)
 {
     display_render_label(element);
     switch (element->value_type)
@@ -156,27 +157,38 @@ void display_render_element(DisplayElement *element)
     }
 }
 
-void display_render(DisplayElement *list)
+static void display_clear_line()
 {
-    if (list != NULL)
+    fprintf(stdout, "\r\e[K");
+}
+
+static void display_render_list(DisplayElement *list)
+{
+    if (list == NULL)
     {
-        fprintf(stdout, "\r\e[K ");
+        error_catch_message(csErrorDisplay, "Unable to render, display not shown");
     }
+    display_clear_line();
     for (DisplayElement *element = list; element != NULL; element = element->next)
     {
         display_render_element(element);
     }
-    if (list != NULL)
+}
+
+void display_render()
+{
+    if (display_needs_render)
     {
-        fprintf(stdout, "\r");
+        display_render_list(display_element_list);
+        display_needs_render = 0;
     }
 }
 
-void display_handle_event(StateEvent *event, __U void *context)
+static void display_handle_event(StateEvent *event, __U void *context)
 {
     if (display_set_value(display_element_list, event->key_type, event->key, event->value_type, event->value))
     {
-        display_render(display_element_list);
+        display_needs_render = 1;
     }
 }
 
@@ -192,7 +204,7 @@ csError display_show()
     {
         return error;
     }
-    display_render(display_element_list);
+    display_render_list(display_element_list);
     return csErrorNone;
 }
 
@@ -212,7 +224,7 @@ csError display_hide()
     return csErrorNone;
 }
 
-csError display_element(DisplayElement element_)
+static csError display_element(DisplayElement element_)
 {
     DisplayElement *element = malloc_(sizeof(DisplayElement));
     if (element == NULL)

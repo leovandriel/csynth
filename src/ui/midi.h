@@ -9,6 +9,7 @@
 
 #include "../event/control_event.h"
 #include "../util/logger.h"
+#include "./display.h"
 #include "./terminal.h"
 
 #define MIDI_EVENT_BUFFER_SIZE 1024
@@ -117,20 +118,21 @@ void midi_loop(__U double duration, int exit_key)
     while (!terminal_signaled())
     {
         int key = terminal_read(exit_key);
+        if (key < 0)
+        {
+            break;
+        }
         if (key > 0)
         {
             control_event_broadcast_keyboard(midi_time(), key);
         }
-        else if (key < 0)
-        {
-            break;
-        }
-        Pt_Sleep(1);
         error = midi_read_broadcast(&context);
         if (error != csErrorNone)
         {
             break;
         }
+        display_render();
+        Pt_Sleep(1);
     }
     terminal_restore(term);
     error = midi_terminate(&context);
