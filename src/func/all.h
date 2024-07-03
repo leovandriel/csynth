@@ -4,7 +4,7 @@
 #ifndef CSYNTH_ALL_H
 #define CSYNTH_ALL_H
 
-#include "./bank/drums.h"
+#include "./bank/banks.h"
 #include "./comp/comps.h"
 #include "./comp/pattern.h"
 #include "./comp/seq.h"

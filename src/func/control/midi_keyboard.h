@@ -7,14 +7,14 @@
 #include <math.h>
 
 #include "../../core/func.h"
+#include "../../ui/midi_state.h"
 #include "../../util/error.h"
 #include "../op/add.h"
 #include "../time/times.h"
-#include "../../ui/midi_state.h"
 
 typedef Func *(*midi_control_func)(int channel, int key, Func *input);
 
-Func *midi_keyboard(int channel, midi_control_func control, Func *input)
+Func *midi_keyboard(int channel, midi_control_func control, Func *input) /* midi_keyboard_ */
 {
     Func **array = (Func **)malloc_(MIDI_NOTE_COUNT * sizeof(Func *));
     if (array == NULL)

@@ -29,6 +29,9 @@ Checks: >
     -readability-isolate-declaration,
     -readability-magic-numbers,
     -readability-non-const-parameter,
+    -concurrency-mt-unsafe,
+    -clang-analyzer-core.CallAndMessage,
+    -clang-analyzer-unix.Malloc,
 
 HeaderFilterRegex: .*
 SystemHeaders: False

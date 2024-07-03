@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/beep -Wall -Wextra -O3 -lm && ./bin/beep "$@"; exit $?
+//usr/bin/gcc "$0" -o bin/beep_wav -Wall -Wextra -O3 -lm && ./bin/beep_wav "$@"; exit $?
 #include "../../src/func/all.h"
 #include "../../src/io/writer.h"
 

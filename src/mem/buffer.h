@@ -9,7 +9,6 @@
 
 #include "../mem/alloc.h"
 #include "../util/error.h"
-#include "../util/rand.h"
 
 typedef struct
 {
@@ -157,21 +156,6 @@ size_t buffer_resize(Buffer *buffer, size_t size, size_t index, double (*fill)(s
 void buffer_free(Buffer *buffer)
 {
     free_(buffer->samples);
-}
-
-double fill_rand_0_1(__attribute__((unused)) size_t index)
-{
-    return rand_range(0, 1);
-}
-
-double fill_rand_1_1(__attribute__((unused)) size_t index)
-{
-    return rand_range(-1, 1);
-}
-
-double fill_inc(size_t index)
-{
-    return (double)index;
 }
 
 #endif // CSYNTH_BUFFER_H

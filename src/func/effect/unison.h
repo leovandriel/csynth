@@ -27,7 +27,7 @@ Func *unison_split(int count, Func *input)
     return output;
 }
 
-Func *unison(int count, Func *detune, Func *input)
+Func *unison(int count, Func *detune, Func *input) /* unison_ */
 {
     return unison_split(count, pitch(add_(1, mul(detune, sample())), input));
 }

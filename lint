@@ -23,10 +23,19 @@ find ./src -name "*.h" -type f -print0 | while read -d $'\0' file; do
     filename=$(basename "$file")
     name="${filename%.*}"
     upper=$(echo "$name" | tr '[:lower:]' '[:upper:]')
-    found=$(grep "CSYNTH_${upper}_H" "$file" | tee)
-    if [[ ! "$found" ]]; then
+    found_guard=$(grep "CSYNTH_${upper}_H" "$file" | tee)
+    if [[ ! "$found_guard" ]]; then
         printf "\r\e[KInvalid include guard: $file\n" >&2
         exit 1
+    fi
+    folder=$(dirname "$file")
+    parent=$(basename "$folder")
+    if [[ "${parent}s" != "$name" ]] && [[ "$filename" != "notes.h" ]] && [[ "$filename" != "envelopes.h" ]]; then
+        found_prefix=$(grep "^[^ {}#/]" "$file" | grep -v "\([ *]${name}_\|[ *]${upper}_\|typedef\|struct\)" | tee)
+        if [[ "$found_prefix" ]]; then
+            printf "\r\e[KInvalid declaration: $file\n$found_prefix\n" >&2
+            exit 1
+        fi
     fi
 done
 

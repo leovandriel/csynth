@@ -56,7 +56,7 @@ void state_event_broadcast(double time, StateEventKeyType key_type, const void *
     event_broadcast(EventTypeState, &event);
 }
 
-void state_handle_event_(EventType type, const void *event_, void *context_)
+void state_event_handle_event(EventType type, const void *event_, void *context_)
 {
     StateEventContext *context = (StateEventContext *)context_;
     if (type == EventTypeState)
@@ -68,7 +68,7 @@ void state_handle_event_(EventType type, const void *event_, void *context_)
 
 csError state_event_add(StateEventContext *context)
 {
-    const void *handler = event_add_handler(state_handle_event_, context);
+    const void *handler = event_add_handler(state_event_handle_event, context);
     if (handler == NULL)
     {
         return error_type_message(csErrorInit, "Unable to add state event handler");

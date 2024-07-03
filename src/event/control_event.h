@@ -128,7 +128,7 @@ void control_event_broadcast_midi(double time, MidiType type, uint8_t channel, u
     event_broadcast(EventTypeControl, &event);
 }
 
-void control_handle_event_(EventType type, const void *event_, void *context_)
+void control_event_handle_event(EventType type, const void *event_, void *context_)
 {
     ControlEventContext *context = (ControlEventContext *)context_;
     if (type == EventTypeControl)
@@ -140,7 +140,7 @@ void control_handle_event_(EventType type, const void *event_, void *context_)
 
 csError control_event_add(ControlEventContext *context)
 {
-    const void *handler = event_add_handler(control_handle_event_, context);
+    const void *handler = event_add_handler(control_event_handle_event, context);
     if (handler == NULL)
     {
         return error_type_message(csErrorInit, "Unable to add control event handler");

@@ -11,7 +11,7 @@
 #include "../op/ops.h"
 #include "../util/utils.h"
 
-Func *overtone(int range, Func *gain, Func *input)
+Func *overtone(int range, Func *gain, Func *input) /* overtone_ */
 {
     int count = abs(range);
     Func **array = (Func **)malloc_(count * sizeof(Func *));

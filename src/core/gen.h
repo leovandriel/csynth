@@ -9,6 +9,7 @@
 #include "../mem/alloc.h"
 #include "../util/error.h"
 #include "./def.h"
+#include "./eval.h"
 
 void gen_free(Gen *gen)
 {
@@ -162,16 +163,6 @@ void gen_reset(Gen *gen)
             memset(gen->context, 0, func->size);
         }
     }
-}
-
-EvalContext eval_create(double value)
-{
-    EvalContext eval = {.wall_tick = value};
-    for (EvalTick tick = 0; tick < EvalTickLength; tick++)
-    {
-        eval.tick[tick] = value;
-    }
-    return eval;
 }
 
 #endif // CSYNTH_GEN_H

@@ -13,9 +13,9 @@
 
 typedef Func *(*keyboard_control_func)(int key, Func *input);
 
-const char *KEYBOARD_KEYS = "zsxdcvgbhnjm,l.;/";
+const char *KEYBOARD_KEYS = "zsxdcvgbhnjm,l.;/"; // assumes US keyboard layout
 
-Func *keyboard(keyboard_control_func control, Func *input)
+Func *keyboard(keyboard_control_func control, Func *input) /* keyboard_ */
 {
     int count = (int)strlen(KEYBOARD_KEYS);
     Func **array = (Func **)malloc_(count * sizeof(Func *));

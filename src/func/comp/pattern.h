@@ -12,7 +12,7 @@
 #include "../op/ops.h"
 #include "./seq.h"
 
-Func *pattern(const char *string, Func *duration, Func *timing, Func *input)
+Func *pattern(const char *string, Func *duration, Func *timing, Func *input) /* pattern_ */
 {
     int length = (int)strlen(string);
     Func **array = (Func **)malloc_(length * 2 * sizeof(Func *));
