@@ -36,6 +36,7 @@ typedef struct
     double wall_tick;
     double tick[EvalTickLength];
     size_t gen_count;
+    size_t error_count;
 } Eval;
 
 typedef double (*eval_callback)(int count, Gen **args, Eval *eval, void *context);

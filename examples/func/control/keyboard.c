@@ -4,7 +4,7 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
-    return play(note);
+    func tone = decay_(.3, sine(C4));
+    func synth = keyboard(trigger, tone);
+    return play(synth);
 }

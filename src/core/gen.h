@@ -4,6 +4,7 @@
 #ifndef CSYNTH_GEN_H
 #define CSYNTH_GEN_H
 
+#include <math.h>
 #include <string.h>
 
 #include "../mem/alloc.h"
@@ -134,7 +135,12 @@ double gen_eval(Gen *gen, Eval *eval)
 {
     eval->gen_count++;
     Func *func = gen->func;
-    return func->eval_cb(func->count, gen->args, eval, gen->context);
+    double output = func->eval_cb(func->count, gen->args, eval, gen->context);
+    if (!isfinite(output) && eval->error_count++ < 10)
+    {
+        error_catch_message(csErrorFiniteValue, "Function output not finite: %f", output);
+    }
+    return output;
 }
 
 void gen_reset(Gen *gen)

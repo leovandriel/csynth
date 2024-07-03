@@ -13,8 +13,9 @@
 typedef enum
 {
     csErrorNone = 0,
-    csErrorSome = -32768,
+    csErrorSome,
     csErrorMemoryAlloc,
+    csErrorFiniteValue,
     csErrorFileOpen,
     csErrorFileClose,
     csErrorFileRead,
@@ -28,6 +29,7 @@ typedef enum
     csErrorDisplay,
     csErrorPortAudio,
     csErrorPortMidi,
+    csErrorLength,
 } csError;
 
 const char *error_message(csError type)
@@ -40,6 +42,8 @@ const char *error_message(csError type)
         return "some error";
     case csErrorMemoryAlloc:
         return "unable to allocate memory";
+    case csErrorFiniteValue:
+        return "value is not a finite";
     case csErrorFileOpen:
         return "unable to open file";
     case csErrorFileClose:

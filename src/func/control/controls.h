@@ -15,7 +15,9 @@
 #include "./actuate.h"
 #include "./bend.h"
 #include "./key.h"
+#include "./keyboard.h"
 #include "./knob.h"
+#include "./midi_keyboard.h"
 #include "./mute.h"
 #include "./pad.h"
 #include "./pause.h"
@@ -26,6 +28,8 @@
 #include "./trigger.h"
 
 #define DEFAULT_REC_FILENAME "output/default.rec"
+#define MIDI_KEYBOARD_NOTE_COUNT 10
+#define KEYBOARD_SEMITONES 12
 
 Func *trigger(int key, Func *input) { return trigger_create(key, input); }
 
@@ -59,5 +63,8 @@ Func *key(int channel, int pitch, Func *input) { return key_create(channel, pitc
 Func *pad(int channel, int pad, Func *input) { return pad_create(channel, pad, input); }
 Func *bend(int channel, Func *factor, Func *input) { return bend_create(channel, factor, input); }
 Func *bend_(int channel, double factor, Func *input) { return bend(channel, const_(factor), input); }
+
+Func *keyboard(keyboard_control_func control, Func *input) { return keyboard_create(KEYBOARD_SEMITONES, control, input); }
+Func *midi_keyboard(int channel, Func *input) { return midi_keyboard_count(channel, KEYBOARD_SEMITONES, MIDI_KEYBOARD_NOTE_COUNT, input); }
 
 #endif // CSYNTH_CONTROLS_H

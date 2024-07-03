@@ -15,7 +15,7 @@ typedef Func *(*keyboard_control_func)(int key, Func *input);
 
 const char *KEYBOARD_KEYS = "zsxdcvgbhnjm,l.;/"; // assumes US keyboard layout
 
-Func *keyboard(keyboard_control_func control, Func *input) /* keyboard_ */
+Func *keyboard_create(int semitones, keyboard_control_func control, Func *input)
 {
     int count = (int)strlen(KEYBOARD_KEYS);
     Func **array = (Func **)malloc_(count * sizeof(Func *));
@@ -26,7 +26,7 @@ Func *keyboard(keyboard_control_func control, Func *input) /* keyboard_ */
     for (int i = 0; i < count; i++)
     {
         char key = KEYBOARD_KEYS[i];
-        Func *pitched = pitch_(exp2(i / 12.0), input);
+        Func *pitched = pitch_(exp2(i / (double)semitones), input);
         array[i] = control(key, pitched);
     }
     Func *output = add_create(count, array);

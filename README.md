@@ -293,21 +293,21 @@ A basic example of this is a MIDI keyboard based on the sawtooth function:
 
 ```c
     func tone = saw(C0);
-    func synth = midi_keyboard(1, key, tone);
+    func synth = midi_keyboard(1, tone);
     return play_midi(synth);
 ```
 
-Here, `play_midi` will connect to the default MIDI device, listen for MIDI
-events on channel `1`. A sawtooth tone is played using the
-[key](./src/func/control/key.h) function, which triggers on `NoteOn` and
-`NoteOff` events. Make sure to include [midi_player.h](./src/io/midi_player.h).
+Here, `play_midi` connects to the default MIDI device and
+[midi_keyboard](./src/func/control/midi_keyboard.h) listens for MIDI events on
+channel `1`. Be sure to include [midi_player.h](./src/io/midi_player.h) and link
+with `portmidi`.
 
 To make the sound more interesting, let's add a
 [unison](./src/func/effect/unison.h) effect, using 5 voices and 1% detune:
 
 ```c
     func tone = unison_(5, .01, saw(C0));
-    func synth = midi_keyboard(1, key, tone);
+    func synth = midi_keyboard(1, tone);
     return play_midi(synth);
 ```
 
@@ -317,7 +317,7 @@ add a controlled unison effect:
 ```c
     func detune = knob_(1, 70, 0, .02);
     func tone = unison(5, detune, saw(C0));
-    func synth = midi_keyboard(1, key, tone);
+    func synth = midi_keyboard(1, tone);
     return play_midi(synth);
 ```
 

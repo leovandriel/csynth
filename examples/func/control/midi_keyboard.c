@@ -5,6 +5,6 @@
 int main()
 {
     func tone = sine(C0);
-    func synth = midi_keyboard(1, key, tone);
+    func synth = midi_keyboard(1, tone);
     return play_midi(synth);
 }

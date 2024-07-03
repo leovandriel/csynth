@@ -15,7 +15,7 @@ int main()
     func note = saw(C0);
     note = unison(5, detune_knob, note);
     note = overtone(-4, overtone_knob, note);
-    func synth = midi_keyboard(1, key, note);
+    func synth = midi_keyboard(1, note);
     synth = bend_(1, 1.06, synth);
     synth = distortion(distortion_knob, synth);
     synth = hpf(hpf_knob, synth);
