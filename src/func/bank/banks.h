@@ -1,8 +1,8 @@
 //
-// drums.h - Drumss
+// banks.h - Instrument bank
 //
-#ifndef CSYNTH_DRUMS_H
-#define CSYNTH_DRUMS_H
+#ifndef CSYNTH_BANKS_H
+#define CSYNTH_BANKS_H
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
@@ -27,4 +27,4 @@ Func *snare()
     return decay_(0.05, dvd_(uniform(), 4));
 }
 
-#endif // CSYNTH_DRUMS_H
+#endif // CSYNTH_BANKS_H
