@@ -27,17 +27,22 @@ typedef struct DisplayElement
     struct DisplayElement *next;
 } DisplayElement;
 
-static DisplayElement *display_element_list = NULL;
-static StateEventContext display_event_context = {0};
-static int display_needs_render = 0;
+typedef struct
+{
+    DisplayElement *element_list;
+    StateEventContext event_context;
+    int needs_render;
+} DisplayGlobal;
+
+static DisplayGlobal display_global = {0};
 
 void display_clear()
 {
-    while (display_element_list != NULL)
+    while (display_global.element_list != NULL)
     {
-        DisplayElement *next = display_element_list->next;
-        free_(display_element_list);
-        display_element_list = next;
+        DisplayElement *next = display_global.element_list->next;
+        free_(display_global.element_list);
+        display_global.element_list = next;
     }
 }
 
@@ -177,49 +182,49 @@ static void display_render_list(DisplayElement *list)
 
 void display_render()
 {
-    if (display_needs_render)
+    if (display_global.needs_render)
     {
-        display_render_list(display_element_list);
-        display_needs_render = 0;
+        display_render_list(display_global.element_list);
+        display_global.needs_render = 0;
     }
 }
 
 static void display_handle_event(StateEvent *event, __U void *context)
 {
-    if (display_set_value(display_element_list, event->key_type, event->key, event->value_type, event->value))
+    if (display_set_value(display_global.element_list, event->key_type, event->key, event->value_type, event->value))
     {
-        display_needs_render = 1;
+        display_global.needs_render = 1;
     }
 }
 
 csError display_show()
 {
-    if (display_event_context.handle_event != NULL)
+    if (display_global.event_context.handle_event != NULL)
     {
         return error_type_message(csErrorInit, "Display already shown");
     }
-    display_event_context.handle_event = display_handle_event;
-    csError error = state_event_add(&display_event_context);
+    display_global.event_context.handle_event = display_handle_event;
+    csError error = state_event_add(&display_global.event_context);
     if (error != csErrorNone)
     {
         return error;
     }
-    display_render_list(display_element_list);
+    display_render_list(display_global.element_list);
     return csErrorNone;
 }
 
 csError display_hide()
 {
-    if (display_event_context.handle_event == NULL)
+    if (display_global.event_context.handle_event == NULL)
     {
         return error_type_message(csErrorInit, "Display not shown");
     }
-    csError error = state_event_remove(&display_event_context);
+    csError error = state_event_remove(&display_global.event_context);
     if (error != csErrorNone)
     {
         return error;
     }
-    display_event_context.handle_event = NULL;
+    display_global.event_context.handle_event = NULL;
     fprintf(stdout, "\r\e[K");
     return csErrorNone;
 }
@@ -232,8 +237,8 @@ static csError display_element(DisplayElement element_)
         return error_type(csErrorMemoryAlloc);
     }
     *element = element_;
-    element->next = display_element_list;
-    display_element_list = element;
+    element->next = display_global.element_list;
+    display_global.element_list = element;
     return csErrorNone;
 }
 

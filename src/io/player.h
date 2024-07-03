@@ -160,26 +160,26 @@ csError player_play_with_cleanup(PlayerConfig config, int count, Func **channels
     return error;
 }
 
-const PlayerConfig player_config_terminal = {
+const PlayerConfig PLAYER_CONFIG_TERMINAL = {
     .loop = terminal_loop,
     .duration = 0,
     .sample_rate = SAMPLE_RATE,
     .exit_key = EXIT_KEY,
 };
-const PlayerConfig player_config_no_terminal = {
+const PlayerConfig PLAYER_CONFIG_NO_TERMINAL = {
     .loop = player_event_loop_no_terminal,
     .duration = 0,
     .sample_rate = SAMPLE_RATE,
     .exit_key = EXIT_KEY,
 };
 
-int play_channels(int count, Func **channels) { return player_play_with_cleanup(player_config_terminal, count, channels); }
+int play_channels(int count, Func **channels) { return player_play_with_cleanup(PLAYER_CONFIG_TERMINAL, count, channels); }
 int play(Func *input) { return play_channels(FUNCS(input)); }
 int play_stereo(Func *left, Func *right) { return play_channels(FUNCS(left, right)); }
 
 int play_channels_duration(double duration, int count, Func **channels)
 {
-    PlayerConfig config = player_config_no_terminal;
+    PlayerConfig config = PLAYER_CONFIG_NO_TERMINAL;
     config.duration = duration;
     return player_play_with_cleanup(config, count, channels);
 }

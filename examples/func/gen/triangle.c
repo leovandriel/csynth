@@ -6,6 +6,6 @@ int main()
 {
     // triangle wave keyboard
     func fun = keyboard(unmute, mul_(.5, triangle(C4)));
-    log_info("keyboard keys: %s", keyboard_keys);
+    log_info("keyboard keys: %s", KEYBOARD_KEYS);
     return play(fun);
 }

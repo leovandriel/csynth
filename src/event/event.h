@@ -26,7 +26,7 @@ typedef struct EventHandler
     struct EventHandler *next;
 } EventHandler;
 
-EventHandler *event_handler_list = NULL;
+static EventHandler *event_list_global = NULL;
 
 const void *event_add_handler(event_handle_event handle_event, void *context)
 {
@@ -38,16 +38,16 @@ const void *event_add_handler(event_handle_event handle_event, void *context)
     *handler = (EventHandler){
         .handle_event = handle_event,
         .context = context,
-        .next = event_handler_list,
+        .next = event_list_global,
     };
-    event_handler_list = handler;
+    event_list_global = handler;
     return handler;
 }
 
 csError event_remove_handler(const void *handler_)
 {
-    EventHandler **prev = &event_handler_list;
-    for (EventHandler *handler = event_handler_list; handler; handler = handler->next)
+    EventHandler **prev = &event_list_global;
+    for (EventHandler *handler = event_list_global; handler; handler = handler->next)
     {
         if (handler == handler_)
         {
@@ -62,17 +62,17 @@ csError event_remove_handler(const void *handler_)
 
 void event_clear()
 {
-    while (event_handler_list)
+    while (event_list_global)
     {
-        EventHandler *next = event_handler_list->next;
-        free_(event_handler_list);
-        event_handler_list = next;
+        EventHandler *next = event_list_global->next;
+        free_(event_list_global);
+        event_list_global = next;
     }
 }
 
 void event_broadcast(EventType type, const void *event)
 {
-    for (EventHandler *handler = event_handler_list; handler; handler = handler->next)
+    for (EventHandler *handler = event_list_global; handler; handler = handler->next)
     {
         handler->handle_event(type, event, handler->context);
     }

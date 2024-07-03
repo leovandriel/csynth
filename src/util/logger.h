@@ -18,7 +18,7 @@ typedef enum
     LoggerLevelDebug = 4,
 } LoggerLevel;
 
-static const char *logger_level_strings[] = {
+static const char *LOGGER_LEVEL_STRINGS[] = {
     "NONE",
     "ERROR",
     "WARN",
@@ -26,11 +26,11 @@ static const char *logger_level_strings[] = {
     "DEBUG",
 };
 
-static volatile int logger_level = LoggerLevelInfo;
+static volatile int logger_level_global = LoggerLevelInfo;
 
 void logger_set_level(LoggerLevel level)
 {
-    logger_level = level;
+    logger_level_global = level;
 }
 
 int logger_log(LoggerLevel level, const char *file, int line, const char *message, ...)
@@ -41,16 +41,16 @@ int logger_log(LoggerLevel level, const char *file, int line, const char *messag
     timespec_get(&spec, TIME_UTC);
     char buffer[20];
     strftime(buffer, 20, "%Y-%m-%d %H:%M:%S", localtime(&spec.tv_sec));
-    fprintf(stderr, "\r\e[K%s.%06ld %s %s:%d - ", buffer, spec.tv_nsec / 1000, logger_level_strings[level], strrchr(file, '/') + 1, line);
+    fprintf(stderr, "\r\e[K%s.%06ld %s %s:%d - ", buffer, spec.tv_nsec / 1000, LOGGER_LEVEL_STRINGS[level], strrchr(file, '/') + 1, line);
     int result = vfprintf(stderr, message, args);
     fprintf(stderr, "\n");
     va_end(args);
     return result;
 }
 
-#define log_error(...) (logger_level >= LoggerLevelError && logger_log(LoggerLevelError, "/"__FILE__, __LINE__, __VA_ARGS__))
-#define log_warn(...) (logger_level >= LoggerLevelWarn && logger_log(LoggerLevelWarn, "/"__FILE__, __LINE__, __VA_ARGS__))
-#define log_info(...) (logger_level >= LoggerLevelInfo && logger_log(LoggerLevelInfo, "/"__FILE__, __LINE__, __VA_ARGS__))
-#define log_debug(...) (logger_level >= LoggerLevelDebug && logger_log(LoggerLevelDebug, "/"__FILE__, __LINE__, __VA_ARGS__))
+#define log_error(...) (logger_level_global >= LoggerLevelError && logger_log(LoggerLevelError, "/"__FILE__, __LINE__, __VA_ARGS__))
+#define log_warn(...) (logger_level_global >= LoggerLevelWarn && logger_log(LoggerLevelWarn, "/"__FILE__, __LINE__, __VA_ARGS__))
+#define log_info(...) (logger_level_global >= LoggerLevelInfo && logger_log(LoggerLevelInfo, "/"__FILE__, __LINE__, __VA_ARGS__))
+#define log_debug(...) (logger_level_global >= LoggerLevelDebug && logger_log(LoggerLevelDebug, "/"__FILE__, __LINE__, __VA_ARGS__))
 
 #endif // CSYNTH_LOGGER_H

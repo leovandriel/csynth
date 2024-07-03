@@ -6,6 +6,6 @@ int main()
 {
     // square wave keyboard
     func fun = keyboard(unmute, mul_(.2, square(C4)));
-    log_info("keyboard keys: %s", keyboard_keys);
+    log_info("keyboard keys: %s", KEYBOARD_KEYS);
     return play(fun);
 }

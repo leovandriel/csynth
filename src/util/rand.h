@@ -10,7 +10,7 @@
 
 #define RAND_STATE_INIT 1082269761
 
-static size_t rand_state_int = RAND_STATE_INIT;
+static size_t rand_state_global = RAND_STATE_INIT;
 
 static size_t rand_next(size_t reg)
 {
@@ -22,8 +22,8 @@ static size_t rand_next(size_t reg)
 
 size_t rand_unsigned_long()
 {
-    rand_state_int = rand_next(rand_state_int);
-    return rand_state_int;
+    rand_state_global = rand_next(rand_state_global);
+    return rand_state_global;
 }
 
 double rand_uniform()
@@ -43,7 +43,7 @@ double rand_gauss(double muu, double sigma)
 
 void rand_seed(size_t seed)
 {
-    rand_state_int = seed + RAND_STATE_INIT;
+    rand_state_global = seed + RAND_STATE_INIT;
 }
 
 #endif // CSYNTH_RAND_H

@@ -5,14 +5,14 @@
 #include <math.h>
 #include <stdio.h>
 
-static const char *note_names[] = {"C", "Cs", "Db", "D", "Ds", "Eb", "E", "F", "Fs", "Gb", "G", "Gs", "Ab", "A", "As", "Bb", "B"};
+static const char *NOTE_NAMES[] = {"C", "Cs", "Db", "D", "Ds", "Eb", "E", "F", "Fs", "Gb", "G", "Gs", "Ab", "A", "As", "Bb", "B"};
 
 int main()
 {
     int octaves = 10;
     for (int i = 0; i < 17 * octaves; i++)
     {
-        const char *note = note_names[i % 17];
+        const char *note = NOTE_NAMES[i % 17];
         int octave = i / 17;
         int index = (int)((i + 4) * 12.0 / 17 - 59.45);
         double freq = 440 * pow(2, index / 12.0);
@@ -21,7 +21,7 @@ int main()
     }
     for (int i = 0; i < 17 * octaves; i++)
     {
-        const char *note = note_names[i % 17];
+        const char *note = NOTE_NAMES[i % 17];
         int octave = i / 17;
         fprintf(stdout, "#define %s%d (const_(%s%d_))\n", note, octave, note, octave);
     }

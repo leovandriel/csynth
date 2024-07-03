@@ -6,6 +6,6 @@ int main()
 {
     // play meow keyboard
     func note = keyboard(trigger, wav("examples/meow.wav"));
-    log_info("keyboard keys: %s", keyboard_keys);
+    log_info("keyboard keys: %s", KEYBOARD_KEYS);
     return play(note);
 }

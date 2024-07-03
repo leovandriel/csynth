@@ -66,10 +66,7 @@ csError midi_read_broadcast(MidiContext *context)
             log_error("MIDI buffer overflow, events were lost");
             return csErrorNone;
         }
-        else
-        {
-            return error_type_message(csErrorPortMidi, "Unable to read: %s", Pm_GetErrorText(pm_error));
-        }
+        return error_type_message(csErrorPortMidi, "Unable to read: %s", Pm_GetErrorText(pm_error));
     }
     for (int i = 0; i < count; i++)
     {

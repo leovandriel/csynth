@@ -2,14 +2,14 @@
 #include "../../../src/func/util/fps.h"
 #include "../../util/test.h"
 
-static int handled = 0;
+static int test_fps_flag_global = 0;
 
 void handle(StateEvent *event, __U void *context)
 {
     assert_long_equal(event->key_type, StateEventKeyTypeLabel);
     assert_long_equal(event->value_type, StateEventValueTypeDouble);
     assert_double_equal(*(double *)event->value, 1.0);
-    handled++;
+    test_fps_flag_global++;
 }
 
 void test_fps()
@@ -24,7 +24,7 @@ void test_fps()
     EvalContext eval = eval_create(0.1);
     gen_eval(gen, &eval);
     gen_eval(gen, &eval);
-    assert_long_equal(handled, 1);
+    assert_long_equal(test_fps_flag_global, 1);
     gen_free(gen);
     func_free();
     event_clear();

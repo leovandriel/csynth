@@ -27,7 +27,7 @@ static double fps_eval(__U int count, Gen **args, EvalContext *eval, void *conte
     size_t diff = eval->gen_count - gen_count;
     if (context->time >= 1.0)
     {
-        double fps = (double)context->gen_count / context->sample_count;
+        double fps = (double)context->gen_count / (double)context->sample_count;
         state_event_broadcast(eval->wall_time, StateEventKeyTypeLabel, context->label, StateEventValueTypeDouble, &fps);
         context->time = 0;
         context->gen_count = 0;

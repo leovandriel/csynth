@@ -20,7 +20,7 @@
 static const double FUNC_EPSILON = DBL_EPSILON * 2;
 static const double FUNC_AUDIBLE = 1e-3;
 
-Func *func_list = NULL;
+static Func *func_list_global = NULL;
 
 /**
  * Create a function with a variable number of arguments.
@@ -113,18 +113,18 @@ Func *func_create(init_callback init_cb, eval_callback eval_cb, free_callback fr
         .eval_cb = eval_cb,
         .free_cb = free_cb,
         .flags = flags,
-        .next = func_list,
+        .next = func_list_global,
     };
-    func_list = func;
+    func_list_global = func;
     return func;
 }
 
 void func_free()
 {
-    while (func_list != NULL)
+    while (func_list_global != NULL)
     {
-        Func *func = func_list;
-        func_list = func->next;
+        Func *func = func_list_global;
+        func_list_global = func->next;
         if (func->args != NULL)
         {
             free_(func->args);

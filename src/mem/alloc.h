@@ -24,7 +24,7 @@ typedef struct Alloc
     struct Alloc *next;
 } Alloc;
 
-Alloc *alloc_list = NULL;
+static Alloc *alloc_list_global = NULL;
 
 int alloc_list_add(const void *ptr, size_t size, const char *line)
 {
@@ -36,15 +36,15 @@ int alloc_list_add(const void *ptr, size_t size, const char *line)
     alloc->ptr = ptr;
     alloc->size = size;
     alloc->line = line;
-    alloc->next = alloc_list;
-    alloc_list = alloc;
+    alloc->next = alloc_list_global;
+    alloc_list_global = alloc;
     return 0;
 }
 
 int alloc_list_remove(const void *ptr)
 {
-    Alloc **prev = &alloc_list;
-    for (Alloc *alloc = alloc_list; alloc; alloc = alloc->next)
+    Alloc **prev = &alloc_list_global;
+    for (Alloc *alloc = alloc_list_global; alloc; alloc = alloc->next)
     {
         if (alloc->ptr == ptr)
         {
@@ -59,7 +59,7 @@ int alloc_list_remove(const void *ptr)
 
 Alloc *alloc_list_find(const void *ptr)
 {
-    for (Alloc *alloc = alloc_list; alloc; alloc = alloc->next)
+    for (Alloc *alloc = alloc_list_global; alloc; alloc = alloc->next)
     {
         if (alloc->ptr == ptr)
         {
@@ -72,7 +72,7 @@ Alloc *alloc_list_find(const void *ptr)
 size_t alloc_list_count()
 {
     size_t count = 0;
-    for (Alloc *alloc = alloc_list; alloc; alloc = alloc->next)
+    for (Alloc *alloc = alloc_list_global; alloc; alloc = alloc->next)
     {
         count++;
     }
@@ -81,22 +81,22 @@ size_t alloc_list_count()
 
 int alloc_list_is_empty()
 {
-    return alloc_list == NULL;
+    return alloc_list_global == NULL;
 }
 
 void alloc_list_clear()
 {
-    while (alloc_list)
+    while (alloc_list_global)
     {
-        Alloc *next = alloc_list->next;
-        free(alloc_list);
-        alloc_list = next;
+        Alloc *next = alloc_list_global->next;
+        free(alloc_list_global);
+        alloc_list_global = next;
     }
 }
 
 void alloc_list_dump()
 {
-    for (Alloc *alloc = alloc_list; alloc; alloc = alloc->next)
+    for (Alloc *alloc = alloc_list_global; alloc; alloc = alloc->next)
     {
         fprintf(stderr, "allocated: %zu bytes, at %s\n", alloc->size, alloc->line);
     }

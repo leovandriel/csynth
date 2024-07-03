@@ -2,11 +2,9 @@
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
 
-static float deg2rad = M_PI / 180;
-
 func ear(func angle)
 {
-    return mul_(.3, add_(1.1, sin_op(mul_(deg2rad, angle))));
+    return mul_(.3, add_(1.1, sin_op(mul_(M_PI / 180, angle))));
 }
 
 int main()

@@ -13,11 +13,11 @@
 
 typedef Func *(*keyboard_control_func)(int key, Func *input);
 
-const char *keyboard_keys = "zsxdcvgbhnjm,l.;/";
+const char *KEYBOARD_KEYS = "zsxdcvgbhnjm,l.;/";
 
 Func *keyboard(keyboard_control_func control, Func *input)
 {
-    int count = (int)strlen(keyboard_keys);
+    int count = (int)strlen(KEYBOARD_KEYS);
     Func **array = (Func **)malloc_(count * sizeof(Func *));
     if (array == NULL)
     {
@@ -25,7 +25,7 @@ Func *keyboard(keyboard_control_func control, Func *input)
     }
     for (int i = 0; i < count; i++)
     {
-        char key = keyboard_keys[i];
+        char key = KEYBOARD_KEYS[i];
         Func *pitched = pitch_(exp2(i / 12.0), input);
         array[i] = control(key, pitched);
     }
