@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/blend -Wall -Wextra -O3 -lm -lportaudio -lportmidi && ./bin/blend "$@"; exit $?
+//usr/bin/gcc "$0" -o bin/bend -Wall -Wextra -O3 -lm -lportaudio -lportmidi && ./bin/bend "$@"; exit $?
 #include "../../../src/func/all.h"
 #include "../../../src/io/midi_player.h"
 

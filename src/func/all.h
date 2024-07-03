@@ -9,7 +9,7 @@
 #include "./comp/pattern.h"
 #include "./comp/seq.h"
 #include "./control/actuate.h"
-#include "./control/blend.h"
+#include "./control/bend.h"
 #include "./control/controls.h"
 #include "./control/key.h"
 #include "./control/keyboard.h"

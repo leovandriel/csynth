@@ -14,8 +14,8 @@ typedef enum
 {
     MidiTypeNoteOff = 0x8,
     MidiTypeNoteOn = 0x9,
-    MidiTypePolyphonic = 0xA,
-    MidiTypeControlChange = 0xB,
+    MidiTypePolyphonicPressure = 0xA,
+    MidiTypeController = 0xB,
     MidiTypeProgramChange = 0xC,
     MidiTypeChannelPressure = 0xD,
     MidiTypePitchBend = 0xE,
@@ -68,8 +68,8 @@ int control_event_midi_equal(MidiKey key_a, MidiKey key_b)
     case MidiTypeNoteOff:
     case MidiTypeNoteOn:
         return (key_b.type == MidiTypeNoteOn || key_b.type == MidiTypeNoteOff) && key_a.channel == key_b.channel && key_a.data1 == key_b.data1;
-    case MidiTypePolyphonic:
-    case MidiTypeControlChange:
+    case MidiTypePolyphonicPressure:
+    case MidiTypeController:
     case MidiTypeProgramChange:
         return key_a.type == key_b.type && key_a.channel == key_b.channel && key_a.data1 == key_b.data1;
     case MidiTypeChannelPressure:

@@ -10,9 +10,12 @@
 #include "../event/control_event.h"
 #include "../util/logger.h"
 #include "./display.h"
+#include "./midi_state.h"
 #include "./terminal.h"
 
 #define MIDI_EVENT_BUFFER_SIZE 1024
+#define MIDI_CHANNEL_COUNT 16
+#define MIDI_NOTE_COUNT 128
 
 typedef struct
 {
@@ -77,6 +80,7 @@ csError midi_read_broadcast(MidiContext *context)
         uint8_t data1 = Pm_MessageData1(buffer[i].message);
         uint8_t data2 = Pm_MessageData2(buffer[i].message);
         control_event_broadcast_midi(time, type, channel, data1, data2);
+        midi_state_set(type, channel, data1, data2);
     }
     return csErrorNone;
 }

@@ -16,7 +16,7 @@ int main()
     note = overtone(-4, overtone_knob, note);
     note = unison(5, detune_knob, note);
     func synth = midi_keyboard(1, key, note);
-    synth = blend_(1, 1.06, synth);
+    synth = bend_(1, 1.06, synth);
     synth = distortion(distortion_knob, synth);
     synth = hpf(hpf_knob, synth);
     synth = lpf(lpf_knob, synth);

@@ -100,7 +100,7 @@ Func *looper_midi_create(int channel, int control, Func *tick, Func *input)
         .key = {
             .type = ControlEventTypeMidi,
             .midi = {
-                .type = MidiTypeControlChange,
+                .type = MidiTypeController,
                 .channel = channel - 1,
                 .data1 = control,
             },

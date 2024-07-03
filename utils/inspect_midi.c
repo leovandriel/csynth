@@ -17,15 +17,15 @@ const char *message_type(uint8_t type)
     case 0x9:
         return "NoteOn";
     case 0xA:
-        return "PolyphonicKeyPressure";
+        return "PolyphonicPressure";
     case 0xB:
-        return "ControlChange";
+        return "Controller";
     case 0xC:
         return "ProgramChange";
     case 0xD:
         return "ChannelPressure";
     case 0xE:
-        return "PitchBendChange";
+        return "PitchBend";
     case 0xF:
         return "System";
     default:

@@ -13,7 +13,7 @@
 #include "../op/ops.h"
 #include "../time/times.h"
 #include "./actuate.h"
-#include "./blend.h"
+#include "./bend.h"
 #include "./key.h"
 #include "./knob.h"
 #include "./mute.h"
@@ -24,8 +24,6 @@
 #include "./stepper.h"
 #include "./track.h"
 #include "./trigger.h"
-
-#define MIDI_NOTE_COUNT 0x80
 
 #define DEFAULT_REC_FILENAME "output/default.rec"
 
@@ -59,8 +57,8 @@ Func *knob_ex_(int channel, int control, double min, double max) { return knob_e
 
 Func *key(int channel, int pitch, Func *input) { return key_create(channel, pitch, input); }
 Func *pad(int channel, int pad, Func *input) { return pad_create(channel, pad, input); }
-Func *blend(int channel, Func *factor, Func *input) { return blend_create(channel, factor, input); }
-Func *blend_(int channel, double factor, Func *input) { return blend(channel, const_(factor), input); }
+Func *bend(int channel, Func *factor, Func *input) { return bend_create(channel, factor, input); }
+Func *bend_(int channel, double factor, Func *input) { return bend(channel, const_(factor), input); }
 
 typedef Func *(*midi_control_func)(int channel, int key, Func *input);
 
