@@ -14,6 +14,7 @@
 #include "./control/key.h"
 #include "./control/keyboard.h"
 #include "./control/knob.h"
+#include "./control/midi_keyboard.h"
 #include "./control/mute.h"
 #include "./control/pad.h"
 #include "./control/pause.h"
