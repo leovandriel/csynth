@@ -14,10 +14,15 @@ executable, e.g. to run `beep.c`:
 ```
 
 This requires GCC (or clang) and [PortAudio](https://www.portaudio.com/)
-binaries to be installed. You can also use CSynth without PortAudio; just
-replace `play(..)` with `write(..)` to write to a WAV file.
+binaries to be installed. You can also use CSynth without PortAudio by replacing
+`play(..)` with `write(..)`, which writes to a WAV file:
 
-Emulate a basic keyboard using the bottom row (Z, X, C, ..):
+```shell
+./examples/demo/beep_wav.c
+play output/beep.wav
+```
+
+Next, emulate a basic keyboard using the bottom row (Z, X, C, ..):
 
 ```shell
 ./examples/demo/keyboard_synth.c
@@ -31,8 +36,8 @@ Or, if you have a MIDI keyboard:
 
 ## Tutorial
 
-To make music in CSynth, combine basic (mathematical) functions to create
-sounds, instruments, and compositions.
+To make music in CSynth, you can combine basic (mathematical) functions to
+create sounds, instruments, and compositions.
 
 Let's create a single note with reverb. Start by writing a minimal C program
 that plays a 440 Hz sine wave:
@@ -97,14 +102,20 @@ Or, to make it more compact:
     play(reverb_(.4,.2,loop_(1.5,rect_(0,.3,sine(A4)))));
 ```
 
-To listen to the result:
-[tutorial.mp3](https://github.com/leovandriel/csynth/raw/main/examples/tutorial.mp3)
+This should sound like
+[tutorial.mp3](https://github.com/leovandriel/csynth/raw/main/examples/tutorial.mp3).
 
 To see more of what you can do with CSynth, take a look in
-[examples/demo](examples/demo).
+[examples/demo](examples/demo). To learn more about available functions, take a
+look in [src/func](src/func) and [examples/func](examples/func). 
 
-To learn more about available functions, take a look in [src/func](src/func) and
-[examples/func](examples/func).
+If you run into audio issues, run the following to get an overview of all audio
+devices:
+
+```shell
+./utils/inspect_audio.c
+```
+
 
 ## Functions
 
@@ -231,8 +242,8 @@ at every space bar press.
 ```
 
 To emulate a key on a keyboard or drum pad, use the
-[trigger](src/func/control/trigger.h) function, which resets to initial state
-on every key press:
+[trigger](src/func/control/trigger.h) function, which resets to initial state on
+every key press:
 
 ```c
     play(trigger(' ', decay_(.5, sine(A4))));
@@ -264,6 +275,68 @@ functionality is included for switches and numerical values.
     display_keyboard(' ', "select frequency");
     return play(selector(' ', sine(A3), sine(A4), sine(A5)));
 ```
+
+While most keys can be indicated by a char, some (e.g. arrow keys) require
+escape codes. To see how keys map to numbers, run:
+
+```shell
+./utils/inspect_terminal.c
+```
+
+## MIDI
+
+CSynth supports MIDI input through
+[PortMidi](https://github.com/PortMidi/portmidi). This requires linking with
+PortMidi binaries and using MIDI-variant of certain functions.
+
+A basic example of this is a MIDI keyboard based on the sawtooth function:
+
+```c
+    func tone = saw(C0);
+    func synth = midi_keyboard(1, key, tone);
+    return play_midi(synth);
+```
+
+Here, `play_midi` will connect to the default MIDI device, listen for MIDI
+events on channel `1`. A sawtooth tone is played using the
+[key](./src/func/control/key.h) function, which triggers on `NoteOn` and
+`NoteOff` events. Make sure to include [midi_player.h](./src/io/midi_player.h).
+
+To make the sound more interesting, let's add a
+[unison](./src/func/effect/unison.h) effect, using 5 voices and 1% detune:
+
+```c
+    func tone = unison_(5, .01, saw(C0));
+    func synth = midi_keyboard(1, key, tone);
+    return play_midi(synth);
+```
+
+`Controller` events give continuous control of a function input. For example, to
+add a controlled unison effect:
+
+```c
+    func detune = knob_(1, 70, 0, .02);
+    func tone = unison(5, detune, saw(C0));
+    func synth = midi_keyboard(1, key, tone);
+    return play_midi(synth);
+```
+
+The [knob](./src/func/control/knob.h) function listens for controller events on
+channel 1 and number 70 and maps it to a range of 0.0 and 0.02. No more fiddling
+with numbers in code!
+
+In the above example, you might need to use a different channel or control
+number. To get an overview of available MIDI devices and mapping of every key,
+knob, or pad, run:
+
+```shell
+./utils/inspect_midi.c
+```
+
+To learn more about how to use MIDI, take a look at the
+[midi_keyboard](./examples/func/control/midi_keyboard.c) example. To see all
+available controls, see [controls](./src/func/control/). To learn more about how
+MIDI is implemented, see [midi.h](./src/ui/midi.h).
 
 ## I/O
 
