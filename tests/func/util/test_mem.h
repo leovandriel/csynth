@@ -29,7 +29,7 @@ void test_mem()
     state_event_add(&context);
     Func *input = mem_create(const_create(0));
     Gen *gen = gen_create(input);
-    EvalContext eval = eval_create(0.1);
+    Eval eval = eval_create(0.1);
     gen_eval(gen, &eval);
     assert_long_equal(test_mem_flag_global, 2);
     gen_free(gen);

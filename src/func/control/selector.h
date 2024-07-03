@@ -17,7 +17,7 @@ typedef struct
     int selected;
 } SelectorContext;
 
-static double selector_eval(__U int count, __U Gen **args, EvalContext *eval, void *context_)
+static double selector_eval(__U int count, __U Gen **args, Eval *eval, void *context_)
 {
     SelectorContext *context = (SelectorContext *)context_;
     return gen_eval(args[context->selected], eval);

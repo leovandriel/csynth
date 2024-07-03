@@ -19,7 +19,7 @@ typedef struct
     size_t index;
 } ReverbContext;
 
-static double reverb_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
+static double reverb_eval(__U int count, Gen **args, Eval *eval, void *context_)
 {
     ReverbContext *context = (ReverbContext *)context_;
     double tick = gen_eval(args[0], eval);

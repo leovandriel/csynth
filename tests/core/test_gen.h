@@ -9,7 +9,7 @@ void test_gen_count()
 {
     Func *input = mul_create(FUNCS(const_(0.5), sine_create(ticker_create(EvalTickNone))));
     Gen *gen = gen_create(input);
-    EvalContext eval = eval_create(0.1);
+    Eval eval = eval_create(0.1);
     assert_long_equal(eval.gen_count, 0);
     gen_eval(gen, &eval);
     assert_long_equal(eval.gen_count, 4);

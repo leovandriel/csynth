@@ -17,7 +17,7 @@ typedef struct
     void *context;
 } WrapFilterContext;
 
-static double wrap_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
+static double wrap_eval(__U int count, Gen **args, Eval *eval, void *context_)
 {
     WrapFilterContext *context = (WrapFilterContext *)context_;
     double input = gen_eval(args[0], eval);

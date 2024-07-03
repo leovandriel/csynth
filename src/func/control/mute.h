@@ -16,7 +16,7 @@ typedef struct
     int muted;
 } MuteContext;
 
-static double mute_eval(__U int count, __U Gen **args, EvalContext *eval, void *context_)
+static double mute_eval(__U int count, __U Gen **args, Eval *eval, void *context_)
 {
     MuteContext *context = (MuteContext *)context_;
     double input = gen_eval(args[0], eval);

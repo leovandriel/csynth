@@ -129,7 +129,7 @@ Gen *gen_create(Func *func)
     return gen;
 }
 
-double gen_eval(Gen *gen, EvalContext *eval)
+double gen_eval(Gen *gen, Eval *eval)
 {
     eval->gen_count++;
     Func *func = gen->func;

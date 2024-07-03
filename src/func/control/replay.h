@@ -18,7 +18,7 @@ typedef struct
     double time;
 } ReplayContext;
 
-static double replay_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
+static double replay_eval(__U int count, Gen **args, Eval *eval, void *context_)
 {
     ReplayContext *context = (ReplayContext *)context_;
     while (context->current && context->current->time <= context->time)

@@ -9,7 +9,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double distortion_eval(__U int count, Gen **args, EvalContext *eval, __U void *context_)
+static double distortion_eval(__U int count, Gen **args, Eval *eval, __U void *context_)
 {
     double shape = gen_eval(args[0], eval);
     double input = gen_eval(args[1], eval);

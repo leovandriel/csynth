@@ -21,7 +21,7 @@ void test_fps()
     state_event_add(&context);
     Func *input = fps_create("label", const_create(0));
     Gen *gen = gen_create(input);
-    EvalContext eval = eval_create(0.1);
+    Eval eval = eval_create(0.1);
     gen_eval(gen, &eval);
     gen_eval(gen, &eval);
     assert_long_equal(test_fps_flag_global, 1);

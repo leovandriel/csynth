@@ -16,7 +16,7 @@ typedef struct
     const void *handler;
 } TrackContext;
 
-static double track_eval(__U int count, Gen **args, EvalContext *eval, __U void *context_)
+static double track_eval(__U int count, Gen **args, Eval *eval, __U void *context_)
 {
     // TODO(leo): consider converting to non-func
     return gen_eval(args[0], eval);

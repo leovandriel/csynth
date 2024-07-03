@@ -19,7 +19,7 @@ typedef struct
     const char *label;
 } FpsContext;
 
-static double fps_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
+static double fps_eval(__U int count, Gen **args, Eval *eval, void *context_)
 {
     FpsContext *context = (FpsContext *)context_;
     size_t gen_count = eval->gen_count;

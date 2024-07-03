@@ -23,7 +23,7 @@ typedef struct
     int reset;
 } LooperContext;
 
-static double looper_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
+static double looper_eval(__U int count, Gen **args, Eval *eval, void *context_)
 {
     LooperContext *context = (LooperContext *)context_;
     double tick = gen_eval(args[0], eval);

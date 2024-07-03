@@ -8,7 +8,7 @@ void test_limit()
 {
     Func *time = limit(const_(3), square_create(pitch_ticker_(1)));
     Gen *gen = gen_create(time);
-    EvalContext eval = eval_create(0.1);
+    Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), 0.30);
     assert_double_equal(gen_eval(gen, &eval), 0.60);
     assert_double_equal(gen_eval(gen, &eval), 0.90);

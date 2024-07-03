@@ -12,7 +12,7 @@ typedef struct
     double time;
 } TimerContext;
 
-static double timer_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
+static double timer_eval(__U int count, Gen **args, Eval *eval, void *context_)
 {
     TimerContext *context = (TimerContext *)context_;
     double output = context->time;

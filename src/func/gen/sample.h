@@ -13,7 +13,7 @@ typedef struct
     double sample;
 } SampleContext;
 
-static double sample_eval(__U int count, __U Gen **args, __U EvalContext *eval, void *context_)
+static double sample_eval(__U int count, __U Gen **args, __U Eval *eval, void *context_)
 {
     SampleContext *context = (SampleContext *)context_;
     if (context->sample == 0.0)

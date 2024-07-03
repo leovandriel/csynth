@@ -20,7 +20,7 @@ typedef struct
 {
     Gen **channels;
     int count;
-    EvalContext eval;
+    Eval eval;
 } Sampler;
 
 Sampler *sampler_create(int sample_rate, int count, Func **inputs)
@@ -54,7 +54,7 @@ Sampler *sampler_create(int sample_rate, int count, Func **inputs)
         }
         channels[index] = channel;
     }
-    EvalContext eval = eval_create(1.0 / sample_rate);
+    Eval eval = eval_create(1.0 / sample_rate);
     *sampler = (Sampler){
         .channels = channels,
         .count = count,

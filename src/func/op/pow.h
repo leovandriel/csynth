@@ -11,7 +11,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double pow_eval(__U int count, Gen **args, EvalContext *eval, __U void *context)
+static double pow_eval(__U int count, Gen **args, Eval *eval, __U void *context)
 {
     double base = gen_eval(args[0], eval);
     double exponent = gen_eval(args[1], eval);

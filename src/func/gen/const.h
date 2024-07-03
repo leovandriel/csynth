@@ -21,7 +21,7 @@ typedef struct
     double value;
 } ConstContext;
 
-static double const_eval(__U int count, __U Gen **args, __U EvalContext *eval, void *context_)
+static double const_eval(__U int count, __U Gen **args, __U Eval *eval, void *context_)
 {
     ConstContext *context = (ConstContext *)context_;
     return context->value;

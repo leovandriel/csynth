@@ -17,7 +17,7 @@ typedef struct
     double output;
 } HighPassContext;
 
-static double hpf_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
+static double hpf_eval(__U int count, Gen **args, Eval *eval, void *context_)
 {
     HighPassContext *context = (HighPassContext *)context_;
     double tick = gen_eval(args[0], eval);

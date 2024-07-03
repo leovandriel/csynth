@@ -56,7 +56,7 @@
         assert(_cond);                     \
     } while (0)
 
-void print_assert_gen_equal(Gen *gen, EvalContext *eval)
+void print_assert_gen_equal(Gen *gen, Eval *eval)
 {
     fprintf(stdout, "\n");
     for (int i = 0; i < 12; i++)

@@ -9,7 +9,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double tanh_eval(__U int count, Gen **args, EvalContext *eval, __U void *context)
+static double tanh_eval(__U int count, Gen **args, Eval *eval, __U void *context)
 {
     double input = gen_eval(args[0], eval);
     return tanh(input);

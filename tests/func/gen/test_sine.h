@@ -8,7 +8,7 @@ void test_sine_const()
 {
     Func *time = sine_create(pitch_ticker_(1));
     Gen *gen = gen_create(time);
-    EvalContext eval = eval_create(0.1);
+    Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, &eval), 0.5877852522924731);
     assert_double_equal(gen_eval(gen, &eval), 0.9510565162951535);
@@ -28,7 +28,7 @@ void test_sine_timer()
 {
     Func *time = sine(pitch_timer_(1));
     Gen *gen = gen_create(time);
-    EvalContext eval = eval_create(0.1);
+    Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, &eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, &eval), 0.0627905195293134);

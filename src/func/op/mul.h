@@ -11,7 +11,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double mul_eval(int count, Gen **args, EvalContext *eval, __U void *context)
+static double mul_eval(int count, Gen **args, Eval *eval, __U void *context)
 {
     double output = 1.0;
     for (int i = 0; i < count; i++)

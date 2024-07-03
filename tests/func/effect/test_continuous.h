@@ -7,7 +7,7 @@ void test_continuous()
 {
     Func *time = loop_(2, continuous_create(linear_env_(1, 0, 1)));
     Gen *gen = gen_create(time);
-    EvalContext eval = eval_create(1.0);
+    Eval eval = eval_create(1.0);
     assert_double_equal(gen_eval(gen, &eval), 0);
     assert_double_equal(gen_eval(gen, &eval), 1);
     assert_double_equal(gen_eval(gen, &eval), 2);

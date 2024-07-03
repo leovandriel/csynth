@@ -12,7 +12,7 @@ typedef struct
     EvalTick tick;
 } TickerContext;
 
-static double ticker_eval(__U int count, __U Gen **args, EvalContext *eval, void *context_)
+static double ticker_eval(__U int count, __U Gen **args, Eval *eval, void *context_)
 {
     TickerContext *context = (TickerContext *)context_;
     return eval->tick[context->tick];

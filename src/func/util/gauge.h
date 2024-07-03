@@ -17,7 +17,7 @@ typedef struct
     double time;
 } GaugeContext;
 
-static double gauge_eval(__U int count, Gen **args, EvalContext *eval, void *context_)
+static double gauge_eval(__U int count, Gen **args, Eval *eval, void *context_)
 {
     GaugeContext *context = (GaugeContext *)context_;
     double input = gen_eval(args[1], eval);
