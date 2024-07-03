@@ -13,8 +13,8 @@ int main()
     func reverb_decay = gauge("rev-decay", knob_ex_(1, 76, .01, .99));
     func post_gain = gauge("gain", knob_(1, 77, 1, 10));
     func note = saw(C0);
-    note = overtone(-4, overtone_knob, note);
     note = unison(5, detune_knob, note);
+    note = overtone(-4, overtone_knob, note);
     func synth = midi_keyboard(1, key, note);
     synth = bend_(1, 1.06, synth);
     synth = distortion(distortion_knob, synth);
@@ -23,5 +23,5 @@ int main()
     synth = reverb(reverb_time, reverb_decay, synth);
     synth = mul(post_gain, synth);
     func drums = add(pad(10, 40, snare()), pad(10, 41, bdrum()), pad(10, 42, hihat()));
-    return play_midi(add(mul_(.2, synth), drums));
+    return play_midi(fps("fps", add(mul_(.2, synth), drums)));
 }

@@ -9,6 +9,7 @@
 #include "./dump.h"
 #include "./fps.h"
 #include "./gauge.h"
+#include "./mem.h"
 #include "./print.h"
 #include "./record.h"
 #include "./wrap.h"
@@ -37,6 +38,12 @@ Func *fps(const char *label, Func *input)
 {
     display_label(label);
     return fps_create(label, input);
+}
+Func *mem(Func *input)
+{
+    display_label("alloc");
+    display_label("free");
+    return mem_create(input);
 }
 
 #endif // CSYNTH_UTILS_H

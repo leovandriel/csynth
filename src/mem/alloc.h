@@ -24,7 +24,17 @@ typedef struct Alloc
     struct Alloc *next;
 } Alloc;
 
+typedef struct
+{
+    size_t alloc_count;
+    size_t alloc_size;
+    size_t free_count;
+    size_t free_size;
+} AllocStat;
+
 static Alloc *alloc_list_global = NULL;
+static size_t alloc_remove_count = 0;
+static size_t alloc_remove_size = 0;
 
 int alloc_list_add(const void *ptr, size_t size, const char *line)
 {
@@ -49,6 +59,8 @@ int alloc_list_remove(const void *ptr)
         if (alloc->ptr == ptr)
         {
             *prev = alloc->next;
+            alloc_remove_count++;
+            alloc_remove_size += alloc->size;
             free(alloc);
             return 0;
         }
@@ -69,14 +81,31 @@ Alloc *alloc_list_find(const void *ptr)
     return NULL;
 }
 
-size_t alloc_list_count()
+AllocStat alloc_stat()
 {
     size_t count = 0;
+    size_t size = 0;
     for (Alloc *alloc = alloc_list_global; alloc; alloc = alloc->next)
     {
         count++;
+        size += alloc->size;
     }
-    return count;
+    return (AllocStat){
+        .alloc_count = count,
+        .alloc_size = size,
+        .free_count = alloc_remove_count,
+        .free_size = alloc_remove_size,
+    };
+}
+
+size_t alloc_size()
+{
+    size_t size = 0;
+    for (Alloc *alloc = alloc_list_global; alloc; alloc = alloc->next)
+    {
+        size += alloc->size;
+    }
+    return size;
 }
 
 int alloc_list_is_empty()

@@ -9,53 +9,28 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../event/control_event.h"
-#include "../../event/state_event.h"
+#include "../../ui/midi_state.h"
 
 typedef struct
 {
-    ControlEventContext parent;
-    ControlEventKey key;
-    double value;
+    uint8_t channel;
+    uint8_t data1;
 } KnobContext;
 
 static double knob_eval(__U int count, __U Gen **args, __U EvalContext *eval, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
-    return context->value;
-}
-
-static void knob_handle_event(ControlEvent *event, void *context_)
-{
-    KnobContext *context = (KnobContext *)context_;
-    if (control_event_key_equal(event->key, context->key))
-    {
-        context->value = (double)event->key.midi.data2 / 127.0;
-        state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
-    }
-}
-
-static int knob_init(__U int count, __U Gen **args, void *context_)
-{
-    KnobContext *context = (KnobContext *)context_;
-    state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
-    csError error = control_event_add(&context->parent);
-    return error_catch(error);
+    double value = midi_state_get(MidiTypeController, context->channel, context->data1);
+    return value;
 }
 
 Func *knob_create(int channel, int control)
 {
     KnobContext initial = {
-        .parent = {.handle_event = knob_handle_event},
-        .key = {
-            .type = ControlEventTypeMidi,
-            .midi = {
-                .type = MidiTypeController,
-                .channel = channel - 1,
-                .data1 = control,
-            }},
+        .channel = channel - 1,
+        .data1 = control,
     };
-    return func_create(knob_init, knob_eval, control_event_free, sizeof(KnobContext), &initial, FuncFlagSkipReset, FUNCS());
+    return func_create(NULL, knob_eval, NULL, sizeof(KnobContext), &initial, FuncFlagSkipReset, FUNCS());
 }
 
 #endif // CSYNTH_KNOB_H

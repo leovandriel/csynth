@@ -74,6 +74,7 @@
 #include "./util/dump.h"
 #include "./util/fps.h"
 #include "./util/gauge.h"
+#include "./util/mem.h"
 #include "./util/print.h"
 #include "./util/record.h"
 #include "./util/utils.h"

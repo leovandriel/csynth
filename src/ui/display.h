@@ -20,6 +20,7 @@ typedef struct DisplayElement
     union
     {
         int int_value;
+        size_t size_value;
         double double_value;
     };
     const char *label;
@@ -83,6 +84,10 @@ static int display_set_value(DisplayElement *list, StateEventKeyType key_type, c
             case StateEventValueTypeInt:
                 element->value_type = value_type;
                 element->int_value = value ? *(int *)value : 0;
+                break;
+            case StateEventValueTypeSize:
+                element->value_type = value_type;
+                element->size_value = value ? *(size_t *)value : 0;
                 break;
             case StateEventValueTypeDouble:
             case StateEventValueTypeScientific:
@@ -152,6 +157,9 @@ static void display_render_element(DisplayElement *element)
         break;
     case StateEventValueTypeInt:
         fprintf(stdout, "[%d] ", element->int_value);
+        break;
+    case StateEventValueTypeSize:
+        fprintf(stdout, "[%ld] ", element->size_value);
         break;
     case StateEventValueTypeDouble:
         fprintf(stdout, "[%.2f] ", element->double_value);

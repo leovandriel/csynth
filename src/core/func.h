@@ -137,4 +137,14 @@ void func_free()
     }
 }
 
+size_t func_list_size()
+{
+    size_t size = 0;
+    for (Func *func = func_list_global; func; func = func->next)
+    {
+        size++;
+    }
+    return size;
+}
+
 #endif // CSYNTH_FUNC_H

@@ -78,4 +78,14 @@ void event_broadcast(EventType type, const void *event)
     }
 }
 
+size_t event_list_size()
+{
+    size_t size = 0;
+    for (EventHandler *handler = event_list_global; handler; handler = handler->next)
+    {
+        size++;
+    }
+    return size;
+}
+
 #endif // CSYNTH_EVENT_H
