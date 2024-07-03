@@ -171,4 +171,14 @@ void gen_reset(Gen *gen)
     }
 }
 
+size_t gen_count(Gen *gen)
+{
+    size_t sum = 1;
+    for (int i = 0; i < gen->func->count; i++)
+    {
+        sum += gen_count(gen->args[i]);
+    }
+    return sum;
+}
+
 #endif // CSYNTH_GEN_H

@@ -94,4 +94,14 @@ void sampler_free(Sampler *sampler)
     free_(sampler);
 }
 
+size_t sampler_gen_count(Sampler *sampler)
+{
+    size_t sum = 0;
+    for (int index = 0; index < sampler->count; index++)
+    {
+        sum += gen_count(sampler->channels[index]);
+    }
+    return sum;
+}
+
 #endif // CSYNTH_SAMPLER_H

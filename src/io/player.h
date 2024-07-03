@@ -105,7 +105,7 @@ csError player_play_channels_no_cleanup(PlayerConfig config, int count, Func **c
         Pa_Terminate();
         return error_type_message(csErrorInit, "Unable to create sampler");
     }
-    log_info("Sampler created: %d funcs, %d handlers", func_list_size(), event_list_size());
+    log_info("Sampler created: %d funcs, %d gens, %d handlers", func_list_size(), sampler_gen_count(sampler), event_list_size());
     PaStream *stream = NULL;
     pa_error = Pa_OpenStream(&stream, NULL, &params, config.sample_rate, paFramesPerBufferUnspecified, paNoFlag, player_callback, sampler);
     if (pa_error != paNoError)
