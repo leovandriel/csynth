@@ -23,13 +23,13 @@
 #include "./tanh.h"
 
 #define add(...) (add_create(FUNCS(__VA_ARGS__)))
-Func *add_(double diff, Func *input) { return add(const_(diff), input); }
+Func *add_(double value, Func *input) { return add(const_(value), input); }
 Func *neg(Func *input) { return neg_create(input); }
 Func *sub(Func *lhs, Func *rhs) { return add(lhs, neg(rhs)); }
 Func *sub_(Func *lhs, double rhs) { return sub(lhs, const_(rhs)); }
 
 #define mul(...) (mul_create(FUNCS(__VA_ARGS__)))
-Func *mul_(double factor, Func *input) { return mul(const_(factor), input); }
+Func *mul_(double value, Func *input) { return mul(const_(value), input); }
 Func *inv(Func *input) { return inv_create(input); }
 Func *dvd(Func *lhs, Func *rhs) { return mul(lhs, inv(rhs)); }
 Func *dvd_(Func *lhs, double rhs) { return dvd(lhs, const_(rhs)); }

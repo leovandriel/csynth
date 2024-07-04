@@ -11,7 +11,7 @@
 #include "../gen/gens.h"
 #include "../op/ops.h"
 
-Func *unison_split(size_t count, Func *input)
+Func *unison_create(size_t count, Func *input)
 {
     Func **array = (Func **)malloc_(count * sizeof(Func *));
     if (array == NULL)
@@ -29,7 +29,7 @@ Func *unison_split(size_t count, Func *input)
 
 Func *unison(size_t count, Func *detune, Func *input) /* unison_ */
 {
-    return unison_split(count, pitch(add_(1, mul(detune, sample())), input));
+    return unison_create(count, pitch(add_(1, mul(detune, sample())), input));
 }
 Func *unison_(size_t count, double detune, Func *input) { return unison(count, const_(detune), input); }
 

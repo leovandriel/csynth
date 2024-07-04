@@ -2,10 +2,10 @@
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
 
-static func strum(size_t count, const double *freqs, double span, double decay)
+static func strum(int count, const double *freqs, double span, double decay)
 {
     func notes[10];
-    for (size_t i = 0; i < count; i++)
+    for (int i = 0; i < count; i++)
     {
         func note = karplus_strong_(_(freqs[i]), decay);
         note = lpf_(freqs[i], note);

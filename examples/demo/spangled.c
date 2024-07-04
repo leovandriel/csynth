@@ -7,7 +7,7 @@ static func A(func frequency, double duration)
     double delta = 0.4 * duration;
     func note = saw(frequency);
     note = chorus_(sine_(.2), .02, .003, note);
-    note = lpf(A2, note);
+    note = lpf(A6, note);
     note = adsr_(delta / 4, delta / 8, .8, delta / 8, delta, note);
     return note;
 }

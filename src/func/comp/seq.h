@@ -28,12 +28,12 @@ static double seq_eval_abs(size_t count, Gen **args, Eval *eval, void *context_)
     SeqContext *context = (SeqContext *)context_;
     double output = 0.0;
     // TODO(leo): use context->index and track time per interval (allowing variable durations)
-    for (size_t index = count / 2 - 1; index >= 0; index--)
+    for (size_t index = count / 2; index > 0; index--)
     {
-        double offset = gen_eval(args[index * 2], eval);
+        double offset = gen_eval(args[(index - 1) * 2], eval);
         if (context->time > offset)
         {
-            output = gen_eval(args[index * 2 + 1], eval);
+            output = gen_eval(args[index * 2 - 1], eval);
             break;
         }
     }
