@@ -5,7 +5,6 @@
 #define CSYNTH_FUNC_H
 
 #include <float.h>
-#include <stdarg.h>
 #include <string.h>
 
 #include "../mem/alloc.h"
@@ -64,7 +63,7 @@ static Func *func_list_global = NULL;
  * @param inputs The inputs to the function.
  * @return The function output.
  */
-Func *func_create(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, unsigned int flags, int count, Func **inputs)
+Func *func_create(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, uint32_t flags, size_t count, Func **inputs)
 {
     void *initial = NULL;
     if (size > 0 && context != NULL)

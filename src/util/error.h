@@ -4,7 +4,6 @@
 #ifndef CSYNTH_ERROR_H
 #define CSYNTH_ERROR_H
 
-#include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 

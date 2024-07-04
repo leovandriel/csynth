@@ -12,19 +12,19 @@ typedef struct
 {
     ControlEventContext parent;
     ControlEventKey key;
-    int active;
-    int reset;
+    bool active;
+    bool reset;
 } KeyContext;
 
-static double key_eval(__U int count, __U Gen **args, Eval *eval, void *context_)
+static double key_eval(__U size_t count, __U Gen **args, Eval *eval, void *context_)
 {
     KeyContext *context = (KeyContext *)context_;
-    if (context->reset != 0)
+    if (context->reset)
     {
         gen_reset(args[0]);
-        context->reset = 0;
+        context->reset = false;
     }
-    if (context->active != 0)
+    if (context->active)
     {
         double input = gen_eval(args[0], eval);
         return input * (double)context->active / 64.0;
@@ -37,12 +37,12 @@ static void key_handle_event(ControlEvent *event, void *context_)
     KeyContext *context = (KeyContext *)context_;
     if (control_event_key_equal(event->key, context->key))
     {
-        context->active = (int)event->key.midi.data2;
-        context->reset = event->key.midi.data2 ? 1 : 0;
+        context->active = event->key.midi.data2 != 0;
+        context->reset = event->key.midi.data2 != 0;
     }
 }
 
-static int key_init(__U int count, __U Gen **args, void *context_)
+static bool key_init(__U size_t count, __U Gen **args, void *context_)
 {
     KeyContext *context = (KeyContext *)context_;
     csError error = control_event_add(&context->parent);

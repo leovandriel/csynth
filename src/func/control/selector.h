@@ -13,11 +13,11 @@ typedef struct
 {
     ControlEventContext parent;
     ControlEventKey key;
-    int count;
-    int selected;
+    size_t count;
+    size_t selected;
 } SelectorContext;
 
-static double selector_eval(__U int count, __U Gen **args, Eval *eval, void *context_)
+static double selector_eval(__U size_t count, __U Gen **args, Eval *eval, void *context_)
 {
     SelectorContext *context = (SelectorContext *)context_;
     return gen_eval(args[context->selected], eval);
@@ -33,7 +33,7 @@ static void selector_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static int selector_init(__U int count, __U Gen **args, void *context_)
+static bool selector_init(__U size_t count, __U Gen **args, void *context_)
 {
     SelectorContext *context = (SelectorContext *)context_;
     state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeInt, &context->selected);
@@ -41,7 +41,7 @@ static int selector_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *selector_create(int key, int count, Func **args)
+Func *selector_create(int key, size_t count, Func **args)
 {
     SelectorContext initial = {
         .parent = {.handle_event = selector_handle_event},

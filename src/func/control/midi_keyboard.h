@@ -12,33 +12,33 @@
 
 typedef struct
 {
-    int number;
+    uint8_t number;
     double velocity;
     double factor;
-    int reset;
+    bool reset;
 } MidiKeyboardKey;
 
 typedef struct
 {
     ControlEventContext parent;
     uint8_t channel;
-    int count;
-    int capacity;
+    size_t count;
+    size_t capacity;
     MidiKeyboardKey *keys;
-    int semitones;
+    size_t semitones;
 } MidiKeyboardContext;
 
-static double midi_keyboard_eval(__U int count, __U Gen **args, Eval *eval, void *context_)
+static double midi_keyboard_eval(__U size_t count, __U Gen **args, Eval *eval, void *context_)
 {
     MidiKeyboardContext *context = (MidiKeyboardContext *)context_;
     double output = 0.;
-    for (int i = 0; i < context->count; i++)
+    for (size_t i = 0; i < context->count; i++)
     {
         MidiKeyboardKey *key = &context->keys[i];
-        if (key->reset != 0)
+        if (key->reset)
         {
             gen_reset(args[i]);
-            key->reset = 0;
+            key->reset = false;
         }
         double restore = eval->tick[EvalTickPitch];
         eval->tick[EvalTickPitch] = restore * key->factor;
@@ -55,18 +55,18 @@ static void midi_keyboard_handle_event(ControlEvent *event, void *context_)
     {
         if (event->key.midi.type == MidiTypeNoteOn)
         {
-            int index = context->count < context->capacity ? context->count++ : context->count - 1;
+            size_t index = context->count < context->capacity ? context->count++ : context->count - 1;
             context->keys[index] = (MidiKeyboardKey){
                 .number = event->key.midi.data1,
                 .velocity = (double)event->key.midi.data2 / 64.0,
                 .factor = exp2((double)event->key.midi.data1 / (double)context->semitones),
-                .reset = 1,
+                .reset = true,
             };
         }
         else if (event->key.midi.type == MidiTypeNoteOff)
         {
             uint8_t number = event->key.midi.data1;
-            for (int i = 0; i < context->count; i++)
+            for (size_t i = 0; i < context->count; i++)
             {
                 if (context->keys[i].number == number)
                 {
@@ -78,7 +78,7 @@ static void midi_keyboard_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static int midi_keyboard_init(__U int count, __U Gen **args, void *context_)
+static bool midi_keyboard_init(__U size_t count, __U Gen **args, void *context_)
 {
     MidiKeyboardContext *context = (MidiKeyboardContext *)context_;
     MidiKeyboardKey *keys = (MidiKeyboardKey *)malloc_(context->capacity * sizeof(MidiKeyboardKey));
@@ -91,7 +91,7 @@ static int midi_keyboard_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-void midi_keyboard_free(__U int count, void *context_)
+void midi_keyboard_free(__U size_t count, void *context_)
 {
     MidiKeyboardContext *context = (MidiKeyboardContext *)context_;
     free_(context->keys);
@@ -99,7 +99,7 @@ void midi_keyboard_free(__U int count, void *context_)
     error_catch(error);
 }
 
-Func *midi_keyboard_create(int channel, int semitones, int count, Func **inputs)
+Func *midi_keyboard_create(int channel, size_t semitones, size_t count, Func **inputs)
 {
     MidiKeyboardContext initial = {
         .parent = {.handle_event = midi_keyboard_handle_event},
@@ -110,14 +110,14 @@ Func *midi_keyboard_create(int channel, int semitones, int count, Func **inputs)
     return func_create(midi_keyboard_init, midi_keyboard_eval, midi_keyboard_free, sizeof(MidiKeyboardContext), &initial, FuncFlagNone, count, inputs);
 }
 
-Func *midi_keyboard_count(int channel, int semitones, int count, Func *input)
+Func *midi_keyboard_count(int channel, size_t semitones, size_t count, Func *input)
 {
     Func **inputs = (Func **)malloc_(count * sizeof(Func *));
     if (inputs == NULL)
     {
         return error_null(csErrorMemoryAlloc);
     }
-    for (int i = 0; i < count; i++)
+    for (size_t i = 0; i < count; i++)
     {
         inputs[i] = input;
     }

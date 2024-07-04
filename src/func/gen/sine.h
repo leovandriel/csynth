@@ -16,7 +16,7 @@ typedef struct
     double phase;
 } SineContext;
 
-static double sine_eval(__U int count, Gen **args, Eval *eval, void *context_)
+static double sine_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     SineContext *context = (SineContext *)context_;
     double output = sin(context->phase * M_PI * 2);

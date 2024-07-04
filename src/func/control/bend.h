@@ -15,7 +15,7 @@ typedef struct
     uint8_t channel;
 } BendContext;
 
-static double bend_eval(__U int count, __U Gen **args, Eval *eval, void *context_)
+static double bend_eval(__U size_t count, __U Gen **args, Eval *eval, void *context_)
 {
     BendContext *context = (BendContext *)context_;
     double factor = gen_eval(args[0], eval);

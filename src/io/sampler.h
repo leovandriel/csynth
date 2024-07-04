@@ -19,11 +19,11 @@ typedef int16_t sample_t;
 typedef struct
 {
     Gen **channels;
-    int count;
+    size_t count;
     Eval eval;
 } Sampler;
 
-Sampler *sampler_create(int sample_rate, int count, Func **inputs)
+Sampler *sampler_create(size_t sample_rate, size_t count, Func **inputs)
 {
     Sampler *sampler = (Sampler *)malloc_(sizeof(Sampler));
     if (sampler == NULL)
@@ -36,7 +36,7 @@ Sampler *sampler_create(int sample_rate, int count, Func **inputs)
         free_(sampler);
         return error_null(csErrorMemoryAlloc);
     }
-    for (int index = 0; index < count; index++)
+    for (size_t index = 0; index < count; index++)
     {
         Func *input = inputs[index];
         input = scale_(EvalTickControl, CONTROL_RATE, input);
@@ -44,7 +44,7 @@ Sampler *sampler_create(int sample_rate, int count, Func **inputs)
         Gen *channel = gen_create(input);
         if (channel == NULL)
         {
-            for (int i = 0; i < index; i++)
+            for (size_t i = 0; i < index; i++)
             {
                 gen_free(channels[i]);
             }
@@ -54,7 +54,7 @@ Sampler *sampler_create(int sample_rate, int count, Func **inputs)
         }
         channels[index] = channel;
     }
-    Eval eval = eval_create(1.0 / sample_rate);
+    Eval eval = eval_create(1.0 / (double)sample_rate);
     *sampler = (Sampler){
         .channels = channels,
         .count = count,
@@ -75,7 +75,7 @@ void sampler_sample(Sampler *sampler, size_t count, sample_t *buffer)
     for (size_t frame = 0; frame < count; frame++)
     {
         sampler->eval.wall_time += sampler->eval.wall_tick;
-        for (int index = 0; index < sampler->count; index++)
+        for (size_t index = 0; index < sampler->count; index++)
         {
             double output = gen_eval(sampler->channels[index], &sampler->eval);
             *(buffer++) = sampler_quantize(output);
@@ -85,7 +85,7 @@ void sampler_sample(Sampler *sampler, size_t count, sample_t *buffer)
 
 void sampler_free(Sampler *sampler)
 {
-    for (int index = 0; index < sampler->count; index++)
+    for (size_t index = 0; index < sampler->count; index++)
     {
         gen_free(sampler->channels[index]);
     }
@@ -97,7 +97,7 @@ void sampler_free(Sampler *sampler)
 size_t sampler_gen_count(Sampler *sampler)
 {
     size_t sum = 0;
-    for (int index = 0; index < sampler->count; index++)
+    for (size_t index = 0; index < sampler->count; index++)
     {
         sum += gen_count(sampler->channels[index]);
     }

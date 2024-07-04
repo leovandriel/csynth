@@ -4,7 +4,7 @@
 
 void test_gauss()
 {
-    for (int i = 0; i < 100; i++)
+    for (size_t i = 0; i < 100; i++)
     {
         Gen *gen = gen_create(gauss());
         Eval eval = eval_create(0.1);

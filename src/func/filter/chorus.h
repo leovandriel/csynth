@@ -20,7 +20,7 @@ typedef struct
     size_t index;
 } ChorusContext;
 
-static double chorus_eval(__U int count, Gen **args, Eval *eval, void *context_)
+static double chorus_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     ChorusContext *context = (ChorusContext *)context_;
     double modulation = gen_eval(args[0], eval);
@@ -40,7 +40,7 @@ static double chorus_eval(__U int count, Gen **args, Eval *eval, void *context_)
     return output;
 }
 
-static void chorus_free(__U int count, void *context_)
+static void chorus_free(__U size_t count, void *context_)
 {
     ChorusContext *context = (ChorusContext *)context_;
     buffer_free(&context->buffer);

@@ -21,7 +21,7 @@ void gen_free(Gen *gen)
     }
     if (gen->args != NULL)
     {
-        for (int i = 0; i < func->count; i++)
+        for (size_t i = 0; i < func->count; i++)
         {
             gen_free(gen->args[i]);
         }
@@ -90,12 +90,12 @@ Gen *gen_create(Func *func)
             return error_null(csErrorMemoryAlloc);
         }
     }
-    for (int i = 0; i < func->count; i++)
+    for (size_t i = 0; i < func->count; i++)
     {
         Gen *arg = gen_create(func->args[i]);
         if (arg == NULL)
         {
-            for (int j = 0; j < i; j++)
+            for (size_t j = 0; j < i; j++)
             {
                 gen_free(args[j]);
             }
@@ -108,7 +108,10 @@ Gen *gen_create(Func *func)
     }
     if (func->init_cb != NULL)
     {
-        func->init_cb(func->count, args, context);
+        if (func->init_cb(func->count, args, context))
+        {
+            return error_null(csErrorInit);
+        }
         if (context != NULL && reset != NULL)
         {
             memcpy(reset, context, func->size);
@@ -150,7 +153,7 @@ void gen_reset(Gen *gen)
     {
         return;
     }
-    for (int i = 0; i < func->count; i++)
+    for (size_t i = 0; i < func->count; i++)
     {
         gen_reset(gen->args[i]);
     }
@@ -174,7 +177,7 @@ void gen_reset(Gen *gen)
 size_t gen_count(Gen *gen)
 {
     size_t sum = 1;
-    for (int i = 0; i < gen->func->count; i++)
+    for (size_t i = 0; i < gen->func->count; i++)
     {
         sum += gen_count(gen->args[i]);
     }

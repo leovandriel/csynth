@@ -16,7 +16,7 @@ typedef struct
     double time;
 } MemContext;
 
-static double mem_eval(__U int count, Gen **args, Eval *eval, __U void *context_)
+static double mem_eval(__U size_t count, Gen **args, Eval *eval, __U void *context_)
 {
 #ifdef ALLOC_TRACE
     MemContext *context = (MemContext *)context_;

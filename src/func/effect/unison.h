@@ -11,14 +11,14 @@
 #include "../gen/gens.h"
 #include "../op/ops.h"
 
-Func *unison_split(int count, Func *input)
+Func *unison_split(size_t count, Func *input)
 {
     Func **array = (Func **)malloc_(count * sizeof(Func *));
     if (array == NULL)
     {
         return error_null(csErrorMemoryAlloc);
     }
-    for (int i = 0; i < count; i++)
+    for (size_t i = 0; i < count; i++)
     {
         array[i] = input;
     }
@@ -27,10 +27,10 @@ Func *unison_split(int count, Func *input)
     return output;
 }
 
-Func *unison(int count, Func *detune, Func *input) /* unison_ */
+Func *unison(size_t count, Func *detune, Func *input) /* unison_ */
 {
     return unison_split(count, pitch(add_(1, mul(detune, sample())), input));
 }
-Func *unison_(int count, double detune, Func *input) { return unison(count, const_(detune), input); }
+Func *unison_(size_t count, double detune, Func *input) { return unison(count, const_(detune), input); }
 
 #endif // CSYNTH_UNISON_H

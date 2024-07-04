@@ -10,21 +10,21 @@
 typedef enum
 {
     StateEventKeyTypeNone = 0,
-    StateEventKeyTypeControl = 1,
-    StateEventKeyTypeLabel = 4,
+    StateEventKeyTypeControl,
+    StateEventKeyTypeLabel,
 } StateEventKeyType;
 
 typedef enum
 {
     StateEventValueTypeNone = 0,
-    StateEventValueTypeBool = 1,
-    StateEventValueTypeBoolInv = 2,
-    StateEventValueTypeTrigger = 3,
-    StateEventValueTypeInt = 4,
-    StateEventValueTypeSize = 5,
-    StateEventValueTypeDouble = 6,
-    StateEventValueTypeScientific = 7,
-    StateEventValueTypeSelected = 8,
+    StateEventValueTypeBool,
+    StateEventValueTypeBoolInv,
+    StateEventValueTypeTrigger,
+    StateEventValueTypeInt,
+    StateEventValueTypeSize,
+    StateEventValueTypeDouble,
+    StateEventValueTypeScientific,
+    StateEventValueTypeSelected,
 } StateEventValueType;
 
 typedef struct

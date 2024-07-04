@@ -17,7 +17,7 @@ typedef struct
     uint8_t data1;
 } KnobContext;
 
-static double knob_eval(__U int count, __U Gen **args, __U Eval *eval, void *context_)
+static double knob_eval(__U size_t count, __U Gen **args, __U Eval *eval, void *context_)
 {
     KnobContext *context = (KnobContext *)context_;
     double value = midi_state_get(MidiTypeController, context->channel, context->data1);

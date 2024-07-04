@@ -13,8 +13,6 @@
 #ifndef CSYNTH_SEQ_H
 #define CSYNTH_SEQ_H
 
-#include <stdarg.h>
-
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
@@ -25,12 +23,12 @@ typedef struct
     size_t counter;
 } SeqContext;
 
-static double seq_eval_abs(int count, Gen **args, Eval *eval, void *context_)
+static double seq_eval_abs(size_t count, Gen **args, Eval *eval, void *context_)
 {
     SeqContext *context = (SeqContext *)context_;
     double output = 0.0;
     // TODO(leo): use context->index and track time per interval (allowing variable durations)
-    for (int index = count / 2 - 1; index >= 0; index--)
+    for (size_t index = count / 2 - 1; index >= 0; index--)
     {
         double offset = gen_eval(args[index * 2], eval);
         if (context->time > offset)
@@ -43,13 +41,13 @@ static double seq_eval_abs(int count, Gen **args, Eval *eval, void *context_)
     return output;
 }
 
-static double seq_eval_rel(int count, Gen **args, Eval *eval, void *context_)
+static double seq_eval_rel(size_t count, Gen **args, Eval *eval, void *context_)
 {
     SeqContext *context = (SeqContext *)context_;
     double offset = 0.0;
     double output = 0.0;
     // TODO(leo): use context->index and track time per interval (allowing variable durations)
-    for (int index = 0; index < count / 2; index++)
+    for (size_t index = 0; index < count / 2; index++)
     {
         offset += gen_eval(args[index * 2 + 1], eval);
         if (context->time < offset)
@@ -62,7 +60,7 @@ static double seq_eval_rel(int count, Gen **args, Eval *eval, void *context_)
     return output;
 }
 
-static double seq_eval_seq(int count, Gen **args, Eval *eval, void *context_)
+static double seq_eval_seq(size_t count, Gen **args, Eval *eval, void *context_)
 {
     SeqContext *context = (SeqContext *)context_;
     double output = gen_eval(args[context->index], eval);
@@ -74,7 +72,7 @@ static double seq_eval_seq(int count, Gen **args, Eval *eval, void *context_)
     {
         context->counter = 0;
     }
-    if (context->counter > 100 && (int)context->index < count - 1)
+    if (context->counter > 100 && context->index < count - 1)
     {
         context->index++;
         context->counter = 0;
@@ -82,32 +80,32 @@ static double seq_eval_seq(int count, Gen **args, Eval *eval, void *context_)
     return output;
 }
 
-static double seq_eval_fix(int count, Gen **args, Eval *eval, void *context_)
+static double seq_eval_fix(size_t count, Gen **args, Eval *eval, void *context_)
 {
     SeqContext *context = (SeqContext *)context_;
     double duration = gen_eval(args[0], eval);
     // TODO(leo): use context->index and track time per interval (allowing variable duration)
-    int index = (int)(context->time / duration) + 1;
+    size_t index = (size_t)(context->time / duration) + 1;
     context->time += eval->tick[EvalTickTempo];
     return index < count ? gen_eval(args[index], eval) : 0;
 }
 
-Func *seq_abs_create(int count, Func **args)
+Func *seq_abs_create(size_t count, Func **args)
 {
     return func_create(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
-Func *seq_rel_create(int count, Func **args)
+Func *seq_rel_create(size_t count, Func **args)
 {
     return func_create(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
-Func *seq_seq_create(int count, Func **args)
+Func *seq_seq_create(size_t count, Func **args)
 {
     return func_create(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
-Func *seq_fix_create(int count, Func **args)
+Func *seq_fix_create(size_t count, Func **args)
 {
     return func_create(NULL, seq_eval_fix, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }

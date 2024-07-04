@@ -21,13 +21,13 @@ typedef struct
 {
     player_event_loop loop;
     double duration;
-    int sample_rate;
+    size_t sample_rate;
     int exit_key;
 } PlayerConfig;
 
 void player_event_loop_no_terminal(double duration, __U int exit_key)
 {
-    if (duration <= 0)
+    if (duration <= 0.0)
     {
         duration = FLT_MAX;
     }
@@ -66,7 +66,7 @@ csError player_play_pause(PaStream *stream)
     return csErrorNone;
 }
 
-csError player_play_channels_no_cleanup(PlayerConfig config, int count, Func **channels)
+csError player_play_channels_no_cleanup(PlayerConfig config, size_t count, Func **channels)
 {
     PaError pa_error = Pa_Initialize();
     if (pa_error != paNoError)
@@ -88,7 +88,7 @@ csError player_play_channels_no_cleanup(PlayerConfig config, int count, Func **c
     log_info("Audio device: %s", device_info->name);
     PaStreamParameters params = {
         .device = device,
-        .channelCount = count,
+        .channelCount = (int)count,
         .sampleFormat = paInt16,
         .suggestedLatency = device_info->defaultLowOutputLatency,
         .hostApiSpecificStreamInfo = NULL,
@@ -107,7 +107,7 @@ csError player_play_channels_no_cleanup(PlayerConfig config, int count, Func **c
     }
     log_info("Sampler created: %d funcs, %d gens, %d handlers", func_list_size(), sampler_gen_count(sampler), event_list_size());
     PaStream *stream = NULL;
-    pa_error = Pa_OpenStream(&stream, NULL, &params, config.sample_rate, paFramesPerBufferUnspecified, paNoFlag, player_callback, sampler);
+    pa_error = Pa_OpenStream(&stream, NULL, &params, (int)config.sample_rate, paFramesPerBufferUnspecified, paNoFlag, player_callback, sampler);
     if (pa_error != paNoError)
     {
         sampler_free(sampler);
@@ -154,7 +154,7 @@ csError player_play_channels_no_cleanup(PlayerConfig config, int count, Func **c
     return csErrorNone;
 }
 
-csError player_play_with_cleanup(PlayerConfig config, int count, Func **channels)
+csError player_play_with_cleanup(PlayerConfig config, size_t count, Func **channels)
 {
     csError error = player_play_channels_no_cleanup(config, count, channels);
     cleanup_all();
@@ -163,22 +163,22 @@ csError player_play_with_cleanup(PlayerConfig config, int count, Func **channels
 
 const PlayerConfig PLAYER_CONFIG_TERMINAL = {
     .loop = terminal_loop,
-    .duration = 0,
+    .duration = 0.0,
     .sample_rate = SAMPLE_RATE,
     .exit_key = EXIT_KEY,
 };
 const PlayerConfig PLAYER_CONFIG_NO_TERMINAL = {
     .loop = player_event_loop_no_terminal,
-    .duration = 0,
+    .duration = 0.0,
     .sample_rate = SAMPLE_RATE,
     .exit_key = EXIT_KEY,
 };
 
-int play_channels(int count, Func **channels) { return player_play_with_cleanup(PLAYER_CONFIG_TERMINAL, count, channels); } /* player_ */
-int play(Func *input) { return play_channels(FUNCS(input)); }                                                               /* player_ */
-int play_stereo(Func *left, Func *right) { return play_channels(FUNCS(left, right)); }                                      /* player_ */
+int play_channels(size_t count, Func **channels) { return player_play_with_cleanup(PLAYER_CONFIG_TERMINAL, count, channels); } /* player_ */
+int play(Func *input) { return play_channels(FUNCS(input)); }                                                                  /* player_ */
+int play_stereo(Func *left, Func *right) { return play_channels(FUNCS(left, right)); }                                         /* player_ */
 
-int play_channels_duration(double duration, int count, Func **channels) /* player_ */
+int play_channels_duration(double duration, size_t count, Func **channels) /* player_ */
 {
     PlayerConfig config = PLAYER_CONFIG_NO_TERMINAL;
     config.duration = duration;

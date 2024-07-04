@@ -15,7 +15,7 @@ typedef struct
     double time;
 } DelayContext;
 
-static double delay_eval(__U int count, Gen **args, Eval *eval, void *context_)
+static double delay_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     DelayContext *context = (DelayContext *)context_;
     double tick = gen_eval(args[0], eval);

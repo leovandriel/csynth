@@ -9,7 +9,7 @@
 
 const PlayerConfig MIDI_PLAYER_CONFIG = {
     .loop = midi_loop,
-    .duration = 0,
+    .duration = 0.0,
     .sample_rate = SAMPLE_RATE,
     .exit_key = EXIT_KEY,
 };

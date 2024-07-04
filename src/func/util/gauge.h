@@ -17,7 +17,7 @@ typedef struct
     double time;
 } GaugeContext;
 
-static double gauge_eval(__U int count, Gen **args, Eval *eval, void *context_)
+static double gauge_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     GaugeContext *context = (GaugeContext *)context_;
     double input = gen_eval(args[1], eval);
@@ -25,7 +25,7 @@ static double gauge_eval(__U int count, Gen **args, Eval *eval, void *context_)
     {
         state_event_broadcast(eval->wall_time, StateEventKeyTypeLabel, context->label, StateEventValueTypeDouble, &input);
         context->last = input;
-        context->time = 0;
+        context->time = 0.0;
     }
     double tick = gen_eval(args[0], eval);
     context->time += tick;

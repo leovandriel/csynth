@@ -12,10 +12,10 @@
 typedef enum
 {
     LoggerLevelNone = 0,
-    LoggerLevelError = 1,
-    LoggerLevelWarn = 2,
-    LoggerLevelInfo = 3,
-    LoggerLevelDebug = 4,
+    LoggerLevelError,
+    LoggerLevelWarn,
+    LoggerLevelInfo,
+    LoggerLevelDebug,
 } LoggerLevel;
 
 static const char *LOGGER_LEVEL_STRINGS[] = {
@@ -26,7 +26,7 @@ static const char *LOGGER_LEVEL_STRINGS[] = {
     "DEBUG",
 };
 
-static volatile int logger_level_global = LoggerLevelInfo;
+static volatile LoggerLevel logger_level_global = LoggerLevelInfo;
 
 void logger_set_level(LoggerLevel level)
 {

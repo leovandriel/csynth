@@ -60,7 +60,7 @@
 void print_assert_gen_equal(Gen *gen, Eval *eval)
 {
     fprintf(stdout, "\n");
-    for (int i = 0; i < 12; i++)
+    for (size_t i = 0; i < 12; i++)
     {
         fprintf(stdout, "    assert_double_equal(gen_eval(gen, &eval), %.16f);\n", gen_eval(gen, eval));
     }

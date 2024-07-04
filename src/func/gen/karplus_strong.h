@@ -19,7 +19,7 @@ typedef struct
     size_t index;
 } KarplusStrongContext;
 
-static double karplus_strong_eval(__U int count, Gen **args, Eval *eval, void *context_)
+static double karplus_strong_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
     double pitch_tick = gen_eval(args[0], eval);
@@ -34,7 +34,7 @@ static double karplus_strong_eval(__U int count, Gen **args, Eval *eval, void *c
     return output;
 }
 
-static void karplus_strong_free(__U int count, void *context_)
+static void karplus_strong_free(__U size_t count, void *context_)
 {
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
     buffer_free(&context->buffer);

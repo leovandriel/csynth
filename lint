@@ -39,4 +39,6 @@ find ./src -name "*.h" -type f -print0 | while read -d $'\0' file; do
     fi
 done
 
-find . -name '*.c' -o -name '*.h' | xargs clang-tidy
+clang-tidy ./src/func/all.h
+find . -name '*.h' | xargs clang-tidy
+find . -name '*.c' | xargs clang-tidy

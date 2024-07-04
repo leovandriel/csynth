@@ -18,7 +18,7 @@ typedef struct
     double time;
 } ReplayContext;
 
-static double replay_eval(__U int count, Gen **args, Eval *eval, void *context_)
+static double replay_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     ReplayContext *context = (ReplayContext *)context_;
     while (context->current && context->current->time <= context->time)
@@ -31,7 +31,7 @@ static double replay_eval(__U int count, Gen **args, Eval *eval, void *context_)
     return gen_eval(args[1], eval);
 }
 
-static int replay_init(__U int count, __U Gen **args, void *context_)
+static bool replay_init(__U size_t count, __U Gen **args, void *context_)
 {
     ReplayContext *context = (ReplayContext *)context_;
     csError error = key_list_read_filename(&context->list, context->filename);
@@ -43,7 +43,7 @@ static int replay_init(__U int count, __U Gen **args, void *context_)
     return 0;
 }
 
-static void replay_free(__U int count, void *context_)
+static void replay_free(__U size_t count, void *context_)
 {
     ReplayContext *context = (ReplayContext *)context_;
     key_list_clear(&context->list);

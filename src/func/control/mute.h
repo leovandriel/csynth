@@ -13,10 +13,10 @@ typedef struct
 {
     ControlEventContext parent;
     ControlEventKey key;
-    int muted;
+    bool muted;
 } MuteContext;
 
-static double mute_eval(__U int count, __U Gen **args, Eval *eval, void *context_)
+static double mute_eval(__U size_t count, __U Gen **args, Eval *eval, void *context_)
 {
     MuteContext *context = (MuteContext *)context_;
     double input = gen_eval(args[0], eval);
@@ -33,7 +33,7 @@ static void mute_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static int mute_init(__U int count, __U Gen **args, void *context_)
+static bool mute_init(__U size_t count, __U Gen **args, void *context_)
 {
     MuteContext *context = (MuteContext *)context_;
     state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeBoolInv, &context->muted);
@@ -41,7 +41,7 @@ static int mute_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *mute_create(int key, int muted, Func *input)
+Func *mute_create(int key, bool muted, Func *input)
 {
     MuteContext initial = {
         .parent = {.handle_event = mute_handle_event},

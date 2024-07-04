@@ -2,7 +2,7 @@
 #include "../../../src/func/util/fps.h"
 #include "../../util/test.h"
 
-static int test_fps_flag_global = 0;
+static size_t test_fps_flag_global = 0;
 
 void handle(StateEvent *event, __U void *context)
 {

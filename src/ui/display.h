@@ -24,7 +24,7 @@ typedef struct DisplayElement
         double double_value;
     };
     const char *label;
-    int selected;
+    bool selected;
     struct DisplayElement *next;
 } DisplayElement;
 
@@ -32,7 +32,7 @@ typedef struct
 {
     DisplayElement *element_list;
     StateEventContext event_context;
-    int needs_render;
+    bool needs_render;
 } DisplayGlobal;
 
 static DisplayGlobal display_global = {0};
@@ -49,7 +49,7 @@ void display_clear()
 
 static int display_set_value(DisplayElement *list, StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value)
 {
-    int modified = 0;
+    bool modified = false;
     for (DisplayElement *element = list; element != NULL; element = element->next)
     {
         if (element->key_type == key_type)
@@ -98,7 +98,7 @@ static int display_set_value(DisplayElement *list, StateEventKeyType key_type, c
                 element->selected = value ? *(int *)value : 0;
                 break;
             }
-            modified = 1;
+            modified = true;
         }
     }
     return modified;
@@ -193,7 +193,7 @@ void display_render()
     if (display_global.needs_render)
     {
         display_render_list(display_global.element_list);
-        display_global.needs_render = 0;
+        display_global.needs_render = false;
     }
 }
 
@@ -201,7 +201,7 @@ static void display_handle_event(StateEvent *event, __U void *context)
 {
     if (display_set_value(display_global.element_list, event->key_type, event->key, event->value_type, event->value))
     {
-        display_global.needs_render = 1;
+        display_global.needs_render = true;
     }
 }
 
@@ -265,7 +265,7 @@ csError display_keyboard(int key, const char *label)
 
 csError display_keyboard_(int key) { return display_keyboard(key, NULL); }
 
-csError display_midi(int channel, int control, const char *label)
+csError display_midi(size_t channel, size_t control, const char *label)
 {
     DisplayElement element = {
         .key_type = StateEventKeyTypeControl,
@@ -281,7 +281,7 @@ csError display_midi(int channel, int control, const char *label)
     return display_element(element);
 }
 
-csError display_midi_(int channel, int control) { return display_midi(channel, control, NULL); }
+csError display_midi_(size_t channel, size_t control) { return display_midi(channel, control, NULL); }
 
 csError display_label(const char *label)
 {

@@ -20,11 +20,11 @@ typedef struct
     double step;
     double min;
     double max;
-    int rel;
-    int active;
+    bool rel;
+    bool active;
 } StepperContext;
 
-static double stepper_eval(__U int count, __U Gen **args, __U Eval *eval, void *context_)
+static double stepper_eval(__U size_t count, __U Gen **args, __U Eval *eval, void *context_)
 {
     StepperContext *context = (StepperContext *)context_;
     return context->value;
@@ -35,12 +35,12 @@ static void stepper_handle_event(ControlEvent *event, void *context_)
     StepperContext *context = (StepperContext *)context_;
     if (control_event_key_equal(event->key, context->key) && !context->active)
     {
-        context->active = 1;
+        context->active = true;
         state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeSelected, &context->active);
     }
     else if (context->active && event->key.keyboard == KEYBOARD_EVENT_UP)
     {
-        if (context->rel != 0)
+        if (context->rel)
         {
             context->value *= (1 + context->step);
         }
@@ -56,7 +56,7 @@ static void stepper_handle_event(ControlEvent *event, void *context_)
     }
     else if (context->active && event->key.keyboard == KEYBOARD_EVENT_DOWN)
     {
-        if (context->rel != 0)
+        if (context->rel)
         {
             context->value /= (1 + context->step);
         }
@@ -72,12 +72,12 @@ static void stepper_handle_event(ControlEvent *event, void *context_)
     }
     else
     {
-        context->active = 0;
+        context->active = false;
         state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeSelected, &context->active);
     }
 }
 
-static int stepper_init(__U int count, __U Gen **args, void *context_)
+static bool stepper_init(__U size_t count, __U Gen **args, void *context_)
 {
     StepperContext *context = (StepperContext *)context_;
     state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
@@ -85,7 +85,7 @@ static int stepper_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *stepper_create(int key, double value, double step, double min, double max, int rel)
+Func *stepper_create(int key, double value, double step, double min, double max, bool rel)
 {
     StepperContext initial = {
         .parent = {.handle_event = stepper_handle_event},

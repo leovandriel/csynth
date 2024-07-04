@@ -12,7 +12,7 @@
 #include "../event/control_event.h"
 #include "./display.h"
 
-static volatile int terminal_signal_global = 0;
+static volatile bool terminal_signal_global = 0;
 
 struct termios terminal_setup(cc_t vtime)
 {
@@ -33,7 +33,7 @@ void terminal_restore(struct termios term)
 
 static void terminal_handler(__U int signal)
 {
-    terminal_signal_global = 1;
+    terminal_signal_global = true;
 }
 
 int terminal_read_key()
@@ -83,7 +83,7 @@ int terminal_read(int exit_key)
     return 0;
 }
 
-int terminal_signaled()
+bool terminal_signaled()
 {
     return terminal_signal_global;
 }

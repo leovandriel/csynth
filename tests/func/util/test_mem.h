@@ -3,7 +3,7 @@
 #include "../../../src/func/util/mem.h"
 #include "../../util/test.h"
 
-static int test_mem_flag_global = 0;
+static size_t test_mem_flag_global = 0;
 
 void handle(StateEvent *event, __U void *context)
 {

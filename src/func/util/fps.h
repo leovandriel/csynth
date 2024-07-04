@@ -19,7 +19,7 @@ typedef struct
     const char *label;
 } FpsContext;
 
-static double fps_eval(__U int count, Gen **args, Eval *eval, void *context_)
+static double fps_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     FpsContext *context = (FpsContext *)context_;
     size_t gen_count = eval->gen_count;
@@ -29,7 +29,7 @@ static double fps_eval(__U int count, Gen **args, Eval *eval, void *context_)
     {
         double fps = (double)context->gen_count / (double)context->sample_count;
         state_event_broadcast(eval->wall_time, StateEventKeyTypeLabel, context->label, StateEventValueTypeDouble, &fps);
-        context->time = 0;
+        context->time = 0.0;
         context->gen_count = 0;
         context->sample_count = 0;
     }

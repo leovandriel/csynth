@@ -17,7 +17,7 @@ typedef struct
     const char *text;
 } PrintContext;
 
-static double print_eval(__U int count, Gen **args, Eval *eval, void *context_)
+static double print_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     PrintContext *context = (PrintContext *)context_;
     double input = gen_eval(args[0], eval);
@@ -29,7 +29,7 @@ static double print_eval(__U int count, Gen **args, Eval *eval, void *context_)
     return input;
 }
 
-static void print_free(__U int count, void *context_)
+static void print_free(__U size_t count, void *context_)
 {
     PrintContext *context = (PrintContext *)context_;
     free_((char *)context->text);

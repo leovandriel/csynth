@@ -14,14 +14,14 @@
 
 Func *pattern(const char *string, Func *duration, Func *timing, Func *input) /* pattern_ */
 {
-    int length = (int)strlen(string);
+    size_t length = strlen(string);
     Func **array = (Func **)malloc_(length * 2 * sizeof(Func *));
     if (array == NULL)
     {
         return error_null(csErrorMemoryAlloc);
     }
-    int index = 0;
-    for (int i = 0; i < length; i++)
+    size_t index = 0;
+    for (size_t i = 0; i < length; i++)
     {
         if (string[i] == '.')
         {

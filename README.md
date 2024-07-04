@@ -200,7 +200,7 @@ implement a function using [func_create](src/core/func.h). For example, the
 above can also be implemented as:
 
 ```c
-double phone_filter(int count, Gen **args, Eval *eval, void *context)
+double phone_filter(size_t count, Gen **args, Eval *eval, void *context)
 {
     double input = gen_eval(args[0], eval);
     return round(input * 10) / 10;

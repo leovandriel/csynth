@@ -13,17 +13,17 @@ typedef struct
 {
     ControlEventContext parent;
     ControlEventKey key;
-    int on;
-    int reset;
+    bool on;
+    bool reset;
 } TriggerContext;
 
-static double trigger_eval(__U int count, __U Gen **args, Eval *eval, void *context_)
+static double trigger_eval(__U size_t count, __U Gen **args, Eval *eval, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
-    if (context->reset != 0)
+    if (context->reset)
     {
         gen_reset(args[0]);
-        context->reset = 0;
+        context->reset = false;
     }
     return context->on ? gen_eval(args[0], eval) : 0;
 }
@@ -33,13 +33,13 @@ static void trigger_handle_event(ControlEvent *event, void *context_)
     TriggerContext *context = (TriggerContext *)context_;
     if (control_event_key_equal(event->key, context->key))
     {
-        context->on = 1;
-        context->reset = 1;
+        context->on = true;
+        context->reset = true;
         state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeTrigger, &context->on);
     }
 }
 
-static int trigger_init(__U int count, __U Gen **args, void *context_)
+static bool trigger_init(__U size_t count, __U Gen **args, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
     state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeTrigger, &context->on);

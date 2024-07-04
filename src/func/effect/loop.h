@@ -14,12 +14,12 @@ typedef struct
     double time;
 } LoopContext;
 
-static double loop_eval(__U int count, Gen **args, Eval *eval, void *context_)
+static double loop_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     LoopContext *context = (LoopContext *)context_;
-    if (context->time >= 1)
+    if (context->time >= 1.0)
     {
-        context->time -= 1;
+        context->time -= 1.0;
         gen_reset(args[1]);
     }
     double tick = gen_eval(args[0], eval);

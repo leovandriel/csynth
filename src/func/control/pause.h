@@ -13,18 +13,18 @@ typedef struct
 {
     ControlEventContext parent;
     ControlEventKey key;
-    int paused;
-    int reset;
-    int play_reset;
+    bool paused;
+    bool reset;
+    bool play_reset;
 } PauseContext;
 
-static double pause_eval(__U int count, __U Gen **args, Eval *eval, void *context_)
+static double pause_eval(__U size_t count, __U Gen **args, Eval *eval, void *context_)
 {
     PauseContext *context = (PauseContext *)context_;
-    if (context->reset != 0)
+    if (context->reset)
     {
         gen_reset(args[0]);
-        context->reset = 0;
+        context->reset = false;
     }
     return context->paused ? 0 : gen_eval(args[0], eval);
 }
@@ -40,7 +40,7 @@ static void pause_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static int pause_init(__U int count, __U Gen **args, void *context_)
+static bool pause_init(__U size_t count, __U Gen **args, void *context_)
 {
     PauseContext *context = (PauseContext *)context_;
     state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeBool, &context->paused);
@@ -48,7 +48,7 @@ static int pause_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-Func *pause_create(int key, int play_reset, int paused, Func *input)
+Func *pause_create(int key, bool play_reset, bool paused, Func *input)
 {
     PauseContext initial = {
         .parent = {.handle_event = pause_handle_event},

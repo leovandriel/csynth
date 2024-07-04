@@ -16,16 +16,16 @@ typedef struct
     ControlEventContext parent;
     ControlEventKey key;
     double value;
-    int reset;
+    bool reset;
 } PadContext;
 
-static double pad_eval(__U int count, __U Gen **args, Eval *eval, void *context_)
+static double pad_eval(__U size_t count, __U Gen **args, Eval *eval, void *context_)
 {
     PadContext *context = (PadContext *)context_;
-    if (context->reset != 0)
+    if (context->reset)
     {
         gen_reset(args[0]);
-        context->reset = 0;
+        context->reset = false;
     }
     double input = gen_eval(args[0], eval);
     return input * context->value;
@@ -37,11 +37,11 @@ static void pad_handle_event(ControlEvent *event, void *context_)
     if (control_event_key_equal(event->key, context->key) && event->key.midi.type == MidiTypeNoteOn)
     {
         context->value = (double)event->key.midi.data2 / 127.0;
-        context->reset = 1;
+        context->reset = true;
     }
 }
 
-static int pad_init(__U int count, __U Gen **args, void *context_)
+static bool pad_init(__U size_t count, __U Gen **args, void *context_)
 {
     PadContext *context = (PadContext *)context_;
     csError error = control_event_add(&context->parent);

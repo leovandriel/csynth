@@ -24,7 +24,7 @@ typedef struct
     size_t index;
 } DumpContext;
 
-static double dump_eval(__U int count, Gen **args, Eval *eval, void *context_)
+static double dump_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     DumpContext *context = (DumpContext *)context_;
     double input = gen_eval(args[0], eval);
@@ -71,7 +71,7 @@ static double dump_eval(__U int count, Gen **args, Eval *eval, void *context_)
     }
     context->dir = dir;
     context->output = input;
-    context->index += 1;
+    context->index++;
     return input;
 }
 

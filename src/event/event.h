@@ -13,8 +13,8 @@
 typedef enum
 {
     EventTypeNone = 0,
-    EventTypeControl = 1,
-    EventTypeState = 2
+    EventTypeControl,
+    EventTypeState,
 } EventType;
 
 typedef void (*event_handle_event)(EventType type, const void *event, void *context);

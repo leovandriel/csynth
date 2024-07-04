@@ -33,7 +33,7 @@ typedef struct
 static const size_t WAV_HEADER_SIZE = sizeof(WavHeader) - WAV_HEADER_(riff_type) - WAV_HEADER_(file_size);
 static const size_t WAV_HEADER_FORMAT_SIZE = WAV_HEADER_(format_type) + WAV_HEADER_(num_channels) + WAV_HEADER_(sample_rate) + WAV_HEADER_(byte_rate) + WAV_HEADER_(block_align) + WAV_HEADER_(bits_sample);
 
-csError wav_header_write(uint32_t sample_count, uint32_t channel_count, FILE *file, int sample_rate)
+csError wav_header_write(uint32_t sample_count, uint32_t channel_count, FILE *file, size_t sample_rate)
 {
     uint32_t data_size = sizeof(sample_t) * channel_count * sample_count;
     WavHeader header = {0};

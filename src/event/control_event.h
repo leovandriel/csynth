@@ -33,8 +33,8 @@ typedef struct
 typedef enum
 {
     ControlEventTypeNone = 0,
-    ControlEventTypeKeyboard = 1,
-    ControlEventTypeMidi = 2,
+    ControlEventTypeKeyboard,
+    ControlEventTypeMidi,
 } ControlEventType;
 
 typedef struct
@@ -160,12 +160,12 @@ csError control_event_remove(ControlEventContext *context)
     return csErrorNone;
 }
 
-csError control_event_init(__U int count, __U Gen **args, void *context)
+csError control_event_init(__U size_t count, __U Gen **args, void *context)
 {
     return control_event_add((ControlEventContext *)context);
 }
 
-void control_event_free(__U int count, void *context)
+void control_event_free(__U size_t count, void *context)
 {
     csError error = control_event_remove((ControlEventContext *)context);
     error_catch(error);

@@ -14,7 +14,7 @@ typedef struct
     double output;
 } SawContext;
 
-static double saw_eval(__U int count, Gen **args, Eval *eval, void *context_)
+static double saw_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     SawContext *context = (SawContext *)context_;
     double output = context->output;

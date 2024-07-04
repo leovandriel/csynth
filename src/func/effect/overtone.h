@@ -13,23 +13,23 @@
 
 Func *overtone(int range, Func *gain, Func *input) /* overtone_ */
 {
-    int count = abs(range);
+    size_t count = abs(range);
     Func **array = (Func **)malloc_(count * sizeof(Func *));
     if (array == NULL)
     {
         return error_null(csErrorMemoryAlloc);
     }
-    int sign = range < 0 ? -1 : 1;
-    for (int i = 0; i < count; i++)
+    double sign = range < 0 ? -1.0 : 1.0;
+    for (size_t i = 0; i < count; i++)
     {
-        Func *_gain = expo2(mul_((double)i / (count - 1), gain));
-        array[i] = mul(_gain, pitch_(exp2(i * sign), input));
+        Func *_gain = expo2(mul_((double)i / (double)(count - 1), gain));
+        array[i] = mul(_gain, pitch_(exp2((double)i * sign), input));
     }
     Func *output = add_create(count, array);
     free_(array);
     return output;
 }
 
-Func *overtone_(int count, double gain, Func *input) { return overtone(count, const_(gain), input); }
+Func *overtone_(int range, double gain, Func *input) { return overtone(range, const_(gain), input); }
 
 #endif // CSYNTH_OVERTONE_H

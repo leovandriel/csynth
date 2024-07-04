@@ -13,7 +13,7 @@ typedef struct
 {
     sample_t *buffer;
     size_t sample_count;
-    int channel_count;
+    size_t channel_count;
     double duration;
     uint32_t sample_rate;
 } ReaderSamples;
@@ -42,7 +42,7 @@ csError reader_read_file(ReaderSamples *samples, FILE *file)
     {
         return error_type_message(csErrorWav, "Unsupported WAV sample bits: %d", header.bits_sample);
     }
-    int channel_count = header.num_channels;
+    size_t channel_count = header.num_channels;
     uint32_t data_size = header.data_size;
     uint32_t sample_count = data_size / (sizeof(sample_t) * channel_count);
     double duration = sample_count / header.sample_rate;

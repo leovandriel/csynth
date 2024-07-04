@@ -19,27 +19,27 @@ typedef struct
     ControlEventKey key;
     Buffer buffer;
     size_t index;
-    int recording;
-    int reset;
+    bool recording;
+    bool reset;
 } LooperContext;
 
-static double looper_eval(__U int count, Gen **args, Eval *eval, void *context_)
+static double looper_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     LooperContext *context = (LooperContext *)context_;
     double tick = gen_eval(args[0], eval);
     size_t size = (size_t)(1.0 / tick);
     context->index = buffer_resize(&context->buffer, size, context->index, NULL);
     double *buffer = context->buffer.samples;
-    double output = 0;
+    double output = 0.0;
     if (buffer != NULL)
     {
         if (context->recording)
         {
-            if (context->reset != 0)
+            if (context->reset)
             {
                 gen_reset(args[1]);
                 buffer_fill(&context->buffer, NULL);
-                context->reset = 0;
+                context->reset = false;
             }
             output = gen_eval(args[1], eval);
             buffer[context->index] = output;
@@ -61,13 +61,13 @@ static void looper_handle_event(ControlEvent *event, void *context_)
         context->recording = !context->recording;
         if (context->recording)
         {
-            context->reset = 1;
+            context->reset = true;
         }
         state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeBoolInv, &context->recording);
     }
 }
 
-static int looper_init(__U int count, __U Gen **args, void *context_)
+static bool looper_init(__U size_t count, __U Gen **args, void *context_)
 {
     LooperContext *context = (LooperContext *)context_;
     state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeBoolInv, &context->recording);
@@ -75,7 +75,7 @@ static int looper_init(__U int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-static void looper_free(__U int count, void *context_)
+static void looper_free(__U size_t count, void *context_)
 {
     LooperContext *context = (LooperContext *)context_;
     buffer_free(&context->buffer);

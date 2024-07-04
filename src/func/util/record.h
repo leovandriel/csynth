@@ -17,14 +17,14 @@ typedef struct
     size_t size;
     const char *filename;
     FILE *file;
-    int sample_rate;
+    size_t sample_rate;
 } RecordContext;
 
-static double record_eval(int count, Gen **args, Eval *eval, void *context_)
+static double record_eval(size_t count, Gen **args, Eval *eval, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
-    double sum = 0;
-    for (int channel = 0; channel < count; channel++)
+    double sum = 0.0;
+    for (size_t channel = 0; channel < count; channel++)
     {
         double output = gen_eval(args[channel], eval);
         context->buffer[context->offset++] = sampler_quantize(output);
@@ -39,7 +39,7 @@ static double record_eval(int count, Gen **args, Eval *eval, void *context_)
     return sum;
 }
 
-static int record_init(int count, __U Gen **args, void *context_)
+static bool record_init(size_t count, __U Gen **args, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
     FILE *file = fopen(context->filename, "wb");
@@ -52,7 +52,7 @@ static int record_init(int count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
-static void record_free(int count, void *context_)
+static void record_free(size_t count, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
     size_t write_count = fwrite(context->buffer, sizeof(sample_t), context->offset, context->file);
@@ -75,7 +75,7 @@ static void record_free(int count, void *context_)
     }
 }
 
-Func *record_create(const char *filename, int sample_rate, int count, Func **args)
+Func *record_create(const char *filename, size_t sample_rate, size_t count, Func **args)
 {
     RecordContext initial = {
         .filename = filename,

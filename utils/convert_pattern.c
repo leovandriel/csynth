@@ -15,13 +15,13 @@ void write(KeyList list, double step, int key, FILE *file)
 {
     TimedKeyboardEvent *current = list;
     double start = current->time;
-    int offset = (int)(start / step);
-    for (int i = offset; current; i++)
+    size_t offset = (size_t)(start / step);
+    for (size_t i = offset; current; i++)
     {
         int chr = ' ';
         while (current)
         {
-            int event_index = (int)lround(current->time / step);
+            size_t event_index = lround(current->time / step);
             if (event_index > i)
             {
                 break;

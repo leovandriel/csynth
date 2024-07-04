@@ -4,7 +4,9 @@
 #ifndef CSYNTH_DEF_H
 #define CSYNTH_DEF_H
 
+#include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #define __U __attribute__((unused))
 
@@ -21,7 +23,7 @@ typedef enum
 
 typedef enum
 {
-    EvalTickNone,
+    EvalTickNone = 0,
     EvalTickPitch,
     EvalTickTempo,
     EvalTickSustain,
@@ -39,21 +41,21 @@ typedef struct
     size_t error_count;
 } Eval;
 
-typedef double (*eval_callback)(int count, Gen **args, Eval *eval, void *context);
-typedef int (*init_callback)(int count, Gen **args, void *context);
-typedef void (*free_callback)(int count, void *context);
+typedef double (*eval_callback)(size_t count, Gen **args, Eval *eval, void *context);
+typedef bool (*init_callback)(size_t count, Gen **args, void *context);
+typedef void (*free_callback)(size_t count, void *context);
 
 // Represents a function (R -> Rn) that takes one or more inputs and outputs a single value.
 struct Func
 {
     Func **args;
-    int count;
+    size_t count;
     size_t size;
     void *initial;
     init_callback init_cb;
     eval_callback eval_cb;
     free_callback free_cb;
-    unsigned int flags;
+    uint32_t flags;
     Func *next;
 };
 

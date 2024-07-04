@@ -6,22 +6,20 @@
 #ifndef CSYNTH_ADD_H
 #define CSYNTH_ADD_H
 
-#include <stdarg.h>
-
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-static double add_eval(int count, Gen **args, Eval *eval, __U void *context)
+static double add_eval(size_t count, Gen **args, Eval *eval, __U void *context)
 {
     double sum = 0;
-    for (int i = 0; i < count; i++)
+    for (size_t i = 0; i < count; i++)
     {
         sum += gen_eval(args[i], eval);
     }
     return sum;
 }
 
-Func *add_create(int count, Func **args)
+Func *add_create(size_t count, Func **args)
 {
     return func_create(NULL, add_eval, NULL, 0, NULL, FuncFlagNone, count, args);
 }
