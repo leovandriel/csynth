@@ -6,12 +6,12 @@
 
 #include "./def.h"
 
-Eval eval_create(double value)
+Eval eval_create(double tick)
 {
-    Eval eval = {.wall_tick = value};
-    for (EvalTick tick = EvalTickNone; tick < EvalTickLength; tick++)
+    Eval eval = {.wall_tick = tick};
+    for (EvalTick type = EvalTickNone; type < EvalTickLength; type++)
     {
-        eval.tick[tick] = value;
+        eval.tick[type] = tick;
     }
     return eval;
 }

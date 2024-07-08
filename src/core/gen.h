@@ -23,7 +23,10 @@ void gen_free(Gen *gen)
     {
         for (size_t i = 0; i < func->count; i++)
         {
-            gen_free(gen->args[i]);
+            if (gen->args[i] != NULL)
+            {
+                gen_free(gen->args[i]);
+            }
         }
         free_(gen->args);
     }
@@ -92,19 +95,27 @@ Gen *gen_create(Func *func)
     }
     for (size_t i = 0; i < func->count; i++)
     {
-        Gen *arg = gen_create(func->args[i]);
-        if (arg == NULL)
+        if (func->args[i])
         {
-            for (size_t j = 0; j < i; j++)
+
+            Gen *arg = gen_create(func->args[i]);
+            if (arg == NULL)
             {
-                gen_free(args[j]);
+                for (size_t j = 0; j < i; j++)
+                {
+                    gen_free(args[j]);
+                }
+                free_(args);
+                free_(context);
+                free_(reset);
+                return NULL;
             }
-            free_(args);
-            free_(context);
-            free_(reset);
-            return NULL;
+            args[i] = arg;
         }
-        args[i] = arg;
+        else
+        {
+            args[i] = NULL;
+        }
     }
     if (func->init_cb != NULL)
     {
@@ -179,7 +190,10 @@ size_t gen_count(Gen *gen)
     size_t sum = 1;
     for (size_t i = 0; i < gen->func->count; i++)
     {
-        sum += gen_count(gen->args[i]);
+        if (gen->args[i] != NULL)
+        {
+            sum += gen_count(gen->args[i]);
+        }
     }
     return sum;
 }

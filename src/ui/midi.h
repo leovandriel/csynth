@@ -105,7 +105,7 @@ double midi_time()
     return (double)Pt_Time() / 1000.0;
 }
 
-void midi_loop(__U double duration, int exit_key)
+void midi_loop(double duration, int exit_key)
 {
     MidiContext context = {0};
     csError error = midi_initialize(&context);
@@ -116,10 +116,16 @@ void midi_loop(__U double duration, int exit_key)
     }
     struct termios term = terminal_setup(0);
     signal(SIGINT, terminal_handler);
+    double start = midi_time();
     while (!terminal_signaled())
     {
         int key = terminal_read(exit_key);
         if (key < 0)
+        {
+            break;
+        }
+        double time = midi_time();
+        if (duration > 0 && time > start + duration)
         {
             break;
         }

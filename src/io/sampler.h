@@ -12,6 +12,7 @@
 #define SAMPLE_RATE 44100 // 44.1 kHz
 #define DISPLAY_RATE 10   // 10 FPS
 #define CONTROL_RATE 100  // 100 FPS
+#define COMPUTE_RATE 1000 // 1000 FPS
 #define VOLUME_MULTIPLIER 0.5
 
 typedef int16_t sample_t;
@@ -39,8 +40,9 @@ Sampler *sampler_create(size_t sample_rate, size_t count, Func **inputs)
     for (size_t index = 0; index < count; index++)
     {
         Func *input = inputs[index];
-        input = scale_(EvalTickControl, CONTROL_RATE, input);
         input = scale_(EvalTickDisplay, DISPLAY_RATE, input);
+        input = scale_(EvalTickControl, CONTROL_RATE, input);
+        input = scale_(EvalTickCompute, COMPUTE_RATE, input);
         Gen *channel = gen_create(input);
         if (channel == NULL)
         {

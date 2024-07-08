@@ -27,8 +27,9 @@ typedef enum
     EvalTickPitch,
     EvalTickTempo,
     EvalTickSustain,
-    EvalTickControl,
     EvalTickDisplay,
+    EvalTickControl,
+    EvalTickCompute,
     EvalTickLength // last
 } EvalTick;
 

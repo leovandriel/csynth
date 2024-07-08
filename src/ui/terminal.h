@@ -103,11 +103,11 @@ void terminal_loop(double duration, int exit_key)
     while (!terminal_signaled())
     {
         int key = terminal_read(exit_key);
-        double time = terminal_time();
         if (key < 0)
         {
             break;
         }
+        double time = terminal_time();
         if (duration > 0 && time > start + duration)
         {
             break;

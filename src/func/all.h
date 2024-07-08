@@ -32,6 +32,7 @@
 #include "./effect/reverb.h"
 #include "./effect/unison.h"
 #include "./filter/adsr.h"
+#include "./filter/biquad.h"
 #include "./filter/chorus.h"
 #include "./filter/compressor.h"
 #include "./filter/distortion.h"
