@@ -50,6 +50,7 @@
 #include "./gen/gens.h"
 #include "./gen/karplus_strong.h"
 #include "./gen/notes.h"
+#include "./gen/pink.h"
 #include "./gen/sample.h"
 #include "./gen/saw.h"
 #include "./gen/sine.h"

@@ -10,6 +10,7 @@
 #include "./crack.h"
 #include "./gauss.h"
 #include "./karplus_strong.h"
+#include "./pink.h"
 #include "./sample.h"
 #include "./saw.h"
 #include "./sine.h"
@@ -40,6 +41,8 @@ Func *wav(const char *filename) { return wav_filename(filename, 0, pitch_ticker_
 Func *wav_() { return wav(DEFAULT_WAV_FILENAME); }
 
 Func *uniform() { return uniform_create(); }
+Func *white() { return uniform_create(); }
+Func *pink() { return pink_create(); }
 Func *gauss() { return gauss_create(); }
 Func *sample() { return sample_create(); }
 Func *crack(Func *frequency) { return crack_create(pitch_ticker(frequency)); }
