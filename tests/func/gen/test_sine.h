@@ -1,13 +1,11 @@
-#include "../../../src/func/gen/gens.h"
+#include "../../../src/func/gen/const.h"
 #include "../../../src/func/gen/sine.h"
-#include "../../../src/func/time/ticker.h"
 #include "../../../src/func/time/times.h"
 #include "../../util/test.h"
 
-void test_sine_const()
+void test_sine_exact()
 {
-    Func *time = sine_create(pitch_ticker_(1));
-    Gen *gen = gen_create(time);
+    Gen *gen = gen_create(sine_create(const_(0.1)));
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, &eval), 0.5877852522924731);
@@ -26,7 +24,7 @@ void test_sine_const()
 
 void test_sine_timer()
 {
-    Func *time = sine(pitch_timer_(1));
+    Func *time = sine_create(timer_create(const_(.01)));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), 0.0000000000000000);
@@ -44,9 +42,22 @@ void test_sine_timer()
     gen_free(gen);
 }
 
+void test_sine_range()
+{
+    for (size_t i = 0; i < 100; i++)
+    {
+        Gen *gen = gen_create(sine_create(const_(0.1)));
+        Eval eval = eval_create(0.1);
+        assert_double_range(gen_eval(gen, &eval), -1.0, 1.0);
+        gen_free(gen);
+    }
+    func_free();
+}
+
 void test_sine()
 {
-    test_sine_const();
+    test_sine_exact();
     test_sine_timer();
+    test_sine_range();
     func_free();
 }
