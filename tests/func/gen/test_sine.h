@@ -1,6 +1,6 @@
 #include "../../../src/func/gen/const.h"
 #include "../../../src/func/gen/sine.h"
-#include "../../../src/func/time/times.h"
+#include "../../../src/func/op/sum.h"
 #include "../../util/test.h"
 
 void test_sine_exact()
@@ -22,9 +22,9 @@ void test_sine_exact()
     gen_free(gen);
 }
 
-void test_sine_timer()
+void test_sine_incremental()
 {
-    Func *time = sine_create(timer_create(const_(.01)));
+    Func *time = sine_create(sum_create(const_(.01)));
     Gen *gen = gen_create(time);
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), 0.0000000000000000);
@@ -57,7 +57,7 @@ void test_sine_range()
 void test_sine()
 {
     test_sine_exact();
-    test_sine_timer();
+    test_sine_incremental();
     test_sine_range();
     func_free();
 }

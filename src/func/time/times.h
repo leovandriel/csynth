@@ -8,7 +8,6 @@
 #include "../op/ops.h"
 #include "./scale.h"
 #include "./ticker.h"
-#include "./timer.h"
 
 Func *scale(EvalTick tick, Func *factor, Func *input) { return scale_create(tick, factor, input); }
 Func *scale_(EvalTick tick, double factor, Func *input) { return scale(tick, const_(factor), input); }
@@ -16,8 +15,8 @@ Func *scale_(EvalTick tick, double factor, Func *input) { return scale(tick, con
 Func *ticker(EvalTick tick, Func *factor) { return scale(tick, factor, ticker_create(tick)); }
 Func *ticker_(EvalTick tick, double factor) { return ticker(tick, const_(factor)); }
 
-Func *timer(EvalTick tick, Func *factor) { return timer_create(ticker(tick, factor)); }
-Func *timer_(EvalTick tick, double factor) { return timer(tick, const_(factor)); }
+Func *timer(EvalTick tick, Func *increment) { return sum(ticker(tick, increment)); }
+Func *timer_(EvalTick tick, double increment) { return timer(tick, const_(increment)); }
 
 Func *pitch_ticker(Func *factor) { return ticker(EvalTickPitch, factor); }
 Func *pitch_ticker_(double factor) { return pitch_ticker(const_(factor)); }

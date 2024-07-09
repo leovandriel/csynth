@@ -263,7 +263,7 @@ These controls can be combined to create a
     play(keyboard(trigger, decay_(.5, sine(C4))));
 ```
 
-Keyboard strokes can also be recorded and replayed with
+Key strokes can also be recorded and replayed with
 [track](src/func/control/track.h) and [replay](src/func/control/replay.h). Key
 events are managed by [keyboard_event](src/event/keyboard_event.h). To exit, the
 `Esc` key is directly handled by `play`.

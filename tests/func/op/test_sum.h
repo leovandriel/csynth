@@ -1,10 +1,10 @@
-#include "../../../src/func/time/times.h"
+#include "../../../src/func/gen/const.h"
+#include "../../../src/func/op/sum.h"
 #include "../../util/test.h"
 
-void test_timer()
+void test_sum()
 {
-    Func *time = pitch_timer_(1);
-    Gen *gen = gen_create(time);
+    Gen *gen = gen_create(sum_create(const_(0.1)));
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), 0.0);
     assert_double_equal(gen_eval(gen, &eval), 0.1);
