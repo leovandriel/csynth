@@ -66,6 +66,7 @@
 #include "./op/neg.h"
 #include "./op/ops.h"
 #include "./op/pow.h"
+#include "./op/prod.h"
 #include "./op/sin.h"
 #include "./op/smooth.h"
 #include "./op/step.h"
