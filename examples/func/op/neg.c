@@ -4,7 +4,7 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
+    // Negated note
+    func note = neg(sine(C4));
     return play(note);
 }

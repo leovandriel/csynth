@@ -4,7 +4,7 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
+    // Fade asympotically to zero
+    func note = mul(sine(C4), inv(pitch_timer_(10)));
     return play(note);
 }

@@ -4,7 +4,7 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
+    // emulate sine wave with a timer
+    func note = sin_op(pitch_timer_(2000));
     return play(note);
 }

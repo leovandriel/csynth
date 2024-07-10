@@ -4,7 +4,7 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
+    // Fade in using smooth step
+    func note = smooth_(0.1, 0.9, sine(C4));
     return play(note);
 }

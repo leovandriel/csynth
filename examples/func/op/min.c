@@ -4,7 +4,7 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
+    // Linear increase with maximum value
+    func note = mul(sine(C4), min_(0.5, pitch_timer_(1.0)));
     return play(note);
 }

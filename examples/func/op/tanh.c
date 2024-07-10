@@ -4,7 +4,7 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
+    // tanh distortion
+    func note = tanh_op(sine(C4));
     return play(note);
 }

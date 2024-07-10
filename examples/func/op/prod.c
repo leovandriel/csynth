@@ -5,6 +5,6 @@
 int main()
 {
     // play frequency that increases exponentially
-    func note = sine(prod_create(const_(1.00005)));
+    func note = sine(prod(const_(1.00005)));
     return play(note);
 }

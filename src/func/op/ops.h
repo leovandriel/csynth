@@ -17,6 +17,7 @@
 #include "./mul.h"
 #include "./neg.h"
 #include "./pow.h"
+#include "./prod.h"
 #include "./sin.h"
 #include "./smooth.h"
 #include "./step.h"
@@ -47,6 +48,7 @@ Func *expo2(Func *input) { return pow_op(const_(2), input); }
 Func *sin_op(Func *input) { return sin_create(input); }
 Func *tanh_op(Func *input) { return tanh_create(input); }
 Func *sum(Func *input) { return sum_create(input); }
+Func *prod(Func *input) { return prod_create(input); }
 
 #define min(...) (min_create(FUNCS(__VA_ARGS__)))
 Func *min_(double max, Func *input) { return min(const_(max), input); }

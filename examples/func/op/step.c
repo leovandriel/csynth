@@ -4,7 +4,7 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
+    // Step function
+    func note = step_(0.5, sine(C4));
     return play(note);
 }

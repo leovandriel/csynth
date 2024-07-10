@@ -4,7 +4,7 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
+    // Linear fade with minimum value
+    func note = mul(sine(C4), max_(0.1, sub(ONE, pitch_timer_(1.0))));
     return play(note);
 }

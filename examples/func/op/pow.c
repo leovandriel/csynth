@@ -4,7 +4,7 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
+    // Exponential increase in frequency
+    func note = sine(pow_op(C4, pitch_timer_(1)));
     return play(note);
 }
