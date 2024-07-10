@@ -5,8 +5,7 @@
 void test_unison()
 {
     rand_seed(0);
-    Func *time = pitch_(0.1, unison_(5, 0.1, saw_(1)));
-    Gen *gen = gen_create(time);
+    Gen *gen = gen_create(pitch_(0.1, unison_(5, 0.1, saw_(1))));
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, &eval), 0.0212456065397963);

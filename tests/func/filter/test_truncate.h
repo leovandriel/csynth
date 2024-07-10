@@ -17,7 +17,6 @@ void test_truncate_miss()
     assert_double_equal(gen_eval(gen, &eval), 1.0);
     assert_double_equal(gen_eval(gen, &eval), 0.0);
     gen_free(gen);
-    func_free();
 }
 
 void test_truncate_hit()
@@ -39,11 +38,11 @@ void test_truncate_hit()
     assert_double_equal(gen_eval(gen, &eval), 0.0);
     assert_double_equal(gen_eval(gen, &eval), 0.0);
     gen_free(gen);
-    func_free();
 }
 
 void test_truncate()
 {
     test_truncate_miss();
     test_truncate_hit();
+    func_free();
 }

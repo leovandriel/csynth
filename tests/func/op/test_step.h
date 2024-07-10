@@ -1,24 +1,22 @@
-#include "../../../src/func/op/ops.h"
+#include "../../../src/func/gen/const.h"
 #include "../../../src/func/op/step.h"
-#include "../../../src/func/time/times.h"
+#include "../../../src/func/op/sum.h"
 #include "../../util/test.h"
 
 void test_step()
 {
-    Func *time = step_op(const_(0.5), pitch_timer_(1));
-    Gen *gen = gen_create(time);
-    Eval eval = eval_create(0.1);
-    assert_double_equal(gen_eval(gen, &eval), 0.0);
-    assert_double_equal(gen_eval(gen, &eval), 0.0);
-    assert_double_equal(gen_eval(gen, &eval), 0.0);
-    assert_double_equal(gen_eval(gen, &eval), 0.0);
-    assert_double_equal(gen_eval(gen, &eval), 0.0);
-    assert_double_equal(gen_eval(gen, &eval), 1.0);
-    assert_double_equal(gen_eval(gen, &eval), 1.0);
-    assert_double_equal(gen_eval(gen, &eval), 1.0);
-    assert_double_equal(gen_eval(gen, &eval), 1.0);
-    assert_double_equal(gen_eval(gen, &eval), 1.0);
-    assert_double_equal(gen_eval(gen, &eval), 1.0);
+    Gen *gen = gen_create(step_create(const_(0.5), sum_create(const_(0.1))));
+    assert_double_equal(gen_eval(gen, NULL), 0.0);
+    assert_double_equal(gen_eval(gen, NULL), 0.0);
+    assert_double_equal(gen_eval(gen, NULL), 0.0);
+    assert_double_equal(gen_eval(gen, NULL), 0.0);
+    assert_double_equal(gen_eval(gen, NULL), 0.0);
+    assert_double_equal(gen_eval(gen, NULL), 1.0);
+    assert_double_equal(gen_eval(gen, NULL), 1.0);
+    assert_double_equal(gen_eval(gen, NULL), 1.0);
+    assert_double_equal(gen_eval(gen, NULL), 1.0);
+    assert_double_equal(gen_eval(gen, NULL), 1.0);
+    assert_double_equal(gen_eval(gen, NULL), 1.0);
     gen_free(gen);
     func_free();
 }

@@ -6,8 +6,7 @@
 
 void test_resonant()
 {
-    Func *time = resonant(const_(2), const_(1), square_create(pitch_ticker_(1)));
-    Gen *gen = gen_create(time);
+    Gen *gen = gen_create(resonant(const_(2), const_(1), square_create(pitch_ticker_(1))));
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), 1.0000000000000000);
     assert_double_equal(gen_eval(gen, &eval), -0.3554467621723905);

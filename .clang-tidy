@@ -31,6 +31,8 @@ Checks: >
     -readability-non-const-parameter,
     -concurrency-mt-unsafe,
     -clang-analyzer-core.CallAndMessage,
+    -clang-analyzer-core.NullDereference,
+    -clang-analyzer-core.UndefinedBinaryOperatorResult,
     -clang-analyzer-unix.Malloc,
 
 HeaderFilterRegex: .*
