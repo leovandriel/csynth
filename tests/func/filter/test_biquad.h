@@ -7,7 +7,7 @@
 void test_lowpass()
 {
     rand_seed(0);
-    Gen *gen = gen_create(biquad_create(BiquadTypeLowpass, const_(0.1), const_(1.0), NULL, uniform_create()));
+    Gen *gen = gen_create(lowpass_create(const_(0.1), const_(1.0), uniform_create()));
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), -0.0645759339514222);
     assert_double_equal(gen_eval(gen, &eval), -0.1942688533481121);
@@ -27,7 +27,7 @@ void test_lowpass()
 void test_highpass()
 {
     rand_seed(0);
-    Gen *gen = gen_create(biquad_create(BiquadTypeHighpass, const_(0.1), const_(1.0), NULL, uniform_create()));
+    Gen *gen = gen_create(highpass_create(const_(0.1), const_(1.0), uniform_create()));
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), -0.6116720258089448);
     assert_double_equal(gen_eval(gen, &eval), 0.6065471125005860);
@@ -39,15 +39,15 @@ void test_highpass()
     assert_double_equal(gen_eval(gen, &eval), -0.4850992909031182);
     assert_double_equal(gen_eval(gen, &eval), -0.1853761443086120);
     assert_double_equal(gen_eval(gen, &eval), -0.3889457495140732);
-    assert_double_equal(gen_eval(gen, &eval), 1.2408180392336634);
-    assert_double_equal(gen_eval(gen, &eval), -0.2698861192066698);
+    assert_double_equal(gen_eval(gen, &eval), 1.2408180392336641);
+    assert_double_equal(gen_eval(gen, &eval), -0.2698861192066693);
     gen_free(gen);
 }
 
 void test_bandpass()
 {
     rand_seed(0);
-    Gen *gen = gen_create(biquad_create(BiquadTypeBandpass, const_(0.1), const_(1.0), NULL, uniform_create()));
+    Gen *gen = gen_create(bandpass_create(const_(0.1), const_(1.0), uniform_create()));
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), -0.1987442888200088);
     assert_double_equal(gen_eval(gen, &eval), -0.2004094740953807);
@@ -67,7 +67,7 @@ void test_bandpass()
 void test_notch()
 {
     rand_seed(0);
-    Gen *gen = gen_create(biquad_create(BiquadTypeNotch, const_(0.1), const_(1.0), NULL, uniform_create()));
+    Gen *gen = gen_create(notch_create(const_(0.1), const_(1.0), uniform_create()));
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), -0.6762479597603671);
     assert_double_equal(gen_eval(gen, &eval), 0.4122782591524741);
@@ -87,7 +87,7 @@ void test_notch()
 void test_peak()
 {
     rand_seed(0);
-    Gen *gen = gen_create(biquad_create(BiquadTypePeak, const_(0.1), const_(1.0), const_(1.0), uniform_create()));
+    Gen *gen = gen_create(peak_create(const_(0.1), const_(1.0), const_(1.0), uniform_create()));
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), -0.8749922485803759);
     assert_double_equal(gen_eval(gen, &eval), 0.2118687850570933);
@@ -104,10 +104,30 @@ void test_peak()
     gen_free(gen);
 }
 
+void test_allpass()
+{
+    rand_seed(0);
+    Gen *gen = gen_create(allpass_create(const_(0.1), const_(1.0), uniform_create()));
+    Eval eval = eval_create(0.1);
+    assert_double_equal(gen_eval(gen, &eval), -0.4775036709403583);
+    assert_double_equal(gen_eval(gen, &eval), 0.6126877332478549);
+    assert_double_equal(gen_eval(gen, &eval), 0.3870634248058179);
+    assert_double_equal(gen_eval(gen, &eval), -0.7589697012616468);
+    assert_double_equal(gen_eval(gen, &eval), 0.2032661452733457);
+    assert_double_equal(gen_eval(gen, &eval), -0.2978051317681647);
+    assert_double_equal(gen_eval(gen, &eval), 0.4082643455582575);
+    assert_double_equal(gen_eval(gen, &eval), 0.2434850558746500);
+    assert_double_equal(gen_eval(gen, &eval), 0.6041614068852474);
+    assert_double_equal(gen_eval(gen, &eval), 0.2988860759740655);
+    assert_double_equal(gen_eval(gen, &eval), 1.3928473330643090);
+    assert_double_equal(gen_eval(gen, &eval), -0.4999056152664765);
+    gen_free(gen);
+}
+
 void test_lowshelf()
 {
     rand_seed(0);
-    Gen *gen = gen_create(biquad_create(BiquadTypeLowshelf, const_(0.1), NULL, const_(1.0), uniform_create()));
+    Gen *gen = gen_create(lowshelf_create(const_(0.1), const_(1.0), uniform_create()));
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), -0.8749922485803759);
     assert_double_equal(gen_eval(gen, &eval), 0.2118687850570933);
@@ -127,7 +147,7 @@ void test_lowshelf()
 void test_highshelf()
 {
     rand_seed(0);
-    Gen *gen = gen_create(biquad_create(BiquadTypeHighshelf, const_(0.1), NULL, const_(1.0), uniform_create()));
+    Gen *gen = gen_create(highshelf_create(const_(0.1), const_(1.0), uniform_create()));
     Eval eval = eval_create(0.1);
     assert_double_equal(gen_eval(gen, &eval), -0.8749922485803759);
     assert_double_equal(gen_eval(gen, &eval), 0.2118687850570933);
@@ -151,6 +171,7 @@ void test_biquad()
     test_bandpass();
     test_notch();
     test_peak();
+    test_allpass();
     test_lowshelf();
     test_highshelf();
     func_free();
