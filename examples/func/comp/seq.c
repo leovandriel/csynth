@@ -4,7 +4,11 @@
 
 int main()
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
-    return play(note);
+    func melody = seq_loop_(2,
+                            seq_loop_(.25, C3, C4),
+                            seq_loop_(.25, Bb2, Bb3),
+                            seq_loop_(.25, F3, F4),
+                            seq_loop_(.25, Eb3, Eb4));
+    func fun = mul_(.1, saw(melody));
+    return play_duration(16, fun);
 }

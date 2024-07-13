@@ -15,6 +15,7 @@
 #define ARRAY_SIZE(__array) (sizeof((__array)) / sizeof((__array)[0]))
 #define ARRAY_ARGS(__array) ARRAY_SIZE(__array), (__array)
 #define FUNCS(...) ARRAY_ARGS(ARRAY(Func *, __VA_ARGS__))
+#define FUNCS_COUNT(...) ARRAY_SIZE(ARRAY(Func *, __VA_ARGS__))
 
 static const double FUNC_EPSILON = DBL_EPSILON * 2;
 static const double FUNC_AUDIBLE = 1e-3;
