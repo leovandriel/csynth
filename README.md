@@ -321,7 +321,7 @@ add a controlled unison effect:
     return play_midi(synth);
 ```
 
-The [knob](./src/func/control/knob.h) function listens for controller events on
+The [knob](./src/func/control/midi_value.h) function listens for controller events on
 channel 1 and number 70 and maps it to a range of 0.0 and 0.02. No more fiddling
 with numbers in code!
 

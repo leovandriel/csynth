@@ -54,7 +54,7 @@ Func *resonant_(double frequency, double q_factor, Func *input) { return resonan
 Func *compressor(Func *threshold, Func *ratio, Func *attack, Func *release, Func *input) { return compressor_create(threshold, ratio, dvd(param(EvalParamSustainTick), attack), dvd(param(EvalParamSustainTick), release), input); }
 Func *compressor_(double threshold, double ratio, double attack, double release, Func *input) { return compressor(const_(threshold), const_(ratio), const_(attack), const_(release), input); }
 
-Func *chorus(Func *modulation, Func *delay, Func *depth, Func *input) { return chorus_create(modulation, delay, depth, input); }
+Func *chorus(Func *modulation, Func *delay, Func *depth, Func *input) { return chorus_create(param(EvalParamPitchTick), modulation, delay, depth, input); }
 Func *chorus_(Func *modulation, double delay, double depth, Func *input) { return chorus(modulation, const_(delay), const_(depth), input); }
 
 Func *distortion(Func *shape, Func *input) { return distortion_create(shape, input); }

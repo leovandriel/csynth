@@ -12,11 +12,10 @@
 #include "../gen/gens.h"
 #include "../op/ops.h"
 #include "./actuate.h"
-#include "./bend.h"
 #include "./key.h"
 #include "./keyboard.h"
-#include "./knob.h"
 #include "./midi_keyboard.h"
+#include "./midi_value.h"
 #include "./mute.h"
 #include "./pad.h"
 #include "./pause.h"
@@ -52,7 +51,7 @@ Func *replay_(Func *input) { return replay(DEFAULT_REC_FILENAME, input); }
 
 Func *actuate(int key) { return actuate_create(key); }
 
-Func *knob_smooth(int channel, int control, Func *derivative) { return slope(derivative, knob_create(channel, control)); }
+Func *knob_smooth(int channel, int control, Func *derivative) { return slope(derivative, midi_value_create(MidiTypeController, channel, control)); }
 Func *knob(int channel, int control, Func *min, Func *max) { return linear_op(const_(1), min, max, knob_smooth(channel, control, const_(1))); }
 Func *knob_(int channel, int control, double min, double max) { return knob(channel, control, const_(min), const_(max)); }
 Func *knob_ex(int channel, int control, Func *min, Func *max) { return exponent_op(const_(1), min, max, knob_smooth(channel, control, const_(1))); }
@@ -60,7 +59,7 @@ Func *knob_ex_(int channel, int control, double min, double max) { return knob_e
 
 Func *key(int channel, int pitch, Func *input) { return key_create(channel, pitch, input); }
 Func *pad(int channel, int pad, Func *input) { return pad_create(channel, pad, input); }
-Func *bend(int channel, Func *factor, Func *input) { return bend_create(channel, factor, input); }
+Func *bend(int channel, Func *factor, Func *input) { return scale(EvalParamPitchTick, pow_op(factor, midi_value_create(MidiTypePitchBend, channel, 0)), input); }
 Func *bend_(int channel, double factor, Func *input) { return bend(channel, const_(factor), input); }
 
 Func *keyboard(keyboard_control_func control, Func *input) { return keyboard_create(KEYBOARD_SEMITONES, control, input); }

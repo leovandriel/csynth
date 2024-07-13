@@ -5,6 +5,6 @@
 int main()
 {
     // play C, D, E, C5
-    func fun = seq_fix_(1, saw(C4), saw(D4), saw(E4), saw(C5));
-    return play_duration(4, mul_(.1, fun));
+    func fun = tempo_(2, saw(seq_fix(C4, D4, E4, C5)));
+    return play_duration(2, mul_(.1, fun));
 }

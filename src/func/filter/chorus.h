@@ -23,13 +23,13 @@ typedef struct
 static double chorus_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     ChorusContext *context = (ChorusContext *)context_;
-    double modulation = gen_eval(args[0], eval);
-    double delay = gen_eval(args[1], eval);
-    double depth = gen_eval(args[2], eval);
-    double input = gen_eval(args[3], eval);
-    // TODO(leo): use tick
-    size_t size = (size_t)(delay / eval->params[EvalParamPitchTick]);
-    size_t offset = (size_t)(depth / eval->params[EvalParamPitchTick] * modulation + (double)size * 0.5);
+    double tick = gen_eval(args[0], eval);
+    double modulation = gen_eval(args[1], eval);
+    double delay = gen_eval(args[2], eval);
+    double depth = gen_eval(args[3], eval);
+    double input = gen_eval(args[4], eval);
+    size_t size = (size_t)(delay / tick);
+    size_t offset = (size_t)(depth / tick * modulation + (double)size * 0.5);
     // size_t offset = (size_t)(depth / eval.params[EvalParamPitchTick] * (modulation + 1) * 0.5);
     size_t index = (context->index + size - offset) % size;
     context->index = buffer_resize(&context->buffer, size, context->index, NULL);
@@ -46,9 +46,9 @@ static void chorus_free(__U size_t count, void *context_)
     buffer_free(&context->buffer);
 }
 
-Func *chorus_create(Func *modulation, Func *delay, Func *depth, Func *input)
+Func *chorus_create(Func *tick, Func *modulation, Func *delay, Func *depth, Func *input)
 {
-    return func_create(NULL, chorus_eval, chorus_free, sizeof(ChorusContext), NULL, FuncFlagNone, FUNCS(modulation, delay, depth, input));
+    return func_create(NULL, chorus_eval, chorus_free, sizeof(ChorusContext), NULL, FuncFlagNone, FUNCS(tick, modulation, delay, depth, input));
 }
 
 #endif // CSYNTH_CHORUS_H

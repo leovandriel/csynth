@@ -4,6 +4,6 @@
 
 int main()
 {
-    func note = loop_(2, seq_fix_(.5, bdrum(), hihat(), snare(), hihat()));
+    func note = loop_(1, tempo_(4, seq_fix(bdrum(), hihat(), snare(), hihat())));
     return play(note);
 }
