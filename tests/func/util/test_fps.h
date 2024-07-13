@@ -19,9 +19,9 @@ void test_fps()
         .handle_event = handle,
     };
     state_event_add(&context);
-    Func *input = fps_create("label", const_create(0));
+    Func *input = fps_create("label", const_(0));
     Gen *gen = gen_create(input);
-    Eval eval = eval_create(0.1);
+    Eval eval = {.wall_tick = 0.1};
     gen_eval(gen, &eval);
     gen_eval(gen, &eval);
     assert_long_equal(test_fps_flag_global, 1);

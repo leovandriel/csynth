@@ -1,17 +1,17 @@
 #include "../../../src/func/effect/continuous.h"
-#include "../../../src/func/effect/effects.h"
-#include "../../../src/func/filter/envelopes.h"
+#include "../../../src/func/effect/loop.h"
+#include "../../../src/func/gen/const.h"
+#include "../../../src/func/op/sum.h"
 #include "../../util/test.h"
 
 void test_continuous()
 {
-    Gen *gen = gen_create(loop_(2, continuous_create(linear_env_(1, 0, 1))));
-    Eval eval = eval_create(1.0);
-    assert_double_equal(gen_eval(gen, &eval), 0);
-    assert_double_equal(gen_eval(gen, &eval), 1);
-    assert_double_equal(gen_eval(gen, &eval), 2);
-    assert_double_equal(gen_eval(gen, &eval), 3);
-    assert_double_equal(gen_eval(gen, &eval), 4);
+    Gen *gen = gen_create(loop_create(const_(0.5), continuous_create(sum_create(const_(1)))));
+    assert_double_equal(gen_eval(gen, NULL), 0);
+    assert_double_equal(gen_eval(gen, NULL), 1);
+    assert_double_equal(gen_eval(gen, NULL), 2);
+    assert_double_equal(gen_eval(gen, NULL), 3);
+    assert_double_equal(gen_eval(gen, NULL), 4);
     gen_free(gen);
     func_free();
 }

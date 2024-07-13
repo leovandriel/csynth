@@ -10,7 +10,6 @@
 #include "../mem/alloc.h"
 #include "../util/error.h"
 #include "./def.h"
-#include "./eval.h"
 
 void gen_free(Gen *gen)
 {

@@ -54,12 +54,12 @@ Sampler *sampler_create(size_t sample_rate, size_t count, Func **inputs)
     }
     double tick = 1.0 / (double)sample_rate;
     Eval eval = {.wall_tick = tick};
-    eval.params[EvalParamControlTick] = CONTROL_RATE / (double)CONTROL_RATE;
-    eval.params[EvalParamDisplayTick] = DISPLAY_RATE / (double)CONTROL_RATE;
-    eval.params[EvalParamComputeTick] = COMPUTE_RATE / (double)CONTROL_RATE;
-    eval.params[EvalParamPitchTick] = 1.0 / (double)CONTROL_RATE;
-    eval.params[EvalParamTempoTick] = 1.0 / (double)CONTROL_RATE;
-    eval.params[EvalParamSustainTick] = 1.0 / (double)CONTROL_RATE;
+    eval.params[EvalParamControlTick] = CONTROL_RATE * tick;
+    eval.params[EvalParamDisplayTick] = DISPLAY_RATE * tick;
+    eval.params[EvalParamComputeTick] = COMPUTE_RATE * tick;
+    eval.params[EvalParamPitchTick] = tick;
+    eval.params[EvalParamTempoTick] = tick;
+    eval.params[EvalParamSustainTick] = tick;
     *sampler = (Sampler){
         .channels = channels,
         .count = count,
