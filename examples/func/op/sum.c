@@ -5,6 +5,6 @@
 int main()
 {
     // play frequency that increases 100 Hz every second
-    func note = sine(pitch_timer_(100));
+    func note = sine(mul_(100, timer(EvalParamPitchTick)));
     return play(note);
 }

@@ -12,7 +12,7 @@ int main()
     func hihat_ = loop_(.25, hihat());
     func snare_ = loop_(1, delay_(.5, snare()));
     func bdrum_ = loop_(1, mul(bdrum(), _(3)));
-    func angle = pitch_timer_(60);
+    func angle = mul_(60, timer(EvalParamPitchTick));
     func left = add(
         mul(hihat_, ear(add_(0, angle))),
         mul(snare_, ear(add_(120, angle))),

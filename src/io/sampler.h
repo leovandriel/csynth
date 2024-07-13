@@ -6,7 +6,6 @@
 
 #include "../core/func.h"
 #include "../core/gen.h"
-#include "../func/time/times.h"
 #include "../util/error.h"
 
 #define SAMPLE_RATE 44100 // 44.1 kHz
@@ -40,9 +39,6 @@ Sampler *sampler_create(size_t sample_rate, size_t count, Func **inputs)
     for (size_t index = 0; index < count; index++)
     {
         Func *input = inputs[index];
-        input = scale_(EvalTickDisplay, DISPLAY_RATE, input);
-        input = scale_(EvalTickControl, CONTROL_RATE, input);
-        input = scale_(EvalTickCompute, COMPUTE_RATE, input);
         Gen *channel = gen_create(input);
         if (channel == NULL)
         {
@@ -56,7 +52,14 @@ Sampler *sampler_create(size_t sample_rate, size_t count, Func **inputs)
         }
         channels[index] = channel;
     }
-    Eval eval = eval_create(1.0 / (double)sample_rate);
+    double tick = 1.0 / (double)sample_rate;
+    Eval eval = {.wall_tick = tick};
+    eval.params[EvalParamControlTick] = CONTROL_RATE / (double)CONTROL_RATE;
+    eval.params[EvalParamDisplayTick] = DISPLAY_RATE / (double)CONTROL_RATE;
+    eval.params[EvalParamComputeTick] = COMPUTE_RATE / (double)CONTROL_RATE;
+    eval.params[EvalParamPitchTick] = 1.0 / (double)CONTROL_RATE;
+    eval.params[EvalParamTempoTick] = 1.0 / (double)CONTROL_RATE;
+    eval.params[EvalParamSustainTick] = 1.0 / (double)CONTROL_RATE;
     *sampler = (Sampler){
         .channels = channels,
         .count = count,

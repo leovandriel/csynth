@@ -9,7 +9,7 @@
 #include "../../core/func.h"
 #include "../../util/error.h"
 #include "../op/add.h"
-#include "../time/times.h"
+#include "../util/time.h"
 
 typedef Func *(*keyboard_control_func)(int key, Func *input);
 

@@ -9,9 +9,9 @@
 Eval eval_create(double tick)
 {
     Eval eval = {.wall_tick = tick};
-    for (EvalTick type = EvalTickNone; type < EvalTickLength; type++)
+    for (EvalParam param = EvalParamNone; param < EvalParamLength; param++)
     {
-        eval.tick[type] = tick;
+        eval.params[param] = tick;
     }
     return eval;
 }

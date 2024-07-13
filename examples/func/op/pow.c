@@ -5,6 +5,6 @@
 int main()
 {
     // Exponential increase in frequency
-    func note = sine(pow_op(C4, pitch_timer_(1)));
+    func note = sine(pow_op(C4, timer(EvalParamPitchTick)));
     return play(note);
 }

@@ -20,10 +20,10 @@ static double bend_eval(__U size_t count, __U Gen **args, Eval *eval, void *cont
     BendContext *context = (BendContext *)context_;
     double factor = gen_eval(args[0], eval);
     double value = midi_state_get(MidiTypePitchBend, context->channel, 0);
-    double restore = eval->tick[EvalTickPitch];
-    eval->tick[EvalTickPitch] = restore * pow(factor, value);
+    double restore = eval->params[EvalParamPitchTick];
+    eval->params[EvalParamPitchTick] = restore * pow(factor, value);
     double input = gen_eval(args[1], eval);
-    eval->tick[EvalTickPitch] = restore;
+    eval->params[EvalParamPitchTick] = restore;
     return input;
 }
 

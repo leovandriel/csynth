@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/ticker -Wall -Wextra -O3 -lm -lportaudio -lportmidi && ./bin/ticker "$@"; exit $?
+//usr/bin/gcc "$0" -o bin/param -Wall -Wextra -O3 -lm -lportaudio -lportmidi && ./bin/param "$@"; exit $?
 #include "../../../src/func/all.h"
 #include "../../../src/io/midi_player.h"
 

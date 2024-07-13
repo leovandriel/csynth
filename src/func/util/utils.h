@@ -4,8 +4,9 @@
 #ifndef CSYNTH_UTILS_H
 #define CSYNTH_UTILS_H
 
+#include "../gen/param.h"
 #include "../op/inv.h"
-#include "../time/times.h"
+#include "../util/time.h"
 #include "./dump.h"
 #include "./fps.h"
 #include "./gauge.h"
@@ -17,11 +18,11 @@
 Func *gauge(const char *label, Func *input)
 {
     display_label(label);
-    return gauge_create(label, ticker_(EvalTickDisplay, 1), input);
+    return gauge_create(label, param_create(EvalParamDisplayTick), input);
 }
 
 Func *wrap(wrap_callback callback, Func *input, void *context) { return wrap_create(callback, input, context); }
-Func *wrap_(wrap_callback callback, void *context) { return wrap(callback, pitch_timer_(1), context); }
+Func *wrap_(wrap_callback callback, void *context) { return wrap(callback, timer(EvalParamPitchTick), context); }
 
 #define record_channels(_filename, _sample_rate, ...) (record_create(_filename, _sample_rate, FUNCS(__VA_ARGS__)))
 Func *record(const char *filename, Func *input) { return record_channels(filename, SAMPLE_RATE, input); }

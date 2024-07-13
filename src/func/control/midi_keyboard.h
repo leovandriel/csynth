@@ -40,10 +40,10 @@ static double midi_keyboard_eval(__U size_t count, __U Gen **args, Eval *eval, v
             gen_reset(args[i]);
             key->reset = false;
         }
-        double restore = eval->tick[EvalTickPitch];
-        eval->tick[EvalTickPitch] = restore * key->factor;
+        double restore = eval->params[EvalParamPitchTick];
+        eval->params[EvalParamPitchTick] = restore * key->factor;
         output += gen_eval(args[i], eval) * key->velocity;
-        eval->tick[EvalTickPitch] = restore;
+        eval->params[EvalParamPitchTick] = restore;
     }
     return output;
 }

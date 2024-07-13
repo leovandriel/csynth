@@ -5,6 +5,6 @@
 int main()
 {
     // Linear increase with maximum value
-    func note = mul(sine(C4), min_(0.5, pitch_timer_(1.0)));
+    func note = mul(sine(C4), min_(0.5, timer(EvalParamPitchTick)));
     return play(note);
 }

@@ -23,21 +23,21 @@ typedef enum
 
 typedef enum
 {
-    EvalTickNone = 0,
-    EvalTickPitch,
-    EvalTickTempo,
-    EvalTickSustain,
-    EvalTickDisplay,
-    EvalTickControl,
-    EvalTickCompute,
-    EvalTickLength // last
-} EvalTick;
+    EvalParamNone = 0,
+    EvalParamControlTick,
+    EvalParamDisplayTick,
+    EvalParamComputeTick,
+    EvalParamPitchTick,
+    EvalParamTempoTick,
+    EvalParamSustainTick,
+    EvalParamLength // last
+} EvalParam;
 
 typedef struct
 {
     double wall_time;
     double wall_tick;
-    double tick[EvalTickLength];
+    double params[EvalParamLength];
     size_t gen_count;
     size_t error_count;
 } Eval;

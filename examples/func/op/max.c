@@ -5,6 +5,6 @@
 int main()
 {
     // Linear fade with minimum value
-    func note = mul(sine(C4), max_(0.1, sub(ONE, pitch_timer_(1.0))));
+    func note = mul(sine(C4), max_(0.1, sub(ONE, timer(EvalParamPitchTick))));
     return play(note);
 }

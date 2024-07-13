@@ -22,13 +22,13 @@ func wobble_both()
 
 func modulate_pitch()
 {
-    func modulate = continuous(add_(.01, pitch_timer_(.5)));
+    func modulate = continuous(add_(.01, mul_(.5, timer(EvalParamPitchTick))));
     return beep_dynamic(modulate, ONE);
 }
 
 func modulate_speed()
 {
-    func modulate = continuous(add_(.01, pitch_timer_(.5)));
+    func modulate = continuous(add_(.01, mul_(.5, timer(EvalParamPitchTick))));
     return beep_dynamic(ONE, modulate);
 }
 

@@ -60,7 +60,7 @@ static double lowpass_eval(__U size_t count, Gen **args, Eval *eval, void *conte
         double ca0 = 1.0 + alpha;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->tick[EvalTickCompute]);
+    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
 }
 
 Func *lowpass_create(Func *tick, Func *qfactor, Func *input)
@@ -89,7 +89,7 @@ static double highpass_eval(__U size_t count, Gen **args, Eval *eval, void *cont
         double ca0 = 1.0 + alpha;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->tick[EvalTickCompute]);
+    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
 }
 
 Func *highpass_create(Func *tick, Func *qfactor, Func *input)
@@ -118,7 +118,7 @@ static double bandpass_eval(__U size_t count, Gen **args, Eval *eval, void *cont
         double ca0 = 1 + alpha;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->tick[EvalTickCompute]);
+    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
 }
 
 Func *bandpass_create(Func *tick, Func *qfactor, Func *input)
@@ -147,7 +147,7 @@ static double notch_eval(__U size_t count, Gen **args, Eval *eval, void *context
         double ca0 = 1 + alpha;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->tick[EvalTickCompute]);
+    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
 }
 
 Func *notch_create(Func *tick, Func *qfactor, Func *input)
@@ -179,7 +179,7 @@ static double peak_eval(__U size_t count, Gen **args, Eval *eval, void *context_
         double ca0 = 1 + adg;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->tick[EvalTickCompute]);
+    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
 }
 
 Func *peak_create(Func *tick, Func *qfactor, Func *gain, Func *input)
@@ -208,7 +208,7 @@ static double allpass_eval(__U size_t count, Gen **args, Eval *eval, void *conte
         double ca0 = context->cb2;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->tick[EvalTickCompute]);
+    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
 }
 
 Func *allpass_create(Func *tick, Func *qfactor, Func *input)
@@ -239,7 +239,7 @@ static double lowshelf_eval(__U size_t count, Gen **args, Eval *eval, void *cont
         double ca0 = gp1 + gm1 * cso + bsno;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->tick[EvalTickCompute]);
+    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
 }
 
 Func *lowshelf_create(Func *tick, Func *gain, Func *input)
@@ -270,7 +270,7 @@ static double highshelf_eval(__U size_t count, Gen **args, Eval *eval, void *con
         double ca0 = gp1 - gm1 * cso + bsno;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->tick[EvalTickCompute]);
+    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
 }
 
 Func *highshelf_create(Func *tick, Func *gain, Func *input)

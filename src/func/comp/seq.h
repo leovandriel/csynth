@@ -37,7 +37,7 @@ static double seq_eval_abs(size_t count, Gen **args, Eval *eval, void *context_)
             break;
         }
     }
-    context->time += eval->tick[EvalTickTempo];
+    context->time += eval->params[EvalParamTempoTick];
     return output;
 }
 
@@ -56,7 +56,7 @@ static double seq_eval_rel(size_t count, Gen **args, Eval *eval, void *context_)
             break;
         }
     }
-    context->time += eval->tick[EvalTickTempo];
+    context->time += eval->params[EvalParamTempoTick];
     return output;
 }
 
@@ -86,7 +86,7 @@ static double seq_eval_fix(size_t count, Gen **args, Eval *eval, void *context_)
     double duration = gen_eval(args[0], eval);
     // TODO(leo): use context->index and track time per interval (allowing variable duration)
     size_t index = (size_t)(context->time / duration) + 1;
-    context->time += eval->tick[EvalTickTempo];
+    context->time += eval->params[EvalParamTempoTick];
     return index < count ? gen_eval(args[index], eval) : 0;
 }
 

@@ -5,6 +5,6 @@
 int main()
 {
     // Fade asympotically to zero
-    func note = mul(sine(C4), inv(pitch_timer_(10)));
+    func note = mul(sine(C4), _(0.1), inv(timer(EvalParamPitchTick)));
     return play(note);
 }

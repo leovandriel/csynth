@@ -11,7 +11,6 @@
 #include "../filter/filters.h"
 #include "../gen/gens.h"
 #include "../op/ops.h"
-#include "../time/times.h"
 #include "./actuate.h"
 #include "./bend.h"
 #include "./key.h"
@@ -48,7 +47,7 @@ Func *stepper_rel(int key, double value, double perc) { return stepper_create(ke
 
 Func *track(const char *filename, Func *input) { return track_create(filename, input); }
 Func *track_(Func *input) { return track(DEFAULT_REC_FILENAME, input); }
-Func *replay(const char *filename, Func *input) { return replay_create(filename, tempo_ticker_(1), input); }
+Func *replay(const char *filename, Func *input) { return replay_create(filename, param_create(EvalParamTempoTick), input); }
 Func *replay_(Func *input) { return replay(DEFAULT_REC_FILENAME, input); }
 
 Func *actuate(int key) { return actuate_create(key); }

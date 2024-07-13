@@ -5,6 +5,6 @@
 int main()
 {
     // emulate sine wave with a timer
-    func note = sin_op(pitch_timer_(2000));
+    func note = sin_op(mul_(2000, timer(EvalParamPitchTick)));
     return play(note);
 }
