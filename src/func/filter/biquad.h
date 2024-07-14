@@ -25,7 +25,7 @@ static void biquad_scale(BiquadContext *context, double scale)
     context->ca2 *= scale;
 }
 
-static double biquad_process(BiquadContext *context, double input, double tick)
+static double biquad_process(BiquadContext *context, double input)
 {
     double output = context->cb0 * input +
                     context->cb1 * context->lx1 +
@@ -36,7 +36,6 @@ static double biquad_process(BiquadContext *context, double input, double tick)
     context->lx1 = input;
     context->ly2 = context->ly1;
     context->ly1 = output;
-    context->time += tick;
     return output;
 }
 
@@ -60,7 +59,8 @@ static double lowpass_eval(__U size_t count, Gen **args, Eval *eval, void *conte
         double ca0 = 1.0 + alpha;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
+    context->time += eval->params[EvalParamComputeTick];
+    return biquad_process(context, input);
 }
 
 Func *lowpass_create(Func *tick, Func *qfactor, Func *input)
@@ -89,7 +89,8 @@ static double highpass_eval(__U size_t count, Gen **args, Eval *eval, void *cont
         double ca0 = 1.0 + alpha;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
+    context->time += eval->params[EvalParamComputeTick];
+    return biquad_process(context, input);
 }
 
 Func *highpass_create(Func *tick, Func *qfactor, Func *input)
@@ -118,7 +119,8 @@ static double bandpass_eval(__U size_t count, Gen **args, Eval *eval, void *cont
         double ca0 = 1 + alpha;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
+    context->time += eval->params[EvalParamComputeTick];
+    return biquad_process(context, input);
 }
 
 Func *bandpass_create(Func *tick, Func *qfactor, Func *input)
@@ -147,7 +149,8 @@ static double notch_eval(__U size_t count, Gen **args, Eval *eval, void *context
         double ca0 = 1 + alpha;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
+    context->time += eval->params[EvalParamComputeTick];
+    return biquad_process(context, input);
 }
 
 Func *notch_create(Func *tick, Func *qfactor, Func *input)
@@ -179,7 +182,8 @@ static double peak_eval(__U size_t count, Gen **args, Eval *eval, void *context_
         double ca0 = 1 + adg;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
+    context->time += eval->params[EvalParamComputeTick];
+    return biquad_process(context, input);
 }
 
 Func *peak_create(Func *tick, Func *qfactor, Func *gain, Func *input)
@@ -208,7 +212,8 @@ static double allpass_eval(__U size_t count, Gen **args, Eval *eval, void *conte
         double ca0 = context->cb2;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
+    context->time += eval->params[EvalParamComputeTick];
+    return biquad_process(context, input);
 }
 
 Func *allpass_create(Func *tick, Func *qfactor, Func *input)
@@ -239,7 +244,8 @@ static double lowshelf_eval(__U size_t count, Gen **args, Eval *eval, void *cont
         double ca0 = gp1 + gm1 * cso + bsno;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
+    context->time += eval->params[EvalParamComputeTick];
+    return biquad_process(context, input);
 }
 
 Func *lowshelf_create(Func *tick, Func *gain, Func *input)
@@ -270,7 +276,8 @@ static double highshelf_eval(__U size_t count, Gen **args, Eval *eval, void *con
         double ca0 = gp1 - gm1 * cso + bsno;
         biquad_scale(context, 1.0 / ca0);
     }
-    return biquad_process(context, input, eval->params[EvalParamComputeTick]);
+    context->time += eval->params[EvalParamComputeTick];
+    return biquad_process(context, input);
 }
 
 Func *highshelf_create(Func *tick, Func *gain, Func *input)

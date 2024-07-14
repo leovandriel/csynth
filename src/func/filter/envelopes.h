@@ -37,12 +37,7 @@ Func *step_env_(double edge) { return step_env(const_(edge)); }
 Func *step(Func *edge, Func *input) { return mul(step_env(edge), input); }
 Func *step_(double edge, Func *input) { return step(const_(edge), input); }
 
-Func *step_inv_env(Func *edge) { return sub(ONE, step_env(edge)); }
-Func *step_inv_env_(double edge) { return step_inv_env(const_(edge)); }
-Func *step_inv(Func *edge, Func *input) { return mul(step_inv_env(edge), input); }
-Func *step_inv_(double edge, Func *input) { return step_inv(const_(edge), input); }
-
-Func *rect_env(Func *edge0, Func *edge1) { return mul(step_env(edge0), step_inv_env(edge1)); }
+Func *rect_env(Func *edge0, Func *edge1) { return mul(step_op(edge0, timer(EvalParamPitchTick)), step_op(timer(EvalParamPitchTick), edge1)); }
 Func *rect_env_(double edge0, double edge1) { return rect_env(const_(edge0), const_(edge1)); }
 Func *rect(Func *edge0, Func *edge1, Func *input) { return mul(rect_env(edge0, edge1), input); }
 Func *rect_(double edge0, double edge1, Func *input) { return rect(const_(edge0), const_(edge1), input); }
@@ -52,12 +47,7 @@ Func *smooth_env_(double edge0, double edge1) { return smooth_env(const_(edge0),
 Func *smooth(Func *edge0, Func *edge1, Func *input) { return mul(smooth_env(edge0, edge1), input); }
 Func *smooth_(double edge0, double edge1, Func *input) { return smooth(const_(edge0), const_(edge1), input); }
 
-Func *smooth_inv_env(Func *edge0, Func *edge1) { return sub(ONE, smooth_env(edge0, edge1)); }
-Func *smooth_inv_env_(double edge0, double edge1) { return smooth_inv_env(const_(edge0), const_(edge1)); }
-Func *smooth_inv(Func *edge0, Func *edge1, Func *input) { return mul(smooth_inv_env(edge0, edge1), input); }
-Func *smooth_inv_(double edge0, double edge1, Func *input) { return smooth_inv(const_(edge0), const_(edge1), input); }
-
-Func *rounded_env(Func *edge0, Func *edge1, Func *edge2, Func *edge3) { return mul(smooth_env(edge0, edge1), smooth_inv_env(edge2, edge3)); }
+Func *rounded_env(Func *edge0, Func *edge1, Func *edge2, Func *edge3) { return mul(smooth_env(edge0, edge1), smooth_env(edge3, edge2)); }
 Func *rounded_env_(double edge0, double edge1, double edge2, double edge3) { return rounded_env(const_(edge0), const_(edge1), const_(edge2), const_(edge3)); }
 Func *rounded(Func *edge0, Func *edge1, Func *edge2, Func *edge3, Func *input) { return mul(rounded_env(edge0, edge1, edge2, edge3), input); }
 Func *rounded_(double edge0, double edge1, double edge2, double edge3, Func *input) { return rounded(const_(edge0), const_(edge1), const_(edge2), const_(edge3), input); }

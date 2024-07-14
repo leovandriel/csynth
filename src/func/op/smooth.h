@@ -14,11 +14,11 @@ static double smooth_eval(__U size_t count, Gen **args, Eval *eval, __U void *co
     double edge0 = gen_eval(args[0], eval);
     double edge1 = gen_eval(args[1], eval);
     double input = gen_eval(args[2], eval);
-    if (input <= edge0)
+    if ((edge0 <= edge1 && input < edge0) || (edge0 > edge1 && input >= edge0))
     {
         return 0.0;
     }
-    if (input >= edge1)
+    if ((edge0 >= edge1 && input <= edge1) || (edge0 <= edge1 && input >= edge1))
     {
         return 1.0;
     }

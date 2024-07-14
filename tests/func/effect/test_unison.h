@@ -1,25 +1,25 @@
 #include "../../../src/func/effect/unison.h"
+#include "../../../src/func/gen/sample.h"
 #include "../../../src/func/gen/saw.h"
+#include "../../../src/util/rand.h"
 #include "../../util/test.h"
 
 void test_unison()
 {
     rand_seed(0);
-    Gen *gen = gen_create(pitch_(0.1, unison_(5, 0.1, saw_(1))));
-    Eval eval = {0};
-    eval.params[EvalParamPitchTick] = 0.1;
-    assert_double_equal(gen_eval(gen, &eval), 0.0000000000000000);
-    assert_double_equal(gen_eval(gen, &eval), 0.0212456065397963);
-    assert_double_equal(gen_eval(gen, &eval), 0.0424912130795926);
-    assert_double_equal(gen_eval(gen, &eval), 0.0637368196193888);
-    assert_double_equal(gen_eval(gen, &eval), 0.0849824261591851);
-    assert_double_equal(gen_eval(gen, &eval), 0.1062280326989814);
-    assert_double_equal(gen_eval(gen, &eval), 0.1274736392387776);
-    assert_double_equal(gen_eval(gen, &eval), 0.1487192457785740);
-    assert_double_equal(gen_eval(gen, &eval), 0.1699648523183702);
-    assert_double_equal(gen_eval(gen, &eval), 0.1912104588581665);
-    assert_double_equal(gen_eval(gen, &eval), 0.2124560653979627);
-    assert_double_equal(gen_eval(gen, &eval), 0.2337016719377590);
+    Gen *gen = gen_create(unison_create(5, saw_create(sample_create())));
+    assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
+    assert_double_equal(gen_eval(gen, NULL), -0.3543934602037305);
+    assert_double_equal(gen_eval(gen, NULL), 0.0912130795925390);
+    assert_double_equal(gen_eval(gen, NULL), -0.2631803806111916);
+    assert_double_equal(gen_eval(gen, NULL), 0.1824261591850779);
+    assert_double_equal(gen_eval(gen, NULL), -0.1719673010186527);
+    assert_double_equal(gen_eval(gen, NULL), -0.1263607612223832);
+    assert_double_equal(gen_eval(gen, NULL), -0.0807542214261137);
+    assert_double_equal(gen_eval(gen, NULL), -0.4351476816298442);
+    assert_double_equal(gen_eval(gen, NULL), -0.3895411418335748);
+    assert_double_equal(gen_eval(gen, NULL), -0.3439346020373054);
+    assert_double_equal(gen_eval(gen, NULL), -0.6983280622410359);
     gen_free(gen);
     func_free();
 }

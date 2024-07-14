@@ -8,9 +8,9 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../gen/gens.h"
-#include "../op/ops.h"
-#include "../util/time.h"
+#include "../gen/const.h"
+#include "../op/add.h"
+#include "../op/mul.h"
 
 Func *unison_create(size_t count, Func *input)
 {
@@ -23,15 +23,9 @@ Func *unison_create(size_t count, Func *input)
     {
         array[i] = input;
     }
-    Func *output = avg_create(count, array);
+    Func *output = mul_create(FUNCS(add_create(count, array), const_(1.0 / count)));
     free_(array);
     return output;
 }
-
-Func *unison(size_t count, Func *detune, Func *input) /* unison_ */
-{
-    return unison_create(count, pitch(add_(1, mul(detune, sample())), input));
-}
-Func *unison_(size_t count, double detune, Func *input) { return unison(count, const_(detune), input); }
 
 #endif // CSYNTH_UNISON_H

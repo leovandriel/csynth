@@ -5,11 +5,13 @@
 #define CSYNTH_EFFECTS_H
 
 #include "../gen/gens.h"
+#include "../util/time.h"
 #include "./continuous.h"
 #include "./delay.h"
 #include "./loop.h"
 #include "./looper.h"
 #include "./reverb.h"
+#include "./unison.h"
 
 Func *reverb(Func *interval, Func *decay, Func *input) { return reverb_create(dvd(param(EvalParamSustainTick), interval), decay, input); }
 Func *reverb_(double interval, double decay, Func *input) { return reverb(const_(interval), const_(decay), input); }
@@ -27,6 +29,9 @@ Func *looper_keyboard(int key, Func *interval, Func *input) { return looper_keyb
 Func *looper_keyboard_(int key, double interval, Func *input) { return looper_keyboard(key, const_(interval), input); }
 Func *looper_midi(int channel, int control, Func *interval, Func *input) { return looper_midi_create(channel, control, dvd(param(EvalParamTempoTick), interval), input); }
 Func *looper_midi_(int channel, int control, double interval, Func *input) { return looper_midi(channel, control, const_(interval), input); }
+
+Func *unison(size_t count, Func *detune, Func *input) { return unison_create(count, pitch(add_(1, mul(detune, sample())), input)); }
+Func *unison_(size_t count, double detune, Func *input) { return unison(count, const_(detune), input); }
 
 Func *continuous(Func *input) { return continuous_create(input); }
 
