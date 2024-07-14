@@ -19,7 +19,7 @@ static double sin_eval(__U size_t count, Gen **args, Eval *eval, __U void *conte
 
 Func *sin_create(Func *input)
 {
-    return func_create(NULL, sin_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(input));
+    return func_create(NULL, sin_eval, NULL, 0, NULL, FuncFlagNone, ARGS(input));
 }
 
 #endif // CSYNTH_SIN_H

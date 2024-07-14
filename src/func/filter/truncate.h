@@ -30,7 +30,7 @@ static double truncate_eval(__U size_t count, __U Gen **args, Eval *eval, void *
 Func *truncate_create(Func *tick, Func *input)
 {
     TruncateContext initial = {.level = 1.0};
-    return func_create(NULL, truncate_eval, NULL, sizeof(TruncateContext), &initial, FuncFlagNone, FUNCS(tick, input));
+    return func_create(NULL, truncate_eval, NULL, sizeof(TruncateContext), &initial, FuncFlagNone, ARGS(tick, input));
 }
 
 #endif // CSYNTH_TRUNCATE_H

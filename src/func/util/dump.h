@@ -85,7 +85,7 @@ Func *dump_create(size_t count, size_t step, Func *input)
         .count = count,
         .step = step,
     };
-    return func_create(NULL, dump_eval, NULL, sizeof(DumpContext), &initial, FuncFlagNone, FUNCS(input));
+    return func_create(NULL, dump_eval, NULL, sizeof(DumpContext), &initial, FuncFlagNone, ARGS(input));
 }
 
 #endif // CSYNTH_DUMP_H

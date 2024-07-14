@@ -19,7 +19,7 @@ static double step_eval(__U size_t count, Gen **args, Eval *eval, __U void *cont
 
 Func *step_create(Func *edge, Func *input)
 {
-    return func_create(NULL, step_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(edge, input));
+    return func_create(NULL, step_eval, NULL, 0, NULL, FuncFlagNone, ARGS(edge, input));
 }
 
 #endif // CSYNTH_STEP_H

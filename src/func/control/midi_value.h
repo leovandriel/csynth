@@ -31,7 +31,7 @@ Func *midi_value_create(MidiType type, int channel, int control)
         .channel = channel - 1,
         .data1 = control,
     };
-    return func_create(NULL, midi_value_eval, NULL, sizeof(MidiValueContext), &initial, FuncFlagSkipReset, FUNCS());
+    return func_create(NULL, midi_value_eval, NULL, sizeof(MidiValueContext), &initial, FuncFlagSkipReset, ARGS());
 }
 
 #endif // CSYNTH_MIDI_VALUE_H

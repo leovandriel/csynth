@@ -36,7 +36,7 @@ static double limit_eval(__U size_t count, Gen **args, Eval *eval, void *context
 
 Func *limit_create(Func *tick, Func *input)
 {
-    return func_create(NULL, limit_eval, NULL, sizeof(LimitContext), NULL, FuncFlagNone, FUNCS(tick, input));
+    return func_create(NULL, limit_eval, NULL, sizeof(LimitContext), NULL, FuncFlagNone, ARGS(tick, input));
 }
 
 #endif // CSYNTH_LIMIT_H

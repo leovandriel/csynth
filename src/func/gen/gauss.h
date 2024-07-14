@@ -17,7 +17,7 @@ static double gauss_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U v
 
 Func *gauss_create()
 {
-    return func_create(NULL, gauss_eval, NULL, 0, NULL, FuncFlagNone, FUNCS());
+    return func_create(NULL, gauss_eval, NULL, 0, NULL, FuncFlagNone, ARGS());
 }
 
 #endif // CSYNTH_GAUSS_H

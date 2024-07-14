@@ -39,7 +39,7 @@ static double resonant_eval(__U size_t count, Gen **args, Eval *eval, void *cont
 
 Func *resonant_create(Func *tick, Func *q_factor, Func *input)
 {
-    return func_create(NULL, resonant_eval, NULL, sizeof(ResonantContext), NULL, FuncFlagNone, FUNCS(tick, q_factor, input));
+    return func_create(NULL, resonant_eval, NULL, sizeof(ResonantContext), NULL, FuncFlagNone, ARGS(tick, q_factor, input));
 }
 
 #endif // CSYNTH_RESONANT_H

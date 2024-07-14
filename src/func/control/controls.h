@@ -39,7 +39,7 @@ Func *play_pause(int key, Func *input) { return pause_create(key, 0, 1, input); 
 Func *pause_reset(int key, Func *input) { return pause_create(key, 1, 0, input); }
 Func *reset_pause(int key, Func *input) { return pause_create(key, 1, 1, input); }
 
-#define selector(key, ...) (selector_create(key, FUNCS(__VA_ARGS__)))
+#define selector(key, ...) (selector_create(key, ARGS(__VA_ARGS__)))
 
 Func *stepper(int key, double value, double delta) { return stepper_create(key, value, delta, -FLT_MAX, FLT_MAX, 0); }
 Func *stepper_rel(int key, double value, double perc) { return stepper_create(key, value, perc, -FLT_MAX, FLT_MAX, 1); }

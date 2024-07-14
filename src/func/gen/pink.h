@@ -33,7 +33,7 @@ static double pink_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U vo
 
 Func *pink_create()
 {
-    return func_create(NULL, pink_eval, NULL, sizeof(PinkContext), NULL, FuncFlagNone, FUNCS());
+    return func_create(NULL, pink_eval, NULL, sizeof(PinkContext), NULL, FuncFlagNone, ARGS());
 }
 
 #endif // CSYNTH_PINK_H

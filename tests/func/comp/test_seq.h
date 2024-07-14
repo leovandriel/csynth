@@ -9,7 +9,7 @@ void test_seq_abs()
 
 void test_seq_rel()
 {
-    Gen *gen = gen_create(seq_rel_create(FUNCS(const_(0.1), const_(1), const_(0.2), const_(-1), const_(0.3))));
+    Gen *gen = gen_create(seq_rel_create(ARGS(const_(0.1), const_(1), const_(0.2), const_(-1), const_(0.3))));
     assert_double_equal(gen_eval(gen, NULL), 1.0);
     assert_double_equal(gen_eval(gen, NULL), 1.0);
     assert_double_equal(gen_eval(gen, NULL), -1.0);

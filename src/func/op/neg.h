@@ -17,6 +17,6 @@ static double neg_eval(__U size_t count, Gen **args, Eval *eval, __U void *conte
 
 Func *neg_create(Func *input)
 {
-    return func_create(NULL, neg_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(input));
+    return func_create(NULL, neg_eval, NULL, 0, NULL, FuncFlagNone, ARGS(input));
 }
 #endif // CSYNTH_NEG_H

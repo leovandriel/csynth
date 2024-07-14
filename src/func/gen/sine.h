@@ -27,7 +27,7 @@ static double sine_eval(__U size_t count, Gen **args, Eval *eval, void *context_
 
 Func *sine_create(Func *tick)
 {
-    return func_create(NULL, sine_eval, NULL, sizeof(SineContext), NULL, FuncFlagNone, FUNCS(tick));
+    return func_create(NULL, sine_eval, NULL, sizeof(SineContext), NULL, FuncFlagNone, ARGS(tick));
 }
 
 #endif // CSYNTH_SINE_H

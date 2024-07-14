@@ -21,7 +21,7 @@ static double inv_eval(__U size_t count, Gen **args, Eval *eval, __U void *conte
 
 Func *inv_create(Func *input)
 {
-    return func_create(NULL, inv_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(input));
+    return func_create(NULL, inv_eval, NULL, 0, NULL, FuncFlagNone, ARGS(input));
 }
 
 #endif // CSYNTH_INV_H

@@ -17,7 +17,7 @@ static double uniform_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U
 
 Func *uniform_create()
 {
-    return func_create(NULL, uniform_eval, NULL, 0, NULL, FuncFlagNone, FUNCS());
+    return func_create(NULL, uniform_eval, NULL, 0, NULL, FuncFlagNone, ARGS());
 }
 
 #endif // CSYNTH_UNIFORM_H

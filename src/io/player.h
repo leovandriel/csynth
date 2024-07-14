@@ -175,8 +175,8 @@ const PlayerConfig PLAYER_CONFIG_NO_TERMINAL = {
 };
 
 int play_channels(size_t count, Func **channels) { return player_play_with_cleanup(PLAYER_CONFIG_TERMINAL, count, channels); } /* player_ */
-int play(Func *input) { return play_channels(FUNCS(input)); }                                                                  /* player_ */
-int play_stereo(Func *left, Func *right) { return play_channels(FUNCS(left, right)); }                                         /* player_ */
+int play(Func *input) { return play_channels(ARGS(input)); }                                                                   /* player_ */
+int play_stereo(Func *left, Func *right) { return play_channels(ARGS(left, right)); }                                          /* player_ */
 
 int play_channels_duration(double duration, size_t count, Func **channels) /* player_ */
 {
@@ -184,7 +184,7 @@ int play_channels_duration(double duration, size_t count, Func **channels) /* pl
     config.duration = duration;
     return player_play_with_cleanup(config, count, channels);
 }
-int play_duration(double duration, Func *input) { return play_channels_duration(duration, FUNCS(input)); }                          /* player_ */
-int play_stereo_duration(double duration, Func *left, Func *right) { return play_channels_duration(duration, FUNCS(left, right)); } /* player_ */
+int play_duration(double duration, Func *input) { return play_channels_duration(duration, ARGS(input)); }                          /* player_ */
+int play_stereo_duration(double duration, Func *left, Func *right) { return play_channels_duration(duration, ARGS(left, right)); } /* player_ */
 
 #endif // CSYNTH_PLAYER_H

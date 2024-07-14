@@ -38,7 +38,7 @@ Func *gauge_create(const char *label, Func *tick, Func *input)
         .label = label,
         .time = 1.0,
     };
-    return func_create(NULL, gauge_eval, NULL, sizeof(GaugeContext), &initial, FuncFlagNone, FUNCS(tick, input));
+    return func_create(NULL, gauge_eval, NULL, sizeof(GaugeContext), &initial, FuncFlagNone, ARGS(tick, input));
 }
 
 #endif // CSYNTH_GAUGE_H

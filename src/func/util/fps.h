@@ -45,7 +45,7 @@ Func *fps_create(const char *label, Func *input)
         .label = label,
         .time = .99,
     };
-    return func_create(NULL, fps_eval, NULL, sizeof(FpsContext), &initial, FuncFlagNone, FUNCS(input));
+    return func_create(NULL, fps_eval, NULL, sizeof(FpsContext), &initial, FuncFlagNone, ARGS(input));
 }
 
 #endif // CSYNTH_FPS_H

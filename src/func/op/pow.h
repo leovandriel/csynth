@@ -20,7 +20,7 @@ static double pow_eval(__U size_t count, Gen **args, Eval *eval, __U void *conte
 
 Func *pow_create(Func *base, Func *exponent)
 {
-    return func_create(NULL, pow_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(base, exponent));
+    return func_create(NULL, pow_eval, NULL, 0, NULL, FuncFlagNone, ARGS(base, exponent));
 }
 
 #endif // CSYNTH_POW_H

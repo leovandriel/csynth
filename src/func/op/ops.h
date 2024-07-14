@@ -24,19 +24,19 @@
 #include "./sum.h"
 #include "./tanh.h"
 
-#define add(...) (add_create(FUNCS(__VA_ARGS__)))
+#define add(...) (add_create(ARGS(__VA_ARGS__)))
 Func *add_(double value, Func *input) { return add(const_(value), input); }
 Func *neg(Func *input) { return neg_create(input); }
 Func *sub(Func *lhs, Func *rhs) { return add(lhs, neg(rhs)); }
 Func *sub_(Func *lhs, double rhs) { return sub(lhs, const_(rhs)); }
 
-#define mul(...) (mul_create(FUNCS(__VA_ARGS__)))
+#define mul(...) (mul_create(ARGS(__VA_ARGS__)))
 Func *mul_(double value, Func *input) { return mul(const_(value), input); }
 Func *inv(Func *input) { return inv_create(input); }
 Func *dvd(Func *lhs, Func *rhs) { return mul(lhs, inv(rhs)); }
 Func *dvd_(Func *lhs, double rhs) { return dvd(lhs, const_(rhs)); }
 Func *avg_create(size_t count, Func **inputs) { return dvd_(add_create(count, inputs), (double)count); }
-#define avg(...) (avg_create(FUNCS(__VA_ARGS__)))
+#define avg(...) (avg_create(ARGS(__VA_ARGS__)))
 
 Func *pow_op(Func *base, Func *exponent) { return pow_create(base, exponent); }
 Func *pow_op_(double exponent, Func *input) { return pow_op(const_(exponent), input); }
@@ -50,9 +50,9 @@ Func *tanh_op(Func *input) { return tanh_create(input); }
 Func *sum(Func *input) { return sum_create(input); }
 Func *prod(Func *input) { return prod_create(input); }
 
-#define min(...) (min_create(FUNCS(__VA_ARGS__)))
+#define min(...) (min_create(ARGS(__VA_ARGS__)))
 Func *min_(double max, Func *input) { return min(const_(max), input); }
-#define max(...) (max_create(FUNCS(__VA_ARGS__)))
+#define max(...) (max_create(ARGS(__VA_ARGS__)))
 Func *max_(double min, Func *input) { return max(const_(min), input); }
 Func *clamp(Func *min, Func *max, Func *input) { return max(min, min(max, input)); }
 Func *clamp_(double min, double max, Func *input) { return clamp(const_(min), const_(max), input); }

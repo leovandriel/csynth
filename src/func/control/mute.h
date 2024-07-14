@@ -51,7 +51,7 @@ Func *mute_create(int key, bool muted, Func *input)
         },
         .muted = muted,
     };
-    return func_create(mute_init, mute_eval, control_event_free, sizeof(MuteContext), &initial, FuncFlagNone, FUNCS(input));
+    return func_create(mute_init, mute_eval, control_event_free, sizeof(MuteContext), &initial, FuncFlagNone, ARGS(input));
 }
 
 #endif // CSYNTH_MUTE_H

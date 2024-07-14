@@ -46,7 +46,7 @@ static void reverb_free(__U size_t count, void *context_)
 
 Func *reverb_create(Func *tick, Func *decay, Func *input)
 {
-    return func_create(NULL, reverb_eval, reverb_free, sizeof(ReverbContext), NULL, FuncFlagNone, FUNCS(tick, decay, input));
+    return func_create(NULL, reverb_eval, reverb_free, sizeof(ReverbContext), NULL, FuncFlagNone, ARGS(tick, decay, input));
 }
 
 #endif // CSYNTH_REVERB_H

@@ -9,9 +9,9 @@
 void test_truncate_miss()
 {
     func time = sum_create(const_(0.1));
-    func rect1 = mul_create(FUNCS(step_create(const_(0), time), step_create(time, const_(0.09))));
-    func rect2 = mul_create(FUNCS(step_create(const_(0.5), time), step_create(time, const_(0.59))));
-    Func *input = add_create(FUNCS(rect1, rect2));
+    func rect1 = mul_create(ARGS(step_create(const_(0), time), step_create(time, const_(0.09))));
+    func rect2 = mul_create(ARGS(step_create(const_(0.5), time), step_create(time, const_(0.59))));
+    Func *input = add_create(ARGS(rect1, rect2));
     Func *trunc = truncate_create(const_(1.25), input);
     Gen *gen = gen_create(trunc);
     assert_double_equal(gen_eval(gen, NULL), 1.0);
@@ -27,9 +27,9 @@ void test_truncate_miss()
 void test_truncate_hit()
 {
     func time = sum_create(const_(0.1));
-    func rect1 = mul_create(FUNCS(step_create(const_(0), time), step_create(time, const_(0.09))));
-    func rect2 = mul_create(FUNCS(step_create(const_(0.8), time), step_create(time, const_(0.89))));
-    Func *input = add_create(FUNCS(rect1, rect2));
+    func rect1 = mul_create(ARGS(step_create(const_(0), time), step_create(time, const_(0.09))));
+    func rect2 = mul_create(ARGS(step_create(const_(0.8), time), step_create(time, const_(0.89))));
+    Func *input = add_create(ARGS(rect1, rect2));
     Func *trunc = truncate_create(const_(1.25), input);
     Gen *gen = gen_create(trunc);
     assert_double_equal(gen_eval(gen, NULL), 1.0);

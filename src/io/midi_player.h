@@ -14,7 +14,7 @@ const PlayerConfig MIDI_PLAYER_CONFIG = {
     .exit_key = EXIT_KEY,
 };
 
-int play_midi(Func *input) { return player_play_with_cleanup(MIDI_PLAYER_CONFIG, FUNCS(input)); }                          /* midi_player_ */
-int play_midi_stereo(Func *left, Func *right) { return player_play_with_cleanup(MIDI_PLAYER_CONFIG, FUNCS(left, right)); } /* midi_player_ */
+int play_midi(Func *input) { return player_play_with_cleanup(MIDI_PLAYER_CONFIG, ARGS(input)); }                          /* midi_player_ */
+int play_midi_stereo(Func *left, Func *right) { return player_play_with_cleanup(MIDI_PLAYER_CONFIG, ARGS(left, right)); } /* midi_player_ */
 
 #endif // CSYNTH_MIDI_PLAYER_H

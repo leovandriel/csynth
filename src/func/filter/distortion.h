@@ -19,7 +19,7 @@ static double distortion_eval(__U size_t count, Gen **args, Eval *eval, __U void
 
 Func *distortion_create(Func *shape, Func *input)
 {
-    return func_create(NULL, distortion_eval, NULL, 0, NULL, FuncFlagNone, FUNCS(shape, input));
+    return func_create(NULL, distortion_eval, NULL, 0, NULL, FuncFlagNone, ARGS(shape, input));
 }
 
 #endif // CSYNTH_DISTORTION_H

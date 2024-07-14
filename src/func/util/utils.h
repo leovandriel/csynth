@@ -24,7 +24,7 @@ Func *gauge(const char *label, Func *input)
 Func *wrap(wrap_callback callback, Func *input, void *context) { return wrap_create(callback, input, context); }
 Func *wrap_(wrap_callback callback, void *context) { return wrap(callback, timer(EvalParamPitchTick), context); }
 
-#define record_channels(_filename, _sample_rate, ...) (record_create(_filename, _sample_rate, FUNCS(__VA_ARGS__)))
+#define record_channels(_filename, _sample_rate, ...) (record_create(_filename, _sample_rate, ARGS(__VA_ARGS__)))
 Func *record(const char *filename, Func *input) { return record_channels(filename, SAMPLE_RATE, input); }
 Func *record_(Func *input) { return record(DEFAULT_WAV_FILENAME, input); }
 Func *record_stereo(const char *filename, Func *left, Func *right) { return record_channels(filename, SAMPLE_RATE, left, right); }
