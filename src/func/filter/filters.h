@@ -32,21 +32,21 @@ Func *hpf(Func *frequency, Func *input) { return hpf_create(mul(param(EvalParamP
 Func *hpf_(double frequency, Func *input) { return hpf(const_(frequency), input); }
 
 Func *lowpass(Func *frequency, Func *qfactor, Func *input) { return lowpass_create(mul(param(EvalParamPitchTick), frequency), qfactor, input); }
-Func *lowpass_(double frequency, double qfactor, Func *input) { return lowpass_create(const_(frequency), const_(qfactor), input); }
+Func *lowpass_(double frequency, double qfactor, Func *input) { return lowpass(const_(frequency), const_(qfactor), input); }
 Func *highpass(Func *frequency, Func *qfactor, Func *input) { return highpass_create(mul(param(EvalParamPitchTick), frequency), qfactor, input); }
-Func *highpass_(double frequency, double qfactor, Func *input) { return highpass_create(const_(frequency), const_(qfactor), input); }
+Func *highpass_(double frequency, double qfactor, Func *input) { return highpass(const_(frequency), const_(qfactor), input); }
 Func *bandpass(Func *frequency, Func *qfactor, Func *input) { return bandpass_create(mul(param(EvalParamPitchTick), frequency), qfactor, input); }
-Func *bandpass_(double frequency, double qfactor, Func *input) { return bandpass_create(const_(frequency), const_(qfactor), input); }
+Func *bandpass_(double frequency, double qfactor, Func *input) { return bandpass(const_(frequency), const_(qfactor), input); }
 Func *notch(Func *frequency, Func *qfactor, Func *input) { return notch_create(mul(param(EvalParamPitchTick), frequency), qfactor, input); }
-Func *notch_(double frequency, double qfactor, Func *input) { return notch_create(const_(frequency), const_(qfactor), input); }
+Func *notch_(double frequency, double qfactor, Func *input) { return notch(const_(frequency), const_(qfactor), input); }
 Func *peak(Func *frequency, Func *qfactor, Func *gain, Func *input) { return peak_create(mul(param(EvalParamPitchTick), frequency), qfactor, gain, input); }
-Func *peak_(double frequency, double qfactor, double gain, Func *input) { return peak_create(const_(frequency), const_(qfactor), const_(gain), input); }
+Func *peak_(double frequency, double qfactor, double gain, Func *input) { return peak(const_(frequency), const_(qfactor), const_(gain), input); }
 Func *allpass(Func *frequency, Func *qfactor, Func *input) { return allpass_create(mul(param(EvalParamPitchTick), frequency), qfactor, input); }
-Func *allpass_(double frequency, double qfactor, Func *input) { return allpass_create(const_(frequency), const_(qfactor), input); }
+Func *allpass_(double frequency, double qfactor, Func *input) { return allpass(const_(frequency), const_(qfactor), input); }
 Func *lowshelf(Func *frequency, Func *gain, Func *input) { return lowshelf_create(mul(param(EvalParamPitchTick), frequency), gain, input); }
-Func *lowshelf_(double frequency, double gain, Func *input) { return lowshelf_create(const_(frequency), const_(gain), input); }
+Func *lowshelf_(double frequency, double gain, Func *input) { return lowshelf(const_(frequency), const_(gain), input); }
 Func *highshelf(Func *frequency, Func *gain, Func *input) { return highshelf_create(mul(param(EvalParamPitchTick), frequency), gain, input); }
-Func *highshelf_(double frequency, double gain, Func *input) { return highshelf_create(const_(frequency), const_(gain), input); }
+Func *highshelf_(double frequency, double gain, Func *input) { return highshelf(const_(frequency), const_(gain), input); }
 
 Func *resonant(Func *frequency, Func *q_factor, Func *input) { return resonant_create(mul(param(EvalParamPitchTick), frequency), q_factor, input); }
 Func *resonant_(double frequency, double q_factor, Func *input) { return resonant(const_(frequency), const_(q_factor), input); }

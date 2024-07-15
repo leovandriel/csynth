@@ -9,6 +9,6 @@ int main()
                             seq_loop_(.25, Bb2, Bb3),
                             seq_loop_(.25, F3, F4),
                             seq_loop_(.25, Eb3, Eb4));
-    func fun = mul_(.1, saw(melody));
+    func fun = mul_(.1, lowpass_(400, 1, saw(melody)));
     return play_duration(16, fun);
 }
