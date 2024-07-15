@@ -45,9 +45,8 @@ static double lowpass_eval(__U size_t count, Gen **args, Eval *eval, void *conte
     double tick = gen_eval(args[0], eval);
     double qfactor = gen_eval(args[1], eval);
     double input = gen_eval(args[2], eval);
-    if (context->time >= 1.0)
+    if (eval == NULL || eval->compute_flag)
     {
-        context->time -= 1.0;
         double omega = 2 * M_PI * tick;
         double cso = cos(omega);
         double alpha = sin(omega) / (2 * qfactor);
@@ -59,7 +58,6 @@ static double lowpass_eval(__U size_t count, Gen **args, Eval *eval, void *conte
         double ca0 = 1.0 + alpha;
         biquad_scale(context, 1.0 / ca0);
     }
-    context->time += eval->params[EvalParamComputeTick];
     return biquad_process(context, input);
 }
 
@@ -75,9 +73,8 @@ static double highpass_eval(__U size_t count, Gen **args, Eval *eval, void *cont
     double tick = gen_eval(args[0], eval);
     double qfactor = gen_eval(args[1], eval);
     double input = gen_eval(args[2], eval);
-    if (context->time >= 1.0)
+    if (eval == NULL || eval->compute_flag)
     {
-        context->time -= 1.0;
         double omega = 2 * M_PI * tick;
         double cso = cos(omega);
         double alpha = sin(omega) / (2 * qfactor);
@@ -89,7 +86,6 @@ static double highpass_eval(__U size_t count, Gen **args, Eval *eval, void *cont
         double ca0 = 1.0 + alpha;
         biquad_scale(context, 1.0 / ca0);
     }
-    context->time += eval->params[EvalParamComputeTick];
     return biquad_process(context, input);
 }
 
@@ -105,9 +101,8 @@ static double bandpass_eval(__U size_t count, Gen **args, Eval *eval, void *cont
     double tick = gen_eval(args[0], eval);
     double qfactor = gen_eval(args[1], eval);
     double input = gen_eval(args[2], eval);
-    if (context->time >= 1.0)
+    if (eval == NULL || eval->compute_flag)
     {
-        context->time -= 1.0;
         double omega = 2 * M_PI * tick;
         double cso = cos(omega);
         double alpha = sin(omega) / (2 * qfactor);
@@ -119,7 +114,6 @@ static double bandpass_eval(__U size_t count, Gen **args, Eval *eval, void *cont
         double ca0 = 1 + alpha;
         biquad_scale(context, 1.0 / ca0);
     }
-    context->time += eval->params[EvalParamComputeTick];
     return biquad_process(context, input);
 }
 
@@ -135,9 +129,8 @@ static double notch_eval(__U size_t count, Gen **args, Eval *eval, void *context
     double tick = gen_eval(args[0], eval);
     double qfactor = gen_eval(args[1], eval);
     double input = gen_eval(args[2], eval);
-    if (context->time >= 1.0)
+    if (eval == NULL || eval->compute_flag)
     {
-        context->time -= 1.0;
         double omega = 2 * M_PI * tick;
         double cso = cos(omega);
         double alpha = sin(omega) / (2 * qfactor);
@@ -149,7 +142,6 @@ static double notch_eval(__U size_t count, Gen **args, Eval *eval, void *context
         double ca0 = 1 + alpha;
         biquad_scale(context, 1.0 / ca0);
     }
-    context->time += eval->params[EvalParamComputeTick];
     return biquad_process(context, input);
 }
 
@@ -166,9 +158,8 @@ static double peak_eval(__U size_t count, Gen **args, Eval *eval, void *context_
     double qfactor = gen_eval(args[1], eval);
     double gain = gen_eval(args[2], eval);
     double input = gen_eval(args[3], eval);
-    if (context->time >= 1.0)
+    if (eval == NULL || eval->compute_flag)
     {
-        context->time -= 1.0;
         double omega = 2 * M_PI * tick;
         double cso = cos(omega);
         double alpha = sin(omega) / (2 * qfactor);
@@ -182,7 +173,6 @@ static double peak_eval(__U size_t count, Gen **args, Eval *eval, void *context_
         double ca0 = 1 + adg;
         biquad_scale(context, 1.0 / ca0);
     }
-    context->time += eval->params[EvalParamComputeTick];
     return biquad_process(context, input);
 }
 
@@ -198,9 +188,8 @@ static double allpass_eval(__U size_t count, Gen **args, Eval *eval, void *conte
     double tick = gen_eval(args[0], eval);
     double qfactor = gen_eval(args[1], eval);
     double input = gen_eval(args[2], eval);
-    if (context->time >= 1.0)
+    if (eval == NULL || eval->compute_flag)
     {
-        context->time -= 1.0;
         double omega = 2 * M_PI * tick;
         double cso = cos(omega);
         double alpha = sin(omega) / (2 * qfactor);
@@ -212,7 +201,6 @@ static double allpass_eval(__U size_t count, Gen **args, Eval *eval, void *conte
         double ca0 = context->cb2;
         biquad_scale(context, 1.0 / ca0);
     }
-    context->time += eval->params[EvalParamComputeTick];
     return biquad_process(context, input);
 }
 
@@ -228,9 +216,8 @@ static double lowshelf_eval(__U size_t count, Gen **args, Eval *eval, void *cont
     double tick = gen_eval(args[0], eval);
     double gain = gen_eval(args[1], eval);
     double input = gen_eval(args[2], eval);
-    if (context->time >= 1.0)
+    if (eval == NULL || eval->compute_flag)
     {
-        context->time -= 1.0;
         double omega = 2 * M_PI * tick;
         double cso = cos(omega);
         double gp1 = gain + 1;
@@ -244,7 +231,6 @@ static double lowshelf_eval(__U size_t count, Gen **args, Eval *eval, void *cont
         double ca0 = gp1 + gm1 * cso + bsno;
         biquad_scale(context, 1.0 / ca0);
     }
-    context->time += eval->params[EvalParamComputeTick];
     return biquad_process(context, input);
 }
 
@@ -260,9 +246,8 @@ static double highshelf_eval(__U size_t count, Gen **args, Eval *eval, void *con
     double tick = gen_eval(args[0], eval);
     double gain = gen_eval(args[1], eval);
     double input = gen_eval(args[2], eval);
-    if (context->time >= 1.0)
+    if (eval == NULL || eval->compute_flag)
     {
-        context->time -= 1.0;
         double omega = 2 * M_PI * tick;
         double cso = cos(omega);
         double gp1 = gain + 1;
@@ -276,7 +261,6 @@ static double highshelf_eval(__U size_t count, Gen **args, Eval *eval, void *con
         double ca0 = gp1 - gm1 * cso + bsno;
         biquad_scale(context, 1.0 / ca0);
     }
-    context->time += eval->params[EvalParamComputeTick];
     return biquad_process(context, input);
 }
 

@@ -26,7 +26,6 @@ typedef enum
     EvalParamNone = 0,
     EvalParamControlTick,
     EvalParamDisplayTick,
-    EvalParamComputeTick,
     EvalParamPitchTick,
     EvalParamTempoTick,
     EvalParamSustainTick,
@@ -37,6 +36,9 @@ typedef struct
 {
     double wall_time;
     double wall_tick;
+    double compute_time;
+    double compute_tick;
+    bool compute_flag;
     double params[EvalParamLength];
     size_t gen_count;
     size_t error_count;

@@ -12,7 +12,7 @@
 #include "../op/ops.h"
 #include "./seq.h"
 
-Func *pattern(const char *string, Func *duration, Func *timing, Func *input) /* pattern_ */
+Func *pattern_create(const char *string, Func *duration, Func *timing, Func *input)
 {
     size_t length = strlen(string);
     Func **array = (Func **)malloc_(length * 2 * sizeof(Func *));
@@ -32,11 +32,6 @@ Func *pattern(const char *string, Func *duration, Func *timing, Func *input) /* 
     Func *output = seq_abs_create(index, array);
     free_(array);
     return output;
-}
-
-Func *pattern_(const char *string, double duration, double timing, Func *input)
-{
-    return pattern(string, const_(duration), const_(timing), input);
 }
 
 #endif // CSYNTH_PATTERN_H

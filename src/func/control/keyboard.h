@@ -8,8 +8,9 @@
 
 #include "../../core/func.h"
 #include "../../util/error.h"
+#include "../gen/const.h"
 #include "../op/add.h"
-#include "../util/time.h"
+#include "../util/scale.h"
 
 typedef Func *(*keyboard_control_func)(int key, Func *input);
 
@@ -26,7 +27,8 @@ Func *keyboard_create(size_t semitones, keyboard_control_func control, Func *inp
     for (size_t i = 0; i < count; i++)
     {
         char key = KEYBOARD_KEYS[i];
-        Func *pitched = pitch_(exp2((double)i / (double)semitones), input);
+        double pitch_factor = exp2((double)i / (double)semitones);
+        Func *pitched = scale_create(EvalParamPitchTick, const_(pitch_factor), input);
         array[i] = control(key, pitched);
     }
     Func *output = add_create(count, array);

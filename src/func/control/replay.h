@@ -27,8 +27,9 @@ static double replay_eval(__U size_t count, Gen **args, Eval *eval, void *contex
         context->current = context->current->next;
     }
     double tick = gen_eval(args[0], eval);
+    double input = gen_eval(args[1], eval);
     context->time += tick;
-    return gen_eval(args[1], eval);
+    return input;
 }
 
 static bool replay_init(__U size_t count, __U Gen **args, void *context_)

@@ -28,15 +28,22 @@ static double chorus_eval(__U size_t count, Gen **args, Eval *eval, void *contex
     double delay = gen_eval(args[2], eval);
     double depth = gen_eval(args[3], eval);
     double input = gen_eval(args[4], eval);
-    size_t size = (size_t)(delay / tick);
-    size_t offset = (size_t)(depth / tick * modulation + (double)size * 0.5);
-    // size_t offset = (size_t)(depth / eval.params[EvalParamPitchTick] * (modulation + 1) * 0.5);
-    size_t index = (context->index + size - offset) % size;
-    context->index = buffer_resize(&context->buffer, size, context->index, NULL);
-    double *buffer = context->buffer.samples;
-    double output = 0.5 * (input + buffer[index]);
-    buffer[context->index] = input;
-    context->index = (context->index + 1) % size;
+    if (eval == NULL || eval->compute_flag)
+    {
+        size_t size = (size_t)(delay / tick);
+        context->index = buffer_resize(&context->buffer, size, context->index, NULL);
+    }
+    double output = input;
+    double *samples = context->buffer.samples;
+    if (samples != NULL)
+    {
+        size_t offset = (size_t)(depth / tick * modulation + (double)context->buffer.size * 0.5);
+        // size_t offset = (size_t)(depth / eval.params[EvalParamPitchTick] * (modulation + 1) * 0.5);
+        size_t index = (context->index + context->buffer.size - offset) % context->buffer.size;
+        output = 0.5 * (input + samples[index]);
+        samples[context->index] = input;
+        context->index = (context->index + 1) % context->buffer.size;
+    }
     return output;
 }
 

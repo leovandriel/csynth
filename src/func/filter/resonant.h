@@ -13,6 +13,7 @@
 
 typedef struct
 {
+    double va0, va1, va2, vb1, vb2;
     double x1, x2, y1, y2;
 } ResonantContext;
 
@@ -20,16 +21,19 @@ static double resonant_eval(__U size_t count, Gen **args, Eval *eval, void *cont
 {
     ResonantContext *context = (ResonantContext *)context_;
     double tick = gen_eval(args[0], eval);
-    double omega = M_PI * 2 * tick;
     double q_factor = gen_eval(args[1], eval);
-    double alpha = sin(omega) / (2.0 * q_factor);
-    double va0 = 1.0 + alpha;
-    double va1 = -2.0 * sin(omega + M_PI_2);
-    double va2 = 1.0 - alpha;
-    double vb1 = 2.0 * (1.0 - sin(omega + M_PI_2));
-    double vb2 = 1.0 - alpha;
     double input = gen_eval(args[2], eval);
-    double output = (va0 * input + va1 * context->x1 + va2 * context->x2 - vb1 * context->y1 - vb2 * context->y2) / va0;
+    if (eval == NULL || eval->compute_flag)
+    {
+        double omega = M_PI * 2 * tick;
+        double alpha = sin(omega) / (2.0 * q_factor);
+        context->va0 = 1.0 + alpha;
+        context->va1 = -2.0 * sin(omega + M_PI_2);
+        context->va2 = 1.0 - alpha;
+        context->vb1 = 2.0 * (1.0 - sin(omega + M_PI_2));
+        context->vb2 = 1.0 - alpha;
+    }
+    double output = (context->va0 * input + context->va1 * context->x1 + context->va2 * context->x2 - context->vb1 * context->y1 - context->vb2 * context->y2) / context->va0;
     context->x2 = context->x1;
     context->x1 = input;
     context->y2 = context->y1;

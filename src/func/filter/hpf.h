@@ -21,9 +21,9 @@ static double hpf_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     HighPassContext *context = (HighPassContext *)context_;
     double tick = gen_eval(args[0], eval);
-    double factor = (M_PI * 2 * tick) + 1.0;
     double input = gen_eval(args[1], eval);
     double output = context->output;
+    double factor = (M_PI * 2 * tick) + 1.0;
     context->output = (context->output + input - context->input) / factor;
     context->input = input;
     return output;

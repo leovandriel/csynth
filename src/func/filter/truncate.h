@@ -11,6 +11,7 @@
 
 typedef struct
 {
+    double tick_exp;
     double level;
 } TruncateContext;
 
@@ -23,7 +24,11 @@ static double truncate_eval(__U size_t count, __U Gen **args, Eval *eval, void *
     }
     double tick = gen_eval(args[0], eval);
     double input = gen_eval(args[1], eval);
-    context->level = fmax(fabs(input), context->level / exp2(tick));
+    if (eval == NULL || eval->compute_flag)
+    {
+        context->tick_exp = exp2(tick);
+    }
+    context->level = fmax(fabs(input), context->level / context->tick_exp);
     return input * context->level;
 }
 

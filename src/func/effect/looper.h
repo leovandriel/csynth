@@ -27,11 +27,14 @@ static double looper_eval(__U size_t count, Gen **args, Eval *eval, void *contex
 {
     LooperContext *context = (LooperContext *)context_;
     double tick = gen_eval(args[0], eval);
-    size_t size = (size_t)(1.0 / tick);
-    context->index = buffer_resize(&context->buffer, size, context->index, NULL);
-    double *buffer = context->buffer.samples;
+    if (eval == NULL || eval->compute_flag)
+    {
+        size_t size = (size_t)(1.0 / tick);
+        context->index = buffer_resize(&context->buffer, size, context->index, NULL);
+    }
+    double *samples = context->buffer.samples;
     double output = 0.0;
-    if (buffer != NULL)
+    if (samples != NULL)
     {
         if (context->recording)
         {
@@ -42,13 +45,13 @@ static double looper_eval(__U size_t count, Gen **args, Eval *eval, void *contex
                 context->reset = false;
             }
             output = gen_eval(args[1], eval);
-            buffer[context->index] = output;
+            samples[context->index] = output;
         }
         else
         {
-            output = buffer[context->index];
+            output = samples[context->index];
         }
-        context->index = (context->index + 1) % size;
+        context->index = (context->index + 1) % context->buffer.size;
     }
     return output;
 }

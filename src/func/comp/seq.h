@@ -42,6 +42,11 @@ static double seq_eval_abs(size_t count, Gen **args, Eval *eval, void *context_)
     return output;
 }
 
+Func *seq_abs_create(size_t count, Func **args)
+{
+    return func_create(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
+}
+
 static double seq_eval_rel(size_t count, Gen **args, Eval *eval, void *context_)
 {
     SeqContext *context = (SeqContext *)context_;
@@ -60,6 +65,11 @@ static double seq_eval_rel(size_t count, Gen **args, Eval *eval, void *context_)
     }
     context->time += tick;
     return output;
+}
+
+Func *seq_rel_create(size_t count, Func **args)
+{
+    return func_create(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
 static double seq_eval_seq(size_t count, Gen **args, Eval *eval, void *context_)
@@ -82,6 +92,11 @@ static double seq_eval_seq(size_t count, Gen **args, Eval *eval, void *context_)
     return output;
 }
 
+Func *seq_seq_create(size_t count, Func **args)
+{
+    return func_create(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
+}
+
 static double seq_eval_fix(size_t count, Gen **args, Eval *eval, void *context_)
 {
     SeqContext *context = (SeqContext *)context_;
@@ -89,21 +104,6 @@ static double seq_eval_fix(size_t count, Gen **args, Eval *eval, void *context_)
     size_t index = (size_t)context->time + 1;
     context->time += tick;
     return index < count ? gen_eval(args[index], eval) : 0;
-}
-
-Func *seq_abs_create(size_t count, Func **args)
-{
-    return func_create(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
-}
-
-Func *seq_rel_create(size_t count, Func **args)
-{
-    return func_create(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
-}
-
-Func *seq_seq_create(size_t count, Func **args)
-{
-    return func_create(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args);
 }
 
 Func *seq_fix_create(size_t count, Func **args)

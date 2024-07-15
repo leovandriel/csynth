@@ -7,11 +7,12 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 #include "../gen/const.h"
-#include "../gen/gens.h"
-#include "../op/ops.h"
-#include "../util/utils.h"
+#include "../op/add.h"
+#include "../op/mul.h"
+#include "../op/pow.h"
+#include "../util/scale.h"
 
-Func *overtone(int range, Func *gain, Func *input) /* overtone_ */
+Func *overtone_create(int range, Func *gain, Func *input)
 {
     size_t count = abs(range);
     Func **array = (Func **)malloc_(count * sizeof(Func *));
@@ -22,14 +23,15 @@ Func *overtone(int range, Func *gain, Func *input) /* overtone_ */
     double sign = range < 0 ? -1.0 : 1.0;
     for (size_t i = 0; i < count; i++)
     {
-        Func *_gain = expo2(mul_((double)i / (double)(count - 1), gain));
-        array[i] = mul(_gain, pitch_(exp2((double)i * sign), input));
+        double gain_factor = (double)i / (double)(count - 1);
+        double pitch_factor = exp2((double)i * sign);
+        Func *gain_ = pow_create(const_(M_E), mul_create(ARGS(const_(gain_factor), gain)));
+        Func *input_ = scale_create(EvalParamPitchTick, const_(pitch_factor), input);
+        array[i] = mul_create(ARGS(gain_, input_));
     }
     Func *output = add_create(count, array);
     free_(array);
     return output;
 }
-
-Func *overtone_(int range, double gain, Func *input) { return overtone(range, const_(gain), input); }
 
 #endif // CSYNTH_OVERTONE_H

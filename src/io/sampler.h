@@ -11,7 +11,7 @@
 #define SAMPLE_RATE 44100 // 44.1 kHz
 #define DISPLAY_RATE 10   // 10 FPS
 #define CONTROL_RATE 100  // 100 FPS
-#define COMPUTE_RATE 1000 // 1000 FPS
+#define COMPUTE_RATE 200  // 1000 FPS
 #define VOLUME_MULTIPLIER 0.5
 
 typedef int16_t sample_t;
@@ -53,10 +53,13 @@ Sampler *sampler_create(size_t sample_rate, size_t count, Func **inputs)
         channels[index] = channel;
     }
     double tick = 1.0 / (double)sample_rate;
-    Eval eval = {.wall_tick = tick};
+    Eval eval = {
+        .wall_tick = tick,
+        .compute_time = 1.0,
+        .compute_tick = COMPUTE_RATE * tick,
+    };
     eval.params[EvalParamControlTick] = CONTROL_RATE * tick;
     eval.params[EvalParamDisplayTick] = DISPLAY_RATE * tick;
-    eval.params[EvalParamComputeTick] = COMPUTE_RATE * tick;
     eval.params[EvalParamPitchTick] = tick;
     eval.params[EvalParamTempoTick] = tick;
     eval.params[EvalParamSustainTick] = tick;
@@ -75,11 +78,26 @@ sample_t sampler_quantize(double output)
     return (sample_t)(clip * 32767);
 }
 
+void sampler_eval_next(Eval *eval)
+{
+    eval->wall_time += eval->wall_tick;
+    eval->compute_time += eval->compute_tick;
+    if (eval->compute_time >= 1.0)
+    {
+        eval->compute_flag = true;
+        eval->compute_time -= 1.0;
+    }
+    else
+    {
+        eval->compute_flag = false;
+    }
+}
+
 void sampler_sample(Sampler *sampler, size_t count, sample_t *buffer)
 {
     for (size_t frame = 0; frame < count; frame++)
     {
-        sampler->eval.wall_time += sampler->eval.wall_tick;
+        sampler_eval_next(&sampler->eval);
         for (size_t index = 0; index < sampler->count; index++)
         {
             double output = gen_eval(sampler->channels[index], &sampler->eval);

@@ -10,6 +10,7 @@
 #include "./delay.h"
 #include "./loop.h"
 #include "./looper.h"
+#include "./overtone.h"
 #include "./reverb.h"
 #include "./unison.h"
 
@@ -32,6 +33,9 @@ Func *looper_midi_(int channel, int control, double interval, Func *input) { ret
 
 Func *unison(size_t count, Func *detune, Func *input) { return unison_create(count, pitch(add_(1, mul(detune, sample())), input)); }
 Func *unison_(size_t count, double detune, Func *input) { return unison(count, const_(detune), input); }
+
+Func *overtone(int range, Func *gain, Func *input) { return overtone_create(range, gain, input); }
+Func *overtone_(int range, double gain, Func *input) { return overtone(range, const_(gain), input); }
 
 Func *continuous(Func *input) { return continuous_create(input); }
 

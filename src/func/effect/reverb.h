@@ -25,15 +25,18 @@ static double reverb_eval(__U size_t count, Gen **args, Eval *eval, void *contex
     double tick = gen_eval(args[0], eval);
     double decay = gen_eval(args[1], eval);
     double input = gen_eval(args[2], eval);
-    size_t size = (size_t)(1.0 / tick);
-    context->index = buffer_resize(&context->buffer, size, context->index, NULL);
-    double *buffer = context->buffer.samples;
-    double output = input;
-    if (buffer != NULL)
+    if (eval == NULL || eval->compute_flag)
     {
-        buffer[context->index] = buffer[context->index] * decay + input;
-        output = buffer[context->index];
-        context->index = (context->index + 1) % size;
+        size_t size = (size_t)(1.0 / tick);
+        context->index = buffer_resize(&context->buffer, size, context->index, NULL);
+    }
+    double *samples = context->buffer.samples;
+    double output = input;
+    if (samples != NULL)
+    {
+        samples[context->index] = samples[context->index] * decay + input;
+        output = samples[context->index];
+        context->index = (context->index + 1) % context->buffer.size;
     }
     return output;
 }

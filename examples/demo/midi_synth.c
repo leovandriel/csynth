@@ -6,7 +6,7 @@ int main()
 {
     func lpf_knob = gauge("lpf", knob_ex_(1, 70, 20000, 1));
     func hpf_knob = gauge("hpf", knob_ex_(1, 71, 1, 20000));
-    func distortion_knob = gauge("distort", knob_(1, 72, 0, 10));
+    func distortion_knob = gauge("distort", knob_(1, 72, 0, 2));
     func overtone_knob = gauge("overtone", knob_(1, 73, -10, 1));
     func detune_knob = gauge("detune", knob_ex_(1, 74, .001, 1.0));
     func reverb_time = gauge("rev-time", knob_(1, 75, 0, .5));
