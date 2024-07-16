@@ -8,17 +8,17 @@
 #include "../../core/gen.h"
 #include "../gen/gens.h"
 #include "../op/ops.h"
-#include "../util/time.h"
+#include "../util/times.h"
 #include "./biquad.h"
 #include "./chorus.h"
 #include "./compressor.h"
 #include "./distortion.h"
+#include "./finish.h"
 #include "./hpf.h"
 #include "./limit.h"
 #include "./lpf.h"
 #include "./resonant.h"
 #include "./slope.h"
-#include "./finish.h"
 
 Func *pass(Func *input, ...) { return input; }
 #define zero(...) pass(ZERO, __VA_ARGS__)

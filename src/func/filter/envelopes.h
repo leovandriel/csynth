@@ -9,7 +9,7 @@
 #include "../gen/const.h"
 #include "../gen/gens.h"
 #include "../op/ops.h"
-#include "../util/time.h"
+#include "../util/times.h"
 #include "./adsr.h"
 
 Func *decay_env(Func *factor) { return expo(dvd(neg(timer(EvalParamPitchTick)), factor)); }

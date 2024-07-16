@@ -6,7 +6,7 @@
 
 #include "../gen/param.h"
 #include "../op/inv.h"
-#include "../util/time.h"
+#include "../util/times.h"
 #include "./dump.h"
 #include "./fps.h"
 #include "./gauge.h"

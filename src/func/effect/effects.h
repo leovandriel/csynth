@@ -5,7 +5,7 @@
 #define CSYNTH_EFFECTS_H
 
 #include "../gen/gens.h"
-#include "../util/time.h"
+#include "../util/times.h"
 #include "./continuous.h"
 #include "./delay.h"
 #include "./loop.h"

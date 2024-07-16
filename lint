@@ -30,7 +30,7 @@ find ./src -name "*.h" -type f -print0 | while read -d $'\0' file; do
     fi
     folder=$(dirname "$file")
     parent=$(basename "$folder")
-    ignores=("notes.h" "envelopes.h" "time.h" "biquad.h")
+    ignores=("notes.h" "envelopes.h" "time.h" "biquad.h" "times.h")
     if [[ "${parent}s" != "$name" ]] && [[ ! " ${ignores[*]} " =~ " ${filename} " ]]; then
         found_prefix=$(grep "^[^ {}#/]" "$file" | grep -v "\([ *]${name}_\|[ *]${upper}_\|typedef\|struct\)" | tee)
         if [[ "$found_prefix" ]]; then

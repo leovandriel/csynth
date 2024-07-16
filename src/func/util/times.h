@@ -1,8 +1,8 @@
 //
-// time.h - Time stuff
+// times.h - Time stuff
 //
-#ifndef CSYNTH_TIME_H
-#define CSYNTH_TIME_H
+#ifndef CSYNTH_TIMES_H
+#define CSYNTH_TIMES_H
 
 #include "../gen/const.h"
 #include "../gen/param.h"
@@ -18,4 +18,4 @@ Func *tempo_(double factor, Func *input) { return tempo(const_(factor), input); 
 Func *sustain(Func *factor, Func *input) { return scale(EvalParamSustainTick, inv(factor), input); }
 Func *sustain_(double factor, Func *input) { return sustain(const_(factor), input); }
 
-#endif // CSYNTH_TIME_H
+#endif // CSYNTH_TIMES_H
