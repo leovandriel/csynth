@@ -18,7 +18,7 @@
 #include "./lpf.h"
 #include "./resonant.h"
 #include "./slope.h"
-#include "./truncate.h"
+#include "./finish.h"
 
 Func *pass(Func *input, ...) { return input; }
 #define zero(...) pass(ZERO, __VA_ARGS__)
@@ -60,8 +60,8 @@ Func *chorus_(Func *modulation, double delay, double depth, Func *input) { retur
 Func *distortion(Func *shape, Func *input) { return distortion_create(shape, input); }
 Func *distortion_(double shape, Func *input) { return distortion(const_(shape), input); }
 
-Func *truncate(Func *duration, Func *input) { return truncate_create(dvd(param(EvalParamSustainTick), duration), input); }
-Func *truncate_(double duration, Func *input) { return truncate(const_(duration), input); }
+Func *finish(Func *duration, Func *input) { return finish_create(dvd(param(EvalParamSustainTick), duration), input); }
+Func *finish_(double duration, Func *input) { return finish(const_(duration), input); }
 
 Func *slope(Func *frequency, Func *input) { return slope_create(mul(param(EvalParamPitchTick), frequency), input); }
 Func *slope_(double derivative, Func *input) { return slope(const_(derivative), input); }
