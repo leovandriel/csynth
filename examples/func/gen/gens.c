@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // ONE and ZERO are shortcuts for const_(1) and const_(0)
     func fun = crack(ONE);

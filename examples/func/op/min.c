@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // Linear increase with maximum value
     func note = mul(sine(C4), min_(0.5, timer(EvalParamPitchTick)));

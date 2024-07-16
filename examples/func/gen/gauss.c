@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // gaussian noise, normal distributed amplitude
     func fun = mul_(.3, gauss());

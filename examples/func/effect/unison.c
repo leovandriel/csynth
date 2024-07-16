@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // unison saw wave keyboard, with 10 voices and 1% detune
     func note = decay_(.5, unison_(10, .01, saw(C4)));

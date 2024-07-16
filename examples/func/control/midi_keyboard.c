@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/midi_player.h"
 
-int main()
+int main(void)
 {
     func tone = sine(C0);
     func synth = midi_keyboard(1, tone);

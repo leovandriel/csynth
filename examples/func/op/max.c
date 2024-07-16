@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // Linear fade with minimum value
     func note = mul(sine(C4), max_(0.1, sub(ONE, timer(EvalParamPitchTick))));

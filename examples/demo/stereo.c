@@ -7,7 +7,7 @@ func ear(func angle)
     return mul_(.3, add_(1.1, sin_op(mul_(M_PI / 180, angle))));
 }
 
-int main()
+int main(void)
 {
     func hihat_ = loop_(.25, hihat());
     func snare_ = loop_(1, delay_(.5, snare()));

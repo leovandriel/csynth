@@ -2,7 +2,7 @@
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
 
-int main()
+int main(void)
 {
     func tone = sine(A4);
     func note = mul_(.5, rect_(0, .3, tone));

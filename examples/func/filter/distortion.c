@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // distortion filter with oscillating shape
     func note = mul_(.5, distortion(mul_(10, sine_(.3)), sine(C4)));

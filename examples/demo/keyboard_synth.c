@@ -3,7 +3,7 @@
 #include "../../src/io/player.h"
 #include "../../src/ui/display.h"
 
-int main()
+int main(void)
 {
     func drums = add(
         trigger('q', bdrum()),

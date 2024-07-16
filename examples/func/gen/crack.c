@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // random crackling at 1 and 10 Hz (times per second, on average)
     func fun = seq_rel(

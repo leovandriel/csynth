@@ -37,7 +37,7 @@ static func t(double index)
     return _(.25 * index + rand_range(0, .01));
 }
 
-int main()
+int main(void)
 {
     func gg0 = seq_abs(
         t(0), slow(Am_),

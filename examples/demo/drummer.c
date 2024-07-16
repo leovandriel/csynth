@@ -3,7 +3,7 @@
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
 
-int main()
+int main(void)
 {
     func snare = loop_(1, delay_(.5, decay_(.05, uniform())));
     func bdrum = loop_(1, mul_(3, decay_(.05, sine(linear_env_(1, 60, 30)))));

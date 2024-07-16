@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // play meow keyboard
     func note = keyboard(trigger, wav("examples/meow.wav"));

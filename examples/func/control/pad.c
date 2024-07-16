@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/midi_player.h"
 
-int main()
+int main(void)
 {
     // press space to key note
     func note = pad(40, 9, decay_(.5, sine(C4)));

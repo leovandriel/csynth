@@ -36,7 +36,7 @@ static void terminal_handler(__U int signal)
     terminal_signal_global = true;
 }
 
-int terminal_read_key()
+int terminal_read_key(void)
 {
     int key = getchar();
     if (key < 0)
@@ -83,7 +83,7 @@ int terminal_read(int exit_key)
     return 0;
 }
 
-bool terminal_signaled()
+bool terminal_signaled(void)
 {
     return terminal_signal_global;
 }

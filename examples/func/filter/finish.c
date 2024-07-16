@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // note at increasing intervals, triggering truncation, after which the note
     // is no longer generated

@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // triangle wave keyboard
     func fun = keyboard(unmute, mul_(.5, triangle(C4)));

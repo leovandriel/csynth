@@ -41,7 +41,7 @@ const char *host_type_string(PaHostApiTypeId type)
     return "unknown";
 }
 
-int main()
+int main(void)
 {
     printf("[PortAudio]\n");
     printf("Version\n");

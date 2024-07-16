@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     func melody = seq_loop_(2,
                             seq_loop_(.25, C3, C4),

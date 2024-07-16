@@ -3,7 +3,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // display amount of memory allocated and freed
     func note = sine(C4);

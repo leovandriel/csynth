@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // press space to trigger note
     func note = trigger(' ', decay_(.5, sine(C4)));

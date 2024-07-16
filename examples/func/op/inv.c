@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // Fade asympotically to zero
     func note = mul(sine(C4), _(0.1), inv(timer(EvalParamPitchTick)));

@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     func note = seq_loop_(.25, bdrum(), hihat(), snare(), hihat());
     return play(note);

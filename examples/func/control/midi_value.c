@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/midi_player.h"
 
-int main()
+int main(void)
 {
     func tone = sine(knob_ex(70, 0, C0, C9));
     return play_midi(tone);

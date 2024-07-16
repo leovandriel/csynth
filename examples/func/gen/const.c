@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // play a constant frequency, same as sine(_(440)) or simply sine_(440)
     func note = sine(const_(440));

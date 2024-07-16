@@ -33,7 +33,7 @@ static func C(func frequency, double duration)
     return add(note, A(frequency, duration));
 }
 
-int main()
+int main(void)
 {
     func ff1 = seq_seq(
         A(G4, 1.5),

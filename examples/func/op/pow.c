@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // Exponential increase in frequency
     func note = sine(pow_op(C4, timer(EvalParamPitchTick)));

@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // press space to pause/play
     func note = pause_play(' ', sine(mul(C4, sine_(.1))));

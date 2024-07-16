@@ -33,7 +33,7 @@ const char *message_type(uint8_t type)
     }
 }
 
-int main()
+int main(void)
 {
     printf("[PortMIDI]\n");
     PmError pm_error = Pm_Initialize();

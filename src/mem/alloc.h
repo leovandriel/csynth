@@ -81,7 +81,7 @@ Alloc *alloc_list_find(const void *ptr)
     return NULL;
 }
 
-AllocStat alloc_stat()
+AllocStat alloc_stat(void)
 {
     size_t count = 0;
     size_t size = 0;
@@ -108,7 +108,7 @@ size_t alloc_size(void)
     return size;
 }
 
-int alloc_list_is_empty()
+int alloc_list_is_empty(void)
 {
     return alloc_list_global == NULL;
 }

@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // sawtooth wave keyboard
     func fun = keyboard(unmute, mul_(.3, saw(C4)));

@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // Fade in using smooth step
     func note = smooth_(0.1, 0.9, sine(C4));

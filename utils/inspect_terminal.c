@@ -17,7 +17,7 @@ void print_key(int key)
     }
 }
 
-int main()
+int main(void)
 {
     printf("Press key to print key code. Ctrl+C to exit\n");
     struct termios term = terminal_setup(1);

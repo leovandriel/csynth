@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // press space, followed by up/down to change frequency wit 10 HZ
     func note = sine(stepper(' ', C4_, 10));

@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // square wave filtered with decreasing limit on slope
     func tone = mul_(.3, square(A4));

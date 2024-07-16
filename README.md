@@ -46,7 +46,7 @@ that plays a 440 Hz sine wave:
 #include "./src/func/all.h"
 #include "./src/io/player.h"
 
-int main()
+int main(void)
 {
     return play(sine(A4));
 }
@@ -189,7 +189,7 @@ double phone_filter(double input, void *context)
     return round(input * 10) / 10;
 }
 
-int main()
+int main(void)
 {
     return play(wrap(phone_filter, sine(A4), NULL));
 }
@@ -206,7 +206,7 @@ double phone_filter(size_t count, Gen **args, Eval *eval, void *context)
     return round(input * 10) / 10;
 }
 
-int main()
+int main(void)
 {
     func tone = sine(A4);
     func phone = func_create(NULL, phone_filter, NULL, 0, NULL, FuncFlagNone, ARGS(tone));

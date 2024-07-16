@@ -2,7 +2,7 @@
 #include "../../src/func/all.h"
 #include "../../src/io/midi_player.h"
 
-int main()
+int main(void)
 {
     func lpf_knob = gauge("lpf", knob_ex_(1, 70, 20000, 1));
     func hpf_knob = gauge("hpf", knob_ex_(1, 71, 1, 20000));

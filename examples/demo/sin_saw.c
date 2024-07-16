@@ -2,7 +2,7 @@
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
 
-int main()
+int main(void)
 {
     func high = sine(A4);
     func low = mul_(.5, saw(A2));

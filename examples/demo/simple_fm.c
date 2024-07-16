@@ -3,7 +3,7 @@
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
 
-int main()
+int main(void)
 {
     func simple_fm = mul_(.5, add(
                                   mul_(.3, sine(kr_range_(100, 2e3, sine_(3)))),

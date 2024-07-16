@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // play frequency that increases exponentially
     func note = sine(prod(const_(1.00005)));

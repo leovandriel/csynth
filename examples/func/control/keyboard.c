@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     func tone = decay_(.3, sine(C4));
     func synth = keyboard(trigger, tone);

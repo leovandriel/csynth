@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/midi_player.h"
 
-int main()
+int main(void)
 {
     // white noise through a band-pass filter with midi knob for frequency and qfactor
     func frequency = gauge("frequency", knob_ex_(1, 70, 20000, 1));

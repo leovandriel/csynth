@@ -2,7 +2,7 @@
 #include "../../../src/func/all.h"
 #include "../../../src/io/player.h"
 
-int main()
+int main(void)
 {
     // emulate sine wave with a timer
     func note = sin_op(mul_(200, timer(EvalParamPitchTick)));
