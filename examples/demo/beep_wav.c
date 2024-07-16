@@ -8,5 +8,5 @@ int main()
     func note = mul_(.5, rect_(0, .3, tone));
     func looped = loop_(1.5, note);
     func revved = reverb_(.4, .2, looped);
-    return write(4, "output/beep.wav", revved);
+    return write_mono(4, "output/beep.wav", revved);
 }

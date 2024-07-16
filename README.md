@@ -15,7 +15,7 @@ executable, e.g. to run `beep.c`:
 
 This requires GCC (or clang) and [PortAudio](https://www.portaudio.com/)
 binaries to be installed. You can also use CSynth without PortAudio by replacing
-`play(..)` with `write(..)`, which writes to a WAV file:
+`play(..)` with `write_mono(..)`, which writes to a WAV file:
 
 ```shell
 ./examples/demo/beep_wav.c
@@ -358,8 +358,8 @@ Instead of playing the audio, we can also write things to a wav file using
 [write](src/io/writer.h):
 
 ```c
-    write(10, "output/sine.wav", sine(A4));
-    write_(10, sine(A4)); // writes to output/default.wav
+    write_mono(10, "output/sine.wav", sine(A4));
+    write_mono_(10, sine(A4)); // writes to output/default.wav
     write_stereo(10, "output/sine.wav", sine(A4), sine(A4));
     write_channels(10, stdout, 4, (func[]){sine(A4), sine(B4), sine(C4), sine(D4)});
 ```

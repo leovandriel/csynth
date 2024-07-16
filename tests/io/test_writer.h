@@ -4,5 +4,5 @@
 
 void test_writer(void)
 {
-    write(1, "output/test.wav", const_(1));
+    write_mono(1, "output/test.wav", const_(1));
 }

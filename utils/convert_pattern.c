@@ -11,7 +11,7 @@
 #include "../src/func/control/controls.h"
 #include "../src/mem/key_list.h"
 
-void write(KeyList list, double step, int key, FILE *file)
+void write_list(KeyList list, double step, int key, FILE *file)
 {
     TimedKeyboardEvent *current = list;
     double start = current->time;
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
             printf(",\n");
         }
         printf("        pattern_(\"");
-        write(list, step, keys[i], stdout);
+        write_list(list, step, keys[i], stdout);
         printf("\", actuate(");
         if (keys[i] >= ' ' && keys[i] <= '~')
         {
