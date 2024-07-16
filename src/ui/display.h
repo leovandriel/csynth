@@ -37,7 +37,7 @@ typedef struct
 
 static DisplayGlobal display_global = {0};
 
-void display_clear()
+void display_clear(void)
 {
     while (display_global.element_list != NULL)
     {
@@ -170,7 +170,7 @@ static void display_render_element(DisplayElement *element)
     }
 }
 
-static void display_clear_line()
+static void display_clear_line(void)
 {
     fprintf(stdout, "\r\e[K");
 }
@@ -188,7 +188,7 @@ static void display_render_list(DisplayElement *list)
     }
 }
 
-void display_render()
+void display_render(void)
 {
     if (display_global.needs_render)
     {
@@ -205,7 +205,7 @@ static void display_handle_event(StateEvent *event, __U void *context)
     }
 }
 
-csError display_show()
+csError display_show(void)
 {
     if (display_global.event_context.handle_event != NULL)
     {
@@ -221,7 +221,7 @@ csError display_show()
     return csErrorNone;
 }
 
-csError display_hide()
+csError display_hide(void)
 {
     if (display_global.event_context.handle_event == NULL)
     {

@@ -2,7 +2,7 @@
 #include "../../../src/func/op/add.h"
 #include "../../util/test.h"
 
-void test_add()
+void test_add(void)
 {
     Gen *gen1 = gen_create(add_create(ARGS(const_(1), const_(1))));
     Gen *gen2 = gen_create(add_create(ARGS(const_(1), const_(2), const_(3))));

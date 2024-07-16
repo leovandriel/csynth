@@ -44,10 +44,10 @@ csError wav_header_write(uint32_t sample_count, uint32_t channel_count, FILE *fi
     header.format_size = WAV_HEADER_FORMAT_SIZE;
     header.format_type = 1; // PCM
     header.num_channels = channel_count;
-    header.sample_rate = sample_rate;
-    header.byte_rate = sizeof(sample_t) * channel_count * sample_rate;
-    header.block_align = sizeof(sample_t) * channel_count;
-    header.bits_sample = sizeof(sample_t) * 8;
+    header.sample_rate = (uint32_t)sample_rate;
+    header.byte_rate = (uint32_t)(sizeof(sample_t) * channel_count * sample_rate);
+    header.block_align = (uint16_t)(sizeof(sample_t) * channel_count);
+    header.bits_sample = (uint16_t)(sizeof(sample_t) * 8);
     memcpy(header.data_chunk, "data", 4);
     header.data_size = data_size;
     size_t count = fwrite(&header, sizeof(header), 1, file);

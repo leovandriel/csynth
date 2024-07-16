@@ -2,7 +2,7 @@
 #include "../../../src/func/op/prod.h"
 #include "../../util/test.h"
 
-void test_prod()
+void test_prod(void)
 {
     Gen *gen = gen_create(prod_create(const_(1.1)));
     assert_double_equal(gen_eval(gen, NULL), 1.0000000000000000);

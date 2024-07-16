@@ -2,7 +2,7 @@
 #include "../../../src/func/op/pow.h"
 #include "../../util/test.h"
 
-void test_pow()
+void test_pow(void)
 {
     Gen *gen1 = gen_create(pow_create(const_(1), const_(1)));
     Gen *gen2 = gen_create(pow_create(const_(1), const_(2)));

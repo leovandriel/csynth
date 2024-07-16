@@ -11,18 +11,18 @@
 #include "../gen/gens.h"
 #include "../gen/sine.h"
 
-Func *bdrum()
+Func *bdrum(void)
 {
     Func *freq = linear_env_(1, 60, 30);
     return decay_(0.05, sine(freq));
 }
 
-Func *hihat()
+Func *hihat(void)
 {
     return decay_(0.05, hpf_(20000, dvd_(uniform(), 2)));
 }
 
-Func *snare()
+Func *snare(void)
 {
     return decay_(0.05, dvd_(uniform(), 4));
 }

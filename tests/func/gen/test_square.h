@@ -2,7 +2,7 @@
 #include "../../../src/func/gen/square.h"
 #include "../../util/test.h"
 
-void test_square_exact()
+void test_square_exact(void)
 {
     Gen *gen = gen_create(square_create(const_(0.1)));
     assert_double_equal(gen_eval(gen, NULL), 1.0);
@@ -20,7 +20,7 @@ void test_square_exact()
     gen_free(gen);
 }
 
-void test_square_range()
+void test_square_range(void)
 {
     for (size_t i = 0; i < 100; i++)
     {
@@ -30,7 +30,7 @@ void test_square_range()
     }
 }
 
-void test_square()
+void test_square(void)
 {
     test_square_exact();
     test_square_range();

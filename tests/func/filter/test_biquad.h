@@ -4,7 +4,7 @@
 #include "../../../src/util/rand.h"
 #include "../../util/test.h"
 
-void test_lowpass()
+void test_lowpass(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(lowpass_create(const_(0.1), const_(1.0), uniform_create()));
@@ -23,7 +23,7 @@ void test_lowpass()
     gen_free(gen);
 }
 
-void test_highpass()
+void test_highpass(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(highpass_create(const_(0.1), const_(1.0), uniform_create()));
@@ -42,7 +42,7 @@ void test_highpass()
     gen_free(gen);
 }
 
-void test_bandpass()
+void test_bandpass(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(bandpass_create(const_(0.1), const_(1.0), uniform_create()));
@@ -61,7 +61,7 @@ void test_bandpass()
     gen_free(gen);
 }
 
-void test_notch()
+void test_notch(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(notch_create(const_(0.1), const_(1.0), uniform_create()));
@@ -80,7 +80,7 @@ void test_notch()
     gen_free(gen);
 }
 
-void test_peak()
+void test_peak(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(peak_create(const_(0.1), const_(1.0), const_(1.0), uniform_create()));
@@ -99,7 +99,7 @@ void test_peak()
     gen_free(gen);
 }
 
-void test_allpass()
+void test_allpass(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(allpass_create(const_(0.1), const_(1.0), uniform_create()));
@@ -118,7 +118,7 @@ void test_allpass()
     gen_free(gen);
 }
 
-void test_lowshelf()
+void test_lowshelf(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(lowshelf_create(const_(0.1), const_(1.0), uniform_create()));
@@ -137,7 +137,7 @@ void test_lowshelf()
     gen_free(gen);
 }
 
-void test_highshelf()
+void test_highshelf(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(highshelf_create(const_(0.1), const_(1.0), uniform_create()));
@@ -156,7 +156,7 @@ void test_highshelf()
     gen_free(gen);
 }
 
-void test_biquad()
+void test_biquad(void)
 {
     test_lowpass();
     test_highpass();

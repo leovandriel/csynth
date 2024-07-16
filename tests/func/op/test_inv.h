@@ -2,7 +2,7 @@
 #include "../../../src/func/op/inv.h"
 #include "../../util/test.h"
 
-void test_inv()
+void test_inv(void)
 {
     Gen *gen1 = gen_create(inv_create(const_(1)));
     Gen *gen2 = gen_create(inv_create(const_(-2)));

@@ -60,7 +60,7 @@ csError event_remove_handler(const void *handler_)
     return error_type_message(csErrorNotFound, "Event handler not found");
 }
 
-void event_clear()
+void event_clear(void)
 {
     while (event_list_global)
     {
@@ -78,7 +78,7 @@ void event_broadcast(EventType type, const void *event)
     }
 }
 
-size_t event_list_size()
+size_t event_list_size(void)
 {
     size_t size = 0;
     for (EventHandler *handler = event_list_global; handler; handler = handler->next)

@@ -88,7 +88,7 @@ bool terminal_signaled()
     return terminal_signal_global;
 }
 
-double terminal_time()
+double terminal_time(void)
 {
     struct timespec spec;
     timespec_get(&spec, TIME_UTC);

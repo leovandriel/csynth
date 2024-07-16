@@ -3,7 +3,7 @@
 #include "../../../src/func/gen/square.h"
 #include "../../util/test.h"
 
-void test_slope()
+void test_slope(void)
 {
     Gen *gen = gen_create(slope_create(const_(0.1), square_create(const_(0.2))));
     assert_double_equal(gen_eval(gen, NULL), 0.1);

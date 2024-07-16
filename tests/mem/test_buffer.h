@@ -2,7 +2,7 @@
 #include "../../src/mem/fill.h"
 #include "../util/test.h"
 
-static void test_same()
+static void test_same(void)
 {
     Buffer buffer;
     assert(buffer_init(&buffer, 2) == csErrorNone);
@@ -17,7 +17,7 @@ static void test_same()
     buffer_free(&buffer);
 }
 
-static void test_from_zero()
+static void test_from_zero(void)
 {
     Buffer buffer;
     assert(buffer_init(&buffer, 0) == csErrorNone);
@@ -30,7 +30,7 @@ static void test_from_zero()
     buffer_free(&buffer);
 }
 
-static void test_to_zero()
+static void test_to_zero(void)
 {
     Buffer buffer;
     assert(buffer_init(&buffer, 2) == csErrorNone);
@@ -43,7 +43,7 @@ static void test_to_zero()
     buffer_free(&buffer);
 }
 
-static void test_up()
+static void test_up(void)
 {
     for (size_t i = 0; i < 2; i++)
     {
@@ -64,7 +64,7 @@ static void test_up()
     }
 }
 
-static void test_down()
+static void test_down(void)
 {
     for (size_t i = 0; i < 4; i++)
     {
@@ -85,7 +85,7 @@ static void test_down()
     }
 }
 
-void test_buffer()
+void test_buffer(void)
 {
     test_same();
     test_from_zero();

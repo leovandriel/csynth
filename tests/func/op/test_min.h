@@ -2,7 +2,7 @@
 #include "../../../src/func/op/min.h"
 #include "../../util/test.h"
 
-void test_min()
+void test_min(void)
 {
     Gen *gen1 = gen_create(min_create(ARGS(const_(1), const_(2))));
     Gen *gen2 = gen_create(min_create(ARGS(const_(2), const_(1))));

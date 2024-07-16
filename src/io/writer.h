@@ -15,7 +15,7 @@
 csError writer_write_channels_no_cleanup(double duration, FILE *file, size_t sample_rate, size_t channel_count, Func **channels)
 {
     uint32_t sample_count = (uint32_t)(duration * (double)sample_rate + 0.5);
-    csError error = wav_header_write(sample_count, channel_count, file, sample_rate);
+    csError error = wav_header_write(sample_count, (uint32_t)channel_count, file, sample_rate);
     if (error != csErrorNone)
     {
         return error;

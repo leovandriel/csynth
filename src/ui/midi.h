@@ -100,7 +100,7 @@ csError midi_terminate(MidiContext *context)
     return csErrorNone;
 }
 
-double midi_time()
+double midi_time(void)
 {
     return (double)Pt_Time() / 1000.0;
 }

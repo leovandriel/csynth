@@ -1,7 +1,7 @@
 #include "../../src/util/rand.h"
 #include "./test.h"
 
-void test_rand()
+void test_rand(void)
 {
     rand_seed(0);
     assert(rand_unsigned_long() == 1152992998833853505UL);

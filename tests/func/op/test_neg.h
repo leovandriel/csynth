@@ -2,7 +2,7 @@
 #include "../../../src/func/op/neg.h"
 #include "../../util/test.h"
 
-void test_neg()
+void test_neg(void)
 {
     Gen *gen1 = gen_create(neg_create(const_(1)));
     Gen *gen2 = gen_create(neg_create(const_(-2)));

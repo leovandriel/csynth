@@ -2,7 +2,7 @@
 #include "../../../src/func/op/mul.h"
 #include "../../util/test.h"
 
-void test_mul()
+void test_mul(void)
 {
     Gen *gen1 = gen_create(mul_create(ARGS(const_(1), const_(1))));
     Gen *gen2 = gen_create(mul_create(ARGS(const_(1), const_(2), const_(3))));

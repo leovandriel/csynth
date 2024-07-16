@@ -20,13 +20,13 @@ static size_t rand_next(size_t reg)
     return reg;
 }
 
-size_t rand_unsigned_long()
+size_t rand_unsigned_long(void)
 {
     rand_state_global = rand_next(rand_state_global);
     return rand_state_global;
 }
 
-double rand_uniform()
+double rand_uniform(void)
 {
     return (double)rand_unsigned_long() / (double)ULONG_MAX;
 }

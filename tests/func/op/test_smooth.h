@@ -3,7 +3,7 @@
 #include "../../../src/func/op/sum.h"
 #include "../../util/test.h"
 
-void test_smooth_up()
+void test_smooth_up(void)
 {
     Gen *gen = gen_create(smooth_create(const_(0.3), const_(0.7), sum_create(const_(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.000000);
@@ -19,7 +19,7 @@ void test_smooth_up()
     gen_free(gen);
 }
 
-void test_smooth_down()
+void test_smooth_down(void)
 {
     Gen *gen = gen_create(smooth_create(const_(0.7), const_(0.3), sum_create(const_(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 1.000000);
@@ -35,7 +35,7 @@ void test_smooth_down()
     gen_free(gen);
 }
 
-void test_smooth_same()
+void test_smooth_same(void)
 {
     Gen *gen = gen_create(smooth_create(const_(0.5), const_(0.5), sum_create(const_(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.000000);
@@ -48,7 +48,7 @@ void test_smooth_same()
     gen_free(gen);
 }
 
-void test_smooth()
+void test_smooth(void)
 {
     test_smooth_up();
     test_smooth_down();

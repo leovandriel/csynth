@@ -8,7 +8,7 @@ static double test_wrap_add(double input, __U void *context)
     return input + 4;
 }
 
-void test_wrap()
+void test_wrap(void)
 {
     Func *fun = wrap_create(test_wrap_add, _(3), NULL);
     Gen *gen = gen_create(fun);

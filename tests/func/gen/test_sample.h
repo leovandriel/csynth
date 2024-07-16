@@ -1,7 +1,7 @@
 #include "../../../src/func/gen/sample.h"
 #include "../../util/test.h"
 
-void test_sample()
+void test_sample(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(sample_create());

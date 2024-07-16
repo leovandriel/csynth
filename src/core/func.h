@@ -54,9 +54,9 @@ static Func *func_list_global = NULL;
  * The return value is a pointer to the function, which can be used as an input
  * to other functions or as an output to the audio system.
  *
- * @param init Called once before the first evaluation.
- * @param eval Returns the value of the function, given inputs and time delta.
- * @param free Called once after the last evaluation.
+ * @param init_cb Called once before the first evaluation.
+ * @param eval_cb Returns the value of the function, given inputs and time delta.
+ * @param free_cb Called once after the last evaluation.
  * @param size The size of the context struct.
  * @param context The initial value of the context.
  * @param flags Flags that control the behavior of the function.
@@ -119,7 +119,7 @@ Func *func_create(init_callback init_cb, eval_callback eval_cb, free_callback fr
     return func;
 }
 
-void func_free()
+void func_free(void)
 {
     while (func_list_global != NULL)
     {
@@ -137,7 +137,7 @@ void func_free()
     }
 }
 
-size_t func_list_size()
+size_t func_list_size(void)
 {
     size_t size = 0;
     for (Func *func = func_list_global; func; func = func->next)

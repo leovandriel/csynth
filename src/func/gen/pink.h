@@ -31,7 +31,7 @@ static double pink_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U vo
     return (sum + white * 0.5362) * 0.11;
 }
 
-Func *pink_create()
+Func *pink_create(void)
 {
     return func_create(NULL, pink_eval, NULL, sizeof(PinkContext), NULL, FuncFlagNone, ARGS());
 }

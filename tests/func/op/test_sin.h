@@ -2,7 +2,7 @@
 #include "../../../src/func/op/sin.h"
 #include "../../util/test.h"
 
-void test_sin()
+void test_sin(void)
 {
     Gen *gen1 = gen_create(sin_create(const_(0)));
     Gen *gen2 = gen_create(sin_create(const_(1)));

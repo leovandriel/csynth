@@ -2,7 +2,7 @@
 #include "../../../src/func/gen/gauss.h"
 #include "../../util/test.h"
 
-void test_gauss_exact()
+void test_gauss_exact(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(gauss_create());
@@ -21,7 +21,7 @@ void test_gauss_exact()
     gen_free(gen);
 }
 
-void test_gauss_range()
+void test_gauss_range(void)
 {
     for (size_t i = 0; i < 100; i++)
     {
@@ -31,7 +31,7 @@ void test_gauss_range()
     }
 }
 
-void test_gauss()
+void test_gauss(void)
 {
     test_gauss_exact();
     test_gauss_range();

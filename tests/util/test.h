@@ -67,7 +67,7 @@ void print_assert_gen_equal(Gen *gen, Eval *eval)
     fprintf(stdout, "\n");
 }
 
-void test()
+void test(void)
 {
 }
 

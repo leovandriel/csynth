@@ -20,7 +20,7 @@ void handle(StateEvent *event, __U void *context)
     test_mem_flag_global++;
 }
 
-void test_mem()
+void test_mem(void)
 {
     StateEventContext context = {
         .handler = NULL,

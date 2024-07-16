@@ -3,7 +3,7 @@
 #include "../../../src/func/op/sum.h"
 #include "../../util/test.h"
 
-void test_step()
+void test_step(void)
 {
     Gen *gen = gen_create(step_create(const_(0.5), sum_create(const_(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.0);

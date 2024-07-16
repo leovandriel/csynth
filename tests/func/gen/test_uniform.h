@@ -2,7 +2,7 @@
 #include "../../../src/func/gen/uniform.h"
 #include "../../util/test.h"
 
-void test_uniform_exact()
+void test_uniform_exact(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(uniform_create());
@@ -21,7 +21,7 @@ void test_uniform_exact()
     gen_free(gen);
 }
 
-void test_uniform_range()
+void test_uniform_range(void)
 {
     for (size_t i = 0; i < 100; i++)
     {
@@ -31,7 +31,7 @@ void test_uniform_range()
     }
 }
 
-void test_uniform()
+void test_uniform(void)
 {
     test_uniform_exact();
     test_uniform_range();

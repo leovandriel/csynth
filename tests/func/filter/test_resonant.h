@@ -3,7 +3,7 @@
 #include "../../../src/func/gen/square.h"
 #include "../../util/test.h"
 
-void test_resonant()
+void test_resonant(void)
 {
     Gen *gen = gen_create(resonant_create(const_(0.2), const_(1), square_create(const_(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 1.0000000000000000);

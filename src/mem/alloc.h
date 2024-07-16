@@ -98,7 +98,7 @@ AllocStat alloc_stat()
     };
 }
 
-size_t alloc_size()
+size_t alloc_size(void)
 {
     size_t size = 0;
     for (Alloc *alloc = alloc_list_global; alloc; alloc = alloc->next)
@@ -113,7 +113,7 @@ int alloc_list_is_empty()
     return alloc_list_global == NULL;
 }
 
-void alloc_list_clear()
+void alloc_list_clear(void)
 {
     while (alloc_list_global)
     {
@@ -123,7 +123,7 @@ void alloc_list_clear()
     }
 }
 
-void alloc_list_dump()
+void alloc_list_dump(void)
 {
     for (Alloc *alloc = alloc_list_global; alloc; alloc = alloc->next)
     {

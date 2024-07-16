@@ -3,7 +3,7 @@
 #include "../../../src/func/op/sum.h"
 #include "../../util/test.h"
 
-void test_sine_exact()
+void test_sine_exact(void)
 {
     Gen *gen = gen_create(sine_create(const_(0.1)));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
@@ -21,7 +21,7 @@ void test_sine_exact()
     gen_free(gen);
 }
 
-void test_sine_incremental()
+void test_sine_incremental(void)
 {
     Gen *gen = gen_create(sine_create(sum_create(const_(.01))));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
@@ -39,7 +39,7 @@ void test_sine_incremental()
     gen_free(gen);
 }
 
-void test_sine_range()
+void test_sine_range(void)
 {
     for (size_t i = 0; i < 100; i++)
     {
@@ -49,7 +49,7 @@ void test_sine_range()
     }
 }
 
-void test_sine()
+void test_sine(void)
 {
     test_sine_exact();
     test_sine_incremental();

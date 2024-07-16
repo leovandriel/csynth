@@ -6,7 +6,7 @@
 #include "../../../src/func/op/sum.h"
 #include "../../util/test.h"
 
-void test_truncate_miss()
+void test_truncate_miss(void)
 {
     func time = sum_create(const_(0.1));
     func rect1 = mul_create(ARGS(step_create(const_(0), time), step_create(time, const_(0.09))));
@@ -24,7 +24,7 @@ void test_truncate_miss()
     gen_free(gen);
 }
 
-void test_truncate_hit()
+void test_truncate_hit(void)
 {
     func time = sum_create(const_(0.1));
     func rect1 = mul_create(ARGS(step_create(const_(0), time), step_create(time, const_(0.09))));
@@ -47,7 +47,7 @@ void test_truncate_hit()
     gen_free(gen);
 }
 
-void test_truncate()
+void test_truncate(void)
 {
     test_truncate_miss();
     test_truncate_hit();

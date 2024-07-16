@@ -1,7 +1,7 @@
 #include "../../src/mem/fill.h"
 #include "../util/test.h"
 
-void test_fill()
+void test_fill(void)
 {
     rand_seed(0);
     for (size_t i = 0; i < 100; i++)

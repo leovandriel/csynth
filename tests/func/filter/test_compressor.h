@@ -3,7 +3,7 @@
 #include "../../../src/func/gen/uniform.h"
 #include "../../util/test.h"
 
-void test_compressor()
+void test_compressor(void)
 {
     Gen *gen = gen_create(compressor_create(const_(0.5), const_(0.1), const_(0.1), const_(0.1), uniform_create()));
     assert_double_equal(gen_eval(gen, NULL), -0.8704605766408398);

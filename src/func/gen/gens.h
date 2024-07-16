@@ -38,13 +38,13 @@ Func *karplus_strong(Func *frequency, Func *decay) { return karplus_strong_creat
 Func *karplus_strong_(Func *frequency, double decay) { return karplus_strong(frequency, const_(decay)); }
 
 Func *wav(const char *filename) { return wav_filename(filename, 0, param_create(EvalParamPitchTick)); }
-Func *wav_() { return wav(DEFAULT_WAV_FILENAME); }
+Func *wav_(void) { return wav(DEFAULT_WAV_FILENAME); }
 
-Func *uniform() { return uniform_create(); }
-Func *white() { return uniform_create(); }
-Func *pink() { return pink_create(); }
-Func *gauss() { return gauss_create(); }
-Func *sample() { return sample_create(); }
+Func *uniform(void) { return uniform_create(); }
+Func *white(void) { return uniform_create(); }
+Func *pink(void) { return pink_create(); }
+Func *gauss(void) { return gauss_create(); }
+Func *sample(void) { return sample_create(); }
 Func *crack(Func *frequency) { return crack_create(mul(param(EvalParamPitchTick), frequency)); }
 Func *crack_(double frequency) { return crack(const_(frequency)); }
 

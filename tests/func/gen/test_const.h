@@ -1,7 +1,7 @@
 #include "../../../src/func/gen/const.h"
 #include "../../util/test.h"
 
-void test_const()
+void test_const(void)
 {
     Gen *gen1 = gen_create(const_(1));
     Gen *gen2 = gen_create(const_(-2));

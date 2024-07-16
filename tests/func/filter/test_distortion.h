@@ -3,7 +3,7 @@
 #include "../../../src/func/gen/saw.h"
 #include "../../util/test.h"
 
-void test_distortion_pos()
+void test_distortion_pos(void)
 {
     Gen *gen = gen_create(distortion_create(const_(1), saw_create(const_(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
@@ -21,7 +21,7 @@ void test_distortion_pos()
     gen_free(gen);
 }
 
-void test_distortion_neg()
+void test_distortion_neg(void)
 {
     Gen *gen = gen_create(distortion_create(const_(-1), saw_create(const_(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
@@ -39,7 +39,7 @@ void test_distortion_neg()
     gen_free(gen);
 }
 
-void test_distortion()
+void test_distortion(void)
 {
     test_distortion_pos();
     test_distortion_neg();

@@ -3,7 +3,7 @@
 #include "../../../src/func/gen/square.h"
 #include "../../util/test.h"
 
-void test_limit()
+void test_limit(void)
 {
     Gen *gen = gen_create(limit_create(const_(0.3), square_create(const_(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.30);

@@ -5,7 +5,7 @@
 #include "../../src/func/op/mul.h"
 #include "../util/test.h"
 
-void test_gen_count()
+void test_gen_count(void)
 {
     Func *input = mul_create(ARGS(const_(0.5), sine_create(const_(0.1))));
     Gen *gen = gen_create(input);
@@ -19,7 +19,7 @@ void test_gen_count()
     func_free();
 }
 
-void test_gen()
+void test_gen(void)
 {
     test_gen_count();
 }

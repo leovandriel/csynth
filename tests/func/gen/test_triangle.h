@@ -2,7 +2,7 @@
 #include "../../../src/func/gen/triangle.h"
 #include "../../util/test.h"
 
-void test_triangle_exact()
+void test_triangle_exact(void)
 {
     Gen *gen = gen_create(triangle_create(const_(0.1)));
     assert_double_equal(gen_eval(gen, NULL), 0.0);
@@ -20,7 +20,7 @@ void test_triangle_exact()
     gen_free(gen);
 }
 
-void test_triangle_range()
+void test_triangle_range(void)
 {
     for (size_t i = 0; i < 100; i++)
     {
@@ -30,7 +30,7 @@ void test_triangle_range()
     }
 }
 
-void test_triangle()
+void test_triangle(void)
 {
     test_triangle_exact();
     test_triangle_range();

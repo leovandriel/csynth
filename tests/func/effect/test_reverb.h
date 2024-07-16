@@ -3,7 +3,7 @@
 #include "../../../src/func/gen/saw.h"
 #include "../../util/test.h"
 
-void test_reverb()
+void test_reverb(void)
 {
     Gen *gen = gen_create(reverb_create(const_(0.2), const_(0.5), saw_create(const_(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.00);

@@ -4,7 +4,7 @@
 #include "../../../src/util/rand.h"
 #include "../../util/test.h"
 
-void test_unison()
+void test_unison(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(unison_create(5, saw_create(sample_create())));

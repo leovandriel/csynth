@@ -15,7 +15,7 @@ static double uniform_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U
     return rand_range(-1, 1);
 }
 
-Func *uniform_create()
+Func *uniform_create(void)
 {
     return func_create(NULL, uniform_eval, NULL, 0, NULL, FuncFlagNone, ARGS());
 }

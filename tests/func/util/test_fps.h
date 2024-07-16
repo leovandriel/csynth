@@ -12,7 +12,7 @@ void handle(StateEvent *event, __U void *context)
     test_fps_flag_global++;
 }
 
-void test_fps()
+void test_fps(void)
 {
     StateEventContext context = {
         .handler = NULL,

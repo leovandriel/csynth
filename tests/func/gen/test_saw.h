@@ -2,7 +2,7 @@
 #include "../../../src/func/gen/saw.h"
 #include "../../util/test.h"
 
-void test_saw_exact()
+void test_saw_exact(void)
 {
     Gen *gen = gen_create(saw_create(const_(0.1)));
     assert_double_equal(gen_eval(gen, NULL), 0.0);
@@ -19,7 +19,7 @@ void test_saw_exact()
     gen_free(gen);
 }
 
-void test_saw_range()
+void test_saw_range(void)
 {
     for (size_t i = 0; i < 100; i++)
     {
@@ -29,7 +29,7 @@ void test_saw_range()
     }
 }
 
-void test_saw()
+void test_saw(void)
 {
     test_saw_exact();
     test_saw_range();

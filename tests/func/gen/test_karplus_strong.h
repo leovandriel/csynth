@@ -2,7 +2,7 @@
 #include "../../../src/func/gen/karplus_strong.h"
 #include "../../util/test.h"
 
-void test_karplus_strong_exact()
+void test_karplus_strong_exact(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(karplus_strong_create(const_(.2), const_(.2)));
@@ -21,7 +21,7 @@ void test_karplus_strong_exact()
     gen_free(gen);
 }
 
-void test_karplus_strong_range()
+void test_karplus_strong_range(void)
 {
     for (size_t i = 0; i < 100; i++)
     {
@@ -31,7 +31,7 @@ void test_karplus_strong_range()
     }
 }
 
-void test_karplus_strong()
+void test_karplus_strong(void)
 {
     test_karplus_strong_exact();
     test_karplus_strong_range();

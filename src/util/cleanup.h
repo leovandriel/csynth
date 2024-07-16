@@ -8,7 +8,7 @@
 #include "../event/event.h"
 #include "../ui/display.h"
 
-void cleanup_all()
+void cleanup_all(void)
 {
     event_clear();
     display_clear();

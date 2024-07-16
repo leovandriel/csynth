@@ -1,7 +1,7 @@
 #include "../../../src/func/gen/pink.h"
 #include "../../util/test.h"
 
-void test_pink_exact()
+void test_pink_exact(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(pink_create());
@@ -20,7 +20,7 @@ void test_pink_exact()
     gen_free(gen);
 }
 
-void test_pink_range()
+void test_pink_range(void)
 {
     for (size_t i = 0; i < 100; i++)
     {
@@ -30,7 +30,7 @@ void test_pink_range()
     }
 }
 
-void test_pink()
+void test_pink(void)
 {
     test_pink_exact();
     test_pink_range();

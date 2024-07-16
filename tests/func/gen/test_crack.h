@@ -2,7 +2,7 @@
 #include "../../../src/func/gen/crack.h"
 #include "../../util/test.h"
 
-void test_crack_exact()
+void test_crack_exact(void)
 {
     rand_seed(0);
     Gen *gen = gen_create(crack_create(const_(0.5)));
@@ -21,7 +21,7 @@ void test_crack_exact()
     gen_free(gen);
 }
 
-void test_crack_range()
+void test_crack_range(void)
 {
     for (size_t i = 0; i < 100; i++)
     {
@@ -31,7 +31,7 @@ void test_crack_range()
     }
 }
 
-void test_crack()
+void test_crack(void)
 {
     test_crack_exact();
     test_crack_range();

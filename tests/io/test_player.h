@@ -1,5 +1,5 @@
 #include "../util/test.h"
 
-void test_player()
+void test_player(void)
 {
 }
