@@ -23,7 +23,7 @@ static double prod_eval(__U size_t count, Gen **args, Eval *eval, void *context_
 Func *prod_create(Func *input)
 {
     ProdContext initial = {.prod = 1.0};
-    return func_create(NULL, prod_eval, NULL, sizeof(ProdContext), &initial, FuncFlagNone, ARGS(input));
+    return func_create(NULL, prod_eval, NULL, sizeof(ProdContext), &initial, FuncFlagNone, input);
 }
 
 #endif // CSYNTH_PROD_H

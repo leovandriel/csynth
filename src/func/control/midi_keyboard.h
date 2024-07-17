@@ -107,7 +107,7 @@ Func *midi_keyboard_create(int channel, size_t semitones, size_t count, Func **i
         .capacity = count,
         .semitones = semitones,
     };
-    return func_create(midi_keyboard_init, midi_keyboard_eval, midi_keyboard_free, sizeof(MidiKeyboardContext), &initial, FuncFlagNone, count, inputs);
+    return func_create_args(midi_keyboard_init, midi_keyboard_eval, midi_keyboard_free, sizeof(MidiKeyboardContext), &initial, FuncFlagNone, count, inputs, "input");
 }
 
 Func *midi_keyboard_count(int channel, size_t semitones, size_t count, Func *input)

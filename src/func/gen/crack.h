@@ -16,7 +16,7 @@ static double crack_eval(__U size_t count, Gen **args, Eval *eval, __U void *con
 
 Func *crack_create(Func *tick)
 {
-    return func_create(NULL, crack_eval, NULL, 0, NULL, FuncFlagNone, ARGS(tick));
+    return func_create(NULL, crack_eval, NULL, 0, NULL, FuncFlagNone, tick);
 }
 
 #endif // CSYNTH_CRACK_H

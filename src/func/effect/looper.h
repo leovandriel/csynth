@@ -93,7 +93,7 @@ Func *looper_keyboard_create(int key, Func *tick, Func *input)
             .keyboard = key,
         },
     };
-    return func_create(looper_init, looper_eval, looper_free, sizeof(LooperContext), &initial, FuncFlagNone, ARGS(tick, input));
+    return func_create(looper_init, looper_eval, looper_free, sizeof(LooperContext), &initial, FuncFlagNone, tick, input);
 }
 
 Func *looper_midi_create(int channel, int control, Func *tick, Func *input)
@@ -109,7 +109,7 @@ Func *looper_midi_create(int channel, int control, Func *tick, Func *input)
             },
         },
     };
-    return func_create(looper_init, looper_eval, looper_free, sizeof(LooperContext), &initial, FuncFlagNone, ARGS(tick, input));
+    return func_create(looper_init, looper_eval, looper_free, sizeof(LooperContext), &initial, FuncFlagNone, tick, input);
 }
 
 #endif // CSYNTH_LOOPER_H

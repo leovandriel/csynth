@@ -59,7 +59,7 @@ Func *pause_create(int key, bool play_reset, bool paused, Func *input)
         .play_reset = play_reset,
         .paused = paused,
     };
-    return func_create(pause_init, pause_eval, control_event_free, sizeof(PauseContext), &initial, FuncFlagNone, ARGS(input));
+    return func_create(pause_init, pause_eval, control_event_free, sizeof(PauseContext), &initial, FuncFlagNone, input);
 }
 
 #endif // CSYNTH_PAUSE_H

@@ -30,7 +30,7 @@ Func *wrap_create(wrap_callback callback, Func *input, void *context)
         .callback = callback,
         .context = context,
     };
-    return func_create(NULL, wrap_eval, NULL, sizeof(WrapFilterContext), &initial, FuncFlagNone, ARGS(input));
+    return func_create(NULL, wrap_eval, NULL, sizeof(WrapFilterContext), &initial, FuncFlagNone, input);
 }
 
 #endif // CSYNTH_WRAP_H

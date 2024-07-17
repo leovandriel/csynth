@@ -51,7 +51,7 @@ static void karplus_strong_free(__U size_t count, void *context_)
 
 Func *karplus_strong_create(Func *pitch_tick, Func *decay_tick)
 {
-    return func_create(NULL, karplus_strong_eval, karplus_strong_free, sizeof(KarplusStrongContext), NULL, FuncFlagNone, ARGS(pitch_tick, decay_tick));
+    return func_create(NULL, karplus_strong_eval, karplus_strong_free, sizeof(KarplusStrongContext), NULL, FuncFlagNone, pitch_tick, decay_tick);
 }
 
 #endif // CSYNTH_KARPLUS_STRONG_H

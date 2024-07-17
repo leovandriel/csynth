@@ -33,7 +33,7 @@ Func *wav_create(ReaderSamples samples, int channel, Func *tick)
         .samples = samples,
         .channel = channel,
     };
-    return func_create(NULL, wav_eval, NULL, sizeof(WavContext), &initial, FuncFlagNone, ARGS(tick));
+    return func_create(NULL, wav_eval, NULL, sizeof(WavContext), &initial, FuncFlagNone, tick);
 }
 
 Func *wav_filename(const char *filename, int channel, Func *input)

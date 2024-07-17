@@ -46,7 +46,7 @@ static double adsr_eval(__U size_t count, Gen **args, Eval *eval, __U void *cont
 // TODO(leo): remove time and sustain
 Func *adsr_create(Func *time, Func *attack, Func *decay, Func *sustain, Func *release, Func *duration)
 {
-    return func_create(NULL, adsr_eval, NULL, 0, NULL, FuncFlagNone, ARGS(time, attack, decay, sustain, release, duration));
+    return func_create(NULL, adsr_eval, NULL, 0, NULL, FuncFlagNone, time, attack, decay, sustain, release, duration);
 }
 
 #endif // CSYNTH_ADSR_H

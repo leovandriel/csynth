@@ -21,7 +21,7 @@ static double param_eval(__U size_t count, __U Gen **args, Eval *eval, void *con
 Func *param_create(EvalParam param)
 {
     ParamContext initial = {.param = param};
-    return func_create(NULL, param_eval, NULL, sizeof(ParamContext), &initial, FuncFlagNone, ARGS());
+    return func_create(NULL, param_eval, NULL, sizeof(ParamContext), &initial, FuncFlagNone, );
 }
 
 Func *param(EvalParam param) { return param_create(param); }

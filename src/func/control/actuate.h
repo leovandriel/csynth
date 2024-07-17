@@ -28,7 +28,7 @@ static double actuate_eval(__U size_t count, __U Gen **args, __U Eval *eval, voi
 Func *actuate_create(int key)
 {
     ActuateContext initial = {.key = key};
-    return func_create(NULL, actuate_eval, NULL, sizeof(ActuateContext), &initial, FuncFlagNone, ARGS());
+    return func_create(NULL, actuate_eval, NULL, sizeof(ActuateContext), &initial, FuncFlagNone, );
 }
 
 #endif // CSYNTH_ACTUATE_H

@@ -37,7 +37,7 @@ Func *mem_create(Func *input)
     MemContext initial = {
         .time = 1.0,
     };
-    return func_create(NULL, mem_eval, NULL, sizeof(MemContext), &initial, FuncFlagNone, ARGS(input));
+    return func_create(NULL, mem_eval, NULL, sizeof(MemContext), &initial, FuncFlagNone, input);
 }
 
 #endif // CSYNTH_MEM_H

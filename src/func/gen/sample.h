@@ -25,7 +25,7 @@ static double sample_eval(__U size_t count, __U Gen **args, __U Eval *eval, void
 
 Func *sample_create(void)
 {
-    return func_create(NULL, sample_eval, NULL, sizeof(SampleContext), NULL, FuncFlagNone, ARGS());
+    return func_create(NULL, sample_eval, NULL, sizeof(SampleContext), NULL, FuncFlagNone, );
 }
 
 #endif // CSYNTH_SAMPLE_H

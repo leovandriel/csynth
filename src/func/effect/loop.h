@@ -30,7 +30,7 @@ static double loop_eval(__U size_t count, Gen **args, Eval *eval, void *context_
 
 Func *loop_create(Func *tick, Func *input)
 {
-    return func_create(NULL, loop_eval, NULL, sizeof(LoopContext), NULL, FuncFlagNone, ARGS(tick, input));
+    return func_create(NULL, loop_eval, NULL, sizeof(LoopContext), NULL, FuncFlagNone, tick, input);
 }
 
 #endif // CSYNTH_LOOP_H

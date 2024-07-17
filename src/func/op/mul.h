@@ -21,7 +21,7 @@ static double mul_eval(size_t count, Gen **args, Eval *eval, __U void *context)
 
 Func *mul_create(size_t count, Func **args)
 {
-    return func_create(NULL, mul_eval, NULL, 0, NULL, FuncFlagNone, count, args);
+    return func_create_args(NULL, mul_eval, NULL, 0, NULL, FuncFlagNone, count, args, "arg");
 }
 
 #endif // CSYNTH_MUL_H

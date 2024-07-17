@@ -28,7 +28,7 @@ static double smooth_eval(__U size_t count, Gen **args, Eval *eval, __U void *co
 
 Func *smooth_create(Func *edge0, Func *edge1, Func *input)
 {
-    return func_create(NULL, smooth_eval, NULL, 0, NULL, FuncFlagNone, ARGS(edge0, edge1, input));
+    return func_create(NULL, smooth_eval, NULL, 0, NULL, FuncFlagNone, edge0, edge1, input);
 }
 
 #endif // CSYNTH_SMOOTH_H

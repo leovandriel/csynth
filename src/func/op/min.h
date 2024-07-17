@@ -27,7 +27,7 @@ static double min_eval(size_t count, Gen **args, Eval *eval, __U void *context)
 
 Func *min_create(size_t count, Func **args)
 {
-    return func_create(NULL, min_eval, NULL, 0, NULL, FuncFlagNone, count, args);
+    return func_create_args(NULL, min_eval, NULL, 0, NULL, FuncFlagNone, count, args, "arg");
 }
 
 #endif // CSYNTH_MIN_H

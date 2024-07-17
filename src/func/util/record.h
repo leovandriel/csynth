@@ -81,7 +81,7 @@ Func *record_create(const char *filename, size_t sample_rate, size_t count, Func
         .filename = filename,
         .sample_rate = sample_rate,
     };
-    return func_create(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FuncFlagNone, count, args);
+    return func_create_args(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FuncFlagNone, count, args, "input");
 }
 
 #endif // CSYNTH_RECORD_H
