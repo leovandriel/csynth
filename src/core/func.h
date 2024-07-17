@@ -64,7 +64,7 @@ static Func *func_list_global = NULL;
  * @param inputs The inputs to the function.
  * @return The function output.
  */
-Func *func_create(init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, uint32_t flags, size_t count, Func **inputs)
+Func *func_create_name(const char *name, init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, uint32_t flags, size_t count, Func **inputs, const char *arg_names)
 {
     void *initial = NULL;
     if (size > 0 && context != NULL)
@@ -114,10 +114,15 @@ Func *func_create(init_callback init_cb, eval_callback eval_cb, free_callback fr
         .free_cb = free_cb,
         .flags = flags,
         .next = func_list_global,
+        .name = name,
+        .arg_names = arg_names,
     };
     func_list_global = func;
     return func;
 }
+
+#define func_create(__init_cb, __eval_cb, __free_cb, __size, __context, __flags, ...) func_create_name(#__eval_cb, __init_cb, __eval_cb, __free_cb, __size, __context, __flags, ARRAY_SIZE(ARRAY(Func *, __VA_ARGS__)), ARRAY(Func *, __VA_ARGS__), #__VA_ARGS__)
+#define func_create_args(__init_cb, __eval_cb, __free_cb, __size, __context, __flags, __count, __args, __names) func_create_name(#__eval_cb, __init_cb, __eval_cb, __free_cb, __size, __context, __flags, __count, __args, __names)
 
 void func_free(void)
 {

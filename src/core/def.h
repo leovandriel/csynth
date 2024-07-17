@@ -59,6 +59,8 @@ struct Func
     free_callback free_cb;
     uint32_t flags;
     Func *next;
+    const char *name;
+    const char *arg_names;
 };
 
 struct Gen
