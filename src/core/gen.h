@@ -152,10 +152,12 @@ double gen_eval(Gen *gen, Eval *eval)
     }
     Func *func = gen->func;
     double output = func->eval_cb(func->count, gen->args, eval, gen->context);
-    if (!isfinite(output) && eval != NULL && eval->error_count++ < 10)
+#ifdef GEN_DEBUG
+    if (!isfinite(output))
     {
         error_catch_message(csErrorFiniteValue, "Function output not finite: %f", output);
     }
+#endif
     return output;
 }
 

@@ -41,7 +41,6 @@ typedef struct
     bool compute_flag;
     double params[EvalParamLength];
     size_t gen_count;
-    size_t error_count;
 } Eval;
 
 typedef double (*eval_callback)(size_t count, Gen **args, Eval *eval, void *context);
