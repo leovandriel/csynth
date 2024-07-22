@@ -30,7 +30,7 @@ static double looper_eval(__U size_t count, Gen **args, Eval *eval, void *contex
     if (eval == NULL || eval->compute_flag)
     {
         size_t size = (size_t)(1.0 / tick);
-        context->index = buffer_resize(&context->buffer, size, context->index);
+        buffer_resize(&context->buffer, size, &context->index);
     }
     double *samples = context->buffer.samples;
     double output = 0.0;

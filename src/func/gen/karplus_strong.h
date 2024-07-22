@@ -29,7 +29,7 @@ static double karplus_strong_eval(__U size_t count, Gen **args, Eval *eval, void
     if (eval == NULL || eval->compute_flag)
     {
         size_t size = (size_t)(1.0 / pitch_tick);
-        context->index = buffer_resize(&context->buffer, size, context->index);
+        buffer_resize(&context->buffer, size, &context->index);
         context->decay_factor = 0.5 / exp2(decay_tick * (double)size);
     }
     double output = 0.0;
@@ -49,7 +49,6 @@ static bool karplus_strong_init(__U size_t count, __U Gen **args, void *context_
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
     context->buffer.filler = fill_rand_1_1;
     context->buffer.filler_context = &context->random;
-    buffer_free(&context->buffer);
     return false;
 }
 
