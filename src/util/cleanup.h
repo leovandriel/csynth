@@ -6,6 +6,7 @@
 
 #include "../core/func.h"
 #include "../event/event.h"
+#include "../func/gen/sine.h"
 #include "../ui/display.h"
 
 void cleanup_all(void)

@@ -16,10 +16,10 @@ void test_gen_count(void)
     gen_eval(gen, &eval);
     assert_long_equal(eval.gen_count, 8);
     gen_free(gen);
-    func_free();
 }
 
 void test_gen(void)
 {
     test_gen_count();
+    func_free();
 }

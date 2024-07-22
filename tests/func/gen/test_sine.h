@@ -7,17 +7,17 @@ void test_sine_exact(void)
 {
     Gen *gen = gen_create(sine_create(const_(0.1)));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
-    assert_double_equal(gen_eval(gen, NULL), 0.5877852522924731);
-    assert_double_equal(gen_eval(gen, NULL), 0.9510565162951535);
-    assert_double_equal(gen_eval(gen, NULL), 0.9510565162951536);
-    assert_double_equal(gen_eval(gen, NULL), 0.5877852522924732);
-    assert_double_equal(gen_eval(gen, NULL), 0.0000000000000001);
-    assert_double_equal(gen_eval(gen, NULL), -0.5877852522924730);
-    assert_double_equal(gen_eval(gen, NULL), -0.9510565162951535);
-    assert_double_equal(gen_eval(gen, NULL), -0.9510565162951536);
-    assert_double_equal(gen_eval(gen, NULL), -0.5877852522924740);
-    assert_double_equal(gen_eval(gen, NULL), -0.0000000000000011);
-    assert_double_equal(gen_eval(gen, NULL), 0.5877852522924724);
+    assert_double_equal(gen_eval(gen, NULL), 0.5877852246243184);
+    assert_double_equal(gen_eval(gen, NULL), 0.9510564491561904);
+    assert_double_equal(gen_eval(gen, NULL), 0.9510564491561903);
+    assert_double_equal(gen_eval(gen, NULL), 0.5877852246243183);
+    assert_double_equal(gen_eval(gen, NULL), -0.0000000000000000);
+    assert_double_equal(gen_eval(gen, NULL), -0.5877852246243183);
+    assert_double_equal(gen_eval(gen, NULL), -0.9510564491561903);
+    assert_double_equal(gen_eval(gen, NULL), -0.9510564491561905);
+    assert_double_equal(gen_eval(gen, NULL), -0.5877852246243188);
+    assert_double_equal(gen_eval(gen, NULL), -0.0000000000000007);
+    assert_double_equal(gen_eval(gen, NULL), 0.5877852246243177);
     gen_free(gen);
 }
 
@@ -26,16 +26,16 @@ void test_sine_incremental(void)
     Gen *gen = gen_create(sine_create(sum_create(const_(.01))));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
-    assert_double_equal(gen_eval(gen, NULL), 0.0627905195293134);
-    assert_double_equal(gen_eval(gen, NULL), 0.1873813145857247);
-    assert_double_equal(gen_eval(gen, NULL), 0.3681245526846780);
-    assert_double_equal(gen_eval(gen, NULL), 0.5877852522924732);
-    assert_double_equal(gen_eval(gen, NULL), 0.8090169943749475);
-    assert_double_equal(gen_eval(gen, NULL), 0.9685831611286311);
-    assert_double_equal(gen_eval(gen, NULL), 0.9822872507286886);
-    assert_double_equal(gen_eval(gen, NULL), 0.7705132427757893);
-    assert_double_equal(gen_eval(gen, NULL), 0.3090169943749471);
-    assert_double_equal(gen_eval(gen, NULL), -0.3090169943749477);
+    assert_double_equal(gen_eval(gen, NULL), 0.0627905181746333);
+    assert_double_equal(gen_eval(gen, NULL), 0.1873813045396087);
+    assert_double_equal(gen_eval(gen, NULL), 0.3681245256589130);
+    assert_double_equal(gen_eval(gen, NULL), 0.5877852246243184);
+    assert_double_equal(gen_eval(gen, NULL), 0.8090169563052816);
+    assert_double_equal(gen_eval(gen, NULL), 0.9685830991337381);
+    assert_double_equal(gen_eval(gen, NULL), 0.9822871980270402);
+    assert_double_equal(gen_eval(gen, NULL), 0.7705132188468167);
+    assert_double_equal(gen_eval(gen, NULL), 0.3090169725639709);
+    assert_double_equal(gen_eval(gen, NULL), -0.3090169725639715);
     gen_free(gen);
 }
 
