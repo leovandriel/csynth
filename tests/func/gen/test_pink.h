@@ -3,7 +3,6 @@
 
 void test_pink_exact(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(pink_create());
     assert_double_equal(gen_eval(gen, NULL), -0.1585402095170537);
     assert_double_equal(gen_eval(gen, NULL), -0.0549794888313561);

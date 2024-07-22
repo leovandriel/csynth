@@ -6,7 +6,6 @@
 
 void test_lowpass(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(lowpass_create(const_(0.1), const_(1.0), uniform_create()));
     assert_double_equal(gen_eval(gen, NULL), -0.0645759339514222);
     assert_double_equal(gen_eval(gen, NULL), -0.1942688533481121);
@@ -25,7 +24,6 @@ void test_lowpass(void)
 
 void test_highpass(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(highpass_create(const_(0.1), const_(1.0), uniform_create()));
     assert_double_equal(gen_eval(gen, NULL), -0.6116720258089448);
     assert_double_equal(gen_eval(gen, NULL), 0.6065471125005860);
@@ -44,7 +42,6 @@ void test_highpass(void)
 
 void test_bandpass(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(bandpass_create(const_(0.1), const_(1.0), uniform_create()));
     assert_double_equal(gen_eval(gen, NULL), -0.1987442888200088);
     assert_double_equal(gen_eval(gen, NULL), -0.2004094740953807);
@@ -63,7 +60,6 @@ void test_bandpass(void)
 
 void test_notch(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(notch_create(const_(0.1), const_(1.0), uniform_create()));
     assert_double_equal(gen_eval(gen, NULL), -0.6762479597603671);
     assert_double_equal(gen_eval(gen, NULL), 0.4122782591524741);
@@ -82,7 +78,6 @@ void test_notch(void)
 
 void test_peak(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(peak_create(const_(0.1), const_(1.0), const_(1.0), uniform_create()));
     assert_double_equal(gen_eval(gen, NULL), -0.8749922485803759);
     assert_double_equal(gen_eval(gen, NULL), 0.2118687850570933);
@@ -101,7 +96,6 @@ void test_peak(void)
 
 void test_allpass(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(allpass_create(const_(0.1), const_(1.0), uniform_create()));
     assert_double_equal(gen_eval(gen, NULL), -0.4775036709403583);
     assert_double_equal(gen_eval(gen, NULL), 0.6126877332478549);
@@ -120,7 +114,6 @@ void test_allpass(void)
 
 void test_lowshelf(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(lowshelf_create(const_(0.1), const_(1.0), uniform_create()));
     assert_double_equal(gen_eval(gen, NULL), -0.8749922485803759);
     assert_double_equal(gen_eval(gen, NULL), 0.2118687850570933);
@@ -139,7 +132,6 @@ void test_lowshelf(void)
 
 void test_highshelf(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(highshelf_create(const_(0.1), const_(1.0), uniform_create()));
     assert_double_equal(gen_eval(gen, NULL), -0.8749922485803759);
     assert_double_equal(gen_eval(gen, NULL), 0.2118687850570933);

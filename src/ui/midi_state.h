@@ -42,7 +42,7 @@ double midi_state_get(MidiType type, uint8_t channel, uint8_t data1)
     case MidiTypeSystem:
         break;
     }
-    return 0;
+    return 0.0;
 }
 
 void midi_state_set(MidiType type, uint8_t channel, uint8_t data1, uint8_t data2)

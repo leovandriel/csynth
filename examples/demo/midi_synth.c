@@ -1,10 +1,12 @@
 //usr/bin/gcc "$0" -o bin/midi_synth -Wall -Wextra -O3 -lm -lportaudio -lportmidi && ./bin/midi_synth "$@"; exit $?
 #include "../../src/func/all.h"
 #include "../../src/io/midi_player.h"
+#include "../../src/util/func_tools.h"
 
 int main(void)
 {
     func lpf_knob = gauge("lpf", knob_ex_(1, 70, 20000, 1));
+    func_print(lpf_knob);
     func hpf_knob = gauge("hpf", knob_ex_(1, 71, 1, 20000));
     func distortion_knob = gauge("distort", knob_(1, 72, 0, 2));
     func overtone_knob = gauge("overtone", knob_(1, 73, -10, 1));

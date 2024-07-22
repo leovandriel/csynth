@@ -17,6 +17,7 @@ typedef struct
 {
     Buffer buffer;
     size_t index;
+    Random random;
     double decay_factor;
 } KarplusStrongContext;
 
@@ -28,7 +29,7 @@ static double karplus_strong_eval(__U size_t count, Gen **args, Eval *eval, void
     if (eval == NULL || eval->compute_flag)
     {
         size_t size = (size_t)(1.0 / pitch_tick);
-        context->index = buffer_resize(&context->buffer, size, context->index, fill_rand_1_1);
+        context->index = buffer_resize(&context->buffer, size, context->index);
         context->decay_factor = 0.5 / exp2(decay_tick * (double)size);
     }
     double output = 0.0;
@@ -43,6 +44,15 @@ static double karplus_strong_eval(__U size_t count, Gen **args, Eval *eval, void
     return output;
 }
 
+static bool karplus_strong_init(__U size_t count, __U Gen **args, void *context_)
+{
+    KarplusStrongContext *context = (KarplusStrongContext *)context_;
+    context->buffer.filler = fill_rand_1_1;
+    context->buffer.filler_context = &context->random;
+    buffer_free(&context->buffer);
+    return false;
+}
+
 static void karplus_strong_free(__U size_t count, void *context_)
 {
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
@@ -51,7 +61,8 @@ static void karplus_strong_free(__U size_t count, void *context_)
 
 Func *karplus_strong_create(Func *pitch_tick, Func *decay_tick)
 {
-    return func_create(NULL, karplus_strong_eval, karplus_strong_free, sizeof(KarplusStrongContext), NULL, FuncFlagNone, pitch_tick, decay_tick);
+    KarplusStrongContext initial = {.random = random_create(0)};
+    return func_create(karplus_strong_init, karplus_strong_eval, karplus_strong_free, sizeof(KarplusStrongContext), &initial, FuncFlagNone, pitch_tick, decay_tick);
 }
 
 #endif // CSYNTH_KARPLUS_STRONG_H

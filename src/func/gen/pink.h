@@ -13,6 +13,7 @@ static const double PINK_B[] = {0.0555179, 0.0750759, 0.153852, 0.3104856, 0.532
 
 typedef struct
 {
+    Random random;
     double b__[6];
     double last;
 } PinkContext;
@@ -20,7 +21,7 @@ typedef struct
 static double pink_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U void *context_)
 {
     PinkContext *context = (PinkContext *)context_;
-    double white = rand_range(-1, 1);
+    double white = random_range(&context->random, -1, 1);
     double sum = context->last * 0.115926;
     for (size_t i = 0; i < 6; i++)
     {
@@ -33,7 +34,8 @@ static double pink_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U vo
 
 Func *pink_create(void)
 {
-    return func_create(NULL, pink_eval, NULL, sizeof(PinkContext), NULL, FuncFlagNone, );
+    PinkContext initial = {.random = random_create(0)};
+    return func_create(NULL, pink_eval, NULL, sizeof(PinkContext), &initial, FuncFlagNone, );
 }
 
 #endif // CSYNTH_PINK_H

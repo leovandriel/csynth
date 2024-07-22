@@ -10,37 +10,24 @@
 #include "../mem/alloc.h"
 #include "../util/error.h"
 
+typedef double (*buffer_filler)(size_t index, void *context);
+
 typedef struct
 {
     double *samples;
     size_t size;
     size_t capacity;
+    buffer_filler filler;
+    void *filler_context;
 } Buffer;
 
-csError buffer_init(Buffer *buffer, size_t size)
+void buffer_fill(Buffer *buffer)
 {
-    double *samples = NULL;
-    if (size > 0)
-    {
-        samples = (double *)calloc_(size, sizeof(double));
-        if (samples == NULL)
-        {
-            return error_type(csErrorMemoryAlloc);
-        }
-    }
-    buffer->samples = samples;
-    buffer->capacity = size;
-    buffer->size = size;
-    return csErrorNone;
-}
-
-void buffer_fill(Buffer *buffer, double (*fill)(size_t))
-{
-    if (fill != NULL)
+    if (buffer->filler != NULL)
     {
         for (size_t i = 0; i < buffer->size; i++)
         {
-            buffer->samples[i] = fill(i);
+            buffer->samples[i] = buffer->filler(i, buffer->filler_context);
         }
     }
     else
@@ -49,7 +36,7 @@ void buffer_fill(Buffer *buffer, double (*fill)(size_t))
     }
 }
 
-static size_t buffer_resize_from_zero(Buffer *buffer, size_t size, double (*fill)(size_t))
+static size_t buffer_resize_from_zero(Buffer *buffer, size_t size)
 {
     double *samples = (double *)malloc_(size * sizeof(double));
     if (samples == NULL)
@@ -61,7 +48,7 @@ static size_t buffer_resize_from_zero(Buffer *buffer, size_t size, double (*fill
     buffer->samples = samples;
     buffer->capacity = size;
     buffer->size = size;
-    buffer_fill(buffer, fill);
+    buffer_fill(buffer);
     return 0;
 }
 
@@ -74,7 +61,7 @@ static size_t buffer_resize_to_zero(Buffer *buffer)
     return 0;
 }
 
-static size_t buffer_resize_up(Buffer *buffer, size_t size, size_t index, double (*fill)(size_t))
+static size_t buffer_resize_up(Buffer *buffer, size_t size, size_t index)
 {
     if (size > buffer->capacity)
     {
@@ -91,11 +78,11 @@ static size_t buffer_resize_up(Buffer *buffer, size_t size, size_t index, double
     size_t diff = buffer->size - index;
     size_t too = size - diff;
     memmove(buffer->samples + too, buffer->samples + index, diff * sizeof(double));
-    if (fill != NULL)
+    if (buffer->filler != NULL)
     {
         for (size_t i = index, end = size - diff; i < end; i++)
         {
-            buffer->samples[i] = fill(i);
+            buffer->samples[i] = buffer->filler(i, buffer->filler_context);
         }
     }
     else
@@ -129,13 +116,13 @@ static size_t buffer_resize_down(Buffer *buffer, size_t size, size_t index)
     return index;
 }
 
-size_t buffer_resize(Buffer *buffer, size_t size, size_t index, double (*fill)(size_t))
+size_t buffer_resize(Buffer *buffer, size_t size, size_t index)
 {
     if (size != buffer->size)
     {
         if (buffer->size == 0)
         {
-            return buffer_resize_from_zero(buffer, size, fill);
+            return buffer_resize_from_zero(buffer, size);
         }
         if (size == 0)
         {
@@ -143,7 +130,7 @@ size_t buffer_resize(Buffer *buffer, size_t size, size_t index, double (*fill)(s
         }
         if (size > buffer->size)
         {
-            return buffer_resize_up(buffer, size, index, fill);
+            return buffer_resize_up(buffer, size, index);
         }
         if (size < buffer->size)
         {

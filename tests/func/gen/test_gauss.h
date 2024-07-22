@@ -4,7 +4,6 @@
 
 void test_gauss_exact(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(gauss_create());
     assert_double_equal(gen_eval(gen, NULL), -1.8521466561199877);
     assert_double_equal(gen_eval(gen, NULL), -0.2885645772717212);

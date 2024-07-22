@@ -4,11 +4,11 @@
 
 static void test_same(void)
 {
-    Buffer buffer;
-    assert(buffer_init(&buffer, 2) == csErrorNone);
+    Buffer buffer = {.filler = fill_inc};
+    assert(buffer_resize(&buffer, 2, 0) == 0);
     buffer.samples[0] = 101;
     buffer.samples[1] = 102;
-    assert(buffer_resize(&buffer, 2, 3, fill_inc) == 3);
+    assert(buffer_resize(&buffer, 2, 3) == 3);
     assert(buffer.samples != NULL);
     assert(buffer.size == 2);
     assert(buffer.capacity == 2);
@@ -19,9 +19,8 @@ static void test_same(void)
 
 static void test_from_zero(void)
 {
-    Buffer buffer;
-    assert(buffer_init(&buffer, 0) == csErrorNone);
-    assert(buffer_resize(&buffer, 2, 3, fill_inc) == 0);
+    Buffer buffer = {.filler = fill_inc};
+    assert(buffer_resize(&buffer, 2, 3) == 0);
     assert(buffer.samples != NULL);
     assert(buffer.size == 2);
     assert(buffer.capacity == 2);
@@ -32,11 +31,11 @@ static void test_from_zero(void)
 
 static void test_to_zero(void)
 {
-    Buffer buffer;
-    assert(buffer_init(&buffer, 2) == csErrorNone);
+    Buffer buffer = {.filler = fill_inc};
+    assert(buffer_resize(&buffer, 2, 0) == 0);
     buffer.samples[0] = 1;
     buffer.samples[1] = 2;
-    assert(buffer_resize(&buffer, 0, 3, fill_inc) == 0);
+    assert(buffer_resize(&buffer, 0, 3) == 0);
     assert(buffer.samples == NULL);
     assert(buffer.size == 0);
     assert(buffer.capacity == 0);
@@ -47,11 +46,11 @@ static void test_up(void)
 {
     for (size_t i = 0; i < 2; i++)
     {
-        Buffer buffer;
-        assert(buffer_init(&buffer, 2) == csErrorNone);
+        Buffer buffer = {.filler = fill_inc};
+        assert(buffer_resize(&buffer, 2, 0) == 0);
         buffer.samples[0] = 101;
         buffer.samples[1] = 102;
-        assert(buffer_resize(&buffer, 4, i, fill_inc) == i);
+        assert(buffer_resize(&buffer, 4, i) == i);
         assert(buffer.samples != NULL);
         assert(buffer.size == 4);
         assert(buffer.capacity == 8);
@@ -68,13 +67,13 @@ static void test_down(void)
 {
     for (size_t i = 0; i < 4; i++)
     {
-        Buffer buffer;
-        assert(buffer_init(&buffer, 4) == csErrorNone);
+        Buffer buffer = {.filler = fill_inc};
+        assert(buffer_resize(&buffer, 4, 0) == 0);
         buffer.samples[0] = 101;
         buffer.samples[1] = 102;
         buffer.samples[2] = 103;
         buffer.samples[3] = 104;
-        assert(buffer_resize(&buffer, 2, i, fill_inc) == i % 2);
+        assert(buffer_resize(&buffer, 2, i) == i % 2);
         assert(buffer.samples != NULL);
         assert(buffer.size == 2);
         assert(buffer.capacity == 4);

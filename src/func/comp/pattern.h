@@ -14,6 +14,7 @@
 
 Func *pattern_create(const char *string, Func *duration, Func *timing, Func *input)
 {
+    Random random = random_create(0);
     size_t length = strlen(string);
     Func **array = (Func **)malloc_(length * 2 * sizeof(Func *));
     if (array == NULL)
@@ -25,7 +26,7 @@ Func *pattern_create(const char *string, Func *duration, Func *timing, Func *inp
     {
         if (string[i] == '.')
         {
-            array[index++] = add(mul_(i, duration), mul_(rand_gauss(0, 1), timing));
+            array[index++] = add(mul_(i, duration), mul_(random_gauss(&random, 0, 1), timing));
             array[index++] = input;
         }
     }

@@ -10,14 +10,21 @@
 #include "../../core/gen.h"
 #include "../../util/rand.h"
 
-static double gauss_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U void *context)
+typedef struct
 {
-    return rand_gauss(0, 1);
+    Random random;
+} GaussContext;
+
+static double gauss_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U void *context_)
+{
+    GaussContext *context = (GaussContext *)context_;
+    return random_gauss(&context->random, 0, 1);
 }
 
 Func *gauss_create(void)
 {
-    return func_create(NULL, gauss_eval, NULL, 0, NULL, FuncFlagNone, );
+    GaussContext initial = {.random = random_create(0)};
+    return func_create(NULL, gauss_eval, NULL, sizeof(GaussContext), &initial, FuncFlagNone, );
 }
 
 #endif // CSYNTH_GAUSS_H

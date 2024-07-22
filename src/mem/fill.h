@@ -6,17 +6,19 @@
 
 #include "../util/rand.h"
 
-double fill_rand_0_1(__attribute__((unused)) size_t index)
+double fill_rand_0_1(__attribute__((unused)) size_t index, void *context)
 {
-    return rand_range(0, 1);
+    Random *random = (Random *)context;
+    return random_range(random, 0, 1);
 }
 
-double fill_rand_1_1(__attribute__((unused)) size_t index)
+double fill_rand_1_1(__attribute__((unused)) size_t index, void *context)
 {
-    return rand_range(-1, 1);
+    Random *random = (Random *)context;
+    return random_range(random, -1, 1);
 }
 
-double fill_inc(size_t index)
+double fill_inc(size_t index, __attribute__((unused)) void *context)
 {
     return (double)index;
 }

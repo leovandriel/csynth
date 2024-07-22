@@ -4,7 +4,6 @@
 
 void test_uniform_exact(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(uniform_create());
     assert_double_equal(gen_eval(gen, NULL), -0.8749922485803759);
     assert_double_equal(gen_eval(gen, NULL), 0.2118687850570933);

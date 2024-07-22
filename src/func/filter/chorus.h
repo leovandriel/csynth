@@ -31,7 +31,7 @@ static double chorus_eval(__U size_t count, Gen **args, Eval *eval, void *contex
     if (eval == NULL || eval->compute_flag)
     {
         size_t size = (size_t)(delay / tick);
-        context->index = buffer_resize(&context->buffer, size, context->index, NULL);
+        context->index = buffer_resize(&context->buffer, size, context->index);
     }
     double output = input;
     double *samples = context->buffer.samples;

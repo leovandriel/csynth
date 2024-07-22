@@ -41,7 +41,7 @@ static bool replay_init(__U size_t count, __U Gen **args, void *context_)
         return error_catch(error);
     }
     context->current = context->list;
-    return 0;
+    return false;
 }
 
 static void replay_free(__U size_t count, void *context_)

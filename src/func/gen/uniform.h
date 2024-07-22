@@ -10,14 +10,21 @@
 #include "../../core/gen.h"
 #include "../../util/rand.h"
 
-static double uniform_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U void *context)
+typedef struct
 {
-    return rand_range(-1, 1);
+    Random random;
+} UniformContext;
+
+static double uniform_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U void *context_)
+{
+    UniformContext *context = (UniformContext *)context_;
+    return random_range(&context->random, -1, 1);
 }
 
 Func *uniform_create(void)
 {
-    return func_create(NULL, uniform_eval, NULL, 0, NULL, FuncFlagNone, );
+    UniformContext initial = {.random = random_create(0)};
+    return func_create(NULL, uniform_eval, NULL, sizeof(UniformContext), &initial, FuncFlagNone, );
 }
 
 #endif // CSYNTH_UNIFORM_H

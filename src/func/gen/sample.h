@@ -10,6 +10,7 @@
 
 typedef struct
 {
+    Random random;
     double sample;
 } SampleContext;
 
@@ -18,14 +19,15 @@ static double sample_eval(__U size_t count, __U Gen **args, __U Eval *eval, void
     SampleContext *context = (SampleContext *)context_;
     if (context->sample == 0.0)
     {
-        context->sample = rand_uniform();
+        context->sample = random_uniform(&context->random);
     }
     return context->sample;
 }
 
 Func *sample_create(void)
 {
-    return func_create(NULL, sample_eval, NULL, sizeof(SampleContext), NULL, FuncFlagNone, );
+    SampleContext initial = {.random = random_create(0)};
+    return func_create(NULL, sample_eval, NULL, sizeof(SampleContext), &initial, FuncFlagNone, );
 }
 
 #endif // CSYNTH_SAMPLE_H

@@ -1,6 +1,7 @@
 //usr/bin/gcc "$0" -o bin/guitar -Wall -Wextra -O3 -lm -lportaudio && ./bin/guitar "$@"; exit $?
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
+#include "../../src/util/rand.h"
 
 static func strum(int count, const double *freqs, double span, double decay)
 {
@@ -32,13 +33,16 @@ static const double F__[] = {C3_, F3_, A3_, C4_};
 static const double G__[] = {G2_, B2_, D3_, G3_, B3_, G4_};
 static const double Am_[] = {A2_, E3_, A3_, C4_, E4_};
 
+static Random timing_random = {0};
+
 static func t(double index)
 {
-    return _(.25 * index + rand_range(0, .01));
+    return _(.25 * index + random_range(&timing_random, 0, .01));
 }
 
 int main(void)
 {
+    timing_random = random_create(0);
     func gg0 = seq_abs(
         t(0), slow(Am_),
         t(8), slow(Am_));

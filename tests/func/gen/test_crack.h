@@ -4,7 +4,6 @@
 
 void test_crack_exact(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(crack_create(const_(0.5)));
     assert_double_equal(gen_eval(gen, NULL), 0.2118687850570933);
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);

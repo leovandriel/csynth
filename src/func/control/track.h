@@ -50,7 +50,7 @@ static bool track_init(__U size_t count, __U Gen **args, void *context_)
     }
     context->handler = handler;
     context->list = NULL;
-    return 0;
+    return false;
 }
 
 static void track_free(__U size_t count, void *context_)

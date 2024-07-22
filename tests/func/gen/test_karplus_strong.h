@@ -4,7 +4,6 @@
 
 void test_karplus_strong_exact(void)
 {
-    rand_seed(0);
     Gen *gen = gen_create(karplus_strong_create(const_(.2), const_(.2)));
     assert_double_equal(gen_eval(gen, NULL), -0.1657808658808207);
     assert_double_equal(gen_eval(gen, NULL), 0.2821309923619489);

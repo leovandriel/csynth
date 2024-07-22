@@ -10,9 +10,12 @@
 
 #define RAND_STATE_INIT 1082269761
 
-static size_t rand_state_global = RAND_STATE_INIT;
+typedef struct
+{
+    size_t state;
+} Random;
 
-static size_t rand_next(size_t reg)
+static size_t random_next(size_t reg)
 {
     reg ^= reg << 13;
     reg ^= reg >> 7;
@@ -20,30 +23,30 @@ static size_t rand_next(size_t reg)
     return reg;
 }
 
-size_t rand_unsigned_long(void)
+size_t random_unsigned_long(Random *random)
 {
-    rand_state_global = rand_next(rand_state_global);
-    return rand_state_global;
+    random->state = random_next(random->state);
+    return random->state;
 }
 
-double rand_uniform(void)
+double random_uniform(Random *random)
 {
-    return (double)rand_unsigned_long() / (double)ULONG_MAX;
+    return (double)random_unsigned_long(random) / (double)ULONG_MAX;
 }
 
-double rand_range(double left, double right)
+double random_range(Random *random, double left, double right)
 {
-    return (right - left) * rand_uniform() + left;
+    return (right - left) * random_uniform(random) + left;
 }
 
-double rand_gauss(double muu, double sigma)
+double random_gauss(Random *random, double muu, double sigma)
 {
-    return sigma * sqrt(-2.0 * log(rand_uniform())) * cos(rand_uniform() * M_PI * 2) + muu;
+    return sigma * sqrt(-2.0 * log(random_uniform(random))) * cos(random_uniform(random) * M_PI * 2) + muu;
 }
 
-void rand_seed(size_t seed)
+Random random_create(size_t seed)
 {
-    rand_state_global = seed + RAND_STATE_INIT;
+    return (Random){.state = seed + RAND_STATE_INIT};
 }
 
 #endif // CSYNTH_RAND_H
