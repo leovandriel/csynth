@@ -39,7 +39,6 @@
 #include "./filter/filters.h"
 #include "./filter/finish.h"
 #include "./filter/hpf.h"
-#include "./filter/limit.h"
 #include "./filter/lpf.h"
 #include "./filter/resonant.h"
 #include "./filter/slope.h"

@@ -15,7 +15,6 @@
 #include "./distortion.h"
 #include "./finish.h"
 #include "./hpf.h"
-#include "./limit.h"
 #include "./lpf.h"
 #include "./resonant.h"
 #include "./slope.h"
@@ -65,8 +64,5 @@ Func *finish_(double duration, Func *input) { return finish(const_(duration), in
 
 Func *slope(Func *frequency, Func *input) { return slope_create(mul(param(EvalParamPitchTick), frequency), input); }
 Func *slope_(double derivative, Func *input) { return slope(const_(derivative), input); }
-
-Func *limit(Func *diff, Func *input) { return limit_create(mul(param(EvalParamPitchTick), diff), input); }
-Func *limit_(double diff, Func *input) { return limit(const_(diff), input); }
 
 #endif // CSYNTH_FILTERS_H
