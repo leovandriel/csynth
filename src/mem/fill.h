@@ -4,7 +4,7 @@
 #ifndef CSYNTH_FILL_H
 #define CSYNTH_FILL_H
 
-#include "../util/rand.h"
+#include "../util/random.h"
 
 double fill_rand_0_1(__attribute__((unused)) size_t index, void *context)
 {

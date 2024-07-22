@@ -1,7 +1,7 @@
 #include "../../../src/func/filter/biquad.h"
 #include "../../../src/func/gen/const.h"
 #include "../../../src/func/gen/uniform.h"
-#include "../../../src/util/rand.h"
+#include "../../../src/util/random.h"
 #include "../../util/test.h"
 
 void test_lowpass(void)

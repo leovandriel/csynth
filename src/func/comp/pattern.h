@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 #include "../../core/func.h"
-#include "../../util/rand.h"
+#include "../../util/random.h"
 #include "../gen/gens.h"
 #include "../op/ops.h"
 #include "./seq.h"

@@ -1,7 +1,7 @@
-#include "../../src/util/rand.h"
+#include "../../src/util/random.h"
 #include "./test.h"
 
-void test_rand(void)
+void test_random(void)
 {
     Random random = random_create(0);
     assert(random_unsigned_long(&random) == 1152992998833853505UL);

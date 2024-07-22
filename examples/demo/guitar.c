@@ -1,15 +1,15 @@
 //usr/bin/gcc "$0" -o bin/guitar -Wall -Wextra -O3 -lm -lportaudio && ./bin/guitar "$@"; exit $?
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
-#include "../../src/util/rand.h"
+#include "../../src/util/random.h"
 
-static func strum(int count, const double *freqs, double span, double decay)
+static func strum(int count, const double *frequencies, double span, double decay)
 {
     func notes[10];
     for (int i = 0; i < count; i++)
     {
-        func note = karplus_strong_(_(freqs[i]), decay);
-        note = lpf_(freqs[i], note);
+        func note = karplus_strong_(_(frequencies[i]), decay);
+        note = lpf_(frequencies[i], note);
         note = delay_(span * (double)(span < 0 ? i - count : i), note);
         notes[i] = note;
     }

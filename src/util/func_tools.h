@@ -112,9 +112,9 @@ void func_stats_add(FuncStat *stat, Func *func)
     }
 }
 
-int func_stats_compare(FuncStatItem *a, FuncStatItem *b)
+int func_stats_compare(FuncStatItem *item_a, FuncStatItem *item_b)
 {
-    return a->count != b->count ? a->count - b->count : strcmp(a->name, b->name);
+    return item_a->count != item_b->count ? (int)(item_a->count - item_b->count) : strcmp(item_a->name, item_b->name);
 }
 
 FuncStat func_stats(Func *func)

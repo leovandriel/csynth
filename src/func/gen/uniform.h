@@ -8,7 +8,7 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../util/rand.h"
+#include "../../util/random.h"
 
 typedef struct
 {

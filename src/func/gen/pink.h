@@ -6,7 +6,7 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
-#include "../../util/rand.h"
+#include "../../util/random.h"
 
 static const double PINK_A[] = {0.99886, 0.99332, 0.969, 0.8665, 0.55, -0.7616};
 static const double PINK_B[] = {0.0555179, 0.0750759, 0.153852, 0.3104856, 0.5329522, -0.016898};

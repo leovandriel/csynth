@@ -1,7 +1,7 @@
 #include "../../../src/func/effect/unison.h"
 #include "../../../src/func/gen/sample.h"
 #include "../../../src/func/gen/saw.h"
-#include "../../../src/util/rand.h"
+#include "../../../src/util/random.h"
 #include "../../util/test.h"
 
 void test_unison(void)
