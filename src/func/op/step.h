@@ -1,8 +1,3 @@
-//
-// step.h - A step function
-//
-// `step(at)` returns 1 if time is past at, otherwise 0.
-//
 #ifndef CSYNTH_STEP_H
 #define CSYNTH_STEP_H
 
@@ -17,6 +12,14 @@ static double step_eval(__U size_t count, Gen **args, Eval *eval, __U void *cont
     return value;
 }
 
+/**
+ * @brief Create a function for the step function, i.e. 0 if input < edge,
+ * otherwise 1.
+ *
+ * @param edge Edge value.
+ * @param input Input value.
+ * @return Func* Function object.
+ */
 Func *step_create(Func *edge, Func *input)
 {
     return func_create(NULL, step_eval, NULL, 0, NULL, FuncFlagNone, edge, input);

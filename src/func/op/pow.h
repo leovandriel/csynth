@@ -1,8 +1,3 @@
-//
-// pow.h - Pow function
-//
-// `pow_op(a, b)` returns a ** b.
-//
 #ifndef CSYNTH_POW_H
 #define CSYNTH_POW_H
 
@@ -28,6 +23,16 @@ static double pow_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
     return context->output;
 }
 
+/**
+ * @brief Create a function for the power function, i.e. base ^ exponent.
+ *
+ * Due to cost of `pow`, the result is cached in the context and recomputed
+ * periodically.
+ *
+ * @param base Base value.
+ * @param exponent Exponent value.
+ * @return Func* Function object.
+ */
 Func *pow_create(Func *base, Func *exponent)
 {
     return func_create(NULL, pow_eval, NULL, sizeof(PowContext), NULL, FuncFlagNone, base, exponent);

@@ -1,8 +1,3 @@
-//
-// mul.h - Multiplication function
-//
-// `mul(a, b)` returns the product of a list of functions.
-//
 #ifndef CSYNTH_MUL_H
 #define CSYNTH_MUL_H
 
@@ -19,6 +14,15 @@ static double mul_eval(size_t count, Gen **args, Eval *eval, __U void *context)
     return output;
 }
 
+/**
+ * @brief Create a function of the product across all inputs.
+ *
+ * Can be used to add gain to a signal, e.g. to increase volume.
+ *
+ * @param count Number of arguments.
+ * @param args Argument array.
+ * @return Func* Function object.
+ */
 Func *mul_create(size_t count, Func **args)
 {
     return func_create_args(NULL, mul_eval, NULL, 0, NULL, FuncFlagNone, count, args, "arg");

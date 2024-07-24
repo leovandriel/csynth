@@ -1,6 +1,3 @@
-//
-// prod.h - Multiply input values over time.
-//
 #ifndef CSYNTH_PROD_H
 #define CSYNTH_PROD_H
 
@@ -20,6 +17,13 @@ static double prod_eval(__U size_t count, Gen **args, Eval *eval, void *context_
     return output;
 }
 
+/**
+ * @brief Create a function that accumulates the product over time, across
+ * samples.
+ *
+ * @param input Input function.
+ * @return Func* Function object.
+ */
 Func *prod_create(Func *input)
 {
     ProdContext initial = {.prod = 1.0};

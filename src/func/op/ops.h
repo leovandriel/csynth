@@ -1,9 +1,3 @@
-//
-// ops.h - Various mathematical operators
-//
-// - clamp(value, min, max) - Ensure value is clipped to [min, max]
-// - clamp_ - Take double arguments instead of functions
-//
 #ifndef CSYNTH_OPS_H
 #define CSYNTH_OPS_H
 

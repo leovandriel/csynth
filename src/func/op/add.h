@@ -1,8 +1,3 @@
-//
-// add.h - Addition function
-//
-// `add(...)` returns the sum of a list of functions.
-//
 #ifndef CSYNTH_ADD_H
 #define CSYNTH_ADD_H
 
@@ -19,6 +14,15 @@ static double add_eval(size_t count, Gen **args, Eval *eval, __U void *context)
     return sum;
 }
 
+/**
+ * @brief Create a function that sums across all inputs.
+ *
+ * Can be used to mix multiple signals together.
+ *
+ * @param count Number of arguments.
+ * @param args Argument array.
+ * @return Func* Function object.
+ */
 Func *add_create(size_t count, Func **args)
 {
     return func_create_args(NULL, add_eval, NULL, 0, NULL, FuncFlagNone, count, args, "arg");
