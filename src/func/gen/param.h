@@ -1,6 +1,3 @@
-//
-// param.h - Turn eval parameter into function output
-//
 #ifndef CSYNTH_PARAM_H
 #define CSYNTH_PARAM_H
 
@@ -18,6 +15,15 @@ static double param_eval(__U size_t count, __U Gen **args, Eval *eval, void *con
     return eval->params[context->param];
 }
 
+/**
+ * @brief Create a function that returns the value of an eval parameter.
+ *
+ * Eval parameters allow for dynamic control of the synthesis process by passing
+ * variables down the synthesis tree.
+ *
+ * @param param Eval parameter to return.
+ * @return Func* Function object.
+ */
 Func *param_create(EvalParam param)
 {
     ParamContext initial = {.param = param};

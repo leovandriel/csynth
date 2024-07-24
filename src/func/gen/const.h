@@ -1,15 +1,3 @@
-//
-// const.h - A constant value function.
-//
-// `const_(value)` takes one value, which it will return during sampling. Primary
-// purpose is wrapping doubles in a Func, so it can be used as argument for
-// other functions.
-//
-// For convenience, the macro `_(value)` is provided, which is equal to
-// `const_(value)`.
-// - ZERO - A constant function, which always returns 0
-// - ONE - A constant function, which always returns 1
-//
 #ifndef CSYNTH_CONST_H
 #define CSYNTH_CONST_H
 
@@ -27,6 +15,12 @@ static double const_eval(__U size_t count, __U Gen **args, __U Eval *eval, void 
     return context->value;
 }
 
+/**
+ * @brief Create a function of constant value.
+ *
+ * @param value double Value to be returned during sampling.
+ * @return Func* Function object.
+ */
 Func *const_create(double value)
 {
     ConstContext initial = {.value = value};

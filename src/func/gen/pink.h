@@ -1,6 +1,3 @@
-//
-// pink.h - Pink noise function
-//
 #ifndef CSYNTH_PINK_H
 #define CSYNTH_PINK_H
 
@@ -32,6 +29,12 @@ static double pink_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U vo
     return (sum + white * 0.5362) * 0.11;
 }
 
+/**
+ * @brief Create a function that approximates pink noise, using an array of
+ * first order low pass filters.
+ *
+ * @return Func* Function object.
+ */
 Func *pink_create(void)
 {
     PinkContext initial = {.random = random_create(0)};

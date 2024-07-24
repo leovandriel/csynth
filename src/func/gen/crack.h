@@ -1,6 +1,3 @@
-//
-// crack.h - A crackling function
-//
 #ifndef CSYNTH_CRACK_H
 #define CSYNTH_CRACK_H
 
@@ -20,6 +17,13 @@ static double crack_eval(__U size_t count, Gen **args, Eval *eval, __U void *con
     return random_range(&context->random, 0, 1) < tick ? random_range(&context->random, -1, 1) : 0;
 }
 
+/**
+ * @brief Create a function that outputs a pseudo random value at pseudo random
+ * intervals, and zero in between.
+ *
+ * @param tick Func* In range [0, 1], the probability of a crackle.
+ * @return Func* Function object.
+ */
 Func *crack_create(Func *tick)
 {
     CrackContext initial = {.random = random_create(0)};

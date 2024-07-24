@@ -1,8 +1,3 @@
-//
-// gauss.h - Gaussian noise function
-//
-// `gauss()` returns a random value in [-inf, inf], approximately normal distributed.
-//
 #ifndef CSYNTH_GAUSS_H
 #define CSYNTH_GAUSS_H
 
@@ -21,6 +16,12 @@ static double gauss_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U v
     return random_gauss(&context->random, 0, 1);
 }
 
+/**
+ * @brief Create a function that outputs normal distributed pseudo random
+ * values, i.e. Gaussian noise.
+ *
+ * @return Func* Function object.
+ */
 Func *gauss_create(void)
 {
     GaussContext initial = {.random = random_create(0)};

@@ -1,8 +1,3 @@
-//
-// saw.h - A sawtooth function
-//
-// `saw(frequency)` returns a sawtooth wave with the given frequency.
-//
 #ifndef CSYNTH_SAW_H
 #define CSYNTH_SAW_H
 
@@ -27,6 +22,12 @@ static double saw_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
     return output;
 }
 
+/**
+ * @brief Create a function that outputs an sawtooth wave.
+ *
+ * @param tick Func* Periods per sample.
+ * @return Func* Function object.
+ */
 Func *saw_create(Func *tick)
 {
     return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, FuncFlagNone, tick);

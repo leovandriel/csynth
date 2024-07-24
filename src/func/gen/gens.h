@@ -1,6 +1,3 @@
-//
-// gens.h - Misc constants and gens
-//
 #ifndef CSYNTH_GENS_H
 #define CSYNTH_GENS_H
 

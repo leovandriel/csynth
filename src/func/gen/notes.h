@@ -1,12 +1,12 @@
-//
-// notes.h - Note constants for 10 octaves.
-//
-// The contents of this file can be generated using `utils/notes.c`.
-//
 #ifndef CSYNTH_NOTES_H
 #define CSYNTH_NOTES_H
 
 #include "./const.h"
+
+/*
+ * Note constants for 10 octaves of 12 notes equal temperament. The contents of
+ * this file can be generated using `utils/notes.c`.
+ */
 
 #define C0_ 16.351597831287413953  // 440 * pow(2, -57 / 12.0)
 #define Cs0_ 17.323914436054504762 // 440 * pow(2, -56 / 12.0)

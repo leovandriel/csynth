@@ -1,8 +1,3 @@
-//
-// sine.h - A sine function
-//
-// `sine(frequency)` returns a sine wave with the given frequency.
-//
 #ifndef CSYNTH_SINE_H
 #define CSYNTH_SINE_H
 
@@ -39,7 +34,7 @@ static csError sine_table_ensure()
     return csErrorNone;
 }
 
-double sine_table_lookup(double phase)
+static double sine_table_lookup(double phase)
 {
     double sign = phase < 0.5 ? 1 : -1;
     phase = fmod(phase, 0.5);
@@ -75,6 +70,15 @@ static bool sine_init(__U size_t count, __U Gen **args, __U void *context_)
     return false;
 }
 
+/**
+ * @brief Create a function that outputs an approximate sine wave.
+ *
+ * Due to the cost of `sin`, the result is cached in a lookup table and
+ * interpolated.
+ *
+ * @param tick Func* Periods per sample.
+ * @return Func* Function object.
+ */
 Func *sine_create(Func *tick)
 {
     return func_create(sine_init, sine_eval, NULL, sizeof(SineContext), NULL, FuncFlagNone, tick);

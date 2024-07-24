@@ -1,8 +1,3 @@
-//
-// karplus_strong.h - Karplus-Strong algorithm
-//
-// `karplus_strong(frequency, decay)`
-//
 #ifndef CSYNTH_KARPLUS_STRONG_H
 #define CSYNTH_KARPLUS_STRONG_H
 
@@ -58,6 +53,14 @@ static void karplus_strong_free(__U size_t count, void *context_)
     buffer_free(&context->buffer);
 }
 
+/**
+ * @brief Create a function that simulates a vibrating string using the
+ * Karplus-Strong algorithm.
+ *
+ * @param pitch_tick Function that controls the pitch of the string.
+ * @param decay_tick Function that controls the decay of the string.
+ * @return Func* Function object.
+ */
 Func *karplus_strong_create(Func *pitch_tick, Func *decay_tick)
 {
     KarplusStrongContext initial = {.random = random_create(0)};

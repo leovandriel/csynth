@@ -1,8 +1,3 @@
-//
-// uniform.h - Uniform noise function
-//
-// `uniform()` returns a random value in [-1, 1].
-//
 #ifndef CSYNTH_UNIFORM_H
 #define CSYNTH_UNIFORM_H
 
@@ -21,6 +16,12 @@ static double uniform_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U
     return random_range(&context->random, -1, 1);
 }
 
+/**
+ * @brief Create a function that outputs uniformly distributed pseudo random
+ * values on interval [-1, 1], i.e. white noise.
+ *
+ * @return Func* Function object.
+ */
 Func *uniform_create(void)
 {
     UniformContext initial = {.random = random_create(0)};

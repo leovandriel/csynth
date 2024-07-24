@@ -1,6 +1,3 @@
-//
-// sample.h - Uniform sample once
-//
 #ifndef CSYNTH_SAMPLE_H
 #define CSYNTH_SAMPLE_H
 
@@ -24,6 +21,14 @@ static double sample_eval(__U size_t count, __U Gen **args, __U Eval *eval, void
     return context->sample;
 }
 
+/**
+ * @brief Create a function that samples from a uniformly distributed and
+ * returns that value as a constant.
+ *
+ * Can be used to sample a constant control signal, like detune on key press.
+ *
+ * @return Func* Function object.
+ */
 Func *sample_create(void)
 {
     SampleContext initial = {.random = random_create(0)};

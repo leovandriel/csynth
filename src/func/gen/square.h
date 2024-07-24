@@ -1,8 +1,3 @@
-//
-// square.h - A square function
-//
-// `square(frequency)` returns a square wave with the given frequency.
-//
 #ifndef CSYNTH_SQUARE_H
 #define CSYNTH_SQUARE_H
 
@@ -28,6 +23,12 @@ static double square_eval(__U size_t count, Gen **args, Eval *eval, void *contex
     return context->output;
 }
 
+/**
+ * @brief Create a function that outputs a square wave.
+ *
+ * @param tick Func* Periods per sample.
+ * @return Func* Function object.
+ */
 Func *square_create(Func *tick)
 {
     SquareContext initial = {.output = 1.0};

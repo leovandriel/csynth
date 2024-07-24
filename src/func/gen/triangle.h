@@ -1,8 +1,3 @@
-//
-// triangle.h - A triangle function
-//
-// `triangle(frequency)` returns a triangle wave with the given frequency.
-//
 #ifndef CSYNTH_TRIANGLE_H
 #define CSYNTH_TRIANGLE_H
 
@@ -34,6 +29,12 @@ static double triangle_eval(__U size_t count, Gen **args, Eval *eval, void *cont
     return output;
 }
 
+/**
+ * @brief Create a function that outputs a triangle wave.
+ *
+ * @param tick Func* Periods per sample.
+ * @return Func* Function object.
+ */
 Func *triangle_create(Func *tick)
 {
     TriangleContext initial = {.direction = 4.0};
