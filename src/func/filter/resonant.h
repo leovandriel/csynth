@@ -1,8 +1,3 @@
-//
-// resonant.h - Second-order second-order IIR filter
-//
-// `resonant(input, frequency, q_factor)`
-//
 #ifndef CSYNTH_RESONANT_H
 #define CSYNTH_RESONANT_H
 
@@ -11,10 +6,17 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see resonant_create */
 typedef struct
 {
+    /**@{*/
+    /** @brief Resonant filter coefficients. */
     double va0, va1, va2, vb1, vb2;
+    /**@}*/
+    /**@{*/
+    /** @brief Resonant filter state. */
     double x1, x2, y1, y2;
+    /**@}*/
 } ResonantContext;
 
 static double resonant_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
@@ -41,6 +43,14 @@ static double resonant_eval(__U size_t count, Gen **args, Eval *eval, void *cont
     return output;
 }
 
+/**
+ * @brief Create a function that implements a second-order resonant filter.
+ *
+ * @param tick Periods per sample.
+ * @param q_factor Q factor.
+ * @param input Input signal.
+ * @return Func* Resonant function.
+ */
 Func *resonant_create(Func *tick, Func *q_factor, Func *input)
 {
     return func_create(NULL, resonant_eval, NULL, sizeof(ResonantContext), NULL, FuncFlagNone, tick, q_factor, input);

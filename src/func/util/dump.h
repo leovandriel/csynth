@@ -1,8 +1,3 @@
-//
-// dump.h - Logs the samples plus some metrics
-//
-// `dump(input, count)` with count the maximum number of log to be logged.
-//
 #ifndef CSYNTH_DUMP_H
 #define CSYNTH_DUMP_H
 
@@ -11,16 +6,26 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see dump_create */
 typedef struct
 {
+    /** @brief Last output value. */
     double output;
+    /** @brief Last direction. */
     int dir;
+    /** @brief Index of the last zero crossing. */
     long min;
+    /** @brief Index of the last zero crossing. */
     long max;
+    /** @brief Index of the last zero crossing. */
     long zero0;
+    /** @brief Index of the last zero crossing. */
     long zero1;
+    /** @brief Number of samples to log. */
     size_t count;
+    /** @brief Number of samples to skip. */
     size_t step;
+    /** @brief Current index. */
     size_t index;
 } DumpContext;
 
@@ -75,6 +80,14 @@ static double dump_eval(__U size_t count, Gen **args, Eval *eval, void *context_
     return input;
 }
 
+/**
+ * @brief Create a function that logs the samples plus some metrics.
+ *
+ * @param count Number of samples to log.
+ * @param step Number of samples to skip.
+ * @param input Input signal.
+ * @return Func* Dump function.
+ */
 Func *dump_create(size_t count, size_t step, Func *input)
 {
     DumpContext initial = {

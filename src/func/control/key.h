@@ -1,6 +1,3 @@
-//
-// key.h - Trigger based on key trigger
-//
 #ifndef CSYNTH_KEY_H
 #define CSYNTH_KEY_H
 
@@ -8,11 +5,16 @@
 #include "../../core/gen.h"
 #include "../../event/control_event.h"
 
+/** @see key_create */
 typedef struct
 {
+    /** @brief Super struct, allowing use of control_event_free. */
     ControlEventContext parent;
+    /** @brief Key to trigger. */
     ControlEventKey key;
+    /** @brief Flag to indicate if key is active. */
     bool active;
+    /** @brief Flag to indicate function reset. */
     bool reset;
 } KeyContext;
 
@@ -49,6 +51,14 @@ static bool key_init(__U size_t count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
+/**
+ * @brief Trigger based on MIDI key press.
+ *
+ * @param channel The MIDI channel.
+ * @param pitch The MIDI key pitch.
+ * @param input The input function to sample after trigger.
+ * @return Func* Key function.
+ */
 Func *key_create(int channel, int pitch, Func *input)
 {
     KeyContext initial = {

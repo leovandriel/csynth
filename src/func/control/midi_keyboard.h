@@ -1,6 +1,3 @@
-//
-// midi_keyboard.h - MIDI keyboard controls
-//
 #ifndef CSYNTH_MIDI_KEYBOARD_H
 #define CSYNTH_MIDI_KEYBOARD_H
 
@@ -10,21 +7,35 @@
 #include "../../core/gen.h"
 #include "../../event/control_event.h"
 
+/**
+ * @brief A key on a MIDI keyboard.
+ */
 typedef struct
 {
+    /** @brief MIDI key number. */
     uint8_t number;
+    /** @brief Velocity of the key press. */
     double velocity;
+    /** @brief Gain multiplier. */
     double factor;
+    /** @brief Whether to reset the input. */
     bool reset;
 } MidiKeyboardKey;
 
+/** @see midi_keyboard_create */
 typedef struct
 {
+    /** @brief Super struct, allowing use of control_event_free. */
     ControlEventContext parent;
+    /** @brief MIDI channel to listen to. */
     uint8_t channel;
+    /** @brief Number of keys active. */
     size_t count;
+    /** @brief Maximum number of keys active. */
     size_t capacity;
+    /** @brief Array of active keys. */
     MidiKeyboardKey *keys;
+    /** @brief Number of semitones in an octave. */
     size_t semitones;
 } MidiKeyboardContext;
 
@@ -99,6 +110,16 @@ void midi_keyboard_free(__U size_t count, void *context_)
     error_catch(error);
 }
 
+/**
+ * @brief A keyboard control function that maps a MIDI key to a pitch of a
+ * single function.
+ *
+ * @param channel MIDI channel to listen to.
+ * @param semitones Number of semitones in an octave.
+ * @param count Maximum number of keys active.
+ * @param inputs Input functions, usual identical.
+ * @return Func*
+ */
 Func *midi_keyboard_create(int channel, size_t semitones, size_t count, Func **inputs)
 {
     MidiKeyboardContext initial = {
@@ -110,6 +131,16 @@ Func *midi_keyboard_create(int channel, size_t semitones, size_t count, Func **i
     return func_create_args(midi_keyboard_init, midi_keyboard_eval, midi_keyboard_free, sizeof(MidiKeyboardContext), &initial, FuncFlagNone, count, inputs, "input");
 }
 
+/**
+ * @brief A keyboard control function that maps a MIDI key to a pitch of a
+ * single function.
+ *
+ * @param channel MIDI channel to listen to.
+ * @param semitones Number of semitones in an octave.
+ * @param count Maximum number of keys active.
+ * @param input Input function, usual identical.
+ * @return Func*
+ */
 Func *midi_keyboard_count(int channel, size_t semitones, size_t count, Func *input)
 {
     Func **inputs = (Func **)malloc_(count * sizeof(Func *));

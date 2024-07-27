@@ -6,8 +6,10 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see sin_create */
 typedef struct
 {
+    /** @brief Cached output value. */
     double output;
 } SinContext;
 
@@ -29,7 +31,7 @@ static double sin_eval(__U size_t count, Gen **args, Eval *eval, __U void *conte
  * periodically. Cannot be used to generate a sine wave.
  *
  * @param angle Angle in radians.
- * @return Func* Function object.
+ * @return Func* Sine function.
  */
 Func *sin_create(Func *angle)
 {

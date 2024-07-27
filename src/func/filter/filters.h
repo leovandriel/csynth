@@ -1,6 +1,3 @@
-//
-// filters.h - Misc filters
-//
 #ifndef CSYNTH_FILTERS_H
 #define CSYNTH_FILTERS_H
 

@@ -21,7 +21,7 @@ static double add_eval(size_t count, Gen **args, Eval *eval, __U void *context)
  *
  * @param count Number of arguments.
  * @param args Argument array.
- * @return Func* Function object.
+ * @return Func* Addition function.
  */
 Func *add_create(size_t count, Func **args)
 {

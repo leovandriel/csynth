@@ -5,9 +5,12 @@
 #include "../../core/gen.h"
 #include "../../util/random.h"
 
+/** @see sample_create */
 typedef struct
 {
+    /** @brief Random number generator. */
     Random random;
+    /** @brief Sampled value, for constant output. */
     double sample;
 } SampleContext;
 
@@ -27,7 +30,7 @@ static double sample_eval(__U size_t count, __U Gen **args, __U Eval *eval, void
  *
  * Can be used to sample a constant control signal, like detune on key press.
  *
- * @return Func* Function object.
+ * @return Func* Sample function.
  */
 Func *sample_create(void)
 {

@@ -21,7 +21,7 @@ static double inv_eval(__U size_t count, Gen **args, Eval *eval, __U void *conte
  * by zero.
  *
  * @param input Input value.
- * @return Func* Function object.
+ * @return Func* Inverse function.
  */
 Func *inv_create(Func *input)
 {

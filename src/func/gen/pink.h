@@ -8,10 +8,14 @@
 static const double PINK_A[] = {0.99886, 0.99332, 0.969, 0.8665, 0.55, -0.7616};
 static const double PINK_B[] = {0.0555179, 0.0750759, 0.153852, 0.3104856, 0.5329522, -0.016898};
 
+/** @see pink_create */
 typedef struct
 {
+    /** @brief Random number generator. */
     Random random;
+    /** @brief Filter state. */
     double b__[6];
+    /** @brief Last output value. */
     double last;
 } PinkContext;
 
@@ -33,7 +37,7 @@ static double pink_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U vo
  * @brief Create a function that approximates pink noise, using an array of
  * first order low pass filters.
  *
- * @return Func* Function object.
+ * @return Func* Pink noise function.
  */
 Func *pink_create(void)
 {

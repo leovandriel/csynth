@@ -1,6 +1,3 @@
-//
-// pause.h - Pause/play based on key press
-//
 #ifndef CSYNTH_PAUSE_H
 #define CSYNTH_PAUSE_H
 
@@ -9,12 +6,18 @@
 #include "../../event/control_event.h"
 #include "../../event/state_event.h"
 
+/** @see pause_create */
 typedef struct
 {
+    /** @brief Super struct, allowing use of control_event_free. */
     ControlEventContext parent;
+    /** @brief Key to pause/play. */
     ControlEventKey key;
+    /** @brief Flag to indicate if paused. */
     bool paused;
+    /** @brief Flag to reset function. */
     bool reset;
+    /** @brief Flag to configure resetting on/off. */
     bool play_reset;
 } PauseContext;
 
@@ -48,6 +51,15 @@ static bool pause_init(__U size_t count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
+/**
+ * @brief Create function to pause/unpause based on key stroke.
+ *
+ * @param key Key index to listen for.
+ * @param play_reset Reset input on play.
+ * @param paused Initial pause state.
+ * @param input Input function to pause/unpause.
+ * @return Func* Pause function.
+ */
 Func *pause_create(int key, bool play_reset, bool paused, Func *input)
 {
     PauseContext initial = {

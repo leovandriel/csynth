@@ -1,6 +1,3 @@
-//
-// gen.h - An interface for evaluating functions.
-//
 #ifndef CSYNTH_GEN_H
 #define CSYNTH_GEN_H
 

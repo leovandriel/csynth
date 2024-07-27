@@ -5,8 +5,10 @@
 #include "../../core/gen.h"
 #include "../../util/random.h"
 
+/** @see gauss_create */
 typedef struct
 {
+    /** @brief Random number generator. */
     Random random;
 } GaussContext;
 
@@ -20,7 +22,7 @@ static double gauss_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U v
  * @brief Create a function that outputs normal distributed pseudo random
  * values, i.e. Gaussian noise.
  *
- * @return Func* Function object.
+ * @return Func* Gaussian noise function.
  */
 Func *gauss_create(void)
 {

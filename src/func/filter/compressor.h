@@ -1,13 +1,3 @@
-//
-// compressor.h - Compression effect
-//
-// `compressor(input, threshold, ratio, attack, release)`
-// - `input` - Input signal
-// - `threshold` - Level at which the compressor starts to reduce gain [0..1]
-// - `ratio` - Compression ratio [0..1]
-// - `attack` - Attack in seconds
-// - `release` - Release in seconds
-//
 #ifndef CSYNTH_COMPRESSOR_H
 #define CSYNTH_COMPRESSOR_H
 
@@ -16,10 +6,14 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see compressor_create */
 typedef struct
 {
+    /** @brief Compressor gain. */
     double gain;
+    /** @brief Compressor target gain. */
     double target;
+    /** @brief Compressor coefficient. */
     double coeff;
 } CompressorContext;
 
@@ -41,6 +35,16 @@ static double compressor_eval(__U size_t count, Gen **args, Eval *eval, void *co
     return input * context->gain;
 }
 
+/**
+ * @brief Create a function that implements a compressor effect.
+ *
+ * @param threshold Level at which the compressor starts to reduce gain [0..1].
+ * @param ratio Compression ratio [0..1].
+ * @param attack_tick Attack in seconds.
+ * @param release_tick Release in seconds.
+ * @param input Input signal.
+ * @return Func* Compressor function.
+ */
 Func *compressor_create(Func *threshold, Func *ratio, Func *attack_tick, Func *release_tick, Func *input)
 {
     CompressorContext initial = {.gain = 1.0};

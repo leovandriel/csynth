@@ -1,6 +1,3 @@
-//
-// buffer.h - A (cyclic) sample buffer with dynamic resizing.
-//
 #ifndef CSYNTH_BUFFER_H
 #define CSYNTH_BUFFER_H
 
@@ -12,12 +9,21 @@
 
 typedef double (*buffer_filler)(size_t index, void *context);
 
+/**
+ * @brief A (cyclic) sample buffer with dynamic resizing.
+ */
 typedef struct
 {
+    /** @brief Array of buffer sample values. */
     double *samples;
+    /** @brief Number of samples in the buffer. */
     size_t size;
+    /** @brief Maximum number of samples that can be stored in the buffer
+     * without resize. */
     size_t capacity;
+    /** @brief Function to fill the buffer with samples. */
     buffer_filler filler;
+    /** @brief Context for the filler function. */
     void *filler_context;
 } Buffer;
 

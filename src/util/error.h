@@ -1,6 +1,3 @@
-//
-// error.h - Error handling
-//
 #ifndef CSYNTH_ERROR_H
 #define CSYNTH_ERROR_H
 

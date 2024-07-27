@@ -1,8 +1,3 @@
-//
-// print.h - Prints a string once.
-//
-// `print(text, input)` prints a string the first time input is non-zero
-//
 #ifndef CSYNTH_PRINT_H
 #define CSYNTH_PRINT_H
 
@@ -12,8 +7,10 @@
 #include "../../core/gen.h"
 #include "../../util/error.h"
 
+/** @see print_create */
 typedef struct
 {
+    /** @brief Text to print once. */
     const char *text;
 } PrintContext;
 
@@ -35,6 +32,14 @@ static void print_free(__U size_t count, void *context_)
     free_((char *)context->text);
 }
 
+/**
+ * @brief Create a function that prints a string once, when input becomes
+ * non-zero.
+ *
+ * @param text Text to print.
+ * @param input Input signal to trigger printing.
+ * @return Func* Print function.
+ */
 Func *print_create(const char *text, Func *input)
 {
     size_t size = strlen(text) + 1;

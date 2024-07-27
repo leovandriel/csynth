@@ -1,6 +1,3 @@
-//
-// overtone.h - A overtone generator
-//
 #ifndef CSYNTH_OVERTONE_H
 #define CSYNTH_OVERTONE_H
 
@@ -12,6 +9,14 @@
 #include "../op/pow.h"
 #include "../util/scale.h"
 
+/**
+ * @brief Create a function that generates overtones.
+ *
+ * @param range Number of octaves to generate overtones.
+ * @param gain Gain of each overtone.
+ * @param input Input function.
+ * @return Func* Overtone function.
+ */
 Func *overtone_create(int range, Func *gain, Func *input)
 {
     size_t count = abs(range);

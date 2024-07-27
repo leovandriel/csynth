@@ -6,8 +6,10 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see pow_create */
 typedef struct
 {
+    /** @brief Cached output value. */
     double output;
 } PowContext;
 
@@ -31,7 +33,7 @@ static double pow_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
  *
  * @param base Base value.
  * @param exponent Exponent value.
- * @return Func* Function object.
+ * @return Func* Power function.
  */
 Func *pow_create(Func *base, Func *exponent)
 {

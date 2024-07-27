@@ -14,7 +14,7 @@ static double neg_eval(__U size_t count, Gen **args, Eval *eval, __U void *conte
  * @brief Create a function that negates the input, i.e. -input.
  *
  * @param input Input value.
- * @return Func* Function object.
+ * @return Func* Negate function.
  */
 Func *neg_create(Func *input)
 {

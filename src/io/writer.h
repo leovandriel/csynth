@@ -1,6 +1,3 @@
-//
-// writer.h - Samples a function and writes the result to a WAV file.
-//
 #ifndef CSYNTH_WRITER_H
 #define CSYNTH_WRITER_H
 
@@ -12,6 +9,16 @@
 
 #define WRITER_BUFFER_SIZE 4096
 
+/**
+ * @brief Samples a function and writes the result to a WAV file.
+ *
+ * @param duration Seconds to sample.
+ * @param file File handle to write to.
+ * @param sample_rate Samples per second, e.g. 44100.
+ * @param channel_count Number of channels.
+ * @param channels Array of functions to sample.
+ * @return csError Error code, zero on success.
+ */
 csError writer_write_channels_no_cleanup(double duration, FILE *file, size_t sample_rate, size_t channel_count, Func **channels)
 {
     uint32_t sample_count = (uint32_t)(duration * (double)sample_rate + 0.5);

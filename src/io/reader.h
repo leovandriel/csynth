@@ -1,6 +1,3 @@
-//
-// reader.h - Reads sample data from WAV file.
-//
 #ifndef CSYNTH_READER_H
 #define CSYNTH_READER_H
 
@@ -9,15 +6,28 @@
 
 #include "./wav_header.h"
 
+/**
+ * @brief PCM samples.
+ */
 typedef struct
 {
+    /** @brief PCM sample data. */
     sample_t *buffer;
+    /** @brief Number of samples. */
     size_t sample_count;
+    /** @brief Number of channels. */
     size_t channel_count;
-    double duration;
+    /** @brief Sample rate, e.g. 44100. */
     uint32_t sample_rate;
 } ReaderSamples;
 
+/**
+ * @brief Read samples from a WAV file.
+ *
+ * @param samples Sample data buffer.
+ * @param file File handle to read from.
+ * @return csError Error code, zero on success.
+ */
 csError reader_read_file(ReaderSamples *samples, FILE *file)
 {
     WavHeader header = {0};
@@ -45,7 +55,6 @@ csError reader_read_file(ReaderSamples *samples, FILE *file)
     size_t channel_count = header.num_channels;
     uint32_t data_size = header.data_size;
     uint32_t sample_count = data_size / (sizeof(sample_t) * channel_count);
-    double duration = sample_count / header.sample_rate;
     sample_t *buffer = (sample_t *)malloc_(sample_count * channel_count * sizeof(sample_t));
     if (buffer == NULL)
     {
@@ -60,7 +69,6 @@ csError reader_read_file(ReaderSamples *samples, FILE *file)
     samples->buffer = buffer;
     samples->sample_count = sample_count;
     samples->channel_count = channel_count;
-    samples->duration = duration;
     samples->sample_rate = header.sample_rate;
     free_(buffer);
     return csErrorNone;

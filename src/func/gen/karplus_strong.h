@@ -8,11 +8,16 @@
 #include "../../mem/buffer.h"
 #include "../../mem/fill.h"
 
+/** @see karplus_strong_create */
 typedef struct
 {
+    /** @brief Buffer to store the string samples. */
     Buffer buffer;
+    /** @brief Index of the next sample to write. */
     size_t index;
+    /** @brief Random number generator. */
     Random random;
+    /** @brief String decay factor. */
     double decay_factor;
 } KarplusStrongContext;
 
@@ -59,7 +64,7 @@ static void karplus_strong_free(__U size_t count, void *context_)
  *
  * @param pitch_tick Function that controls the pitch of the string.
  * @param decay_tick Function that controls the decay of the string.
- * @return Func* Function object.
+ * @return Func* Karplus-Strong function.
  */
 Func *karplus_strong_create(Func *pitch_tick, Func *decay_tick)
 {

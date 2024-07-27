@@ -5,8 +5,10 @@
 #include "../../core/gen.h"
 #include "../../util/random.h"
 
+/** @see crack_create */
 typedef struct
 {
+    /** @brief Random number generator. */
     Random random;
 } CrackContext;
 
@@ -21,8 +23,8 @@ static double crack_eval(__U size_t count, Gen **args, Eval *eval, __U void *con
  * @brief Create a function that outputs a pseudo random value at pseudo random
  * intervals, and zero in between.
  *
- * @param tick Func* In range [0, 1], the probability of a crackle.
- * @return Func* Function object.
+ * @param tick In range [0, 1], the probability of a crackle.
+ * @return Func* Crackle function.
  */
 Func *crack_create(Func *tick)
 {

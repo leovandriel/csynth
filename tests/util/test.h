@@ -1,6 +1,3 @@
-//
-// test.h - Testing utilties
-//
 #ifndef CSYNTH_TEST_H
 #define CSYNTH_TEST_H
 

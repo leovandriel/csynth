@@ -1,6 +1,3 @@
-//
-// display.h - Display state
-//
 #ifndef CSYNTH_DISPLAY_H
 #define CSYNTH_DISPLAY_H
 
@@ -8,30 +5,50 @@
 #include "../event/state_event.h"
 #include "../util/error.h"
 
+/**
+ * @brief A key and value to be displayed, e.g. a control value.
+ */
 typedef struct DisplayElement
 {
+    /** @brief Type of element's key. */
     StateEventKeyType key_type;
     union
     {
+        /** @brief If control key, the control key. */
         ControlEventKey control_key;
+        /** @brief If label key, the label string. */
         const char *label_key;
     };
+    /** @brief Type of element's value. */
     StateEventValueType value_type;
     union
     {
+        /** @brief If int value, the int value. */
         int int_value;
+        /** @brief If size value, the size value. */
         size_t size_value;
+        /** @brief If double value, the double value. */
         double double_value;
     };
+    /** @brief If label, the label string. */
     const char *label;
+    /** @brief Whether this element is in selected state. */
     bool selected;
+    /** @brief Next element in the linked list. */
     struct DisplayElement *next;
 } DisplayElement;
 
+/**
+ * @brief Collection of global display state.
+ */
 typedef struct
 {
+    /** @brief Linked list of display elements. */
     DisplayElement *element_list;
+    /** @brief Event context for display events. */
     StateEventContext event_context;
+    /** @brief Whether the display needs to be rendered, i.e. something updated.
+     * */
     bool needs_render;
 } DisplayGlobal;
 

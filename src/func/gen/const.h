@@ -4,8 +4,10 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see const_create */
 typedef struct
 {
+    /** @brief Constant value. */
     double value;
 } ConstContext;
 
@@ -18,8 +20,8 @@ static double const_eval(__U size_t count, __U Gen **args, __U Eval *eval, void 
 /**
  * @brief Create a function of constant value.
  *
- * @param value double Value to be returned during sampling.
- * @return Func* Function object.
+ * @param value Value to be returned during sampling.
+ * @return Func* Const function.
  */
 Func *const_create(double value)
 {
@@ -27,7 +29,9 @@ Func *const_create(double value)
     return func_create(NULL, const_eval, NULL, sizeof(ConstContext), &initial, FuncFlagNone);
 }
 
+/** @brief Shorthand for `const_create`. */
 Func *const_(double value) { return const_create(value); }
+/** @brief Shorthand for `const_create`. */
 Func *_(double value) { return const_(value); }
 
 #endif // CSYNTH_CONST_H

@@ -2,7 +2,7 @@
 
 set -e
 
-bad_allocs=$(egrep -iR "(malloc\(|calloc\(|realloc\(| free\()" --exclude "alloc.h" | tee)
+bad_allocs=$(egrep -iR "(malloc\(|calloc\(|realloc\(| free\()" --exclude "alloc.h" --exclude-dir "./html" | tee)
 
 if [[ "$bad_allocs" ]]; then
     printf "\r\e[KInvalid allocation: Use malloc_, calloc_, realloc_, or free_:\n$bad_allocs\n" >&2

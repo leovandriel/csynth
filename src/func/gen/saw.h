@@ -4,8 +4,10 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see saw_create */
 typedef struct
 {
+    /** @brief Last output value. */
     double output;
 } SawContext;
 
@@ -25,8 +27,8 @@ static double saw_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 /**
  * @brief Create a function that outputs an sawtooth wave.
  *
- * @param tick Func* Periods per sample.
- * @return Func* Function object.
+ * @param tick Periods per sample.
+ * @return Func* Sawtooth function.
  */
 Func *saw_create(Func *tick)
 {

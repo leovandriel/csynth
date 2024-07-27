@@ -1,6 +1,3 @@
-//
-// gauge.h - Broadcasts the output value for display
-//
 #ifndef CSYNTH_GAUGE_H
 #define CSYNTH_GAUGE_H
 
@@ -10,10 +7,14 @@
 #include "../../core/gen.h"
 #include "../../event/state_event.h"
 
+/** @see gauge_create */
 typedef struct
 {
+    /** @brief Label for the gauge. */
     const char *label;
+    /** @brief Last output value. */
     double last;
+    /** @brief Time since last broadcast. */
     double time;
 } GaugeContext;
 
@@ -32,6 +33,14 @@ static double gauge_eval(__U size_t count, Gen **args, Eval *eval, void *context
     return input;
 }
 
+/**
+ * @brief Create a function that broadcasts the output value for display.
+ *
+ * @param label Label for the gauge.
+ * @param tick Periods per sample.
+ * @param input Input signal.
+ * @return Func* Gauge function.
+ */
 Func *gauge_create(const char *label, Func *tick, Func *input)
 {
     GaugeContext initial = {

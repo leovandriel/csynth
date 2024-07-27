@@ -5,10 +5,14 @@
 #include "../../core/gen.h"
 #include "../../io/reader.h"
 
+/** @see wav_create */
 typedef struct
 {
+    /** @brief Sample data loaded in memory. */
     ReaderSamples samples;
+    /** @brief Channel to read samples from. */
     int channel;
+    /** @brief Time offset to read next sample at. */
     double time;
 } WavContext;
 
@@ -28,7 +32,7 @@ static double wav_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
  * @param samples ReaderSamples struct containing the samples.
  * @param channel Channel to read from.
  * @param tick Function that controls the reading speed.
- * @return Func* Function object.
+ * @return Func* WAV function.
  */
 Func *wav_create(ReaderSamples samples, int channel, Func *tick)
 {
@@ -44,8 +48,8 @@ Func *wav_create(ReaderSamples samples, int channel, Func *tick)
  *
  * @param filename Filename of the WAV file.
  * @param channel Channel to read from.
- * @param tick Function that controls the reading speed.
- * @return Func* Function object.
+ * @param input Function that controls the reading speed.
+ * @return Func* WAV function
  */
 Func *wav_filename(const char *filename, int channel, Func *input)
 {

@@ -1,14 +1,3 @@
-//
-// adsr.h - ADSR envelope
-//
-// `adsr(attack, decay, sustain, release, duration)` with:
-// - `attack` - Attack time
-// - `decay` - Decay time
-// - `sustain` - Sustain level [0, 1]
-// - `release` - Release time
-// - `duration` - The full duration of the envelope (attach + decay + sustain +
-//   release)
-//
 #ifndef CSYNTH_ADSR_H
 #define CSYNTH_ADSR_H
 
@@ -17,6 +6,7 @@
 
 static double adsr_eval(__U size_t count, Gen **args, Eval *eval, __U void *context_)
 {
+    // TODO(leo): remove time and sustain, use tick instead
     double time = gen_eval(args[0], eval);
     double attack = gen_eval(args[1], eval);
     double decay = gen_eval(args[2], eval);
@@ -43,7 +33,17 @@ static double adsr_eval(__U size_t count, Gen **args, Eval *eval, __U void *cont
     return output;
 }
 
-// TODO(leo): remove time and sustain
+/**
+ * @brief Create a function that generates ADSR envelope.
+ *
+ * @param time The time offset at which to evaluate the envelope.
+ * @param attack The attack time.
+ * @param decay The decay time.
+ * @param sustain The sustain level, between 0 and 1.
+ * @param release The release time.
+ * @param duration The full duration of the envelope.
+ * @return Func* ADSR function.
+ */
 Func *adsr_create(Func *time, Func *attack, Func *decay, Func *sustain, Func *release, Func *duration)
 {
     return func_create(NULL, adsr_eval, NULL, 0, NULL, FuncFlagNone, time, attack, decay, sustain, release, duration);

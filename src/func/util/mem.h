@@ -1,6 +1,3 @@
-//
-// mem.h - Display mem usage
-//
 #ifndef CSYNTH_MEM_H
 #define CSYNTH_MEM_H
 
@@ -11,8 +8,10 @@
 #include "../../event/state_event.h"
 #include "../../util/error.h"
 
+/** @see mem_create */
 typedef struct
 {
+    /** @brief Time since last broadcast. */
     double time;
 } MemContext;
 
@@ -32,6 +31,12 @@ static double mem_eval(__U size_t count, Gen **args, Eval *eval, __U void *conte
     return gen_eval(args[0], eval);
 }
 
+/**
+ * @brief Create a function that displays memory usage.
+ *
+ * @param input Input signal.
+ * @return Func* Memory debug function.
+ */
 Func *mem_create(Func *input)
 {
     MemContext initial = {

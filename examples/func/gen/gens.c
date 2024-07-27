@@ -4,7 +4,7 @@
 
 int main(void)
 {
-    // ONE and ZERO are shortcuts for const_(1) and const_(0)
+    // ONE and ZERO are shorthand for const_(1) and const_(0)
     func fun = crack(ONE);
     return play(fun);
 }

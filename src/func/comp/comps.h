@@ -1,6 +1,3 @@
-//
-// comps.h - Compositions
-//
 #ifndef CSYNTH_COMPS_H
 #define CSYNTH_COMPS_H
 
@@ -17,7 +14,9 @@
 #define seq_loop(__duration, ...) (loop(mul_(ARGS_COUNT(__VA_ARGS__), __duration), seq_fix(__duration, __VA_ARGS__)))
 #define seq_loop_(__duration, ...) (seq_loop(const_(__duration), __VA_ARGS__))
 
+/** @brief Shorthand for `pattern_create`. */
 Func *pattern(const char *string, Func *duration, Func *timing, Func *input) { return pattern_create(string, duration, timing, input); }
+/** @brief Shorthand for `pattern_create` with double arguments. */
 Func *pattern_(const char *string, double duration, double timing, Func *input) { return pattern(string, const_(duration), const_(timing), input); }
 
 #endif // CSYNTH_COMPS_H

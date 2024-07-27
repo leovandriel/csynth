@@ -1,9 +1,3 @@
-//
-// alloc.h - Memory allocation wrappers
-//
-// To find leaks, prefix source with: #define ALLOC_TRACE
-// To log allocations, add: #define ALLOC_LOG
-//
 #ifndef CSYNTH_ALLOC_H
 #define CSYNTH_ALLOC_H
 
@@ -16,6 +10,12 @@
 #define ALLOC_S2(__str) ALLOC_S1(__str)
 #define ALLOC_LINE __FILE__ ":" ALLOC_S2(__LINE__)
 
+/**
+ * @brief Memory allocation tracking.
+ *
+ * To find leaks, prefix source with: #define ALLOC_TRACE To log allocations,
+ * add: #define ALLOC_LOG
+ */
 typedef struct Alloc
 {
     size_t size;

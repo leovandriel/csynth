@@ -1,6 +1,3 @@
-//
-// stepper.h - Control in steps
-//
 #ifndef CSYNTH_STEPPER_H
 #define CSYNTH_STEPPER_H
 
@@ -12,15 +9,24 @@
 #include "../../event/state_event.h"
 #include "../gen/const.h"
 
+/** @see stepper_create */
 typedef struct
 {
+    /** @brief Super struct, allowing use of control_event_free. */
     ControlEventContext parent;
+    /** @brief Key to trigger the input. */
     ControlEventKey key;
+    /** @brief Current value. */
     double value;
+    /** @brief Step size. */
     double step;
+    /** @brief Minimum value. */
     double min;
+    /** @brief Maximum value. */
     double max;
+    /** @brief Flag to increase relative or absolute. */
     bool rel;
+    /** @brief Flag to indicate it is in listening state. */
     bool active;
 } StepperContext;
 
@@ -85,6 +91,17 @@ static bool stepper_init(__U size_t count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
+/**
+ * @brief Create function to step up/down through values based on key stroke.
+ *
+ * @param key Key index to listen for.
+ * @param value Initial output value.
+ * @param step Step size.
+ * @param min Minimum output value.
+ * @param max Maximum output value.
+ * @param rel Flag to increase relative or absolute.
+ * @return Func* Stepper function.
+ */
 Func *stepper_create(int key, double value, double step, double min, double max, bool rel)
 {
     StepperContext initial = {

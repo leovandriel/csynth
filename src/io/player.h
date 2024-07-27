@@ -1,6 +1,3 @@
-//
-// player.h - Samples a function and plays it using PortAudio.
-//
 #ifndef CSYNTH_PLAYER_H
 #define CSYNTH_PLAYER_H
 
@@ -17,11 +14,18 @@
 
 typedef void (*player_event_loop)(double duration, int exit_key);
 
+/**
+ * @brief Player configuration.
+ */
 typedef struct
 {
+    /** @brief Event loop function. */
     player_event_loop loop;
+    /** @brief Duration in seconds after which playback stops. */
     double duration;
+    /** @brief Sample rate in Hz. */
     size_t sample_rate;
+    /** @brief Keyboard key code to trigger stop playback. */
     int exit_key;
 } PlayerConfig;
 
@@ -66,6 +70,7 @@ csError player_play_pause(PaStream *stream)
     return csErrorNone;
 }
 
+/** @brief Play channels with PortAudio output. */
 csError player_play_channels_no_cleanup(PlayerConfig config, size_t count, Func **channels)
 {
     PaError pa_error = Pa_Initialize();

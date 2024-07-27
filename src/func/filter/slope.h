@@ -1,14 +1,13 @@
-//
-// slope.h - Limit the slope of a function
-//
 #ifndef CSYNTH_SLOPE_H
 #define CSYNTH_SLOPE_H
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see slope_create */
 typedef struct
 {
+    /** @brief Last output value. */
     double last;
 } SlopeContext;
 
@@ -31,6 +30,13 @@ static double slope_eval(__U size_t count, Gen **args, Eval *eval, void *context
     return output;
 }
 
+/**
+ * @brief Create a function that limits the slope of the input signal.
+ *
+ * @param tick Periods per sample.
+ * @param input Input signal.
+ * @return Func* Slope function.
+ */
 Func *slope_create(Func *tick, Func *input)
 {
     return func_create(NULL, slope_eval, NULL, sizeof(SlopeContext), NULL, FuncFlagNone, tick, input);

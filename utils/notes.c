@@ -1,7 +1,4 @@
 //usr/bin/gcc "$0" -o bin/notes -Wall -Wextra -O3 -lm && ./bin/notes "$@"; exit $?
-//
-//  Generates contents for the `notes.h` file.
-//
 #include <math.h>
 #include <stdio.h>
 

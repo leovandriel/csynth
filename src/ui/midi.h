@@ -1,6 +1,3 @@
-//
-// midi.h - Handle key input from MIDI device
-//
 #ifndef CSYNTH_MIDI_H
 #define CSYNTH_MIDI_H
 
@@ -17,8 +14,10 @@
 #define MIDI_CHANNEL_COUNT 16
 #define MIDI_NOTE_COUNT 128
 
+/** @see midi_create */
 typedef struct
 {
+    /** @brief PortMidi message stream. */
     PortMidiStream *stream;
 } MidiContext;
 
@@ -105,6 +104,12 @@ double midi_time(void)
     return (double)Pt_Time() / 1000.0;
 }
 
+/**
+ * @brief Handle key input from MIDI device
+ *
+ * @param duration Max loop duration in seconds.
+ * @param exit_key Key code to exit loop.
+ */
 void midi_loop(double duration, int exit_key)
 {
     MidiContext context = {0};

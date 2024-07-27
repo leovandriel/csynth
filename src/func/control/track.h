@@ -1,6 +1,3 @@
-//
-// track.h - Track and save key presses
-//
 #ifndef CSYNTH_TRACK_H
 #define CSYNTH_TRACK_H
 
@@ -9,10 +6,14 @@
 #include "../../event/control_event.h"
 #include "../../mem/key_list.h"
 
+/** @see track_create */
 typedef struct
 {
+    /** @brief Linked list of keyboard events. */
     KeyList list;
+    /** @brief Filename of the track file. */
     const char *filename;
+    /** @brief Handle to the event listener. */
     const void *handler;
 } TrackContext;
 
@@ -30,11 +31,11 @@ static void track_handle_event(EventType type, const void *event_, void *context
         ControlEvent *event = (ControlEvent *)event_;
         if (event->key.type == ControlEventTypeKeyboard)
         {
-            TimedKeyboardEvent timed_event = {
+            KeyboardEvent keyboard_event = {
                 .key = event->key.keyboard,
                 .time = event->time,
             };
-            csError error = key_list_add(&context->list, timed_event);
+            csError error = key_list_add(&context->list, keyboard_event);
             error_catch(error);
         }
     }
@@ -63,6 +64,16 @@ static void track_free(__U size_t count, void *context_)
     key_list_clear(&context->list);
 }
 
+/**
+ * @brief Create a function that records keyboard events to a file.
+ *
+ * This file can be used to replay the events at a later time, using the replay
+ * function.
+ *
+ * @param filename Filename of the track file.
+ * @param input Input function, simply forwarded to output.
+ * @return Func* Track function.
+ */
 Func *track_create(const char *filename, Func *input)
 {
     TrackContext initial = {.filename = filename};

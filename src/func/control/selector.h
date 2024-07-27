@@ -1,6 +1,3 @@
-//
-// selector.h - Trigger based on key select
-//
 #ifndef CSYNTH_SELECTOR_H
 #define CSYNTH_SELECTOR_H
 
@@ -9,11 +6,16 @@
 #include "../../event/control_event.h"
 #include "../../event/state_event.h"
 
+/** @see selector_create */
 typedef struct
 {
+    /** @brief Super struct, allowing use of control_event_free. */
     ControlEventContext parent;
+    /** @brief Key to trigger selection next input. */
     ControlEventKey key;
+    /** @brief Number of inputs to cycle through. */
     size_t count;
+    /** @brief Index of the selected input. */
     size_t selected;
 } SelectorContext;
 
@@ -41,6 +43,14 @@ static bool selector_init(__U size_t count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
+/**
+ * @brief Create function to cycle through inputs based on key stroke.
+ *
+ * @param key Key index to listen for.
+ * @param count Number of inputs to cycle through.
+ * @param args Input functions to cycle through.
+ * @return Func* Selector function.
+ */
 Func *selector_create(int key, size_t count, Func **args)
 {
     SelectorContext initial = {

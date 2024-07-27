@@ -1,6 +1,3 @@
-//
-// random.h - A xorshift random number generator
-//
 #ifndef CSYNTH_RANDOM_H
 #define CSYNTH_RANDOM_H
 
@@ -10,8 +7,12 @@
 
 #define RAND_STATE_INIT 1082269761
 
+/**
+ * @brief Random number generator is based on the xorshift algorithm.
+ */
 typedef struct
 {
+    /** @brief State of the xorshift random number generator. */
     size_t state;
 } Random;
 

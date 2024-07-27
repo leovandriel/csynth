@@ -1,6 +1,3 @@
-//
-// key_list.h - Timed sequence of key events.
-//
 #ifndef CSYNTH_KEY_LIST_H
 #define CSYNTH_KEY_LIST_H
 
@@ -11,18 +8,24 @@
 #include "../event/control_event.h"
 #include "../event/event.h"
 
-typedef struct TimedKeyboardEvent
+/**
+ * @brief Key stroke event, at a specific time.
+ */
+typedef struct KeyboardEvent
 {
+    /** @brief Time in seconds. */
     double time;
+    /** @brief Key code. */
     int key;
-    struct TimedKeyboardEvent *next;
-} TimedKeyboardEvent;
+    /** @brief Next event in the linked list. */
+    struct KeyboardEvent *next;
+} KeyboardEvent;
 
-typedef TimedKeyboardEvent *KeyList;
+typedef KeyboardEvent *KeyList;
 
-csError key_list_add(KeyList *list, TimedKeyboardEvent event)
+csError key_list_add(KeyList *list, KeyboardEvent event)
 {
-    TimedKeyboardEvent *new_event = malloc_(sizeof(TimedKeyboardEvent));
+    KeyboardEvent *new_event = malloc_(sizeof(KeyboardEvent));
     if (new_event == NULL)
     {
         return error_type(csErrorMemoryAlloc);
@@ -37,7 +40,7 @@ void key_list_clear(KeyList *list)
 {
     while (*list)
     {
-        TimedKeyboardEvent *next = (*list)->next;
+        KeyboardEvent *next = (*list)->next;
         free_(*list);
         *list = next;
     }
@@ -49,7 +52,7 @@ csError key_list_read_file(KeyList *list, FILE *file)
     int stamp = 0;
     while (fscanf(file, "%d %d\n", &key, &stamp) == 2)
     {
-        TimedKeyboardEvent event = {
+        KeyboardEvent event = {
             .key = key,
             .time = stamp / 1000.0,
         };
@@ -84,7 +87,7 @@ csError key_list_read_filename(KeyList *list, const char *filename)
 
 csError key_list_write_file(KeyList *list, FILE *file)
 {
-    for (TimedKeyboardEvent *event = *list; event; event = event->next)
+    for (KeyboardEvent *event = *list; event; event = event->next)
     {
         int count = fprintf(file, "%d %d\n", event->key, (int)(event->time * 1000));
         if (count < 0)

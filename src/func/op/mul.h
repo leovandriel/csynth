@@ -21,7 +21,7 @@ static double mul_eval(size_t count, Gen **args, Eval *eval, __U void *context)
  *
  * @param count Number of arguments.
  * @param args Argument array.
- * @return Func* Function object.
+ * @return Func* Multiplication function.
  */
 Func *mul_create(size_t count, Func **args)
 {

@@ -1,6 +1,3 @@
-//
-// state_event.h - Func lifecyle for state events
-//
 #ifndef CSYNTH_STATE_EVENT_H
 #define CSYNTH_STATE_EVENT_H
 
@@ -27,20 +24,31 @@ typedef enum
     StateEventValueTypeSelected,
 } StateEventValueType;
 
+/**
+ * @brief State change event, at a specific time.
+ */
 typedef struct
 {
+    /** @brief Time in seconds. */
     double time;
+    /** @brief Type of event key. */
     StateEventKeyType key_type;
+    /** @brief Event key data. */
     const void *key;
+    /** @brief Type of event value. */
     StateEventValueType value_type;
+    /** @brief Event value data. */
     const void *value;
 } StateEvent;
 
 typedef void (*state_handle_event)(StateEvent *event, void *context);
 
+/** @see state_event_create */
 typedef struct
 {
+    /** @brief Handle to the event listener. */
     const void *handler;
+    /** @brief Handle event callback. */
     state_handle_event handle_event;
 } StateEventContext;
 

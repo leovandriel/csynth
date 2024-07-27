@@ -1,6 +1,3 @@
-//
-// event.h - Manage event handlers
-//
 #ifndef CSYNTH_EVENT_H
 #define CSYNTH_EVENT_H
 
@@ -19,10 +16,16 @@ typedef enum
 
 typedef void (*event_handle_event)(EventType type, const void *event, void *context);
 
+/**
+ * @brief Event listener.
+ */
 typedef struct EventHandler
 {
+    /** @brief Handle event callback. */
     event_handle_event handle_event;
+    /** @brief Context for the handler callback. */
     void *context;
+    /** @brief Next event handler in the linked list. */
     struct EventHandler *next;
 } EventHandler;
 

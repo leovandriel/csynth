@@ -1,6 +1,3 @@
-//
-// control_event.h - Lifecyle for input events
-//
 #ifndef CSYNTH_CONTROL_EVENT_H
 #define CSYNTH_CONTROL_EVENT_H
 
@@ -22,11 +19,18 @@ typedef enum
     MidiTypeSystem = 0xF,
 } MidiType;
 
+/**
+ * @brief A MIDI message.
+ */
 typedef struct
 {
+    /** @brief Type of MIDI event. */
     MidiType type;
+    /** @brief Channel of the event. */
     uint8_t channel;
+    /** @brief Data byte 1. */
     uint8_t data1;
+    /** @brief Data byte 2. */
     uint8_t data2;
 } MidiKey;
 
@@ -37,27 +41,43 @@ typedef enum
     ControlEventTypeMidi,
 } ControlEventType;
 
+/**
+ * @brief Key of a control event.
+ */
 typedef struct
 {
+    /** @brief Type of the key. */
     ControlEventType type;
     union
     {
+        /** @brief If keyboard, the key index. */
         int keyboard;
+        /** @brief If MIDI, the MIDI key. */
         MidiKey midi;
     };
 } ControlEventKey;
 
+/**
+ * @brief Event from a control source, like a pad or knob.
+ */
 typedef struct
 {
+    /** @brief Time of the event, seconds since start. */
     double time;
+    /** @brief Key of the event, e.g. keyboard or MIDI. */
     ControlEventKey key;
 } ControlEvent;
 
 typedef void (*control_handle_event)(ControlEvent *event, void *context);
 
+/**
+ * @brief Context for handling control events.
+ */
 typedef struct
 {
+    /** @brief Handle to the event listener. */
     const void *handler;
+    /** @brief Handle event callback. */
     control_handle_event handle_event;
 } ControlEventContext;
 

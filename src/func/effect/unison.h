@@ -1,8 +1,3 @@
-//
-// unison.h - A unison generator
-//
-// `unison(frequency, generator, count, detune)`
-//
 #ifndef CSYNTH_UNISON_H
 #define CSYNTH_UNISON_H
 
@@ -12,6 +7,16 @@
 #include "../op/add.h"
 #include "../op/mul.h"
 
+/**
+ * @brief Create a function that generates unison by averaging copies of input
+ * function.
+ *
+ * This is usually combined with detune to create a unison effect.
+ *
+ * @param count Number of signals.
+ * @param input Input signal to be duplicated.
+ * @return Func* Unison function.
+ */
 Func *unison_create(size_t count, Func *input)
 {
     Func **array = (Func **)malloc_(count * sizeof(Func *));

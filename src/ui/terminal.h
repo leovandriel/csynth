@@ -1,6 +1,3 @@
-//
-// terminal.h - Handle key input from terminal
-//
 #ifndef CSYNTH_TERMINAL_H
 #define CSYNTH_TERMINAL_H
 
@@ -95,6 +92,12 @@ double terminal_time(void)
     return (double)spec.tv_sec + (double)spec.tv_nsec / 1e9;
 }
 
+/**
+ * @brief Handle key input from terminal
+ *
+ * @param duration Max loop duration in seconds.
+ * @param exit_key Key code to exit loop.
+ */
 void terminal_loop(double duration, int exit_key)
 {
     struct termios term = terminal_setup(1);

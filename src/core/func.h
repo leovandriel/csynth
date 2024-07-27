@@ -1,6 +1,3 @@
-//
-// func.h - An interface for defining functions.
-//
 #ifndef CSYNTH_FUNC_H
 #define CSYNTH_FUNC_H
 
@@ -31,12 +28,13 @@ static Func *func_list_global = NULL;
  * effects.
  *
  * The function is defined by three callbacks:
- * - init_cb: Called once before the first evaluation. This allows for things like
- *   memory allocation. Typical use cases are functions that keep an internal
- *   buffer like reverb or that open a file like wav.
- * - eval_cb: Returns the value of the function, given inputs and time delta. This
- *   argument is required for all functions. There are no restrictions on the
- *   domain, though for audio functions it is typically in the range [-1, 1].
+ * - init_cb: Called once before the first evaluation. This allows for things
+ *   like memory allocation. Typical use cases are functions that keep an
+ *   internal buffer like reverb or that open a file like wav.
+ * - eval_cb: Returns the value of the function, given inputs and time delta.
+ *   This argument is required for all functions. There are no restrictions on
+ *   the domain, though for audio functions it is typically in the range [-1,
+ *   1].
  * - free_cb: Called once after the last evaluation. This allows for various
  *   cleanup tasks, like deallocating buffers or closing files.
  *
@@ -54,14 +52,17 @@ static Func *func_list_global = NULL;
  * The return value is a pointer to the function, which can be used as an input
  * to other functions or as an output to the audio system.
  *
+ * @param name The name of the function.
  * @param init_cb Called once before the first evaluation.
- * @param eval_cb Returns the value of the function, given inputs and time delta.
+ * @param eval_cb Returns the value of the function, given inputs and time
+ * delta.
  * @param free_cb Called once after the last evaluation.
  * @param size The size of the context struct.
  * @param context The initial value of the context.
  * @param flags Flags that control the behavior of the function.
  * @param count The number of inputs.
  * @param inputs The inputs to the function.
+ * @param arg_names The names of the arguments.
  * @return The function output.
  */
 Func *func_create_name(const char *name, init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, uint32_t flags, size_t count, Func **inputs, const char *arg_names)

@@ -1,6 +1,3 @@
-//
-// looper.h - Loop samples
-//
 #ifndef CSYNTH_LOOPER_H
 #define CSYNTH_LOOPER_H
 
@@ -13,13 +10,20 @@
 #include "../../event/state_event.h"
 #include "../../mem/buffer.h"
 
+/** @see looper_create */
 typedef struct
 {
+    /** @brief Super struct, allowing use of control_event_free. */
     ControlEventContext parent;
+    /** @brief Key to start/stop recording. */
     ControlEventKey key;
+    /** @brief Buffer to store samples. */
     Buffer buffer;
+    /** @brief Index of the current sample. */
     size_t index;
+    /** @brief Flag to indicate if recording. */
     bool recording;
+    /** @brief Flag to indicate function reset. */
     bool reset;
 } LooperContext;
 
@@ -84,6 +88,15 @@ static void looper_free(__U size_t count, void *context_)
     buffer_free(&context->buffer);
 }
 
+/**
+ * @brief Create function to interactively record and loop samples, using key
+ * stroke.
+ *
+ * @param key Input key to start/stop recording.
+ * @param tick Periods per sample
+ * @param input Input signal to record.
+ * @return Func* Looper function.
+ */
 Func *looper_keyboard_create(int key, Func *tick, Func *input)
 {
     LooperContext initial = {
@@ -96,6 +109,16 @@ Func *looper_keyboard_create(int key, Func *tick, Func *input)
     return func_create(looper_init, looper_eval, looper_free, sizeof(LooperContext), &initial, FuncFlagNone, tick, input);
 }
 
+/**
+ * @brief Create function to interactively record and loop samples, using MIDI
+ * controller.
+ *
+ * @param channel MIDI channel to listen to.
+ * @param control MIDI controller to listen to.
+ * @param tick Periods per sample
+ * @param input Input signal to record.
+ * @return Func* Looper function.
+ */
 Func *looper_midi_create(int channel, int control, Func *tick, Func *input)
 {
     LooperContext initial = {

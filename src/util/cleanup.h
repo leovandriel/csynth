@@ -1,6 +1,3 @@
-//
-// cleanup.h - Cleanup allocations
-//
 #ifndef CSYNTH_CLEANUP_H
 #define CSYNTH_CLEANUP_H
 
@@ -9,6 +6,9 @@
 #include "../func/gen/sine.h"
 #include "../ui/display.h"
 
+/**
+ * @brief Cleanup allocations and resources.
+ */
 void cleanup_all(void)
 {
     event_clear();

@@ -1,8 +1,3 @@
-//
-// hpf.h - A first-order high-pass filter
-//
-// `hpf(input, frequency)` with input and frequency functions.
-//
 #ifndef CSYNTH_HPF_H
 #define CSYNTH_HPF_H
 
@@ -11,9 +6,12 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see hpf_create */
 typedef struct
 {
+    /** @brief Last input value. */
     double input;
+    /** @brief Last output value. */
     double output;
 } HighPassContext;
 
@@ -29,6 +27,13 @@ static double hpf_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
     return output;
 }
 
+/**
+ * @brief Create a function that implements a first-order high-pass filter.
+ *
+ * @param tick Periods per sample.
+ * @param input Input signal.
+ * @return Func* High-pass filter function.
+ */
 Func *hpf_create(Func *tick, Func *input)
 {
     return func_create(NULL, hpf_eval, NULL, sizeof(HighPassContext), NULL, FuncFlagNone, tick, input);

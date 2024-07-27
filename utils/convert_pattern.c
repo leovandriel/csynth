@@ -1,8 +1,4 @@
 //usr/bin/gcc "$0" -o bin/convert_pattern -Wall -Wextra -O3 -lm && ./bin/convert_pattern "$@"; exit $?
-//
-//  Convert recordings to pattern.
-//
-
 #include <math.h>
 
 #include "../src/core/func.h"
@@ -13,7 +9,7 @@
 
 void write_list(KeyList list, double step, int key, FILE *file)
 {
-    TimedKeyboardEvent *current = list;
+    KeyboardEvent *current = list;
     double start = current->time;
     size_t offset = (size_t)(start / step);
     for (size_t i = offset; current; i++)

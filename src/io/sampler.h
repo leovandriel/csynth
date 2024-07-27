@@ -1,6 +1,3 @@
-//
-// sampler.h - Sampling multiple channels, e.g. stereophonic sound.
-//
 #ifndef CSYNTH_SAMPLER_H
 #define CSYNTH_SAMPLER_H
 
@@ -16,13 +13,27 @@
 
 typedef int16_t sample_t;
 
+/**
+ * @brief Sampler state
+ */
 typedef struct
 {
+    /** @brief Array of output channels */
     Gen **channels;
+    /** @brief Number of output channels */
     size_t count;
+    /** @brief Sampling context passed into generator */
     Eval eval;
 } Sampler;
 
+/**
+ * @brief Create a sampler with multiple channels.
+ *
+ * @param sample_rate Sample rate, e.g. 44100.
+ * @param count Number of channels.
+ * @param inputs Array of input functions.
+ * @return Sampler* Sampler instance.
+ */
 Sampler *sampler_create(size_t sample_rate, size_t count, Func **inputs)
 {
     Sampler *sampler = (Sampler *)malloc_(sizeof(Sampler));

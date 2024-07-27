@@ -1,6 +1,3 @@
-//
-// finish.h - Permanently snaps to zero if extended silence is detected
-//
 #ifndef CSYNTH_FINISH_H
 #define CSYNTH_FINISH_H
 
@@ -9,9 +6,12 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see finish_create */
 typedef struct
 {
-    double tick_exp;
+    /** @brief Decay of level threshold. */
+    double decay;
+    /** @brief Current level, subject decay. */
     double level;
 } FinishContext;
 
@@ -26,12 +26,20 @@ static double finish_eval(__U size_t count, __U Gen **args, Eval *eval, void *co
     double input = gen_eval(args[1], eval);
     if (eval == NULL || eval->compute_flag)
     {
-        context->tick_exp = exp2(tick);
+        context->decay = exp2(tick);
     }
-    context->level = fmax(fabs(input), context->level / context->tick_exp);
+    context->level = fmax(fabs(input), context->level / context->decay);
     return input * context->level;
 }
 
+/**
+ * @brief Create a function that permanently snaps to zero if extended silence
+ * is detected.
+ *
+ * @param tick Periods per sample.
+ * @param input Input signal.
+ * @return Func* Finish function.
+ */
 Func *finish_create(Func *tick, Func *input)
 {
     FinishContext initial = {.level = 1.0};

@@ -1,6 +1,3 @@
-//
-// envelopes.h - Misc envelopes
-//
 #ifndef CSYNTH_EFFECTS_H
 #define CSYNTH_EFFECTS_H
 

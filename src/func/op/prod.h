@@ -4,8 +4,10 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see prod_create */
 typedef struct
 {
+    /** @brief Accumulated product. */
     double prod;
 } ProdContext;
 
@@ -22,7 +24,7 @@ static double prod_eval(__U size_t count, Gen **args, Eval *eval, void *context_
  * samples.
  *
  * @param input Input function.
- * @return Func* Function object.
+ * @return Func* Product function.
  */
 Func *prod_create(Func *input)
 {

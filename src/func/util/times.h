@@ -1,6 +1,3 @@
-//
-// times.h - Time stuff
-//
 #ifndef CSYNTH_TIMES_H
 #define CSYNTH_TIMES_H
 

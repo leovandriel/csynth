@@ -1,6 +1,3 @@
-//
-// mute.h - Mute/unmute based on key press
-//
 #ifndef CSYNTH_MUTE_H
 #define CSYNTH_MUTE_H
 
@@ -9,10 +6,14 @@
 #include "../../event/control_event.h"
 #include "../../event/state_event.h"
 
+/** @see mute_create */
 typedef struct
 {
+    /** @brief Super struct, allowing use of control_event_free. */
     ControlEventContext parent;
+    /** @brief Key to mute/unmute. */
     ControlEventKey key;
+    /** @brief Flag to indicate if muted. */
     bool muted;
 } MuteContext;
 
@@ -41,6 +42,14 @@ static bool mute_init(__U size_t count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
+/**
+ * @brief Create function to mute/unmute based on key stroke.
+ *
+ * @param key Key index to listen for.
+ * @param muted Initial mute state.
+ * @param input Input function to mute/unmute.
+ * @return Func* Mute function.
+ */
 Func *mute_create(int key, bool muted, Func *input)
 {
     MuteContext initial = {

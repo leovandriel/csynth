@@ -1,6 +1,3 @@
-//
-// all.h - A single include file for all the functions.
-//
 #ifndef CSYNTH_ALL_H
 #define CSYNTH_ALL_H
 

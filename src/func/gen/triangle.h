@@ -4,9 +4,12 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see triange_create */
 typedef struct
 {
+    /** @brief Previous output value. */
     double last;
+    /** @brief Direction of the triangle wave. */
     double direction;
 } TriangleContext;
 
@@ -32,8 +35,8 @@ static double triangle_eval(__U size_t count, Gen **args, Eval *eval, void *cont
 /**
  * @brief Create a function that outputs a triangle wave.
  *
- * @param tick Func* Periods per sample.
- * @return Func* Function object.
+ * @param tick Periods per sample.
+ * @return Func* Triangle function.
  */
 Func *triangle_create(Func *tick)
 {

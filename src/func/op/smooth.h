@@ -30,7 +30,7 @@ static double smooth_eval(__U size_t count, Gen **args, Eval *eval, __U void *co
  * @param edge0 First edge.
  * @param edge1 Second edge.
  * @param input Input value.
- * @return Func* Function object.
+ * @return Func* Smooth function.
  */
 Func *smooth_create(Func *edge0, Func *edge1, Func *input)
 {

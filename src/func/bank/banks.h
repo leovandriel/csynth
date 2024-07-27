@@ -1,6 +1,3 @@
-//
-// banks.h - Instrument bank
-//
 #ifndef CSYNTH_BANKS_H
 #define CSYNTH_BANKS_H
 
@@ -11,17 +8,20 @@
 #include "../gen/gens.h"
 #include "../gen/sine.h"
 
+/** @brief Create a kick drum sound.  */
 Func *bdrum(void)
 {
     Func *freq = linear_env_(1, 60, 30);
     return decay_(0.05, sine(freq));
 }
 
+/** @brief Create a hihat sound. */
 Func *hihat(void)
 {
     return decay_(0.05, hpf_(20000, dvd_(uniform(), 2)));
 }
 
+/** @brief Create a snare drum sound. */
 Func *snare(void)
 {
     return decay_(0.05, dvd_(uniform(), 4));

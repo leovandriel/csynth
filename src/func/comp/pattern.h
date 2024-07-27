@@ -1,6 +1,3 @@
-//
-// pattern.h - Pattern
-//
 #ifndef CSYNTH_PATTERN_H
 #define CSYNTH_PATTERN_H
 
@@ -12,6 +9,15 @@
 #include "../op/ops.h"
 #include "./seq.h"
 
+/**
+ * @brief A trigger pattern defined in a string.
+ *
+ * @param string String of '.' and ' ' characters.
+ * @param duration Duration of each character.
+ * @param timing Timing variance of each trigger.
+ * @param input Input function to be triggered.
+ * @return Func* Pattern function.
+ */
 Func *pattern_create(const char *string, Func *duration, Func *timing, Func *input)
 {
     Random random = random_create(0);

@@ -1,6 +1,3 @@
-//
-// replay.h - Replay key presses
-//
 #ifndef CSYNTH_REPLAY_H
 #define CSYNTH_REPLAY_H
 
@@ -9,12 +6,16 @@
 #include "../../event/control_event.h"
 #include "../../mem/key_list.h"
 
+/** @see replay_create */
 typedef struct
 {
+    /** @brief Linked list of keyboard events. */
     KeyList list;
-    TimedKeyboardEvent *current;
+    /** @brief Current event, awaiting to be broadcasted. */
+    KeyboardEvent *current;
+    /** @brief Filename of the replay file. */
     const char *filename;
-    size_t index;
+    /** @brief Current time of the replay. */
     double time;
 } ReplayContext;
 
@@ -50,6 +51,15 @@ static void replay_free(__U size_t count, void *context_)
     key_list_clear(&context->list);
 }
 
+/**
+ * @brief Create a function that replays a keyboard event file, emulating key
+ * presses.
+ *
+ * @param filename Filename of the replay file.
+ * @param tick Function to determine the time between key presses.
+ * @param input Input function to trigger.
+ * @return Func* Replay function.
+ */
 Func *replay_create(const char *filename, Func *tick, Func *input)
 {
     ReplayContext initial = {.filename = filename};

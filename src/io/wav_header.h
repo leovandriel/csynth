@@ -1,6 +1,3 @@
-//
-// wav_header.h - WAV format
-//
 #ifndef CSYNTH_WAV_HEADER_H
 #define CSYNTH_WAV_HEADER_H
 
@@ -12,20 +9,37 @@
 
 #define DEFAULT_WAV_FILENAME "output/default.wav"
 
+/**
+ * @brief WAV header structure, written verbatim to the file.
+ */
 typedef struct
 {
+    /** @brief RIFF header, containing "RIFF". */
     char riff_type[4];
+    /** @brief Size of the file in bytes. */
     uint32_t file_size;
+    /** @brief File type, containing "WAVE". */
     char file_type[4];
+    /** @brief Format mark, containing "fmt ". */
     char format_mark[4];
+    /** @brief Size of the format chunk. */
     uint32_t format_size;
+    /** @brief Format type, 1 (PCM) */
     uint16_t format_type;
+    /** @brief Number of channels, e.g. two for stereo */
     uint16_t num_channels;
+    /** @brief Sample rate, e.g. 44100. */
     uint32_t sample_rate;
+    /** @brief Byte rate, i.e. sample_rate x num_channels x sizeof(sample_t) */
     uint32_t byte_rate;
+    /** @brief Block align, num_channels x sizeof(sample_t) */
     uint16_t block_align;
+    /** @brief Bits per sample. */
     uint16_t bits_sample;
+    /** @brief Data chunk, containing "data" */
     char data_chunk[4];
+    /** @brief Size of the data chunk, channel_count * sample_count x
+     * sizeof(sample_t) */
     uint32_t data_size;
 } WavHeader;
 

@@ -1,8 +1,3 @@
-//
-// reverb.h - Reverb function
-//
-// `reverb(input, interval, decay)` returns a reverberated input.
-//
 #ifndef CSYNTH_REVERB_H
 #define CSYNTH_REVERB_H
 
@@ -13,9 +8,12 @@
 #include "../../core/gen.h"
 #include "../../mem/buffer.h"
 
+/** @see reverb_create */
 typedef struct
 {
+    /** @brief Buffer to store samples. */
     Buffer buffer;
+    /** @brief Index of the next sample. */
     size_t index;
 } ReverbContext;
 
@@ -47,6 +45,15 @@ static void reverb_free(__U size_t count, void *context_)
     buffer_free(&context->buffer);
 }
 
+/**
+ * @brief Create a function that generates reverb, using fixed interval and
+ * decay.
+ *
+ * @param tick Periods per sample.
+ * @param decay Decay factor per period.
+ * @param input Input signal.
+ * @return Func* Reverb function.
+ */
 Func *reverb_create(Func *tick, Func *decay, Func *input)
 {
     return func_create(NULL, reverb_eval, reverb_free, sizeof(ReverbContext), NULL, FuncFlagNone, tick, decay, input);

@@ -1,6 +1,3 @@
-//
-// fill.h - Buffer filling functions
-//
 #ifndef CSYNTH_FILL_H
 #define CSYNTH_FILL_H
 

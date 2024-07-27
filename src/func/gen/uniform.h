@@ -5,8 +5,10 @@
 #include "../../core/gen.h"
 #include "../../util/random.h"
 
+/** @see uniform_create */
 typedef struct
 {
+    /** @brief Random number generator. */
     Random random;
 } UniformContext;
 
@@ -20,7 +22,7 @@ static double uniform_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U
  * @brief Create a function that outputs uniformly distributed pseudo random
  * values on interval [-1, 1], i.e. white noise.
  *
- * @return Func* Function object.
+ * @return Func* Uniform noise function.
  */
 Func *uniform_create(void)
 {

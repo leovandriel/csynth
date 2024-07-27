@@ -1,6 +1,3 @@
-//
-// pad.h - Trigger based on pad
-//
 #ifndef CSYNTH_PAD_H
 #define CSYNTH_PAD_H
 
@@ -11,11 +8,16 @@
 #include "../../event/control_event.h"
 #include "../../event/state_event.h"
 
+/** @see pad_create */
 typedef struct
 {
+    /** @brief Super struct, allowing use of control_event_free. */
     ControlEventContext parent;
+    /** @brief Key to trigger the input. */
     ControlEventKey key;
+    /** @brief Velocity of the pad activation, i.e. gain. */
     double value;
+    /** @brief Flag to reset function. */
     bool reset;
 } PadContext;
 
@@ -48,6 +50,14 @@ static bool pad_init(__U size_t count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
+/**
+ * @brief Create a function that triggers an input function with a MIDI pad.
+ *
+ * @param channel MIDI channel of the pad.
+ * @param pad MIDI pad number.
+ * @param input Input function to trigger.
+ * @return Func* Pad function.
+ */
 Func *pad_create(int channel, int pad, Func *input)
 {
     PadContext initial = {

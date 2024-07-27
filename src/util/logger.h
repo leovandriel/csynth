@@ -1,6 +1,3 @@
-//
-// logger.h - Logging
-//
 #ifndef CSYNTH_LOGGER_H
 #define CSYNTH_LOGGER_H
 

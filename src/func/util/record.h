@@ -1,6 +1,3 @@
-//
-// record.h - Record to file
-//
 #ifndef CSYNTH_RECORD_H
 #define CSYNTH_RECORD_H
 
@@ -10,13 +7,20 @@
 #include "../../core/gen.h"
 #include "../../io/writer.h"
 
+/** @see record_create */
 typedef struct
 {
+    /** @brief Buffer for keeping samples until flush to file. */
     sample_t buffer[WRITER_BUFFER_SIZE];
+    /** @brief Current offset in the buffer. */
     size_t offset;
+    /** @brief Number of samples written to the file. */
     size_t size;
+    /** @brief Filename of the output file. */
     const char *filename;
+    /** @brief File handle for writing samples. */
     FILE *file;
+    /** @brief Sample rate of the output file. */
     size_t sample_rate;
 } RecordContext;
 
@@ -75,6 +79,15 @@ static void record_free(size_t count, void *context_)
     }
 }
 
+/**
+ * @brief Create a function that records samples to a file.
+ *
+ * @param filename Output filename.
+ * @param sample_rate Sample rate of the output file, e.g. 44100.
+ * @param count Number of channels.
+ * @param args Input signals.
+ * @return Func* Record function.
+ */
 Func *record_create(const char *filename, size_t sample_rate, size_t count, Func **args)
 {
     RecordContext initial = {

@@ -8,15 +8,20 @@
 
 #define SINE_TABLE_SIZE (1 << 11) // 2048, which at 44100 Hz sample is accurate down to 20 Hz
 
+/**
+ * @brief Lookup table for sine wave.
+ */
 typedef struct
 {
+    /** @brief Sine wave data, sampled between 0 and 2pi. */
     double data[SINE_TABLE_SIZE];
+    /** @brief Flag indicating the table has been initialized. */
     bool initialized;
 } SineTable;
 
 SineTable sine_table = {0};
 
-static csError sine_table_init()
+static csError sine_table_init(void)
 {
     for (unsigned long i = 0; i < SINE_TABLE_SIZE; i++)
     {
@@ -25,7 +30,7 @@ static csError sine_table_init()
     return csErrorNone;
 }
 
-static csError sine_table_ensure()
+static csError sine_table_ensure(void)
 {
     if (!sine_table.initialized)
     {
@@ -50,8 +55,10 @@ static double sine_table_lookup(double phase)
     return sign * sine_table.data[lower];
 }
 
+/** @see sine_create */
 typedef struct
 {
+    /** @brief Phase offset within 1s period. */
     double phase;
 } SineContext;
 
@@ -76,8 +83,8 @@ static bool sine_init(__U size_t count, __U Gen **args, __U void *context_)
  * Due to the cost of `sin`, the result is cached in a lookup table and
  * interpolated.
  *
- * @param tick Func* Periods per sample.
- * @return Func* Function object.
+ * @param tick Periods per sample.
+ * @return Func* Sine function.
  */
 Func *sine_create(Func *tick)
 {

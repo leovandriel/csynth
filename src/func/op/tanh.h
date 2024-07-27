@@ -6,8 +6,10 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see tanh_create */
 typedef struct
 {
+    /** @brief Cached output value. */
     double output;
 } TanhContext;
 
@@ -29,7 +31,7 @@ static double tanh_eval(__U size_t count, Gen **args, Eval *eval, __U void *cont
  * periodically.
  *
  * @param angle Angle in radians.
- * @return Func* Function object.
+ * @return Func* Tanh function.
  */
 Func *tanh_create(Func *angle)
 {

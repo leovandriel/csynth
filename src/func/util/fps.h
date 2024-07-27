@@ -1,6 +1,3 @@
-//
-// fps.h - Display function evals per sample
-//
 #ifndef CSYNTH_FPS_H
 #define CSYNTH_FPS_H
 
@@ -11,11 +8,16 @@
 #include "../../event/state_event.h"
 #include "../../util/error.h"
 
+/** @see fps_create */
 typedef struct
 {
+    /** @brief Time inside 1s broadcast cycle. */
     double time;
+    /** @brief Generator count since last broadcast. */
     size_t gen_count;
+    /** @brief Sample count since last broadcast. */
     size_t sample_count;
+    /** @brief Label to broadcast. */
     const char *label;
 } FpsContext;
 
@@ -39,6 +41,13 @@ static double fps_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
     return input;
 }
 
+/**
+ * @brief Create a function that displays number of function evals per sample.
+ *
+ * @param label Label to broadcast.
+ * @param input Input signal.
+ * @return Func* FPS function.
+ */
 Func *fps_create(const char *label, Func *input)
 {
     FpsContext initial = {

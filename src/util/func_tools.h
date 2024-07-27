@@ -1,6 +1,3 @@
-//
-// func_tools.h - A collection of tools for working with functions.
-//
 #ifndef CSYNTH_FUNC_TOOLS_H
 #define CSYNTH_FUNC_TOOLS_H
 
@@ -76,15 +73,25 @@ void func_print(Func *func)
     printf(";\n");
 }
 
+/**
+ * @brief Function statistics.
+ */
 typedef struct
 {
+    /** @brief Function name, used to compare equality. */
     const char *name;
+    /** @brief Function generator count. */
     size_t count;
 } FuncStatItem;
 
+/**
+ * @brief Function statistics.
+ */
 typedef struct
 {
+    /** @brief Stats items. */
     FuncStatItem items[FUNC_STATS_MAX];
+    /** @brief Stats count. */
     size_t count;
 } FuncStat;
 

@@ -4,8 +4,10 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
+/** @see sum_create */
 typedef struct
 {
+    /** @brief Accumulated sum. */
     double sum;
 } SumContext;
 
@@ -21,7 +23,7 @@ static double sum_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
  * @brief Create a function that accumulates the sum over time, across samples.
  *
  * @param input Input function.
- * @return Func* Function object.
+ * @return Func* Sum function.
  */
 Func *sum_create(Func *input)
 {

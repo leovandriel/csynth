@@ -1,6 +1,3 @@
-//
-// trigger.h - Trigger based on key trigger
-//
 #ifndef CSYNTH_TRIGGER_H
 #define CSYNTH_TRIGGER_H
 
@@ -9,11 +6,16 @@
 #include "../../event/control_event.h"
 #include "../../event/state_event.h"
 
+/** @see trigger_create */
 typedef struct
 {
+    /** @brief Super struct, allowing use of control_event_free. */
     ControlEventContext parent;
+    /** @brief Key to trigger the input. */
     ControlEventKey key;
+    /** @brief Flag to indicate it was triggered. */
     bool on;
+    /** @brief Flag to indicate it generator needs to be reset. */
     bool reset;
 } TriggerContext;
 
@@ -47,6 +49,16 @@ static bool trigger_init(__U size_t count, __U Gen **args, void *context_)
     return error_catch(error);
 }
 
+/**
+ * @brief Create function to trigger an input function with a key stroke.
+ *
+ * This function will output 0 until the key is pressed, then it will sample the
+ * input function.
+ *
+ * @param key Key index to listen for.
+ * @param input Input function to trigger.
+ * @return Func* Trigger function.
+ */
 Func *trigger_create(int key, Func *input)
 {
     TriggerContext initial = {
