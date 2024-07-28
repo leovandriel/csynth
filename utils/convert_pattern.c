@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     double step = atof(argv[2]);
     if (step <= 0)
     {
-        return error_catch_message(csErrorSome, "invalid step size: %f", step);
+        return error_type_message(csErrorSome, "invalid step size: %f", step);
     }
 
     FILE *file = NULL;
@@ -57,7 +57,7 @@ int main(int argc, char **argv)
         file = fopen(filename, "r");
         if (file == NULL)
         {
-            return error_catch_message(csErrorFileOpen, "Unable to open file: %s", filename);
+            return error_type_message(csErrorFileOpen, "Unable to open file: %s", filename);
         }
     }
     KeyList list = NULL;
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     }
     if (list == NULL)
     {
-        return error_catch_message(csErrorSome, "no events found");
+        return error_type_message(csErrorSome, "no events found");
         fclose(file);
         key_list_clear(&list);
         return 1;

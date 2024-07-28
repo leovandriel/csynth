@@ -43,11 +43,10 @@ static void pad_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static bool pad_init(__U size_t count, __U Gen **args, void *context_)
+static int pad_init(__U size_t count, __U Gen **args, void *context_)
 {
     PadContext *context = (PadContext *)context_;
-    csError error = control_event_add(&context->parent);
-    return error_catch(error);
+    return control_event_add(&context->parent);
 }
 
 /**

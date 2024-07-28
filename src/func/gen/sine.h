@@ -71,10 +71,10 @@ static double sine_eval(__U size_t count, Gen **args, Eval *eval, void *context_
     return output;
 }
 
-static bool sine_init(__U size_t count, __U Gen **args, __U void *context_)
+static int sine_init(__U size_t count, __U Gen **args, __U void *context_)
 {
     sine_table_ensure();
-    return false;
+    return csErrorNone;
 }
 
 /**

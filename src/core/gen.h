@@ -115,9 +115,11 @@ Gen *gen_create(Func *func)
     }
     if (func->init_cb != NULL)
     {
-        if (func->init_cb(func->count, args, context))
+        csError error = func->init_cb(func->count, args, context);
+        if (error)
         {
-            return error_null(csErrorInit);
+            error_catch(error);
+            return NULL;
         }
         if (context != NULL && reset != NULL)
         {

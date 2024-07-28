@@ -33,16 +33,16 @@ static double replay_eval(__U size_t count, Gen **args, Eval *eval, void *contex
     return input;
 }
 
-static bool replay_init(__U size_t count, __U Gen **args, void *context_)
+static int replay_init(__U size_t count, __U Gen **args, void *context_)
 {
     ReplayContext *context = (ReplayContext *)context_;
     csError error = key_list_read_filename(&context->list, context->filename);
     if (error != csErrorNone)
     {
-        return error_catch(error);
+        return error;
     }
     context->current = context->list;
-    return false;
+    return csErrorNone;
 }
 
 static void replay_free(__U size_t count, void *context_)

@@ -137,7 +137,12 @@ void *alloc_malloc(size_t size, const char *line)
 #ifdef ALLOC_LOG
     fprintf(stderr, "malloc: %p, %zu bytes, at %s\n", ptr, size, line);
 #endif
+#pragma GCC diagnostic push
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
     if (ptr != NULL && alloc_list_add(ptr, size, line))
+#pragma GCC diagnostic pop
     {
         fprintf(stderr, "malloc error: internal malloc failed, at %s\n", line);
     }

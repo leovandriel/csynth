@@ -147,6 +147,7 @@ static void display_render_label(DisplayElement *element)
                 fprintf(stdout, element->selected ? "{%d:%d}" : " %d:%d ", key->midi.channel, key->midi.data1);
                 break;
             }
+            break;
         }
         case StateEventKeyTypeLabel:
             fprintf(stdout, element->selected ? "{%s}" : " %s ", "?");

@@ -39,13 +39,13 @@ int main(void)
     PmError pm_error = Pm_Initialize();
     if (pm_error != pmNoError)
     {
-        return error_catch_message(csErrorPortMidi, "Unable to initialize: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
+        return error_type_message(csErrorPortMidi, "Unable to initialize: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
     }
     printf("Devices\n");
     int device_count = Pm_CountDevices();
     if (device_count == 0)
     {
-        return error_catch_message(csErrorMidi, "No MIDI devices found");
+        return error_type_message(csErrorMidi, "No MIDI devices found");
     }
     int device_input_default = Pm_GetDefaultInputDeviceID();
     int device_output_default = Pm_GetDefaultOutputDeviceID();
@@ -58,13 +58,15 @@ int main(void)
         printf("    input: %s\n", info->input ? "yes" : "no");
         printf("    output: %s\n", info->output ? "yes" : "no");
         printf("    opened: %s\n", info->opened ? "yes" : "no");
+#ifdef __APPLE__
         printf("    isVirtual: %s\n", info->is_virtual ? "yes" : "no");
+#endif
     }
     PortMidiStream *stream = NULL;
     pm_error = Pm_OpenInput(&stream, device_input_default, NULL, MIDI_EVENT_BUFFER_SIZE, NULL, NULL);
     if (pm_error != pmNoError)
     {
-        return error_catch_message(csErrorPortMidi, "Unable to open input: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
+        return error_type_message(csErrorPortMidi, "Unable to open input: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
     }
     printf("Use MIDI device to log events. Ctrl+C to exit\n");
     PmEvent buffer[MIDI_EVENT_BUFFER_SIZE];
@@ -74,7 +76,7 @@ int main(void)
         if (count < 0)
         {
             pm_error = count;
-            return error_catch_message(csErrorPortMidi, "Unable to read stream: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
+            return error_type_message(csErrorPortMidi, "Unable to read stream: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
         }
         for (int i = 0; i < count; i++)
         {
@@ -92,13 +94,13 @@ int main(void)
     pm_error = Pm_Close(stream);
     if (pm_error != pmNoError)
     {
-        return error_catch_message(csErrorPortMidi, "Unable to close: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
+        return error_type_message(csErrorPortMidi, "Unable to close: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
         return pm_error;
     }
     pm_error = Pm_Terminate();
     if (pm_error != pmNoError)
     {
-        return error_catch_message(csErrorPortMidi, "Unable to terminate: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
+        return error_type_message(csErrorPortMidi, "Unable to terminate: %s (%d)", Pm_GetErrorText(pm_error), pm_error);
     }
 
     return 0;

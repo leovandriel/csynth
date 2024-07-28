@@ -43,17 +43,16 @@ static double record_eval(size_t count, Gen **args, Eval *eval, void *context_)
     return sum;
 }
 
-static bool record_init(size_t count, __U Gen **args, void *context_)
+static int record_init(size_t count, __U Gen **args, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
     FILE *file = fopen(context->filename, "wb");
     if (file == NULL)
     {
-        return error_catch_message(csErrorFileOpen, "Unable to open file: %s", context->filename);
+        return error_type_message(csErrorFileOpen, "Unable to open file: %s", context->filename);
     }
     context->file = file;
-    csError error = wav_header_write(1, (uint32_t)count, context->file, context->sample_rate);
-    return error_catch(error);
+    return wav_header_write(1, (uint32_t)count, context->file, context->sample_rate);
 }
 
 static void record_free(size_t count, void *context_)

@@ -83,12 +83,11 @@ static void stepper_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static bool stepper_init(__U size_t count, __U Gen **args, void *context_)
+static int stepper_init(__U size_t count, __U Gen **args, void *context_)
 {
     StepperContext *context = (StepperContext *)context_;
     state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeDouble, &context->value);
-    csError error = control_event_add(&context->parent);
-    return error_catch(error);
+    return control_event_add(&context->parent);
 }
 
 /**

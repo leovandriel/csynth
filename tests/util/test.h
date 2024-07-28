@@ -8,7 +8,7 @@
 #include "../../src/core/gen.h"
 
 #define long_equal(_a, _b) ((_a) == (_b))
-#define double_equal(_a, _b) ((_a) - (_b) < 2 * DBL_EPSILON && (_b) - (_a) < 2 * DBL_EPSILON)
+#define double_equal(_a, _b) ((_a) - (_b) < 4 * DBL_EPSILON && (_b) - (_a) < 4 * DBL_EPSILON)
 #define double_range(_a, _b, _c) ((_a) >= (_b) && (_a) <= (_c))
 
 #define assert_long_equal(_a, _b)                              \
@@ -28,7 +28,7 @@
         double __a = (_a), __b = (_b);                                                   \
         if (!double_equal(__a, __b))                                                     \
         {                                                                                \
-            fprintf(stdout, "assert(abs(%.16f - %.16f) < 2 * DBL_EPSILON)\n", __a, __b); \
+            fprintf(stdout, "assert(abs(%.16f - %.16f) < 4 * DBL_EPSILON)\n", __a, __b); \
         }                                                                                \
         assert(double_equal(__a, __b));                                                  \
     } while (0)

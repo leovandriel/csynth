@@ -51,7 +51,7 @@ typedef struct
 } Eval;
 
 typedef double (*eval_callback)(size_t count, Gen **args, Eval *eval, void *context);
-typedef bool (*init_callback)(size_t count, Gen **args, void *context);
+typedef int (*init_callback)(size_t count, Gen **args, void *context);
 typedef void (*free_callback)(size_t count, void *context);
 
 /**

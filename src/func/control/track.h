@@ -41,17 +41,17 @@ static void track_handle_event(EventType type, const void *event_, void *context
     }
 }
 
-static bool track_init(__U size_t count, __U Gen **args, void *context_)
+static int track_init(__U size_t count, __U Gen **args, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
     const void *handler = event_add_handler(track_handle_event, context);
     if (handler == NULL)
     {
-        return error_catch_message(csErrorInit, "Unable to add track handler");
+        return error_type_message(csErrorInit, "Unable to add track handler");
     }
     context->handler = handler;
     context->list = NULL;
-    return false;
+    return csErrorNone;
 }
 
 static void track_free(__U size_t count, void *context_)

@@ -45,9 +45,14 @@ int logger_log(LoggerLevel level, const char *file, int line, const char *messag
     return result;
 }
 
-#define log_error(...) (logger_level_global >= LoggerLevelError && logger_log(LoggerLevelError, "/"__FILE__, __LINE__, __VA_ARGS__))
-#define log_warn(...) (logger_level_global >= LoggerLevelWarn && logger_log(LoggerLevelWarn, "/"__FILE__, __LINE__, __VA_ARGS__))
-#define log_info(...) (logger_level_global >= LoggerLevelInfo && logger_log(LoggerLevelInfo, "/"__FILE__, __LINE__, __VA_ARGS__))
-#define log_debug(...) (logger_level_global >= LoggerLevelDebug && logger_log(LoggerLevelDebug, "/"__FILE__, __LINE__, __VA_ARGS__))
+#define log_error_expr(...) (logger_level_global >= LoggerLevelError && logger_log(LoggerLevelError, "/"__FILE__, __LINE__, __VA_ARGS__))
+#define log_warn_expr(...) (logger_level_global >= LoggerLevelWarn && logger_log(LoggerLevelWarn, "/"__FILE__, __LINE__, __VA_ARGS__))
+#define log_info_expr(...) (logger_level_global >= LoggerLevelInfo && logger_log(LoggerLevelInfo, "/"__FILE__, __LINE__, __VA_ARGS__))
+#define log_debug_expr(...) (logger_level_global >= LoggerLevelDebug && logger_log(LoggerLevelDebug, "/"__FILE__, __LINE__, __VA_ARGS__))
+
+#define log_error(...) (void)log_error_expr(__VA_ARGS__)
+#define log_warn(...) (void)log_warn_expr(__VA_ARGS__)
+#define log_info(...) (void)log_info_expr(__VA_ARGS__)
+#define log_debug(...) (void)log_debug_expr(__VA_ARGS__)
 
 #endif // CSYNTH_LOGGER_H

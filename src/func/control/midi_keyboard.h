@@ -89,17 +89,16 @@ static void midi_keyboard_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static bool midi_keyboard_init(__U size_t count, __U Gen **args, void *context_)
+static int midi_keyboard_init(__U size_t count, __U Gen **args, void *context_)
 {
     MidiKeyboardContext *context = (MidiKeyboardContext *)context_;
     MidiKeyboardKey *keys = (MidiKeyboardKey *)malloc_(context->capacity * sizeof(MidiKeyboardKey));
     if (keys == NULL)
     {
-        return error_catch(csErrorMemoryAlloc);
+        return error_type(csErrorMemoryAlloc);
     }
     context->keys = keys;
-    csError error = control_event_add(&context->parent);
-    return error_catch(error);
+    return control_event_add(&context->parent);
 }
 
 void midi_keyboard_free(__U size_t count, void *context_)
