@@ -28,8 +28,11 @@ Func *looper_keyboard_(int key, double interval, Func *input) { return looper_ke
 Func *looper_midi(int channel, int control, Func *interval, Func *input) { return looper_midi_create(channel, control, dvd(param(EvalParamTempoTick), interval), input); }
 Func *looper_midi_(int channel, int control, double interval, Func *input) { return looper_midi(channel, control, const_(interval), input); }
 
-Func *unison(size_t count, Func *detune, Func *input) { return unison_create(count, pitch(add_(1, mul(detune, sample())), input)); }
-Func *unison_(size_t count, double detune, Func *input) { return unison(count, const_(detune), input); }
+Func *detune(Func *derange, Func *tune, Func *input) { return pitch(add_(1, mul(derange, tune)), input); }
+Func *detune_(double derange, Func *tune, Func *input) { return detune(const_(derange), tune, input); }
+
+Func *unison(size_t count, Func *derange, Func *input) { return unison_create(count, detune(derange, sample(), input)); }
+Func *unison_(size_t count, double derange, Func *input) { return unison(count, const_(derange), input); }
 
 Func *overtone(int range, Func *gain, Func *input) { return overtone_create(range, gain, input); }
 Func *overtone_(int range, double gain, Func *input) { return overtone(range, const_(gain), input); }

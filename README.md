@@ -315,8 +315,8 @@ To make the sound more interesting, let's add a
 add a controlled unison effect:
 
 ```c
-    func detune = knob_(1, 70, 0, .02);
-    func tone = unison(5, detune, saw(C0));
+    func range = knob_(1, 70, 0, .02);
+    func tone = unison(5, range, saw(C0));
     func synth = midi_keyboard(1, tone);
     return play_midi(synth);
 ```

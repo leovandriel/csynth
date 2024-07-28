@@ -3,6 +3,7 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
+#include "../effect/effects.h"
 #include "../filter/envelopes.h"
 #include "../filter/filters.h"
 #include "../gen/gens.h"
@@ -25,6 +26,11 @@ Func *hihat(void)
 Func *snare(void)
 {
     return decay_(0.05, dvd_(uniform(), 4));
+}
+
+Func *boards(Func *frequency)
+{
+    return detune_(.005, sine_(.03), triangle(frequency));
 }
 
 #endif // CSYNTH_BANKS_H
