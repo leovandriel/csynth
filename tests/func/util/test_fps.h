@@ -27,5 +27,5 @@ void test_fps(void)
     assert_long_equal(test_fps_flag_global, 1);
     gen_free(gen);
     func_free();
-    event_clear();
+    event_free();
 }

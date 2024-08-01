@@ -54,7 +54,7 @@ typedef struct
 
 static DisplayGlobal display_global = {0};
 
-void display_clear(void)
+void display_free(void)
 {
     while (display_global.element_list != NULL)
     {

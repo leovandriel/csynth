@@ -3,4 +3,5 @@
 
 void test_def(void)
 {
+    // types only
 }

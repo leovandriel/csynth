@@ -12,8 +12,8 @@ typedef struct
     ControlEventContext parent;
     /** @brief Key to trigger. */
     ControlEventKey key;
-    /** @brief Flag to indicate if key is active. */
-    bool active;
+    /** @brief Velocity of the key activation, i.e. gain. */
+    int velocity;
     /** @brief Flag to indicate function reset. */
     bool reset;
 } KeyContext;
@@ -26,10 +26,10 @@ static double key_eval(__U size_t count, __U Gen **args, Eval *eval, void *conte
         gen_reset(args[0]);
         context->reset = false;
     }
-    if (context->active)
+    if (context->velocity)
     {
         double input = gen_eval(args[0], eval);
-        return input * (double)context->active / 64.0;
+        return input * (double)context->velocity / 64.0;
     }
     return 0.;
 }
@@ -39,7 +39,7 @@ static void key_handle_event(ControlEvent *event, void *context_)
     KeyContext *context = (KeyContext *)context_;
     if (control_event_key_equal(event->key, context->key))
     {
-        context->active = event->key.midi.data2 != 0;
+        context->velocity = event->key.midi.data2;
         context->reset = event->key.midi.data2 != 0;
     }
 }

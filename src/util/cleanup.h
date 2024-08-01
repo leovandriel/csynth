@@ -11,8 +11,8 @@
  */
 void cleanup_all(void)
 {
-    event_clear();
-    display_clear();
+    event_free();
+    display_free();
     func_free();
 }
 

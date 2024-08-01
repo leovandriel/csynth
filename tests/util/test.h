@@ -44,6 +44,61 @@
         assert(double_range(__a, __b, __c));                                                   \
     } while (0)
 
+#define assert_null(_a)                                   \
+    do                                                    \
+    {                                                     \
+        void *__a = (_a);                                 \
+        if (__a != NULL)                                  \
+        {                                                 \
+            fprintf(stdout, "assert(%p == NULL)\n", __a); \
+        }                                                 \
+        assert(__a == NULL);                              \
+    } while (0)
+
+#define assert_not_null(_a)                               \
+    do                                                    \
+    {                                                     \
+        void *__a = (_a);                                 \
+        if (__a == NULL)                                  \
+        {                                                 \
+            fprintf(stdout, "assert(%p != NULL)\n", __a); \
+        }                                                 \
+        assert(__a != NULL);                              \
+    } while (0)
+
+#define assert_ptr_equal(_a, _b)                             \
+    do                                                       \
+    {                                                        \
+        void *__a = (_a), *__b = (_b);                       \
+        if (__a != __b)                                      \
+        {                                                    \
+            fprintf(stdout, "assert(%p == %p)\n", __a, __b); \
+        }                                                    \
+        assert(__a == __b);                                  \
+    } while (0)
+
+#define assert_ptr_unequal(_a, _b)                           \
+    do                                                       \
+    {                                                        \
+        void *__a = (_a), *__b = (_b);                       \
+        if (__a == __b)                                      \
+        {                                                    \
+            fprintf(stdout, "assert(%p != %p)\n", __a, __b); \
+        }                                                    \
+        assert(__a != __b);                                  \
+    } while (0)
+
+#define assert_string_equal(_a, _b)                                  \
+    do                                                               \
+    {                                                                \
+        const char *__a = (_a), *__b = (_b);                         \
+        if (__a == NULL || __b == NULL || strcmp(__a, __b) != 0)     \
+        {                                                            \
+            fprintf(stdout, "assert(\"%s\" == \"%s\")\n", __a, __b); \
+        }                                                            \
+        assert(__a != NULL && __b != NULL && strcmp(__a, __b) == 0); \
+    } while (0)
+
 #define assert_msg(_cond, _msg)            \
     do                                     \
     {                                      \
@@ -66,6 +121,18 @@ void print_assert_gen_equal(Gen *gen, Eval *eval)
 
 void test(void)
 {
+    assert_long_equal(1, 1);
+    assert_double_equal(1.0, 1.0);
+    assert_double_equal(1.0, 1.0000000000000001);
+    assert_double_equal(1.0, 0.9999999999999999);
+    assert_double_range(1.0, 1.0, 1.0);
+    assert_double_range(0.0, 0.0, 1.0);
+    assert_double_range(1.0, 0.0, 1.0);
+    assert_null(NULL);
+    assert_not_null(&test);
+    assert_string_equal("test", "test");
+    int test = 1;
+    assert_msg(test == 1, "1 == 1");
 }
 
 #endif // CSYNTH_TEST_H

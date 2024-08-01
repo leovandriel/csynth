@@ -63,7 +63,7 @@ csError event_remove_handler(const void *handler_)
     return error_type_message(csErrorNotFound, "Event handler not found");
 }
 
-void event_clear(void)
+void event_free(void)
 {
     while (event_list_global)
     {

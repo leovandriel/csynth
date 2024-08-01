@@ -71,8 +71,8 @@ const char *error_message(csError type)
     }
 }
 
-#define error_type_message(__type, ...) (log_warn(__VA_ARGS__), (__type))
-#define error_null_message(__type, ...) (log_warn(__VA_ARGS__), NULL)
+#define error_type_message(__type, ...) (log_error(__VA_ARGS__), (__type))
+#define error_null_message(__type, ...) (log_error(__VA_ARGS__), NULL)
 #define error_catch_message(__type, ...) (void)((__type) != csErrorNone && log_error_expr(__VA_ARGS__))
 
 #define error_type(__type) error_type_message(__type, error_message(__type))

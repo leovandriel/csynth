@@ -34,5 +34,5 @@ void test_mem(void)
     assert_long_equal(test_mem_flag_global, 2);
     gen_free(gen);
     func_free();
-    event_clear();
+    event_free();
 }
