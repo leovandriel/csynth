@@ -50,7 +50,6 @@ static int track_init(__U size_t count, __U Gen **args, void *context_)
         return error_type_message(csErrorInit, "Unable to add track handler");
     }
     context->handler = handler;
-    context->list = NULL;
     return csErrorNone;
 }
 

@@ -25,7 +25,7 @@ static const char *LOGGER_LEVEL_STRINGS[] = {
     "MUTE",
 };
 
-int logger_log(LoggerLevel level, const char *file, int line, const char *message, ...)
+int logger_format_default(FILE *file, LoggerLevel level, const char *source, int line, const char *message, ...)
 {
     va_list args = {0};
     va_start(args, message);
@@ -33,27 +33,52 @@ int logger_log(LoggerLevel level, const char *file, int line, const char *messag
     timespec_get(&spec, TIME_UTC);
     char buffer[20];
     strftime(buffer, 20, "%Y-%m-%d %H:%M:%S", localtime(&spec.tv_sec));
-    fprintf(stderr, "\r\e[K%s.%06ld %s %s:%d - ", buffer, spec.tv_nsec / 1000, LOGGER_LEVEL_STRINGS[level], strrchr(file, '/') + 1, line);
-    int result = vfprintf(stderr, message, args);
-    fprintf(stderr, "\n");
+    fprintf(file, "\r\e[K%s.%06ld %s %s:%d - ", buffer, spec.tv_nsec / 1000, LOGGER_LEVEL_STRINGS[level], strrchr(source, '/') + 1, line);
+    int result = vfprintf(file, message, args);
+    fprintf(file, "\n");
     va_end(args);
     return result;
 }
 
-typedef int (*logger_cb)(LoggerLevel level, const char *file, int line, const char *message, ...);
+#define LOGGER_FILE_DEFAULT stderr
+#define LOGGER_LEVEL_DEFAULT LoggerLevelInfo
+#define LOGGER_FORMAT_DEFAULT logger_format_default
 
-static volatile LoggerLevel logger_level_global = LoggerLevelInfo;
-static volatile logger_cb logger_cb_global = logger_log;
+typedef int (*logger_format)(FILE *file, LoggerLevel level, const char *source, int line, const char *message, ...);
+
+typedef struct
+{
+    LoggerLevel level;
+    logger_format format;
+    FILE *file;
+} LoggerGlobal;
+
+static LoggerGlobal logger_global = {.level = LOGGER_LEVEL_DEFAULT};
 
 void logger_set_level(LoggerLevel level)
 {
-    logger_level_global = level;
+    logger_global.level = level;
 }
 
-#define log_error_expr(...) (logger_level_global <= LoggerLevelError && logger_cb_global(LoggerLevelError, "/"__FILE__, __LINE__, __VA_ARGS__))
-#define log_warn_expr(...) (logger_level_global <= LoggerLevelWarn && logger_cb_global(LoggerLevelWarn, "/"__FILE__, __LINE__, __VA_ARGS__))
-#define log_info_expr(...) (logger_level_global <= LoggerLevelInfo && logger_cb_global(LoggerLevelInfo, "/"__FILE__, __LINE__, __VA_ARGS__))
-#define log_debug_expr(...) (logger_level_global <= LoggerLevelDebug && logger_cb_global(LoggerLevelDebug, "/"__FILE__, __LINE__, __VA_ARGS__))
+void logger_set_format(logger_format format)
+{
+    logger_global.format = format;
+}
+
+void logger_set_file(FILE *file)
+{
+    logger_global.file = file;
+}
+
+#define LOGGER_FORMAT (logger_global.format ? logger_global.format : LOGGER_FORMAT_DEFAULT)
+#define LOGGER_FILE (logger_global.file ? logger_global.file : LOGGER_FILE_DEFAULT)
+
+#define log_expr(__level, ...) (logger_global.level <= __level && LOGGER_FORMAT(LOGGER_FILE, __level, "/"__FILE__, __LINE__, __VA_ARGS__))
+
+#define log_error_expr(...) log_expr(LoggerLevelError, __VA_ARGS__)
+#define log_warn_expr(...) log_expr(LoggerLevelWarn, __VA_ARGS__)
+#define log_info_expr(...) log_expr(LoggerLevelInfo, __VA_ARGS__)
+#define log_debug_expr(...) log_expr(LoggerLevelDebug, __VA_ARGS__)
 
 #define log_error(...) (void)log_error_expr(__VA_ARGS__)
 #define log_warn(...) (void)log_warn_expr(__VA_ARGS__)

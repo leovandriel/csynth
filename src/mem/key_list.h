@@ -21,7 +21,11 @@ typedef struct KeyboardEvent
     struct KeyboardEvent *next;
 } KeyboardEvent;
 
-typedef KeyboardEvent *KeyList;
+typedef struct
+{
+    KeyboardEvent *head;
+    KeyboardEvent *tail;
+} KeyList;
 
 csError key_list_add(KeyList *list, KeyboardEvent event)
 {
@@ -31,19 +35,29 @@ csError key_list_add(KeyList *list, KeyboardEvent event)
         return error_type(csErrorMemoryAlloc);
     }
     *new_event = event;
-    new_event->next = *list;
-    *list = new_event;
+    if (list->head == NULL)
+    {
+        list->head = new_event;
+        list->tail = new_event;
+        return csErrorNone;
+    }
+    else
+    {
+        list->tail->next = new_event;
+        list->tail = new_event;
+    }
     return csErrorNone;
 }
 
 void key_list_clear(KeyList *list)
 {
-    while (*list)
+    while (list->head)
     {
-        KeyboardEvent *next = (*list)->next;
-        free_(*list);
-        *list = next;
+        KeyboardEvent *next = list->head->next;
+        free_(list->head);
+        list->head = next;
     }
+    list->tail = NULL;
 }
 
 csError key_list_read_file(KeyList *list, FILE *file)
@@ -87,7 +101,7 @@ csError key_list_read_filename(KeyList *list, const char *filename)
 
 csError key_list_write_file(KeyList *list, FILE *file)
 {
-    for (KeyboardEvent *event = *list; event; event = event->next)
+    for (KeyboardEvent *event = list->head; event; event = event->next)
     {
         int count = fprintf(file, "%d %d\n", event->key, (int)(event->time * 1000));
         if (count < 0)

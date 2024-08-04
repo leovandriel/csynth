@@ -9,7 +9,7 @@
 
 void write_list(KeyList list, double step, int key, FILE *file)
 {
-    KeyboardEvent *current = list;
+    KeyboardEvent *current = list.head;
     double start = current->time;
     size_t offset = (size_t)(start / step);
     for (size_t i = offset; current; i++)
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
             return error_type_message(csErrorFileOpen, "Unable to open file: %s", filename);
         }
     }
-    KeyList list = NULL;
+    KeyList list = {0};
     csError error = key_list_read_file(&list, file);
     if (error != csErrorNone)
     {
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
         fclose(file);
         return error;
     }
-    if (list == NULL)
+    if (list.head == NULL)
     {
         return error_type_message(csErrorSome, "no events found");
         fclose(file);

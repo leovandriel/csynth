@@ -41,7 +41,7 @@ static int replay_init(__U size_t count, __U Gen **args, void *context_)
     {
         return error;
     }
-    context->current = context->list;
+    context->current = context->list.head;
     return csErrorNone;
 }
 
