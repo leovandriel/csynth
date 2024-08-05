@@ -1,5 +1,5 @@
 #include "../../../src/event/control_event.h"
-#include "../../../src/func/effect/looper.h"
+#include "../../../src/func/control/looper.h"
 #include "../../../src/func/gen/const.h"
 #include "../../../src/func/gen/saw.h"
 #include "../../util/test.h"

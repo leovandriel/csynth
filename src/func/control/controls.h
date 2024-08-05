@@ -11,6 +11,7 @@
 #include "./actuate.h"
 #include "./key.h"
 #include "./keyboard.h"
+#include "./looper.h"
 #include "./midi_keyboard.h"
 #include "./midi_value.h"
 #include "./mute.h"
@@ -91,5 +92,10 @@ Func *bend_(int channel, double factor, Func *input) { return bend(channel, cons
 Func *keyboard(keyboard_control_func control, Func *input) { return keyboard_create(KEYBOARD_SEMITONES, control, input); }
 /** @brief Shorthand for `keyboard_create`, using MIDI_KEYBOARD_NOTE_COUNT. */
 Func *midi_keyboard(int channel, Func *input) { return midi_keyboard_count(channel, KEYBOARD_SEMITONES, MIDI_KEYBOARD_NOTE_COUNT, input); }
+
+Func *looper_keyboard(int key, Func *interval, Func *input) { return looper_keyboard_create(key, dvd(param(EvalParamTempoTick), interval), input); }
+Func *looper_keyboard_(int key, double interval, Func *input) { return looper_keyboard(key, const_(interval), input); }
+Func *looper_midi(int channel, int control, Func *interval, Func *input) { return looper_midi_create(channel, control, dvd(param(EvalParamTempoTick), interval), input); }
+Func *looper_midi_(int channel, int control, double interval, Func *input) { return looper_midi(channel, control, const_(interval), input); }
 
 #endif // CSYNTH_CONTROLS_H

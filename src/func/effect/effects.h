@@ -6,7 +6,6 @@
 #include "./continuous.h"
 #include "./delay.h"
 #include "./loop.h"
-#include "./looper.h"
 #include "./overtone.h"
 #include "./reverb.h"
 #include "./unison.h"
@@ -22,11 +21,6 @@ Func *delay_(double duration, Func *input) { return delay(const_(duration), inpu
 
 Func *skip(Func *duration, Func *input) { return delay(neg(duration), input); }
 Func *skip_(double duration, Func *input) { return skip(const_(duration), input); }
-
-Func *looper_keyboard(int key, Func *interval, Func *input) { return looper_keyboard_create(key, dvd(param(EvalParamTempoTick), interval), input); }
-Func *looper_keyboard_(int key, double interval, Func *input) { return looper_keyboard(key, const_(interval), input); }
-Func *looper_midi(int channel, int control, Func *interval, Func *input) { return looper_midi_create(channel, control, dvd(param(EvalParamTempoTick), interval), input); }
-Func *looper_midi_(int channel, int control, double interval, Func *input) { return looper_midi(channel, control, const_(interval), input); }
 
 Func *detune(Func *derange, Func *tune, Func *input) { return pitch(add_(1, mul(derange, tune)), input); }
 Func *detune_(double derange, Func *tune, Func *input) { return detune(const_(derange), tune, input); }
