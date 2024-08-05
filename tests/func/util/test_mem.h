@@ -27,7 +27,7 @@ void test_mem(void)
         .handle_event = handle,
     };
     state_event_add(&context);
-    Func *input = mem_create(const_(0));
+    Func *input = mem_create(const_create(0));
     Gen *gen = gen_create(input);
     Eval eval = {.wall_tick = 0.1};
     gen_eval(gen, &eval);

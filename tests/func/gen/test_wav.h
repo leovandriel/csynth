@@ -4,14 +4,14 @@
 
 void test_wav(void)
 {
-    sample_t buffer[] = {0, 32767, -32767, 1, -1};
-    ReaderSamples samples = {
-        .buffer = buffer,
+    sample_t samples[] = {0, 32767, -32767, 1, -1};
+    PcmBuffer buffer = {
+        .samples = samples,
         .sample_count = 5,
         .channel_count = 1,
         .sample_rate = 10,
     };
-    Gen *gen = gen_create(wav_create(samples, 0, const_create(0.1)));
+    Gen *gen = gen_create(wav_create(buffer, 0, const_create(0.1)));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 1.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), -1.0000000000000000);

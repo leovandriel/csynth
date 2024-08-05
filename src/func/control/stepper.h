@@ -115,7 +115,7 @@ Func *stepper_create(int key, double value, double step, double min, double max,
         .max = max,
         .rel = rel,
     };
-    return func_create(stepper_init, stepper_eval, control_event_free, sizeof(StepperContext), &initial, FuncFlagSkipReset, );
+    return func_create(stepper_init, stepper_eval, control_event_free, sizeof(StepperContext), &initial, FuncFlagSkipReset);
 }
 
 #endif // CSYNTH_STEPPER_H

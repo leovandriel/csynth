@@ -130,6 +130,8 @@ void test(void)
     assert_double_range(1.0, 0.0, 1.0);
     assert_null(NULL);
     assert_not_null(&test);
+    assert_ptr_equal(&test, &test);
+    assert_ptr_unequal(&test, &print_assert_gen_equal);
     assert_string_equal("test", "test");
     int test = 1;
     assert_msg(test == 1, "1 == 1");

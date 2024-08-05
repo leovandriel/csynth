@@ -5,7 +5,7 @@
 
 void test_step(void)
 {
-    Gen *gen = gen_create(step_create(const_(0.5), sum_create(const_(0.1))));
+    Gen *gen = gen_create(step_create(const_create(0.5), sum_create(const_create(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.0);
     assert_double_equal(gen_eval(gen, NULL), 0.0);
     assert_double_equal(gen_eval(gen, NULL), 0.0);

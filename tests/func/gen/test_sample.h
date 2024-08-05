@@ -3,7 +3,7 @@
 
 void test_sample(void)
 {
-    Gen *gen = gen_create(sample_create());
+    Gen *gen = gen_create(sample_uniform_create());
     assert_double_equal(gen_eval(gen, NULL), 0.0625038757098120);
     assert_double_equal(gen_eval(gen, NULL), 0.0625038757098120);
     assert_double_equal(gen_eval(gen, NULL), 0.0625038757098120);

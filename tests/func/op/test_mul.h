@@ -4,9 +4,9 @@
 
 void test_mul(void)
 {
-    Gen *gen1 = gen_create(mul_create(ARGS(const_(1), const_(1))));
-    Gen *gen2 = gen_create(mul_create(ARGS(const_(1), const_(2), const_(3))));
-    Gen *gen3 = gen_create(mul_create(ARGS(const_(1))));
+    Gen *gen1 = gen_create(mul_create(ARGS(const_create(1), const_create(1))));
+    Gen *gen2 = gen_create(mul_create(ARGS(const_create(1), const_create(2), const_create(3))));
+    Gen *gen3 = gen_create(mul_create(ARGS(const_create(1))));
     assert_double_equal(gen_eval(gen1, NULL), 1.0);
     assert_double_equal(gen_eval(gen2, NULL), 6.0);
     assert_double_equal(gen_eval(gen3, NULL), 1.0);

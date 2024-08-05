@@ -47,29 +47,46 @@ typedef struct
 static const size_t WAV_HEADER_SIZE = sizeof(WavHeader) - WAV_HEADER_(riff_type) - WAV_HEADER_(file_size);
 static const size_t WAV_HEADER_FORMAT_SIZE = WAV_HEADER_(format_type) + WAV_HEADER_(num_channels) + WAV_HEADER_(sample_rate) + WAV_HEADER_(byte_rate) + WAV_HEADER_(block_align) + WAV_HEADER_(bits_sample);
 
-csError wav_header_write(uint32_t sample_count, uint32_t channel_count, FILE *file, size_t sample_rate)
+csError wav_header_read(WavHeader *header, size_t *sample_count, size_t *channel_count, size_t *sample_rate)
+{
+    if (memcmp(header->riff_type, "RIFF", 4) || memcmp(header->file_type, "WAVE", 4) || memcmp(header->format_mark, "fmt ", 4) || header->format_type != 1 || memcmp(header->data_chunk, "data", 4))
+    {
+        return error_type_message(csErrorWav, "Unsupported WAV format");
+    }
+    if (header->format_size != WAV_HEADER_FORMAT_SIZE)
+    {
+        return error_type_message(csErrorWav, "Unsupported WAV format size: %d", header->format_size);
+    }
+    if (header->file_size - header->data_size != WAV_HEADER_SIZE)
+    {
+        return error_type_message(csErrorWav, "Unsupported WAV header size: %d", header->file_size - header->data_size);
+    }
+    if (header->byte_rate != sizeof(sample_t) * header->num_channels * header->sample_rate || header->block_align != sizeof(sample_t) * header->num_channels || header->bits_sample != sizeof(sample_t) * 8)
+    {
+        return error_type_message(csErrorWav, "Unsupported WAV sample bits: %d", header->bits_sample);
+    }
+    *sample_count = header->data_size / (sizeof(sample_t) * header->num_channels);
+    *channel_count = header->num_channels;
+    *sample_rate = header->sample_rate;
+    return csErrorNone;
+}
+
+void wav_header_write(WavHeader *header, size_t sample_count, size_t channel_count, size_t sample_rate)
 {
     uint32_t data_size = sizeof(sample_t) * channel_count * sample_count;
-    WavHeader header = {0};
-    memcpy(header.riff_type, "RIFF", 4);
-    header.file_size = WAV_HEADER_SIZE + data_size;
-    memcpy(header.file_type, "WAVE", 4);
-    memcpy(header.format_mark, "fmt ", 4);
-    header.format_size = WAV_HEADER_FORMAT_SIZE;
-    header.format_type = 1; // PCM
-    header.num_channels = channel_count;
-    header.sample_rate = (uint32_t)sample_rate;
-    header.byte_rate = (uint32_t)(sizeof(sample_t) * channel_count * sample_rate);
-    header.block_align = (uint16_t)(sizeof(sample_t) * channel_count);
-    header.bits_sample = (uint16_t)(sizeof(sample_t) * 8);
-    memcpy(header.data_chunk, "data", 4);
-    header.data_size = data_size;
-    size_t count = fwrite(&header, sizeof(header), 1, file);
-    if (count != 1)
-    {
-        return error_type(csErrorFileWrite);
-    }
-    return csErrorNone;
+    memcpy(header->riff_type, "RIFF", 4);
+    header->file_size = WAV_HEADER_SIZE + data_size;
+    memcpy(header->file_type, "WAVE", 4);
+    memcpy(header->format_mark, "fmt ", 4);
+    header->format_size = WAV_HEADER_FORMAT_SIZE;
+    header->format_type = 1; // PCM
+    header->num_channels = channel_count;
+    header->sample_rate = (uint32_t)sample_rate;
+    header->byte_rate = (uint32_t)(sizeof(sample_t) * channel_count * sample_rate);
+    header->block_align = (uint16_t)(sizeof(sample_t) * channel_count);
+    header->bits_sample = (uint16_t)(sizeof(sample_t) * 8);
+    memcpy(header->data_chunk, "data", 4);
+    header->data_size = data_size;
 }
 
 #endif // CSYNTH_WAV_HEADER_H

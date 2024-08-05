@@ -2,6 +2,7 @@
 #define CSYNTH_COMPS_H
 
 #include "../gen/param.h"
+#include "../op/ops.h"
 #include "./pattern.h"
 #include "./seq.h"
 
@@ -15,7 +16,7 @@
 #define seq_loop_(__duration, ...) (seq_loop(const_(__duration), __VA_ARGS__))
 
 /** @brief Shorthand for `pattern_create`. */
-Func *pattern(const char *string, Func *duration, Func *timing, Func *input) { return pattern_create(string, duration, timing, input); }
+Func *pattern(const char *string, Func *duration, Func *timing, Func *input) { return pattern_create(string, dvd(param(EvalParamTempoTick), duration), timing, input); }
 /** @brief Shorthand for `pattern_create` with double arguments. */
 Func *pattern_(const char *string, double duration, double timing, Func *input) { return pattern(string, const_(duration), const_(timing), input); }
 

@@ -52,7 +52,14 @@ static int record_init(size_t count, __U Gen **args, void *context_)
         return error_type_message(csErrorFileOpen, "Unable to open file: %s", context->filename);
     }
     context->file = file;
-    return wav_header_write(1, (uint32_t)count, context->file, context->sample_rate);
+    WavHeader header = {0};
+    wav_header_write(&header, 1, (uint32_t)count, context->sample_rate);
+    size_t header_count = fwrite(&header, sizeof(header), 1, context->file);
+    if (header_count != 1)
+    {
+        return error_type(csErrorFileWrite);
+    }
+    return csErrorNone;
 }
 
 static void record_free(size_t count, void *context_)
@@ -67,10 +74,12 @@ static void record_free(size_t count, void *context_)
     {
         error_catch(csErrorFileSeek);
     }
-    csError error = wav_header_write((uint32_t)context->size, (uint32_t)count, context->file, context->sample_rate);
-    if (error != csErrorNone)
+    WavHeader header = {0};
+    wav_header_write(&header, (uint32_t)context->size, (uint32_t)count, context->sample_rate);
+    size_t header_count = fwrite(&header, sizeof(header), 1, context->file);
+    if (header_count != 1)
     {
-        error_catch(error);
+        error_catch(csErrorFileWrite);
     }
     if (fclose(context->file) == EOF)
     {

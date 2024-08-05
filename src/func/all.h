@@ -43,6 +43,7 @@
 #include "./gen/crack.h"
 #include "./gen/gauss.h"
 #include "./gen/gens.h"
+#include "./gen/impulse.h"
 #include "./gen/karplus_strong.h"
 #include "./gen/notes.h"
 #include "./gen/param.h"

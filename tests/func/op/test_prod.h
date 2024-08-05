@@ -4,7 +4,7 @@
 
 void test_prod(void)
 {
-    Gen *gen = gen_create(prod_create(const_(1.1)));
+    Gen *gen = gen_create(prod_create(const_create(1.1)));
     assert_double_equal(gen_eval(gen, NULL), 1.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 1.1000000000000001);
     assert_double_equal(gen_eval(gen, NULL), 1.2100000000000002);

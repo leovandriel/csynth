@@ -74,7 +74,7 @@ double random_uniform(Random *random)
  * @param upper Uppper bound
  * @return double Number in the interval [lower, upper]
  */
-double random_range(Random *random, double lower, double upper)
+double random_uniform_range(Random *random, double lower, double upper)
 {
     return (upper - lower) * random_uniform(random) + lower;
 }
@@ -82,19 +82,33 @@ double random_range(Random *random, double lower, double upper)
 /**
  * @brief Generate a random number from a Gaussian distribution.
  *
- * Generates a random number from a normal distribution with mean `mu_` and
- * standard deviation `sigma`. The Box-Muller transform is used to generate the
+ * Generates a random number from a normal distribution with mean 0 and
+ * standard deviation 1. The Box-Muller transform is used to generate the
  * random number. Technically this generates two normal distributes random
  * numbers, but we use only one.
+ *
+ * @param random Random struct
+ * @return double Number in the interval (-inf, inf)
+ */
+double random_gauss(Random *random)
+{
+    return sqrt(-2.0 * log(random_uniform(random))) * cos(random_uniform(random) * M_PI * 2);
+}
+
+/**
+ * @brief Generate a random number from a Gaussian distribution.
+ *
+ * Generates a random number from a normal distribution with mean `mu_` and
+ * standard deviation `sigma`.
  *
  * @param random Random struct
  * @param mu_ Distribution mean
  * @param sigma Distribution standard deviation
  * @return double Number in the interval (-inf, inf)
  */
-double random_gauss(Random *random, double mu_, double sigma)
+double random_gauss_range(Random *random, double mu_, double sigma)
 {
-    return sigma * sqrt(-2.0 * log(random_uniform(random))) * cos(random_uniform(random) * M_PI * 2) + mu_;
+    return sigma * random_gauss(random) + mu_;
 }
 
 #endif // CSYNTH_RANDOM_H

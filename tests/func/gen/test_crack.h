@@ -4,7 +4,7 @@
 
 void test_crack_exact(void)
 {
-    Gen *gen = gen_create(crack_create(const_(0.5)));
+    Gen *gen = gen_create(crack_create(const_create(0.5)));
     assert_double_equal(gen_eval(gen, NULL), 0.2118687850570933);
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
@@ -24,7 +24,7 @@ void test_crack_range(void)
 {
     for (size_t i = 0; i < 100; i++)
     {
-        Gen *gen = gen_create(crack_create(const_(0.1)));
+        Gen *gen = gen_create(crack_create(const_create(0.1)));
         assert_double_range(gen_eval(gen, NULL), -1.0, 1.0);
         gen_free(gen);
     }

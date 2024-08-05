@@ -41,7 +41,7 @@ Func *uniform(void) { return uniform_create(); }
 Func *white(void) { return uniform_create(); }
 Func *pink(void) { return pink_create(); }
 Func *gauss(void) { return gauss_create(); }
-Func *sample(void) { return sample_create(); }
+Func *sample(void) { return sample_uniform_create(); }
 Func *crack(Func *frequency) { return crack_create(mul(param(EvalParamPitchTick), frequency)); }
 Func *crack_(double frequency) { return crack(const_(frequency)); }
 

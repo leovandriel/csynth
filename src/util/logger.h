@@ -46,10 +46,16 @@ int logger_format_default(FILE *file, LoggerLevel level, const char *source, int
 
 typedef int (*logger_format)(FILE *file, LoggerLevel level, const char *source, int line, const char *message, ...);
 
+/**
+ * @brief Logger configuration.
+ */
 typedef struct
 {
+    /** @brief Logger level, below which log calls will be ignored. Defaults to `LoggerLevelInfo`. */
     LoggerLevel level;
+    /** @brief Logger format function. */
     logger_format format;
+    /** @brief Logger file handle. Defaults to `stderr`. */
     FILE *file;
 } LoggerGlobal;
 

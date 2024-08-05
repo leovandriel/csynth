@@ -4,7 +4,7 @@
 
 void test_hpf(void)
 {
-    Gen *gen = gen_create(hpf_create(const_(1), const_(1)));
+    Gen *gen = gen_create(hpf_create(const_create(1), const_create(1)));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 0.1373025616984130);
     assert_double_equal(gen_eval(gen, NULL), 0.0188519934489465);

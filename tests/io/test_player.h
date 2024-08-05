@@ -2,4 +2,5 @@
 
 void test_player(void)
 {
+    // noop
 }

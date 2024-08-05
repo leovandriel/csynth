@@ -21,9 +21,14 @@ typedef struct KeyboardEvent
     struct KeyboardEvent *next;
 } KeyboardEvent;
 
+/**
+ * @brief List of key stroke events.
+ */
 typedef struct
 {
+    /** @brief First event in the list. */
     KeyboardEvent *head;
+    /** @brief Last event in the list. */
     KeyboardEvent *tail;
 } KeyList;
 
@@ -39,7 +44,6 @@ csError key_list_add(KeyList *list, KeyboardEvent event)
     {
         list->head = new_event;
         list->tail = new_event;
-        return csErrorNone;
     }
     else
     {

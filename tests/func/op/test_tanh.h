@@ -4,9 +4,9 @@
 
 void test_tanh(void)
 {
-    Gen *gen1 = gen_create(tanh_create(const_(0)));
-    Gen *gen2 = gen_create(tanh_create(const_(1)));
-    Gen *gen3 = gen_create(tanh_create(const_(2)));
+    Gen *gen1 = gen_create(tanh_create(const_create(0)));
+    Gen *gen2 = gen_create(tanh_create(const_create(1)));
+    Gen *gen3 = gen_create(tanh_create(const_create(2)));
     assert_double_equal(gen_eval(gen1, NULL), 0.0);
     assert_double_equal(gen_eval(gen2, NULL), 0.7615941559557649);
     assert_double_equal(gen_eval(gen3, NULL), 0.9640275800758169);

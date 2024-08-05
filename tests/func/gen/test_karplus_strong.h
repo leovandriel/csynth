@@ -4,7 +4,7 @@
 
 void test_karplus_strong_exact(void)
 {
-    Gen *gen = gen_create(karplus_strong_create(const_(.2), const_(.2)));
+    Gen *gen = gen_create(karplus_strong_create(const_create(.2), const_create(.2)));
     assert_double_equal(gen_eval(gen, NULL), -0.1657808658808207);
     assert_double_equal(gen_eval(gen, NULL), 0.2821309923619489);
     assert_double_equal(gen_eval(gen, NULL), 0.2409750432587839);
@@ -24,7 +24,7 @@ void test_karplus_strong_range(void)
 {
     for (size_t i = 0; i < 100; i++)
     {
-        Gen *gen = gen_create(karplus_strong_create(const_(0.1), const_(0.1)));
+        Gen *gen = gen_create(karplus_strong_create(const_create(0.1), const_create(0.1)));
         assert_double_range(gen_eval(gen, NULL), -1.0, 1.0);
         gen_free(gen);
     }

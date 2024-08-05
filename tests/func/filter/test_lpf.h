@@ -4,7 +4,7 @@
 
 void test_lpf(void)
 {
-    Gen *gen = gen_create(lpf_create(const_(1), const_(1)));
+    Gen *gen = gen_create(lpf_create(const_create(1), const_create(1)));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 0.8626974383015871);
     assert_double_equal(gen_eval(gen, NULL), 0.9811480065510535);

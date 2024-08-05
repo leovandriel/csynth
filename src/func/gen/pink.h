@@ -22,7 +22,7 @@ typedef struct
 static double pink_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U void *context_)
 {
     PinkContext *context = (PinkContext *)context_;
-    double white = random_range(&context->random, -1, 1);
+    double white = random_uniform_range(&context->random, -1, 1);
     double sum = context->last * 0.115926;
     for (size_t i = 0; i < 6; i++)
     {
@@ -42,7 +42,7 @@ static double pink_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U vo
 Func *pink_create(void)
 {
     PinkContext initial = {.random = random_create(0)};
-    return func_create(NULL, pink_eval, NULL, sizeof(PinkContext), &initial, FuncFlagNone, );
+    return func_create(NULL, pink_eval, NULL, sizeof(PinkContext), &initial, FuncFlagNone);
 }
 
 #endif // CSYNTH_PINK_H

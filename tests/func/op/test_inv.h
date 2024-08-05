@@ -4,8 +4,8 @@
 
 void test_inv(void)
 {
-    Gen *gen1 = gen_create(inv_create(const_(1)));
-    Gen *gen2 = gen_create(inv_create(const_(-2)));
+    Gen *gen1 = gen_create(inv_create(const_create(1)));
+    Gen *gen2 = gen_create(inv_create(const_create(-2)));
     assert_double_equal(gen_eval(gen1, NULL), 1.0);
     assert_double_equal(gen_eval(gen2, NULL), -0.5);
     gen_free(gen1);

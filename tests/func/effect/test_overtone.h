@@ -4,7 +4,7 @@
 
 void test_overtone(void)
 {
-    Gen *gen = gen_create(overtone_create(3, const_(0.5), saw_create(const_(0.1))));
+    Gen *gen = gen_create(overtone_create(3, const_create(0.5), saw_create(const_create(0.1))));
     Eval eval = {.compute_flag = 1};
     eval.params[EvalParamPitchTick] = 0.1;
     assert_double_equal(gen_eval(gen, &eval), 0.0000000000000000);

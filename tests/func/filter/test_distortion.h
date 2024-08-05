@@ -5,7 +5,7 @@
 
 void test_distortion_pos(void)
 {
-    Gen *gen = gen_create(distortion_create(const_(1), saw_create(const_(0.1))));
+    Gen *gen = gen_create(distortion_create(const_create(1), saw_create(const_create(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 0.4046096751916897);
     assert_double_equal(gen_eval(gen, NULL), 0.6444049826448045);
@@ -23,7 +23,7 @@ void test_distortion_pos(void)
 
 void test_distortion_neg(void)
 {
-    Gen *gen = gen_create(distortion_create(const_(-1), saw_create(const_(0.1))));
+    Gen *gen = gen_create(distortion_create(const_create(-1), saw_create(const_create(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 0.0842238084008974);
     assert_double_equal(gen_eval(gen, NULL), 0.1969503133139719);

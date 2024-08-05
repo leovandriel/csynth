@@ -9,7 +9,7 @@
 typedef struct
 {
     /** @brief Sample data loaded in memory. */
-    ReaderSamples samples;
+    PcmBuffer buffer;
     /** @brief Channel to read samples from. */
     int channel;
     /** @brief Time offset to read next sample at. */
@@ -19,7 +19,7 @@ typedef struct
 static double wav_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     WavContext *context = (WavContext *)context_;
-    sample_t sample = reader_sample(&context->samples, context->time, context->channel);
+    sample_t sample = reader_sample(&context->buffer, context->time, context->channel);
     double output = (double)sample / 32767;
     double tick = gen_eval(args[0], eval);
     context->time += tick;
@@ -29,15 +29,15 @@ static double wav_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 /**
  * @brief Create a function that reads samples from a WAV file.
  *
- * @param samples ReaderSamples struct containing the samples.
+ * @param buffer PcmBuffer struct containing the samples.
  * @param channel Channel to read from.
  * @param tick Function that controls the reading speed.
  * @return Func* WAV function.
  */
-Func *wav_create(ReaderSamples samples, int channel, Func *tick)
+Func *wav_create(PcmBuffer buffer, int channel, Func *tick)
 {
     WavContext initial = {
-        .samples = samples,
+        .buffer = buffer,
         .channel = channel,
     };
     return func_create(NULL, wav_eval, NULL, sizeof(WavContext), &initial, FuncFlagNone, tick);
@@ -53,12 +53,12 @@ Func *wav_create(ReaderSamples samples, int channel, Func *tick)
  */
 Func *wav_filename(const char *filename, int channel, Func *input)
 {
-    ReaderSamples samples;
-    if (reader_read_filename(&samples, filename) != csErrorNone)
+    PcmBuffer buffer = {0};
+    if (reader_read_filename(&buffer, filename) != csErrorNone)
     {
         return NULL;
     }
-    return wav_create(samples, channel, input);
+    return wav_create(buffer, channel, input);
 }
 
 #endif // CSYNTH_WAV_H

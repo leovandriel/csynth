@@ -5,7 +5,7 @@
 
 void test_resonant(void)
 {
-    Gen *gen = gen_create(resonant_create(const_(0.2), const_(1), square_create(const_(0.1))));
+    Gen *gen = gen_create(resonant_create(const_create(0.2), const_create(1), square_create(const_create(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 1.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), -0.3554467621723905);
     assert_double_equal(gen_eval(gen, NULL), 0.9140520393842109);

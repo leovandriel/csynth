@@ -37,7 +37,7 @@ static Random timing_random = {0};
 
 static func t(double index)
 {
-    return _(.25 * index + random_range(&timing_random, 0, .01));
+    return _(.25 * index + random_uniform_range(&timing_random, 0, .01));
 }
 
 int main(void)

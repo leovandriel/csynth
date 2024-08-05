@@ -12,14 +12,14 @@
 typedef struct
 {
     /** @brief PCM sample data. */
-    sample_t *buffer;
+    sample_t *samples;
     /** @brief Number of samples. */
     size_t sample_count;
     /** @brief Number of channels. */
     size_t channel_count;
     /** @brief Sample rate, e.g. 44100. */
-    uint32_t sample_rate;
-} ReaderSamples;
+    size_t sample_rate;
+} PcmBuffer;
 
 /**
  * @brief Read samples from a WAV file.
@@ -28,75 +28,58 @@ typedef struct
  * @param file File handle to read from.
  * @return csError Error code, zero on success.
  */
-csError reader_read_file(ReaderSamples *samples, FILE *file)
+csError reader_read_file(PcmBuffer *buffer, FILE *file)
 {
     WavHeader header = {0};
-    size_t count = fread(&header, sizeof(header), 1, file);
-    if (count != 1)
+    size_t header_count = fread(&header, sizeof(header), 1, file);
+    if (header_count != 1)
     {
         return error_type_message(csErrorWav, "Unable to read WAV header");
     }
-    if (memcmp(header.riff_type, "RIFF", 4) || memcmp(header.file_type, "WAVE", 4) || memcmp(header.format_mark, "fmt ", 4) || header.format_type != 1 || memcmp(header.data_chunk, "data", 4))
+    csError error = wav_header_read(&header, &buffer->sample_count, &buffer->channel_count, &buffer->sample_rate);
+    if (error != csErrorNone)
     {
-        return error_type_message(csErrorWav, "Unsupported WAV format");
+        return error;
     }
-    if (header.format_size != WAV_HEADER_FORMAT_SIZE)
-    {
-        return error_type_message(csErrorWav, "Unsupported WAV format size: %d", header.format_size);
-    }
-    if (header.file_size - header.data_size != WAV_HEADER_SIZE)
-    {
-        return error_type_message(csErrorWav, "Unsupported WAV header size: %d", header.file_size - header.data_size);
-    }
-    if (header.byte_rate != sizeof(sample_t) * header.num_channels * header.sample_rate || header.block_align != sizeof(sample_t) * header.num_channels || header.bits_sample != sizeof(sample_t) * 8)
-    {
-        return error_type_message(csErrorWav, "Unsupported WAV sample bits: %d", header.bits_sample);
-    }
-    size_t channel_count = header.num_channels;
-    uint32_t data_size = header.data_size;
-    uint32_t sample_count = data_size / (sizeof(sample_t) * channel_count);
-    sample_t *buffer = (sample_t *)malloc_(sample_count * channel_count * sizeof(sample_t));
-    if (buffer == NULL)
+    size_t count = buffer->sample_count * buffer->channel_count;
+    sample_t *samples = (sample_t *)malloc_(count * sizeof(sample_t));
+    if (samples == NULL)
     {
         return error_type(csErrorMemoryAlloc);
     }
-    count = fread(buffer, sizeof(sample_t), sample_count * channel_count, file);
-    if (count != sample_count * channel_count)
+    size_t sample_count = fread(samples, sizeof(sample_t), count, file);
+    if (sample_count != count)
     {
-        free_(buffer);
+        free_(samples);
         return error_type(csErrorFileRead);
     }
-    samples->buffer = buffer;
-    samples->sample_count = sample_count;
-    samples->channel_count = channel_count;
-    samples->sample_rate = header.sample_rate;
-    free_(buffer);
+    buffer->samples = samples;
     return csErrorNone;
 }
 
-sample_t reader_sample(ReaderSamples *samples, double time, int channel)
+sample_t reader_sample(PcmBuffer *buffer, double time, int channel)
 {
-    uint32_t index = (uint32_t)(time * samples->sample_rate + 0.5);
-    if (index >= samples->sample_count)
+    uint32_t index = (uint32_t)(time * (double)buffer->sample_rate + 0.5);
+    if (index >= buffer->sample_count)
     {
         return 0;
     }
-    return samples->buffer[index * samples->channel_count + channel];
+    return buffer->samples[index * buffer->channel_count + channel];
 }
 
-void reader_free(ReaderSamples *samples)
+void reader_free(PcmBuffer *buffer)
 {
-    free_(samples->buffer);
+    free_(buffer->samples);
 }
 
-csError reader_read_filename(ReaderSamples *samples, const char *filename)
+csError reader_read_filename(PcmBuffer *buffer, const char *filename)
 {
     FILE *file = fopen(filename, "rb");
     if (file == NULL)
     {
         return error_type_message(csErrorFileOpen, "Unable to open file: %s", filename);
     }
-    csError error = reader_read_file(samples, file);
+    csError error = reader_read_file(buffer, file);
     if (error != csErrorNone)
     {
         fclose(file);

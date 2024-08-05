@@ -6,7 +6,7 @@
 
 void test_continuous(void)
 {
-    Gen *gen = gen_create(loop_create(const_(0.5), continuous_create(sum_create(const_(1)))));
+    Gen *gen = gen_create(loop_create(const_create(0.5), continuous_create(sum_create(const_create(1)))));
     assert_double_equal(gen_eval(gen, NULL), 0);
     assert_double_equal(gen_eval(gen, NULL), 1);
     assert_double_equal(gen_eval(gen, NULL), 2);

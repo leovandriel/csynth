@@ -195,11 +195,10 @@ static void display_clear_line(void)
 
 static void display_render_list(DisplayElement *list)
 {
-    if (list == NULL)
+    if (list != NULL)
     {
-        error_catch_message(csErrorDisplay, "Unable to render, display not shown");
+        display_clear_line();
     }
-    display_clear_line();
     for (DisplayElement *element = list; element != NULL; element = element->next)
     {
         display_render_element(element);

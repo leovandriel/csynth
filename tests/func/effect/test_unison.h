@@ -6,7 +6,7 @@
 
 void test_unison(void)
 {
-    Gen *gen = gen_create(unison_create(5, saw_create(sample_create())));
+    Gen *gen = gen_create(unison_create(5, saw_create(sample_uniform_create())));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 0.1250077514196241);
     assert_double_equal(gen_eval(gen, NULL), 0.2500155028392481);

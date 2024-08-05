@@ -5,7 +5,7 @@
 
 void test_reverb(void)
 {
-    Gen *gen = gen_create(reverb_create(const_(0.2), const_(0.5), saw_create(const_(0.1))));
+    Gen *gen = gen_create(reverb_create(const_create(0.2), const_create(0.5), saw_create(const_create(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.00);
     assert_double_equal(gen_eval(gen, NULL), 0.20);
     assert_double_equal(gen_eval(gen, NULL), 0.40);

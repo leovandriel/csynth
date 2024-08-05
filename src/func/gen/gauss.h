@@ -15,7 +15,7 @@ typedef struct
 static double gauss_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U void *context_)
 {
     GaussContext *context = (GaussContext *)context_;
-    return random_gauss(&context->random, 0, 1);
+    return random_gauss_range(&context->random, 0, 1);
 }
 
 /**
@@ -27,7 +27,7 @@ static double gauss_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U v
 Func *gauss_create(void)
 {
     GaussContext initial = {.random = random_create(0)};
-    return func_create(NULL, gauss_eval, NULL, sizeof(GaussContext), &initial, FuncFlagNone, );
+    return func_create(NULL, gauss_eval, NULL, sizeof(GaussContext), &initial, FuncFlagNone);
 }
 
 #endif // CSYNTH_GAUSS_H

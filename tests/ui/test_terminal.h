@@ -3,4 +3,5 @@
 
 void test_terminal(void)
 {
+    // noop
 }

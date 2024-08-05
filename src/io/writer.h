@@ -22,10 +22,12 @@
 csError writer_write_channels_no_cleanup(double duration, FILE *file, size_t sample_rate, size_t channel_count, Func **channels)
 {
     uint32_t sample_count = (uint32_t)(duration * (double)sample_rate + 0.5);
-    csError error = wav_header_write(sample_count, (uint32_t)channel_count, file, sample_rate);
-    if (error != csErrorNone)
+    WavHeader header = {0};
+    wav_header_write(&header, sample_count, (uint32_t)channel_count, sample_rate);
+    size_t count = fwrite(&header, sizeof(header), 1, file);
+    if (count != 1)
     {
-        return error;
+        return error_type(csErrorFileWrite);
     }
     Sampler *sampler = sampler_create(sample_rate, channel_count, channels);
     sample_t buffer[WRITER_BUFFER_SIZE];

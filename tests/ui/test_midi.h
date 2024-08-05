@@ -2,4 +2,5 @@
 
 void test_midi(void)
 {
+    // noop
 }

@@ -5,7 +5,7 @@
 
 void test_sine_exact(void)
 {
-    Gen *gen = gen_create(sine_create(const_(0.1)));
+    Gen *gen = gen_create(sine_create(const_create(0.1)));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 0.5877852246243184);
     assert_double_equal(gen_eval(gen, NULL), 0.9510564491561904);
@@ -23,7 +23,7 @@ void test_sine_exact(void)
 
 void test_sine_incremental(void)
 {
-    Gen *gen = gen_create(sine_create(sum_create(const_(.01))));
+    Gen *gen = gen_create(sine_create(sum_create(const_create(.01))));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 0.0627905181746333);
@@ -43,7 +43,7 @@ void test_sine_range(void)
 {
     for (size_t i = 0; i < 100; i++)
     {
-        Gen *gen = gen_create(sine_create(const_(0.1)));
+        Gen *gen = gen_create(sine_create(const_create(0.1)));
         assert_double_range(gen_eval(gen, NULL), -1.0, 1.0);
         gen_free(gen);
     }

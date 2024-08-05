@@ -5,7 +5,7 @@
 
 void test_smooth_up(void)
 {
-    Gen *gen = gen_create(smooth_create(const_(0.3), const_(0.7), sum_create(const_(0.1))));
+    Gen *gen = gen_create(smooth_create(const_create(0.3), const_create(0.7), sum_create(const_create(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.000000);
     assert_double_equal(gen_eval(gen, NULL), 0.000000);
     assert_double_equal(gen_eval(gen, NULL), 0.000000);
@@ -21,7 +21,7 @@ void test_smooth_up(void)
 
 void test_smooth_down(void)
 {
-    Gen *gen = gen_create(smooth_create(const_(0.7), const_(0.3), sum_create(const_(0.1))));
+    Gen *gen = gen_create(smooth_create(const_create(0.7), const_create(0.3), sum_create(const_create(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 1.000000);
     assert_double_equal(gen_eval(gen, NULL), 1.000000);
     assert_double_equal(gen_eval(gen, NULL), 1.000000);
@@ -37,7 +37,7 @@ void test_smooth_down(void)
 
 void test_smooth_same(void)
 {
-    Gen *gen = gen_create(smooth_create(const_(0.5), const_(0.5), sum_create(const_(0.1))));
+    Gen *gen = gen_create(smooth_create(const_create(0.5), const_create(0.5), sum_create(const_create(0.1))));
     assert_double_equal(gen_eval(gen, NULL), 0.000000);
     assert_double_equal(gen_eval(gen, NULL), 0.000000);
     assert_double_equal(gen_eval(gen, NULL), 0.000000);

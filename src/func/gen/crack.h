@@ -16,7 +16,7 @@ static double crack_eval(__U size_t count, Gen **args, Eval *eval, __U void *con
 {
     CrackContext *context = (CrackContext *)context_;
     double tick = gen_eval(args[0], eval);
-    return random_range(&context->random, 0, 1) < tick ? random_range(&context->random, -1, 1) : 0;
+    return random_uniform_range(&context->random, 0, 1) < tick ? random_uniform_range(&context->random, -1, 1) : 0;
 }
 
 /**

@@ -5,7 +5,7 @@
 
 void test_compressor(void)
 {
-    Gen *gen = gen_create(compressor_create(const_(0.5), const_(0.1), const_(0.1), const_(0.1), uniform_create()));
+    Gen *gen = gen_create(compressor_create(const_create(0.5), const_create(0.1), const_create(0.1), const_create(0.1), uniform_create()));
     assert_double_equal(gen_eval(gen, NULL), -0.8704605766408398);
     assert_double_equal(gen_eval(gen, NULL), 0.2108759164371954);
     assert_double_equal(gen_eval(gen, NULL), 0.9076380602936124);

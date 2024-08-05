@@ -4,7 +4,9 @@
 
 int main(void)
 {
-    // TODO(leo): Implement
-    func note = hush(sine(C4));
-    return play(note);
+    func patterns = add(
+        pattern_("................", .25, .01, hihat()),
+        pattern_("  .   .   .   . ", .25, .01, snare()),
+        pattern_(".    .  .    .  ", .25, .01, bdrum()));
+    return play(loop_(4, patterns));
 }

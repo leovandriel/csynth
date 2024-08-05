@@ -50,6 +50,7 @@ void test_logger_file(void)
     assert_not_null(file);
     logger_set_file(file);
     log_info("test1");
+    assert_long_equal(fclose(file), 0);
     assert_string_equal(buffer + 30, " INFO test_logger.h:52 - test1\n");
     logger_set_file(NULL);
 }

@@ -4,7 +4,7 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-#define SEQ_SILENT_SAMPLE_COUNT 100
+#define SEQ_SILENT_SAMPLE_COUNT 10
 
 /** @see seq_create */
 typedef struct
@@ -27,7 +27,7 @@ static double seq_eval_abs(size_t count, Gen **args, Eval *eval, void *context_)
     for (size_t index = count / 2; index > 0; index--)
     {
         double offset = gen_eval(args[index * 2 - 1], eval);
-        if (context->time > offset)
+        if (context->time >= offset)
         {
             output = gen_eval(args[index * 2], eval);
             break;
@@ -100,7 +100,7 @@ static double seq_eval_seq(size_t count, Gen **args, Eval *eval, void *context_)
     {
         context->counter = 0;
     }
-    if (context->counter > SEQ_SILENT_SAMPLE_COUNT && context->index < count - 1)
+    if (context->counter >= SEQ_SILENT_SAMPLE_COUNT && context->index < count - 1)
     {
         context->index++;
         context->counter = 0;
