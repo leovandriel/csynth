@@ -3,4 +3,5 @@
 
 void test_dump(void)
 {
+    // noop
 }

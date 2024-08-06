@@ -22,7 +22,7 @@ static double gauge_eval(__U size_t count, Gen **args, Eval *eval, void *context
 {
     GaugeContext *context = (GaugeContext *)context_;
     double input = gen_eval(args[1], eval);
-    if (context->time >= 1.0 && input != context->last)
+    if (context->time >= 1.0 && input != context->last && eval != NULL)
     {
         state_event_broadcast(eval->wall_time, StateEventKeyTypeLabel, context->label, StateEventValueTypeDouble, &input);
         context->last = input;

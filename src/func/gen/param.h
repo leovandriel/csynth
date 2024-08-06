@@ -14,7 +14,7 @@ typedef struct
 static double param_eval(__U size_t count, __U Gen **args, Eval *eval, void *context_)
 {
     ParamContext *context = (ParamContext *)context_;
-    return eval->params[context->param];
+    return eval != NULL ? eval->params[context->param] : 0.0;
 }
 
 /**

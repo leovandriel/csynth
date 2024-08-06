@@ -16,6 +16,10 @@ static double scale_eval(__U size_t count, __U Gen **args, Eval *eval, void *con
 {
     ScaleContext *context = (ScaleContext *)context_;
     double factor = gen_eval(args[0], eval);
+    if (eval == NULL)
+    {
+        return gen_eval(args[1], eval);
+    }
     double restore = eval->params[context->param];
     eval->params[context->param] = restore * factor;
     double input = gen_eval(args[1], eval);

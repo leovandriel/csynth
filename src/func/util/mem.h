@@ -19,7 +19,7 @@ static double mem_eval(__U size_t count, Gen **args, Eval *eval, __U void *conte
 {
 #ifdef ALLOC_TRACE
     MemContext *context = (MemContext *)context_;
-    if (context->time >= 1.0)
+    if (context->time >= 1.0 && eval != NULL)
     {
         AllocStat stat = alloc_stat();
         state_event_broadcast(eval->wall_time, StateEventKeyTypeLabel, "alloc", StateEventValueTypeSize, &stat.alloc_size);

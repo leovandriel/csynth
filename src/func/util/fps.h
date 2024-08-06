@@ -24,6 +24,10 @@ typedef struct
 static double fps_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     FpsContext *context = (FpsContext *)context_;
+    if (eval == NULL)
+    {
+        return gen_eval(args[0], eval);
+    }
     size_t gen_count = eval->gen_count;
     double input = gen_eval(args[0], eval);
     size_t diff = eval->gen_count - gen_count;

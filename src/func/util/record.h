@@ -17,11 +17,11 @@ typedef struct
     /** @brief Number of samples written to the file. */
     size_t size;
     /** @brief Filename of the output file. */
-    const char *filename;
-    /** @brief File handle for writing samples. */
     FILE *file;
     /** @brief Sample rate of the output file. */
     size_t sample_rate;
+    /** @brief Flag indicating close file handle on function free. */
+    bool close_on_free;
 } RecordContext;
 
 static double record_eval(size_t count, Gen **args, Eval *eval, void *context_)
@@ -46,12 +46,6 @@ static double record_eval(size_t count, Gen **args, Eval *eval, void *context_)
 static int record_init(size_t count, __U Gen **args, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
-    FILE *file = fopen(context->filename, "wb");
-    if (file == NULL)
-    {
-        return error_type_message(csErrorFileOpen, "Unable to open file: %s", context->filename);
-    }
-    context->file = file;
     WavHeader header = {0};
     wav_header_write(&header, 1, (uint32_t)count, context->sample_rate);
     size_t header_count = fwrite(&header, sizeof(header), 1, context->file);
@@ -81,25 +75,30 @@ static void record_free(size_t count, void *context_)
     {
         error_catch(csErrorFileWrite);
     }
-    if (fclose(context->file) == EOF)
+    if (context->close_on_free)
     {
-        error_catch(csErrorFileClose);
+        if (fclose(context->file) == EOF)
+        {
+            error_catch(csErrorFileClose);
+        }
     }
 }
 
 /**
- * @brief Create a function that records samples to a file.
+ * @brief Create a function that records samples to a WAV file handle.
  *
- * @param filename Output filename.
+ * @param file Output FILE handle.
+ * @param close_on_free Flag indicating close file handle on function free.
  * @param sample_rate Sample rate of the output file, e.g. 44100.
  * @param count Number of channels.
  * @param args Input signals.
  * @return Func* Record function.
  */
-Func *record_create(const char *filename, size_t sample_rate, size_t count, Func **args)
+Func *record_create(FILE *file, bool close_on_free, size_t sample_rate, size_t count, Func **args)
 {
     RecordContext initial = {
-        .filename = filename,
+        .file = file,
+        .close_on_free = close_on_free,
         .sample_rate = sample_rate,
     };
     return func_create_args(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FuncFlagNone, count, args, "input");
