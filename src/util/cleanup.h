@@ -14,6 +14,14 @@ void cleanup_all(void)
     event_free();
     display_free();
     func_free();
+#ifdef ALLOC_TRACE
+    if (!alloc_list_is_empty())
+    {
+        log_error("Memory leak detected");
+        alloc_list_dump();
+        alloc_list_clear();
+    }
+#endif
 }
 
 #endif // CSYNTH_CLEANUP_H

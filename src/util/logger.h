@@ -41,7 +41,11 @@ int logger_format_default(FILE *file, LoggerLevel level, const char *source, int
 }
 
 #define LOGGER_FILE_DEFAULT stderr
-#define LOGGER_LEVEL_DEFAULT LoggerLevelInfo
+#ifdef LOG_LEVEL
+    #define LOGGER_LEVEL_DEFAULT LOG_LEVEL
+#else
+    #define LOGGER_LEVEL_DEFAULT LoggerLevelInfo
+#endif
 #define LOGGER_FORMAT_DEFAULT logger_format_default
 
 typedef int (*logger_format)(FILE *file, LoggerLevel level, const char *source, int line, const char *message, ...);

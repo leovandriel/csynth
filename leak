@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+if [ $# -eq 0 ]; then
+    pattern=".*\\.c"
+fi
+
+if [ $# -eq 1 ]; then
+    pattern=".*$1.*\\.c"
+fi
+
+# compile and run and all examples
+find ./examples/func -regex "$pattern" -print0 | while read -d $'\0' file; do
+    name=$(basename "$file")
+    gcc "$file" -o bin/leak -Wall -Wextra -O3 -lm -lportaudio -lportmidi -DALLOC_TRACE -DAUTO_EXIT=1 -DLOG_LEVEL=3
+    echo "$name"
+    ./bin/leak </dev/null
+done

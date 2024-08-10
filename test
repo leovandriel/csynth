@@ -50,12 +50,6 @@ if [ $# -eq 0 ]; then
             exit 1
         fi       
     done
-
-    # compile examples
-    find . -name "*.c" -type f -print0 | while read -d $'\0' file; do
-        gcc "$file" -o bin/test -Wall -Wextra -O3 -lm -lportaudio -lportmidi
-        echo -n "."
-    done
 fi
 
 if [ -f ./tests/.test.c ]; then

@@ -73,6 +73,9 @@ csError player_play_pause(PaStream *stream)
 /** @brief Play channels with PortAudio output. */
 csError player_play_channels_no_cleanup(PlayerConfig config, size_t count, Func **channels)
 {
+#ifdef AUTO_EXIT
+    config.duration = AUTO_EXIT;
+#endif
     PaError pa_error = Pa_Initialize();
     if (pa_error != paNoError)
     {
