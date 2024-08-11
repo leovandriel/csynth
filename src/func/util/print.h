@@ -50,7 +50,7 @@ Func *print_create(const char *text, Func *input)
     }
     strncpy(copy, text, size);
     PrintContext initial = {.text = copy};
-    return func_create(NULL, print_eval, print_free, sizeof(PrintContext), &initial, FuncFlagNone, input);
+    return func_create(NULL, print_eval, print_free, NULL, sizeof(PrintContext), &initial, FuncFlagNone, input);
 }
 
 #endif // CSYNTH_PRINT_H

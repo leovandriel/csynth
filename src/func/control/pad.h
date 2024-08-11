@@ -69,7 +69,7 @@ Func *pad_create(int channel, int pad, Func *input)
                 .data1 = pad,
             },
         }};
-    return func_create(pad_init, pad_eval, control_event_free, sizeof(PadContext), &initial, FuncFlagNone, input);
+    return func_create(pad_init, pad_eval, control_event_free, NULL, sizeof(PadContext), &initial, FuncFlagNone, input);
 }
 
 #endif // CSYNTH_PAD_H

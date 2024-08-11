@@ -66,7 +66,7 @@ Func *trigger_create(int key, Func *input)
             .type = ControlEventTypeKeyboard,
             .keyboard = key,
         }};
-    return func_create(trigger_init, trigger_eval, control_event_free, sizeof(TriggerContext), &initial, FuncFlagNone, input);
+    return func_create(trigger_init, trigger_eval, control_event_free, NULL, sizeof(TriggerContext), &initial, FuncFlagNone, input);
 }
 
 #endif // CSYNTH_TRIGGER_H

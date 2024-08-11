@@ -43,7 +43,7 @@ static double finish_eval(__U size_t count, __U Gen **args, Eval *eval, void *co
 Func *finish_create(Func *tick, Func *input)
 {
     FinishContext initial = {.level = 1.0};
-    return func_create(NULL, finish_eval, NULL, sizeof(FinishContext), &initial, FuncFlagNone, tick, input);
+    return func_create(NULL, finish_eval, NULL, NULL, sizeof(FinishContext), &initial, FuncFlagNone, tick, input);
 }
 
 #endif // CSYNTH_FINISH_H

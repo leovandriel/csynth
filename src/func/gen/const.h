@@ -26,7 +26,7 @@ static double const_eval(__U size_t count, __U Gen **args, __U Eval *eval, void 
 Func *const_create(double value)
 {
     ConstContext initial = {.value = value};
-    return func_create(NULL, const_eval, NULL, sizeof(ConstContext), &initial, FuncFlagNone);
+    return func_create(NULL, const_eval, NULL, NULL, sizeof(ConstContext), &initial, FuncFlagNone);
 }
 
 /** @brief Shorthand for `const_create`. */

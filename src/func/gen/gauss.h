@@ -27,7 +27,7 @@ static double gauss_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U v
 Func *gauss_create(void)
 {
     GaussContext initial = {.random = random_create(0)};
-    return func_create(NULL, gauss_eval, NULL, sizeof(GaussContext), &initial, FuncFlagNone);
+    return func_create(NULL, gauss_eval, NULL, NULL, sizeof(GaussContext), &initial, FuncFlagNone);
 }
 
 #endif // CSYNTH_GAUSS_H

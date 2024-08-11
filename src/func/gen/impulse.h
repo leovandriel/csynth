@@ -31,7 +31,7 @@ static double impulse_eval(__U size_t count, __U Gen **args, __U Eval *eval, voi
  */
 Func *impulse_create(void)
 {
-    return func_create(NULL, impulse_eval, NULL, sizeof(ImpuseContext), NULL, FuncFlagNone);
+    return func_create(NULL, impulse_eval, NULL, NULL, sizeof(ImpuseContext), NULL, FuncFlagNone);
 }
 
 #endif // CSYNTH_IMPULSE_H

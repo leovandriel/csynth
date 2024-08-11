@@ -88,7 +88,7 @@ static int sine_init(__U size_t count, __U Gen **args, __U void *context_)
  */
 Func *sine_create(Func *tick)
 {
-    return func_create(sine_init, sine_eval, NULL, sizeof(SineContext), NULL, FuncFlagNone, tick);
+    return func_create(sine_init, sine_eval, NULL, NULL, sizeof(SineContext), NULL, FuncFlagNone, tick);
 }
 
 #endif // CSYNTH_SINE_H

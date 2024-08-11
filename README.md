@@ -209,7 +209,7 @@ double phone_filter(size_t count, Gen **args, Eval *eval, void *context)
 int main(void)
 {
     func tone = sine(A4);
-    func phone = func_create(NULL, phone_filter, NULL, 0, NULL, FuncFlagNone, tone);
+    func phone = func_create(NULL,  phone_filter,  NULL, NULL, 0, NULL, FuncFlagNone, tone);
     return play(phone);
 }
 ```

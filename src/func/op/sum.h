@@ -27,7 +27,7 @@ static double sum_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
  */
 Func *sum_create(Func *input)
 {
-    return func_create(NULL, sum_eval, NULL, sizeof(SumContext), NULL, FuncFlagNone, input);
+    return func_create(NULL, sum_eval, NULL, NULL, sizeof(SumContext), NULL, FuncFlagNone, input);
 }
 
 #endif // CSYNTH_SUM_H

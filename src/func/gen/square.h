@@ -35,7 +35,7 @@ static double square_eval(__U size_t count, Gen **args, Eval *eval, void *contex
 Func *square_create(Func *tick)
 {
     SquareContext initial = {.output = 1.0};
-    return func_create(NULL, square_eval, NULL, sizeof(SquareContext), &initial, FuncFlagNone, tick);
+    return func_create(NULL, square_eval, NULL, NULL, sizeof(SquareContext), &initial, FuncFlagNone, tick);
 }
 
 #endif // CSYNTH_SQUARE_H

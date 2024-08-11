@@ -76,7 +76,7 @@ static void track_free(__U size_t count, void *context_)
 Func *track_create(const char *filename, Func *input)
 {
     TrackContext initial = {.filename = filename};
-    return func_create(track_init, track_eval, track_free, sizeof(TrackContext), &initial, FuncFlagNone, input);
+    return func_create(track_init, track_eval, track_free, NULL, sizeof(TrackContext), &initial, FuncFlagNone, input);
 }
 
 #endif // CSYNTH_TRACK_H

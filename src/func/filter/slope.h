@@ -39,7 +39,7 @@ static double slope_eval(__U size_t count, Gen **args, Eval *eval, void *context
  */
 Func *slope_create(Func *tick, Func *input)
 {
-    return func_create(NULL, slope_eval, NULL, sizeof(SlopeContext), NULL, FuncFlagNone, tick, input);
+    return func_create(NULL, slope_eval, NULL, NULL, sizeof(SlopeContext), NULL, FuncFlagNone, tick, input);
 }
 
 #endif // CSYNTH_SLOPE_H

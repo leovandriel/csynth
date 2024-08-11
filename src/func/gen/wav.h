@@ -40,7 +40,7 @@ Func *wav_create(PcmBuffer buffer, int channel, Func *tick)
         .buffer = buffer,
         .channel = channel,
     };
-    return func_create(NULL, wav_eval, NULL, sizeof(WavContext), &initial, FuncFlagNone, tick);
+    return func_create(NULL, wav_eval, NULL, NULL, sizeof(WavContext), &initial, FuncFlagNone, tick);
 }
 
 /**

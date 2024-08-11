@@ -41,7 +41,7 @@ static double triangle_eval(__U size_t count, Gen **args, Eval *eval, void *cont
 Func *triangle_create(Func *tick)
 {
     TriangleContext initial = {.direction = 4.0};
-    return func_create(NULL, triangle_eval, NULL, sizeof(TriangleContext), &initial, FuncFlagNone, tick);
+    return func_create(NULL, triangle_eval, NULL, NULL, sizeof(TriangleContext), &initial, FuncFlagNone, tick);
 }
 
 #endif // CSYNTH_TRIANGLE_H

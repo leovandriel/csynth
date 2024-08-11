@@ -42,9 +42,9 @@ int logger_format_default(FILE *file, LoggerLevel level, const char *source, int
 
 #define LOGGER_FILE_DEFAULT stderr
 #ifdef LOG_LEVEL
-    #define LOGGER_LEVEL_DEFAULT LOG_LEVEL
+#define LOGGER_LEVEL_DEFAULT LOG_LEVEL
 #else
-    #define LOGGER_LEVEL_DEFAULT LoggerLevelInfo
+#define LOGGER_LEVEL_DEFAULT LoggerLevelInfo
 #endif
 #define LOGGER_FORMAT_DEFAULT logger_format_default
 

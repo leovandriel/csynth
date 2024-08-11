@@ -101,7 +101,7 @@ Func *record_create(FILE *file, bool close_on_free, size_t sample_rate, size_t c
         .close_on_free = close_on_free,
         .sample_rate = sample_rate,
     };
-    return func_create_args(record_init, record_eval, record_free, sizeof(RecordContext), &initial, FuncFlagNone, count, args, "input");
+    return func_create_args(record_init, record_eval, record_free, NULL, sizeof(RecordContext), &initial, FuncFlagNone, count, args, "input");
 }
 
 #endif // CSYNTH_RECORD_H

@@ -11,7 +11,7 @@ void handle(StateEvent *event, __U void *context)
     assert_long_equal(event->value_type, StateEventValueTypeSize);
     if (strcmp((const char *)event->key, "alloc") == 0)
     {
-        assert_long_equal(*(size_t *)event->value, 312);
+        assert_long_equal(*(size_t *)event->value, 328);
     }
     else
     {

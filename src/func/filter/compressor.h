@@ -48,7 +48,7 @@ static double compressor_eval(__U size_t count, Gen **args, Eval *eval, void *co
 Func *compressor_create(Func *threshold, Func *ratio, Func *attack_tick, Func *release_tick, Func *input)
 {
     CompressorContext initial = {.gain = 1.0};
-    return func_create(NULL, compressor_eval, NULL, sizeof(CompressorContext), &initial, FuncFlagNone, threshold, ratio, attack_tick, release_tick, input);
+    return func_create(NULL, compressor_eval, NULL, NULL, sizeof(CompressorContext), &initial, FuncFlagNone, threshold, ratio, attack_tick, release_tick, input);
 }
 
 #endif // CSYNTH_COMPRESSOR_H

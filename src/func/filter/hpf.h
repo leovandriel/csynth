@@ -36,7 +36,7 @@ static double hpf_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
  */
 Func *hpf_create(Func *tick, Func *input)
 {
-    return func_create(NULL, hpf_eval, NULL, sizeof(HighPassContext), NULL, FuncFlagNone, tick, input);
+    return func_create(NULL, hpf_eval, NULL, NULL, sizeof(HighPassContext), NULL, FuncFlagNone, tick, input);
 }
 
 #endif // CSYNTH_HPF_H

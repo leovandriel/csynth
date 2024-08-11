@@ -32,7 +32,7 @@ static double max_eval(size_t count, Gen **args, Eval *eval, __U void *context)
  */
 Func *max_create(size_t count, Func **args)
 {
-    return func_create_args(NULL, max_eval, NULL, 0, NULL, FuncFlagNone, count, args, "arg");
+    return func_create_args(NULL, max_eval, NULL, NULL, 0, NULL, FuncFlagNone, count, args, "arg");
 }
 
 #endif // CSYNTH_MAX_H

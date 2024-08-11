@@ -65,7 +65,7 @@ static Func *func_list_global = NULL;
  * @param arg_names The names of the arguments.
  * @return The function output.
  */
-Func *func_create_name(const char *name, init_callback init_cb, eval_callback eval_cb, free_callback free_cb, size_t size, void *context, uint32_t flags, size_t count, Func **inputs, const char *arg_names)
+Func *func_create_name(const char *name, init_callback init_cb, eval_callback eval_cb, free_callback free_cb, cleanup_callback cleanup_cb, size_t size, void *context, uint32_t flags, size_t count, Func **inputs, const char *arg_names)
 {
     void *initial = NULL;
     if (size > 0 && context != NULL)
@@ -113,6 +113,7 @@ Func *func_create_name(const char *name, init_callback init_cb, eval_callback ev
         .init_cb = init_cb,
         .eval_cb = eval_cb,
         .free_cb = free_cb,
+        .cleanup_cb = cleanup_cb,
         .flags = flags,
         .next = func_list_global,
         .name = name,
@@ -122,8 +123,8 @@ Func *func_create_name(const char *name, init_callback init_cb, eval_callback ev
     return func;
 }
 
-#define func_create(__init_cb, __eval_cb, __free_cb, __size, __context, __flags, ...) func_create_name(#__eval_cb, __init_cb, __eval_cb, __free_cb, __size, __context, __flags, ARRAY_SIZE(ARRAY(Func *, __VA_ARGS__)), ARRAY(Func *, __VA_ARGS__), #__VA_ARGS__)
-#define func_create_args(__init_cb, __eval_cb, __free_cb, __size, __context, __flags, __count, __args, __names) func_create_name(#__eval_cb, __init_cb, __eval_cb, __free_cb, __size, __context, __flags, __count, __args, __names)
+#define func_create(__init_cb, __eval_cb, __free_cb, __cleanup_cb, __size, __context, __flags, ...) func_create_name(#__eval_cb, __init_cb, __eval_cb, __free_cb, __cleanup_cb, __size, __context, __flags, ARRAY_SIZE(ARRAY(Func *, __VA_ARGS__)), ARRAY(Func *, __VA_ARGS__), #__VA_ARGS__)
+#define func_create_args(__init_cb, __eval_cb, __free_cb, __cleanup_cb, __size, __context, __flags, __count, __args, __names) func_create_name(#__eval_cb, __init_cb, __eval_cb, __free_cb, __cleanup_cb, __size, __context, __flags, __count, __args, __names)
 
 void func_free(void)
 {
@@ -134,6 +135,10 @@ void func_free(void)
         if (func->args != NULL)
         {
             free_(func->args);
+        }
+        if (func->cleanup_cb != NULL)
+        {
+            func->cleanup_cb(func->initial);
         }
         if (func->initial != NULL)
         {

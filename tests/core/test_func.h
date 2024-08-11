@@ -16,9 +16,14 @@ void test_free_callback(__U size_t count, __U void *context)
     // noop
 }
 
+void test_cleanup_callback(__U void *initial)
+{
+    // noop
+}
+
 void test_empty(void)
 {
-    Func *func = func_create_name("test_name", NULL, NULL, NULL, 0, NULL, FuncFlagNone, 0, (Func *[]){}, "test_args");
+    Func *func = func_create_name("test_name", NULL, NULL, NULL, NULL, 0, NULL, FuncFlagNone, 0, (Func *[]){}, "test_args");
     assert_null(func->args);
     assert_long_equal(func->count, 0);
     assert_long_equal(func->size, 0);
@@ -36,8 +41,8 @@ void test_empty(void)
 void test_full(void)
 {
     int context = 42;
-    Func *input = func_create_name("input_name", NULL, NULL, NULL, 0, NULL, FuncFlagNone, 0, (Func *[]){}, "input_args");
-    Func *func = func_create_name("test_name", test_init_callback, test_eval_callback, test_free_callback, sizeof(int), &context, FuncFlagStopReset | FuncFlagSkipReset, 1, (Func *[]){input}, "test_args");
+    Func *input = func_create_name("input_name", NULL, NULL, NULL, NULL, 0, NULL, FuncFlagNone, 0, (Func *[]){}, "input_args");
+    Func *func = func_create_name("test_name", test_init_callback, test_eval_callback, test_free_callback, test_cleanup_callback, sizeof(int), &context, FuncFlagStopReset | FuncFlagSkipReset, 1, (Func *[]){input}, "test_args");
     assert_not_null(func->args);
     assert_long_equal(func->count, 1);
     assert_long_equal(func->size, sizeof(int));

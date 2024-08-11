@@ -74,7 +74,7 @@ static double lowpass_eval(__U size_t count, Gen **args, Eval *eval, void *conte
  */
 Func *lowpass_create(Func *tick, Func *qfactor, Func *input)
 {
-    return func_create(NULL, lowpass_eval, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, qfactor, input);
+    return func_create(NULL, lowpass_eval, NULL, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, qfactor, input);
 }
 
 static double highpass_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
@@ -109,7 +109,7 @@ static double highpass_eval(__U size_t count, Gen **args, Eval *eval, void *cont
  */
 Func *highpass_create(Func *tick, Func *qfactor, Func *input)
 {
-    return func_create(NULL, highpass_eval, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, qfactor, input);
+    return func_create(NULL, highpass_eval, NULL, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, qfactor, input);
 }
 
 static double bandpass_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
@@ -144,7 +144,7 @@ static double bandpass_eval(__U size_t count, Gen **args, Eval *eval, void *cont
  */
 Func *bandpass_create(Func *tick, Func *qfactor, Func *input)
 {
-    return func_create(NULL, bandpass_eval, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, qfactor, input);
+    return func_create(NULL, bandpass_eval, NULL, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, qfactor, input);
 }
 
 static double notch_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
@@ -179,7 +179,7 @@ static double notch_eval(__U size_t count, Gen **args, Eval *eval, void *context
  */
 Func *notch_create(Func *tick, Func *qfactor, Func *input)
 {
-    return func_create(NULL, notch_eval, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, qfactor, input);
+    return func_create(NULL, notch_eval, NULL, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, qfactor, input);
 }
 
 static double peak_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
@@ -218,7 +218,7 @@ static double peak_eval(__U size_t count, Gen **args, Eval *eval, void *context_
  */
 Func *peak_create(Func *tick, Func *qfactor, Func *gain, Func *input)
 {
-    return func_create(NULL, peak_eval, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, qfactor, gain, input);
+    return func_create(NULL, peak_eval, NULL, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, qfactor, gain, input);
 }
 
 static double allpass_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
@@ -253,7 +253,7 @@ static double allpass_eval(__U size_t count, Gen **args, Eval *eval, void *conte
  */
 Func *allpass_create(Func *tick, Func *qfactor, Func *input)
 {
-    return func_create(NULL, allpass_eval, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, qfactor, input);
+    return func_create(NULL, allpass_eval, NULL, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, qfactor, input);
 }
 
 static double lowshelf_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
@@ -290,7 +290,7 @@ static double lowshelf_eval(__U size_t count, Gen **args, Eval *eval, void *cont
  */
 Func *lowshelf_create(Func *tick, Func *gain, Func *input)
 {
-    return func_create(NULL, lowshelf_eval, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, gain, input);
+    return func_create(NULL, lowshelf_eval, NULL, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, gain, input);
 }
 
 static double highshelf_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
@@ -327,7 +327,7 @@ static double highshelf_eval(__U size_t count, Gen **args, Eval *eval, void *con
  */
 Func *highshelf_create(Func *tick, Func *gain, Func *input)
 {
-    return func_create(NULL, highshelf_eval, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, gain, input);
+    return func_create(NULL, highshelf_eval, NULL, NULL, sizeof(BiquadContext), NULL, FuncFlagNone, tick, gain, input);
 }
 
 #endif // CSYNTH_BIQUAD_H

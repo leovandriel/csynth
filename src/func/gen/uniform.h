@@ -27,7 +27,7 @@ static double uniform_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U
 Func *uniform_create(void)
 {
     UniformContext initial = {.random = random_create(0)};
-    return func_create(NULL, uniform_eval, NULL, sizeof(UniformContext), &initial, FuncFlagNone);
+    return func_create(NULL, uniform_eval, NULL, NULL, sizeof(UniformContext), &initial, FuncFlagNone);
 }
 
 #endif // CSYNTH_UNIFORM_H

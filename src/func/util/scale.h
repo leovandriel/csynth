@@ -40,7 +40,7 @@ static double scale_eval(__U size_t count, __U Gen **args, Eval *eval, void *con
 Func *scale_create(EvalParam param, Func *factor, Func *input)
 {
     ScaleContext initial = {.param = param};
-    return func_create(NULL, scale_eval, NULL, sizeof(ScaleContext), &initial, FuncFlagNone, factor, input);
+    return func_create(NULL, scale_eval, NULL, NULL, sizeof(ScaleContext), &initial, FuncFlagNone, factor, input);
 }
 
 /** @brief Shorthand for `scale_create`. */

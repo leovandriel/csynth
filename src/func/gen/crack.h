@@ -29,7 +29,7 @@ static double crack_eval(__U size_t count, Gen **args, Eval *eval, __U void *con
 Func *crack_create(Func *tick)
 {
     CrackContext initial = {.random = random_create(0)};
-    return func_create(NULL, crack_eval, NULL, sizeof(CrackContext), &initial, FuncFlagNone, tick);
+    return func_create(NULL, crack_eval, NULL, NULL, sizeof(CrackContext), &initial, FuncFlagNone, tick);
 }
 
 #endif // CSYNTH_CRACK_H

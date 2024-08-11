@@ -63,7 +63,7 @@ static void replay_free(__U size_t count, void *context_)
 Func *replay_create(const char *filename, Func *tick, Func *input)
 {
     ReplayContext initial = {.filename = filename};
-    return func_create(replay_init, replay_eval, replay_free, sizeof(ReplayContext), &initial, FuncFlagNone, tick, input);
+    return func_create(replay_init, replay_eval, replay_free, NULL, sizeof(ReplayContext), &initial, FuncFlagNone, tick, input);
 }
 
 #endif // CSYNTH_REPLAY_H

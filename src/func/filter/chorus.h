@@ -60,7 +60,7 @@ static void chorus_free(__U size_t count, void *context_)
  */
 Func *chorus_create(Func *tick, Func *modulation, Func *delay, Func *depth, Func *input)
 {
-    return func_create(NULL, chorus_eval, chorus_free, sizeof(ChorusContext), NULL, FuncFlagNone, tick, modulation, delay, depth, input);
+    return func_create(NULL, chorus_eval, chorus_free, NULL, sizeof(ChorusContext), NULL, FuncFlagNone, tick, modulation, delay, depth, input);
 }
 
 #endif // CSYNTH_CHORUS_H

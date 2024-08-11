@@ -53,6 +53,7 @@ typedef struct
 typedef double (*eval_callback)(size_t count, Gen **args, Eval *eval, void *context);
 typedef int (*init_callback)(size_t count, Gen **args, void *context);
 typedef void (*free_callback)(size_t count, void *context);
+typedef void (*cleanup_callback)(void *initial);
 
 /**
  * @brief Represents a function (R -> Rn) that takes one or more inputs and
@@ -68,12 +69,14 @@ struct Func
     size_t size;
     /** @brief Function context initial value, used for reset. */
     void *initial;
-    /** @brief Invoked once during initialization. */
+    /** @brief Invoked once during generator initialization. */
     init_callback init_cb;
     /** @brief Invoked for every eval cycle, i.e. for every sample. */
     eval_callback eval_cb;
-    /** @brief Invoked once during cleanup. */
+    /** @brief Invoked once for every generator. */
     free_callback free_cb;
+    /** @brief Invoked once to cleanup function. */
+    cleanup_callback cleanup_cb;
     /** @brief Function flags. */
     uint32_t flags;
     /** @brief Next function in linked list. */

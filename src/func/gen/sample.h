@@ -42,7 +42,7 @@ Func *sample_uniform_create(void)
         .random = random_create(0),
         .cb = random_uniform,
     };
-    return func_create(NULL, sample_eval, NULL, sizeof(SampleContext), &initial, FuncFlagNone);
+    return func_create(NULL, sample_eval, NULL, NULL, sizeof(SampleContext), &initial, FuncFlagNone);
 }
 
 /**
@@ -59,7 +59,7 @@ Func *sample_gauss_create(void)
         .random = random_create(0),
         .cb = random_gauss,
     };
-    return func_create(NULL, sample_eval, NULL, sizeof(SampleContext), &initial, FuncFlagNone);
+    return func_create(NULL, sample_eval, NULL, NULL, sizeof(SampleContext), &initial, FuncFlagNone);
 }
 
 #endif // CSYNTH_SAMPLE_H

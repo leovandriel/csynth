@@ -37,7 +37,7 @@ static double pow_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
  */
 Func *pow_create(Func *base, Func *exponent)
 {
-    return func_create(NULL, pow_eval, NULL, sizeof(PowContext), NULL, FuncFlagNone, base, exponent);
+    return func_create(NULL, pow_eval, NULL, NULL, sizeof(PowContext), NULL, FuncFlagNone, base, exponent);
 }
 
 #endif // CSYNTH_POW_H

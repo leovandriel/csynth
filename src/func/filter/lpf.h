@@ -33,7 +33,7 @@ static double lpf_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
  */
 Func *lpf_create(Func *tick, Func *input)
 {
-    return func_create(NULL, lpf_eval, NULL, sizeof(LowPassContext), NULL, FuncFlagNone, tick, input);
+    return func_create(NULL, lpf_eval, NULL, NULL, sizeof(LowPassContext), NULL, FuncFlagNone, tick, input);
 }
 
 #endif // CSYNTH_LPF_H

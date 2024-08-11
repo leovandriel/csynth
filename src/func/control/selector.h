@@ -60,7 +60,7 @@ Func *selector_create(int key, size_t count, Func **args)
         },
         .count = count,
     };
-    return func_create_args(selector_init, selector_eval, control_event_free, sizeof(SelectorContext), &initial, FuncFlagSkipReset, count, args, "input");
+    return func_create_args(selector_init, selector_eval, control_event_free, NULL, sizeof(SelectorContext), &initial, FuncFlagSkipReset, count, args, "input");
 }
 
 #endif // CSYNTH_SELECTOR_H

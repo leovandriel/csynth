@@ -35,7 +35,7 @@ static double tanh_eval(__U size_t count, Gen **args, Eval *eval, __U void *cont
  */
 Func *tanh_create(Func *angle)
 {
-    return func_create(NULL, tanh_eval, NULL, sizeof(TanhContext), NULL, FuncFlagNone, angle);
+    return func_create(NULL, tanh_eval, NULL, NULL, sizeof(TanhContext), NULL, FuncFlagNone, angle);
 }
 
 #endif // CSYNTH_TANH_H

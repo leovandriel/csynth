@@ -49,7 +49,7 @@ static double seq_eval_abs(size_t count, Gen **args, Eval *eval, void *context_)
  */
 Func *seq_abs_create(size_t count, Func **args)
 {
-    return func_create_args(NULL, seq_eval_abs, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args, "tick, input");
+    return func_create_args(NULL, seq_eval_abs, NULL, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args, "tick, input");
 }
 
 static double seq_eval_rel(size_t count, Gen **args, Eval *eval, void *context_)
@@ -85,7 +85,7 @@ static double seq_eval_rel(size_t count, Gen **args, Eval *eval, void *context_)
  */
 Func *seq_rel_create(size_t count, Func **args)
 {
-    return func_create_args(NULL, seq_eval_rel, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args, "tick, input");
+    return func_create_args(NULL, seq_eval_rel, NULL, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args, "tick, input");
 }
 
 static double seq_eval_seq(size_t count, Gen **args, Eval *eval, void *context_)
@@ -120,7 +120,7 @@ static double seq_eval_seq(size_t count, Gen **args, Eval *eval, void *context_)
  */
 Func *seq_seq_create(size_t count, Func **args)
 {
-    return func_create_args(NULL, seq_eval_seq, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args, "input");
+    return func_create_args(NULL, seq_eval_seq, NULL, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args, "input");
 }
 
 static double seq_eval_fix(size_t count, Gen **args, Eval *eval, void *context_)
@@ -144,7 +144,7 @@ static double seq_eval_fix(size_t count, Gen **args, Eval *eval, void *context_)
  */
 Func *seq_fix_create(size_t count, Func **args)
 {
-    return func_create_args(NULL, seq_eval_fix, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args, "tick, input");
+    return func_create_args(NULL, seq_eval_fix, NULL, NULL, sizeof(SeqContext), NULL, FuncFlagNone, count, args, "tick, input");
 }
 
 #endif // CSYNTH_SEQ_H

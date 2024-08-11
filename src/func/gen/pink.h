@@ -42,7 +42,7 @@ static double pink_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U vo
 Func *pink_create(void)
 {
     PinkContext initial = {.random = random_create(0)};
-    return func_create(NULL, pink_eval, NULL, sizeof(PinkContext), &initial, FuncFlagNone);
+    return func_create(NULL, pink_eval, NULL, NULL, sizeof(PinkContext), &initial, FuncFlagNone);
 }
 
 #endif // CSYNTH_PINK_H

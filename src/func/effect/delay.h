@@ -38,7 +38,7 @@ static double delay_eval(__U size_t count, Gen **args, Eval *eval, void *context
  */
 Func *delay_create(Func *tick, Func *input)
 {
-    return func_create(NULL, delay_eval, NULL, sizeof(DelayContext), NULL, FuncFlagNone, tick, input);
+    return func_create(NULL, delay_eval, NULL, NULL, sizeof(DelayContext), NULL, FuncFlagNone, tick, input);
 }
 
 #endif // CSYNTH_DELAY_H

@@ -70,7 +70,7 @@ Func *key_create(int channel, int pitch, Func *input)
                 .data1 = pitch,
             }},
     };
-    return func_create(key_init, key_eval, control_event_free, sizeof(KeyContext), &initial, FuncFlagNone, input);
+    return func_create(key_init, key_eval, control_event_free, NULL, sizeof(KeyContext), &initial, FuncFlagNone, input);
 }
 
 #endif // CSYNTH_KEY_H

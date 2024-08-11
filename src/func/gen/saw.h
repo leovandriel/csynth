@@ -32,7 +32,7 @@ static double saw_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
  */
 Func *saw_create(Func *tick)
 {
-    return func_create(NULL, saw_eval, NULL, sizeof(SawContext), NULL, FuncFlagNone, tick);
+    return func_create(NULL, saw_eval, NULL, NULL, sizeof(SawContext), NULL, FuncFlagNone, tick);
 }
 
 #endif // CSYNTH_SAW_H

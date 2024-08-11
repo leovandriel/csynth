@@ -29,7 +29,7 @@ static double param_eval(__U size_t count, __U Gen **args, Eval *eval, void *con
 Func *param_create(EvalParam param)
 {
     ParamContext initial = {.param = param};
-    return func_create(NULL, param_eval, NULL, sizeof(ParamContext), &initial, FuncFlagNone);
+    return func_create(NULL, param_eval, NULL, NULL, sizeof(ParamContext), &initial, FuncFlagNone);
 }
 
 /** @brief Shorthand for `param_create`. */

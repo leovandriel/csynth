@@ -35,7 +35,7 @@ static double sin_eval(__U size_t count, Gen **args, Eval *eval, __U void *conte
  */
 Func *sin_create(Func *angle)
 {
-    return func_create(NULL, sin_eval, NULL, sizeof(SinContext), NULL, FuncFlagNone, angle);
+    return func_create(NULL, sin_eval, NULL, NULL, sizeof(SinContext), NULL, FuncFlagNone, angle);
 }
 
 #endif // CSYNTH_SIN_H
