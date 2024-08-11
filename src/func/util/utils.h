@@ -24,17 +24,6 @@ Func *wrap(wrap_callback callback, Func *input, void *context) { return wrap_cre
 /** @brief Shorthand for `wrap_create`, using an EvalParamPitchTick timer. */
 Func *wrap_(wrap_callback callback, void *context) { return wrap(callback, timer(EvalParamPitchTick), context); }
 
-Func *record_filename(const char *filename, size_t sample_rate, size_t count, Func **args)
-{
-    FILE *file = fopen(filename, "wb");
-    if (file == NULL)
-    {
-        error_catch_message(csErrorFileOpen, "Failed to open file %s", filename);
-        return NULL;
-    }
-    return record_create(file, true, sample_rate, count, args);
-}
-
 #define record_channels(_filename, _sample_rate, ...) (record_filename(_filename, _sample_rate, ARGS(__VA_ARGS__)))
 /** @brief Shorthand for `record_create`, using SAMPLE_RATE and a mono channel.
  * */

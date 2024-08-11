@@ -7,13 +7,12 @@ void test_record(void)
 {
     char buffer[1024] = {0};
     FILE *file = fmemopen(buffer, sizeof(buffer), "wb");
-    Gen *gen = gen_create(record_create(file, false, 10, 1, (Func *[]){sum_create(const_create(0.1))}));
+    Gen *gen = gen_create(record_create(file, 10, 1, (Func *[]){sum_create(const_create(0.1))}));
     assert_double_equal(gen_eval(gen, NULL), 0.0);
     assert_double_equal(gen_eval(gen, NULL), 0.1);
     assert_double_equal(gen_eval(gen, NULL), 0.2);
     assert_double_equal(gen_eval(gen, NULL), 0.3);
     gen_free(gen);
-    assert_long_equal(fclose(file), 0);
     WavHeader header = *(WavHeader *)buffer;
     size_t sample_count = 0;
     size_t channel_count = 0;

@@ -16,12 +16,10 @@ typedef struct
     size_t offset;
     /** @brief Number of samples written to the file. */
     size_t size;
-    /** @brief Filename of the output file. */
+    /** @brief File handle for output. */
     FILE *file;
     /** @brief Sample rate of the output file. */
     size_t sample_rate;
-    /** @brief Flag indicating close file handle on function free. */
-    bool close_on_free;
 } RecordContext;
 
 static double record_eval(size_t count, Gen **args, Eval *eval, void *context_)
@@ -75,12 +73,14 @@ static void record_free(size_t count, void *context_)
     {
         error_catch(csErrorFileWrite);
     }
-    if (context->close_on_free)
+}
+
+static void record_cleanup(void *initial_)
+{
+    RecordContext *initial = (RecordContext *)initial_;
+    if (fclose(initial->file) == EOF)
     {
-        if (fclose(context->file) == EOF)
-        {
-            error_catch(csErrorFileClose);
-        }
+        error_catch(csErrorFileClose);
     }
 }
 
@@ -88,20 +88,29 @@ static void record_free(size_t count, void *context_)
  * @brief Create a function that records samples to a WAV file handle.
  *
  * @param file Output FILE handle.
- * @param close_on_free Flag indicating close file handle on function free.
  * @param sample_rate Sample rate of the output file, e.g. 44100.
  * @param count Number of channels.
  * @param args Input signals.
  * @return Func* Record function.
  */
-Func *record_create(FILE *file, bool close_on_free, size_t sample_rate, size_t count, Func **args)
+Func *record_create(FILE *file, size_t sample_rate, size_t count, Func **args)
 {
     RecordContext initial = {
         .file = file,
-        .close_on_free = close_on_free,
         .sample_rate = sample_rate,
     };
-    return func_create_args(record_init, record_eval, record_free, NULL, sizeof(RecordContext), &initial, FuncFlagNone, count, args, "input");
+    return func_create_args(record_init, record_eval, record_free, record_cleanup, sizeof(RecordContext), &initial, FuncFlagNone, count, args, "input");
+}
+
+Func *record_filename(const char *filename, size_t sample_rate, size_t count, Func **args)
+{
+    FILE *file = fopen(filename, "wb");
+    if (file == NULL)
+    {
+        error_catch_message(csErrorFileOpen, "Failed to open file %s", filename);
+        return NULL;
+    }
+    return record_create(file, sample_rate, count, args);
 }
 
 #endif // CSYNTH_RECORD_H
