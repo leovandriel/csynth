@@ -11,7 +11,7 @@ void test_wav(void)
         .channel_count = 1,
         .sample_rate = 10,
     };
-    Gen *gen = gen_create(wav_create(buffer, 0, const_create(0.1)));
+    Gen *gen = gen_create(wav_create(buffer, false, 0, const_create(0.1)));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 1.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), -1.0000000000000000);

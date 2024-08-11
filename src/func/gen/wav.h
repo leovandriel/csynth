@@ -26,21 +26,28 @@ static double wav_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
     return output;
 }
 
+static void wav_cleanup(void *initial_)
+{
+    WavContext *initial = (WavContext *)initial_;
+    reader_free(&initial->buffer);
+}
+
 /**
  * @brief Create a function that reads samples from a WAV file.
  *
  * @param buffer PcmBuffer struct containing the samples.
+ * @param free Flag to free buffer on cleanup.
  * @param channel Channel to read from.
  * @param tick Function that controls the reading speed.
  * @return Func* WAV function.
  */
-Func *wav_create(PcmBuffer buffer, int channel, Func *tick)
+Func *wav_create(PcmBuffer buffer, bool free, int channel, Func *tick)
 {
     WavContext initial = {
         .buffer = buffer,
         .channel = channel,
     };
-    return func_create(NULL, wav_eval, NULL, NULL, sizeof(WavContext), &initial, FuncFlagNone, tick);
+    return func_create(NULL, wav_eval, NULL, free ? wav_cleanup : NULL, sizeof(WavContext), &initial, FuncFlagNone, tick);
 }
 
 /**
@@ -58,7 +65,7 @@ Func *wav_filename(const char *filename, int channel, Func *input)
     {
         return NULL;
     }
-    return wav_create(buffer, channel, input);
+    return wav_create(buffer, true, channel, input);
 }
 
 #endif // CSYNTH_WAV_H

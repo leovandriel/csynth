@@ -74,7 +74,7 @@ csError player_play_pause(PaStream *stream)
 csError player_play_channels_no_cleanup(PlayerConfig config, size_t count, Func **channels)
 {
 #ifdef AUTO_EXIT
-    config.duration = AUTO_EXIT;
+    config.duration = AUTO_EXIT / 1000.0;
 #endif
     PaError pa_error = Pa_Initialize();
     if (pa_error != paNoError)
