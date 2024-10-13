@@ -6,55 +6,6 @@
 #include "../../core/func.h"
 #include "../../core/gen.h"
 
-#define SINE_TABLE_SIZE (1 << 11) // 2048, which at 44100 Hz sample is accurate down to 20 Hz
-
-/**
- * @brief Lookup table for sine wave.
- */
-typedef struct
-{
-    /** @brief Sine wave data, sampled between 0 and 2pi. */
-    double data[SINE_TABLE_SIZE];
-    /** @brief Flag indicating the table has been initialized. */
-    bool initialized;
-} SineTable;
-
-SineTable sine_table = {0};
-
-static csError sine_table_init(void)
-{
-    for (unsigned long i = 0; i < SINE_TABLE_SIZE; i++)
-    {
-        sine_table.data[i] = sin(M_PI_2 * (double)i / (double)SINE_TABLE_SIZE);
-    }
-    return csErrorNone;
-}
-
-static csError sine_table_ensure(void)
-{
-    if (!sine_table.initialized)
-    {
-        return sine_table_init();
-    }
-    return csErrorNone;
-}
-
-static double sine_table_lookup(double phase)
-{
-    double sign = phase < 0.5 ? 1 : -1;
-    phase = fmod(phase, 0.5);
-    phase = phase > 0.25 ? 0.5 - phase : phase;
-    double offset = phase * (double)(SINE_TABLE_SIZE * 4);
-    unsigned long lower = floor(offset);
-    if (lower < SINE_TABLE_SIZE - 1)
-    {
-        // TODO(leo): higher-order interpolation
-        double rem = offset - (double)lower;
-        return sign * (sine_table.data[lower] * (1 - rem) + sine_table.data[lower + 1] * rem);
-    }
-    return sign * sine_table.data[lower];
-}
-
 /** @see sine_create */
 typedef struct
 {
@@ -65,16 +16,10 @@ typedef struct
 static double sine_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     SineContext *context = (SineContext *)context_;
-    double output = sine_table_lookup(context->phase);
+    double output = sin(context->phase * 2 * M_PI);
     double tick = gen_eval(args[0], eval);
     context->phase = fmod(context->phase + tick, 1.0);
     return output;
-}
-
-static int sine_init(__U size_t count, __U Gen **args, __U void *context_)
-{
-    sine_table_ensure();
-    return csErrorNone;
 }
 
 /**
@@ -88,7 +33,7 @@ static int sine_init(__U size_t count, __U Gen **args, __U void *context_)
  */
 Func *sine_create(Func *tick)
 {
-    return func_create(sine_init, sine_eval, NULL, NULL, sizeof(SineContext), NULL, FuncFlagNone, tick);
+    return func_create(NULL, sine_eval, NULL, NULL, sizeof(SineContext), NULL, FuncFlagNone, tick);
 }
 
 #endif // CSYNTH_SINE_H
