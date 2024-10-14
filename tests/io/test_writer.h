@@ -7,9 +7,10 @@ void test_writer(void)
 {
     Func *channels[] = {saw_create(const_create(0.1))};
     char buffer[1024] = {0};
-    FILE *file = fmemopen(buffer, sizeof(buffer), "w");
-    assert_long_equal(writer_write_channels(1.0, file, 10, 1, channels), csErrorNone);
-    assert_long_equal(fclose(file), 0);
+    FILE *file = fmemopen_(buffer, sizeof(buffer), "w");
+    assert_long_equal(writer_write_channels_no_cleanup(1.0, file, 10, 1, channels), csErrorNone);
+    func_free();
+    assert_long_equal(fclose_(file), 0);
     WavHeader header = *(WavHeader *)buffer;
     size_t sample_count = 0;
     size_t channel_count = 0;

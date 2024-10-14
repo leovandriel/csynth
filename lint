@@ -2,10 +2,17 @@
 
 set -e
 
-bad_allocs=$(egrep -iR "(malloc\(|calloc\(|realloc\(| free\()" --exclude "alloc.h" --exclude-dir "./html" | tee)
+bad_allocs=$(egrep -iR "(malloc\(|calloc\(|realloc\(| free\()" --exclude "alloc.h" --exclude "file.h" --exclude-dir "./html" | tee)
 
 if [[ "$bad_allocs" ]]; then
     printf "\r\e[KInvalid allocation: Use malloc_, calloc_, realloc_, or free_:\n$bad_allocs\n" >&2
+    exit 1
+fi
+
+bad_files=$(egrep -iR "(fopen\(|fclose\()" --exclude "file.h" --exclude-dir "./html" | tee)
+
+if [[ "$bad_files" ]]; then
+    printf "\r\e[KInvalid file: Use fopen_ or fclose_:\n$bad_files\n" >&2
     exit 1
 fi
 

@@ -4,6 +4,7 @@
 #include "../core/func.h"
 #include "../event/event.h"
 #include "../func/gen/sine.h"
+#include "../io/file.h"
 #include "../ui/display.h"
 
 /**
@@ -20,6 +21,14 @@ void cleanup_all(void)
         log_error("Memory leak detected");
         alloc_list_dump();
         alloc_list_clear();
+    }
+#endif
+#ifdef FILE_TRACE
+    if (!file_list_is_empty())
+    {
+        log_error("Open file detected");
+        file_list_dump();
+        file_list_clear();
     }
 #endif
 }

@@ -23,7 +23,7 @@ static double sine_eval(__U size_t count, Gen **args, Eval *eval, void *context_
     }
     if (eval == NULL || eval->compute_flag)
     {
-        double cas;
+        double cas = 0;
         if (context->last_tick)
         {
             double omega = 2 * M_PI * context->last_tick;

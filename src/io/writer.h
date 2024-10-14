@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "../util/cleanup.h"
+#include "./file.h"
 #include "./wav_header.h"
 
 #define WRITER_BUFFER_SIZE 4096
@@ -57,7 +58,7 @@ csError writer_write_channels(double duration, FILE *file, size_t sample_rate, s
 
 csError writer_write_file(double duration, const char *filename, size_t sample_rate, size_t channel_count, Func **channels)
 {
-    FILE *file = fopen(filename, "wb");
+    FILE *file = fopen_(filename, "wb");
     if (file == NULL)
     {
         return error_type_message(csErrorFileOpen, "Unable to open file: %s", filename);
@@ -65,10 +66,10 @@ csError writer_write_file(double duration, const char *filename, size_t sample_r
     csError error = writer_write_channels(duration, file, sample_rate, channel_count, channels);
     if (error != csErrorNone)
     {
-        fclose(file);
+        fclose_(file);
         return error;
     }
-    if (fclose(file) == EOF)
+    if (fclose_(file) == EOF)
     {
         return error_type(csErrorFileClose);
     }

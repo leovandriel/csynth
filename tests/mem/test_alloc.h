@@ -1,4 +1,6 @@
+#ifndef ALLOC_TRACE
 #define ALLOC_TRACE
+#endif
 
 #include "../../src/func/gen/const.h"
 #include "../../src/mem/alloc.h"

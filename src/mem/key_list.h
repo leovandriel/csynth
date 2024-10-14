@@ -7,6 +7,7 @@
 
 #include "../event/control_event.h"
 #include "../event/event.h"
+#include "../io/file.h"
 
 /**
  * @brief Key stroke event, at a specific time.
@@ -85,7 +86,7 @@ csError key_list_read_file(KeyList *list, FILE *file)
 
 csError key_list_read_filename(KeyList *list, const char *filename)
 {
-    FILE *file = fopen(filename, "r");
+    FILE *file = fopen_(filename, "r");
     if (file == NULL)
     {
         return error_type_message(csErrorFileOpen, "Unable to open file: %s", filename);
@@ -93,10 +94,10 @@ csError key_list_read_filename(KeyList *list, const char *filename)
     csError error = key_list_read_file(list, file);
     if (error != csErrorNone)
     {
-        fclose(file);
+        fclose_(file);
         return error;
     }
-    if (fclose(file) == EOF)
+    if (fclose_(file) == EOF)
     {
         return error_type(csErrorFileClose);
     }
@@ -118,7 +119,7 @@ csError key_list_write_file(KeyList *list, FILE *file)
 
 csError key_list_write_filename(KeyList *list, const char *filename)
 {
-    FILE *file = fopen(filename, "w");
+    FILE *file = fopen_(filename, "w");
     if (file == NULL)
     {
         return error_type_message(csErrorFileOpen, "Unable to open file: %s", filename);
@@ -126,10 +127,10 @@ csError key_list_write_filename(KeyList *list, const char *filename)
     csError error = key_list_write_file(list, file);
     if (error != csErrorNone)
     {
-        fclose(file);
+        fclose_(file);
         return error;
     }
-    if (fclose(file) == EOF)
+    if (fclose_(file) == EOF)
     {
         return error_type(csErrorFileClose);
     }

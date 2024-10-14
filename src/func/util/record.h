@@ -5,6 +5,7 @@
 
 #include "../../core/func.h"
 #include "../../core/gen.h"
+#include "../../io/file.h"
 #include "../../io/writer.h"
 
 /** @see record_create */
@@ -78,7 +79,7 @@ static void record_free(size_t count, void *context_)
 static void record_cleanup(void *initial_)
 {
     RecordContext *initial = (RecordContext *)initial_;
-    if (fclose(initial->file) == EOF)
+    if (fclose_(initial->file) == EOF)
     {
         error_catch(csErrorFileClose);
     }
@@ -104,7 +105,7 @@ Func *record_create(FILE *file, size_t sample_rate, size_t count, Func **args)
 
 Func *record_filename(const char *filename, size_t sample_rate, size_t count, Func **args)
 {
-    FILE *file = fopen(filename, "wb");
+    FILE *file = fopen_(filename, "wb");
     if (file == NULL)
     {
         error_catch_message(csErrorFileOpen, "Failed to open file %s", filename);

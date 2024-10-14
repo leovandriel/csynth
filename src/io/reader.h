@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "./file.h"
 #include "./wav_header.h"
 
 /**
@@ -74,7 +75,7 @@ void reader_free(PcmBuffer *buffer)
 
 csError reader_read_filename(PcmBuffer *buffer, const char *filename)
 {
-    FILE *file = fopen(filename, "rb");
+    FILE *file = fopen_(filename, "rb");
     if (file == NULL)
     {
         return error_type_message(csErrorFileOpen, "Unable to open file: %s", filename);
@@ -82,10 +83,10 @@ csError reader_read_filename(PcmBuffer *buffer, const char *filename)
     csError error = reader_read_file(buffer, file);
     if (error != csErrorNone)
     {
-        fclose(file);
+        fclose_(file);
         return error;
     }
-    if (fclose(file) == EOF)
+    if (fclose_(file) == EOF)
     {
         return error_type(csErrorFileClose);
     }

@@ -1,4 +1,3 @@
-#define ALLOC_TRACE
 #include "../../../src/func/gen/const.h"
 #include "../../../src/func/util/mem.h"
 #include "../../util/test.h"

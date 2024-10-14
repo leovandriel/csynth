@@ -1,3 +1,4 @@
+#include "../../src/io/file.h"
 #include "../../src/util/logger.h"
 #include "./test.h"
 
@@ -35,7 +36,7 @@ void test_logger_format(void)
     log_info("test1", 1);
     assert_long_equal(test_logger_args_global.level, LoggerLevelInfo);
     assert_string_equal(strrchr(test_logger_args_global.source, '/'), "/test_logger.h");
-    assert_long_equal(test_logger_args_global.line, 35);
+    assert_long_equal(test_logger_args_global.line, 36);
     assert_string_equal(test_logger_args_global.message, "test1");
     assert_long_equal(test_logger_args_global.arg, 1);
     log_debug("test2", 2);
@@ -46,12 +47,12 @@ void test_logger_format(void)
 void test_logger_file(void)
 {
     char buffer[1024] = {0};
-    FILE *file = fmemopen(buffer, sizeof(buffer), "w");
+    FILE *file = fmemopen_(buffer, sizeof(buffer), "w");
     assert_not_null(file);
     logger_set_file(file);
     log_info("test1");
-    assert_long_equal(fclose(file), 0);
-    assert_string_equal(buffer + 30, " INFO test_logger.h:52 - test1\n");
+    assert_long_equal(fclose_(file), 0);
+    assert_string_equal(buffer + 30, " INFO test_logger.h:53 - test1\n");
     logger_set_file(NULL);
 }
 

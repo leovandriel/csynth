@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     else
     {
         const char *filename = argc >= 4 ? argv[3] : DEFAULT_REC_FILENAME;
-        file = fopen(filename, "r");
+        file = fopen_(filename, "r");
         if (file == NULL)
         {
             return error_type_message(csErrorFileOpen, "Unable to open file: %s", filename);
@@ -65,13 +65,13 @@ int main(int argc, char **argv)
     if (error != csErrorNone)
     {
         key_list_clear(&list);
-        fclose(file);
+        fclose_(file);
         return error;
     }
     if (list.head == NULL)
     {
         return error_type_message(csErrorSome, "no events found");
-        fclose(file);
+        fclose_(file);
         key_list_clear(&list);
         return 1;
     }
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
 
     if (file != NULL)
     {
-        fclose(file);
+        fclose_(file);
     }
     key_list_clear(&list);
     return 0;

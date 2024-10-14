@@ -6,7 +6,7 @@
 void test_record(void)
 {
     char buffer[1024] = {0};
-    FILE *file = fmemopen(buffer, sizeof(buffer), "wb");
+    FILE *file = fmemopen_(buffer, sizeof(buffer), "wb");
     Gen *gen = gen_create(record_create(file, 10, 1, (Func *[]){sum_create(const_create(0.1))}));
     assert_double_equal(gen_eval(gen, NULL), 0.0);
     assert_double_equal(gen_eval(gen, NULL), 0.1);
