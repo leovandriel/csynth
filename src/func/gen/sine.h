@@ -9,16 +9,39 @@
 /** @see sine_create */
 typedef struct
 {
-    /** @brief Phase offset within 1s period. */
-    double phase;
+    /** @brief Previous output values and extrapolation coefficient. */
+    double output, prev, coeff, last_tick;
 } SineContext;
 
 static double sine_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     SineContext *context = (SineContext *)context_;
-    double output = sin(context->phase * 2 * M_PI);
     double tick = gen_eval(args[0], eval);
-    context->phase = fmod(context->phase + tick, 1.0);
+    if (!tick)
+    {
+        return context->output;
+    }
+    if (eval == NULL || eval->compute_flag)
+    {
+        double cas;
+        if (context->last_tick)
+        {
+            double omega = 2 * M_PI * context->last_tick;
+            cas = (context->output * cos(omega) - context->prev) / sin(omega);
+        }
+        else
+        {
+            double sign = context->output < context->prev ? -1 : 1;
+            cas = sign * sqrt(1 - context->output * context->output);
+        }
+        double omega = 2 * M_PI * tick;
+        context->prev = context->output * cos(omega) - cas * sin(omega);
+        context->coeff = 2 * cos(omega);
+        context->last_tick = tick;
+    }
+    double output = context->output;
+    context->output = output * context->coeff - context->prev;
+    context->prev = output;
     return output;
 }
 
