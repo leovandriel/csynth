@@ -209,7 +209,7 @@ double phone_filter(size_t count, Gen **args, Eval *eval, void *context)
 int main(void)
 {
     func tone = sine(A4);
-    func phone = func_create(NULL,  phone_filter,  NULL, NULL, 0, NULL, FuncFlagNone, tone);
+    func phone = func_create(NULL, phone_filter, NULL, NULL, 0, NULL, FuncFlagNone, tone);
     return play(phone);
 }
 ```
@@ -321,9 +321,9 @@ add a controlled unison effect:
     return play_midi(synth);
 ```
 
-The [knob](./src/func/control/midi_value.h) function listens for controller events on
-channel 1 and number 70 and maps it to a range of 0.0 and 0.02. No more fiddling
-with numbers in code!
+The [knob](./src/func/control/midi_value.h) function listens for controller
+events on channel 1 and number 70 and maps it to a range of 0.0 and 0.02. No
+more fiddling with numbers in code!
 
 In the above example, you might need to use a different channel or control
 number. To get an overview of available MIDI devices and mapping of every key,
@@ -427,7 +427,7 @@ Example run specific test:
 
 _Why C?_
 
-Because it didn't seem like a good idea at the time.
+Cross platform and embedded systems.
 
 ## License
 
