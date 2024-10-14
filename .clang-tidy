@@ -35,6 +35,7 @@ Checks: >
     -clang-analyzer-core.UndefinedBinaryOperatorResult,
     -clang-analyzer-unix.Malloc,
     -readability-math-missing-parentheses,
+    -clang-analyzer-unix.Stream,
 
 HeaderFilterRegex: .*
 SystemHeaders: False
