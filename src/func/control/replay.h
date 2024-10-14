@@ -13,8 +13,6 @@ typedef struct
     KeyList list;
     /** @brief Current event, awaiting to be broadcasted. */
     KeyboardEvent *current;
-    /** @brief Filename of the replay file. */
-    const char *filename;
     /** @brief Current time of the replay. */
     double time;
 } ReplayContext;
@@ -33,22 +31,47 @@ static double replay_eval(__U size_t count, Gen **args, Eval *eval, void *contex
     return input;
 }
 
-static int replay_init(__U size_t count, __U Gen **args, void *context_)
+static void replay_cleanup(void *initial_)
 {
-    ReplayContext *context = (ReplayContext *)context_;
-    csError error = key_list_read_filename(&context->list, context->filename);
-    if (error != csErrorNone)
-    {
-        return error;
-    }
-    context->current = context->list.head;
-    return csErrorNone;
+    ReplayContext *initial = (ReplayContext *)initial_;
+    key_list_clear(&initial->list);
 }
 
-static void replay_free(__U size_t count, void *context_)
+/**
+ * @brief Create a function that replays a keyboard events, emulating key
+ * presses.
+ *
+ * @param list List of key events.
+ * @param tick Function to determine the time between key presses.
+ * @param input Input function to trigger.
+ * @return Func* Replay function.
+ */
+Func *replay_create(KeyList list, Func *tick, Func *input)
 {
-    ReplayContext *context = (ReplayContext *)context_;
-    key_list_clear(&context->list);
+    ReplayContext initial = {
+        .list = list,
+        .current = list.head,
+    };
+    return func_create(NULL, replay_eval, NULL, replay_cleanup, sizeof(ReplayContext), &initial, FuncFlagNone, tick, input);
+}
+
+/**
+ * @brief Create a function that replays a keyboard event file, emulating key
+ * presses.
+ *
+ * @param file File handle of the replay file.
+ * @param tick Function to determine the time between key presses.
+ * @param input Input function to trigger.
+ * @return Func* Replay function.
+ */
+Func *replay_create_file(FILE *file, Func *tick, Func *input)
+{
+    KeyList list = {0};
+    if (key_list_read_file(&list, file) != csErrorNone)
+    {
+        return NULL;
+    }
+    return replay_create(list, tick, input);
 }
 
 /**
@@ -60,10 +83,14 @@ static void replay_free(__U size_t count, void *context_)
  * @param input Input function to trigger.
  * @return Func* Replay function.
  */
-Func *replay_create(const char *filename, Func *tick, Func *input)
+Func *replay_create_filename(const char *filename, Func *tick, Func *input)
 {
-    ReplayContext initial = {.filename = filename};
-    return func_create(replay_init, replay_eval, replay_free, NULL, sizeof(ReplayContext), &initial, FuncFlagNone, tick, input);
+    KeyList list = {0};
+    if (key_list_read_filename(&list, filename) != csErrorNone)
+    {
+        return NULL;
+    }
+    return replay_create(list, tick, input);
 }
 
 #endif // CSYNTH_REPLAY_H

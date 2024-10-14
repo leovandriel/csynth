@@ -53,6 +53,24 @@ Func *wav_create(PcmBuffer buffer, bool free, int channel, Func *tick)
 /**
  * @brief Create a function that reads samples from a WAV file.
  *
+ * @param file File handle of the WAV file.
+ * @param channel Channel to read from.
+ * @param input Function that controls the reading speed.
+ * @return Func* WAV function
+ */
+Func *wav_file(FILE *file, int channel, Func *input)
+{
+    PcmBuffer buffer = {0};
+    if (reader_read_file(&buffer, file) != csErrorNone)
+    {
+        return NULL;
+    }
+    return wav_create(buffer, true, channel, input);
+}
+
+/**
+ * @brief Create a function that reads samples from a WAV file.
+ *
  * @param filename Filename of the WAV file.
  * @param channel Channel to read from.
  * @param input Function that controls the reading speed.

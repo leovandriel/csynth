@@ -58,7 +58,7 @@ Func *track(const char *filename, Func *input) { return track_create(filename, i
 Func *track_(Func *input) { return track(DEFAULT_REC_FILENAME, input); }
 
 /** @brief Shorthand for `replay_create` with based on tempo tick. */
-Func *replay(const char *filename, Func *input) { return replay_create(filename, param_create(EvalParamTempoTick), input); }
+Func *replay(const char *filename, Func *input) { return replay_create_filename(filename, param_create(EvalParamTempoTick), input); }
 /** @brief Shorthand for `replay_create` with default filename and tempo tick.
  * */
 Func *replay_(Func *input) { return replay(DEFAULT_REC_FILENAME, input); }
