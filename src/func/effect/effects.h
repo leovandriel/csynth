@@ -1,6 +1,7 @@
 #ifndef CSYNTH_EFFECTS_H
 #define CSYNTH_EFFECTS_H
 
+#include "../filter/filters.h"
 #include "../gen/gens.h"
 #include "../util/times.h"
 #include "./continuous.h"
@@ -25,7 +26,7 @@ Func *skip_(double duration, Func *input) { return skip(const_(duration), input)
 Func *detune(Func *derange, Func *tune, Func *input) { return pitch(add_(1, mul(derange, tune)), input); }
 Func *detune_(double derange, Func *tune, Func *input) { return detune(const_(derange), tune, input); }
 
-Func *unison(size_t count, Func *derange, Func *input) { return unison_create(count, detune(derange, sample(), input)); }
+Func *unison(size_t count, Func *derange, Func *input) { return unison_create(count, detune(derange, sample_create(rand_create()), input)); }
 Func *unison_(size_t count, double derange, Func *input) { return unison(count, const_(derange), input); }
 
 Func *overtone(int range, Func *gain, Func *input) { return overtone_create(range, gain, input); }

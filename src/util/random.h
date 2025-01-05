@@ -16,6 +16,8 @@ typedef struct
     size_t state;
 } Random;
 
+Random random_global = {.state = RAND_STATE_INIT};
+
 /**
  * @brief Create a new Random struct with a given seed.
  *

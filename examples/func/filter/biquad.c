@@ -7,6 +7,6 @@ int main(void)
     // white noise through a band-pass filter with midi knob for frequency and qfactor
     func frequency = gauge("frequency", knob_ex_(1, 70, 20000, 1));
     func qfactor = gauge("qfactor", knob_ex_(1, 71, .001, 100));
-    func tone = bandpass(frequency, qfactor, uniform());
+    func tone = bandpass(frequency, qfactor, white());
     return play_midi(mul_(.5, tone));
 }

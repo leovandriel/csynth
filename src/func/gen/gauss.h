@@ -15,7 +15,7 @@ typedef struct
 static double gauss_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U void *context_)
 {
     GaussContext *context = (GaussContext *)context_;
-    return random_gauss_range(&context->random, 0, 1);
+    return random_gauss(&context->random);
 }
 
 /**

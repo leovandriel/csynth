@@ -14,6 +14,7 @@
 #include "./hpf.h"
 #include "./lpf.h"
 #include "./resonant.h"
+#include "./sample.h"
 #include "./slope.h"
 
 Func *pass(Func *input, ...) { return input; }

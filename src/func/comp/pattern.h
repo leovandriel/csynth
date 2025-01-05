@@ -5,8 +5,9 @@
 
 #include "../../core/func.h"
 #include "../../util/random.h"
+#include "../filter/sample.h"
 #include "../gen/const.h"
-#include "../gen/sample.h"
+#include "../gen/gauss.h"
 #include "../op/add.h"
 #include "../op/mul.h"
 #include "./seq.h"
@@ -34,7 +35,7 @@ Func *pattern_create(const char *string, Func *tick, Func *timing, Func *input)
     {
         if (string[i] == '.')
         {
-            array[index++] = add_create(ARGS(const_create(i), mul_create(ARGS(sample_gauss_create(), timing))));
+            array[index++] = add_create(ARGS(const_create(i), mul_create(ARGS(sample_create(gauss_create()), timing))));
             array[index++] = input;
         }
     }

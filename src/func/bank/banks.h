@@ -19,13 +19,13 @@ Func *bdrum(void)
 /** @brief Create a hihat sound. */
 Func *hihat(void)
 {
-    return decay_(0.05, hpf_(20000, dvd_(uniform(), 2)));
+    return decay_(0.05, hpf_(20000, dvd_(white(), 2)));
 }
 
 /** @brief Create a snare drum sound. */
 Func *snare(void)
 {
-    return decay_(0.05, dvd_(uniform(), 4));
+    return decay_(0.05, dvd_(white(), 4));
 }
 
 Func *boards(Func *frequency)
