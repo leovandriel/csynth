@@ -55,7 +55,10 @@ static double looper_eval(__U size_t count, Gen **args, Eval *eval, void *contex
         {
             output = samples[context->index];
         }
-        context->index = (context->index + 1) % context->buffer.size;
+        if (++context->index >= context->buffer.size)
+        {
+            context->index = 0;
+        }
     }
     return output;
 }

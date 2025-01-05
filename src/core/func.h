@@ -35,8 +35,10 @@ static Func *func_list_global = NULL;
  *   This argument is required for all functions. There are no restrictions on
  *   the domain, though for audio functions it is typically in the range [-1,
  *   1].
- * - free_cb: Called once after the last evaluation. This allows for various
- *   cleanup tasks, like deallocating buffers or closing files.
+ * - free_cb: Called once after the last evaluation. This allows for undoing
+ *   of function init.
+ * - cleanup_cb: Called when the function is freed. This allows for undoing of
+ *   function create.
  *
  * Additionally, the function can have a context struct, which is used to store
  * state between evaluations. This is useful for functions that need to keep
@@ -57,6 +59,7 @@ static Func *func_list_global = NULL;
  * @param eval_cb Returns the value of the function, given inputs and time
  * delta.
  * @param free_cb Called once after the last evaluation.
+ * @param cleanup_cb Called when the function is freed.
  * @param size The size of the context struct.
  * @param context The initial value of the context.
  * @param flags Flags that control the behavior of the function.
@@ -67,6 +70,18 @@ static Func *func_list_global = NULL;
  */
 Func *func_create_name(const char *name, init_callback init_cb, eval_callback eval_cb, free_callback free_cb, cleanup_callback cleanup_cb, size_t size, void *context, uint32_t flags, size_t count, Func **inputs, const char *arg_names)
 {
+    if (name == NULL)
+    {
+        return error_null(csErrorInvalidArgument);
+    }
+    if (count > 0 && arg_names == NULL)
+    {
+        return error_null(csErrorInvalidArgument);
+    }
+    if (count > SIZE_MAX / sizeof(Func *))
+    {
+        return error_null(csErrorInvalidArgument);
+    }
     void *initial = NULL;
     if (size > 0 && context != NULL)
     {

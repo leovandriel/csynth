@@ -9,8 +9,14 @@
 /** @see sine_create */
 typedef struct
 {
-    /** @brief Previous output values and extrapolation coefficient. */
-    double output, prev, coeff, last_tick;
+    /** @brief Current output value of the sine wave. */
+    double output;
+    /** @brief Previous output value for calculating next sample. */
+    double prev;
+    /** @brief Coefficient used in the recurrence relation. */
+    double coeff;
+    /** @brief Last tick value used to detect frequency changes. */
+    double last_tick;
 } SineContext;
 
 static double sine_eval(__U size_t count, Gen **args, Eval *eval, void *context_)

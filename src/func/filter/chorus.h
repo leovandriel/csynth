@@ -37,7 +37,10 @@ static double chorus_eval(__U size_t count, Gen **args, Eval *eval, void *contex
         size_t index = (context->index + context->buffer.size - offset) % context->buffer.size;
         output = 0.5 * (input + samples[index]);
         samples[context->index] = input;
-        context->index = (context->index + 1) % context->buffer.size;
+        if (++context->index >= context->buffer.size)
+        {
+            context->index = 0;
+        }
     }
     return output;
 }

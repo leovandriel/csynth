@@ -30,13 +30,17 @@ static double karplus_strong_eval(__U size_t count, Gen **args, Eval *eval, void
     {
         size_t size = (size_t)(1.0 / pitch_tick);
         buffer_resize(&context->buffer, size, &context->index);
-        context->decay_factor = 0.5 / exp2(decay_tick * (double)size);
+        context->decay_factor = 0.5 * exp2(-decay_tick * (double)size);
     }
     double output = 0.0;
     double *samples = context->buffer.samples;
     if (samples != NULL)
     {
-        size_t next = (context->index + 1) % context->buffer.size;
+        size_t next = context->index + 1;
+        if (next >= context->buffer.size)
+        {
+            next = 0;
+        }
         samples[context->index] = (samples[context->index] + samples[next]) * context->decay_factor;
         output = samples[context->index];
         context->index = next;

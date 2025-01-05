@@ -11,6 +11,7 @@ typedef enum
     csErrorNone = 0,
     csErrorSome,
     csErrorMemoryAlloc,
+    csErrorInvalidArgument,
     csErrorFiniteValue,
     csErrorFileOpen,
     csErrorFileClose,

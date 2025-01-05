@@ -163,27 +163,25 @@ double gen_eval(Gen *gen, Eval *eval)
 void gen_reset(Gen *gen)
 {
     Func *func = gen->func;
-    if (func->flags & FuncFlagStopReset)
+    if ((func->flags & FuncFlagStopReset) == 0)
     {
-        return;
-    }
-    for (size_t i = 0; i < func->count; i++)
-    {
-        gen_reset(gen->args[i]);
-    }
-    if (func->flags & FuncFlagSkipReset)
-    {
-        return;
-    }
-    if (gen->context != NULL)
-    {
-        if (gen->reset != NULL)
+        for (size_t i = 0; i < func->count; i++)
         {
-            memcpy(gen->context, gen->reset, func->size);
+            gen_reset(gen->args[i]);
         }
-        else
+    }
+    if ((func->flags & FuncFlagSkipReset) == 0)
+    {
+        if (gen->context != NULL)
         {
-            memset(gen->context, 0, func->size);
+            if (gen->reset != NULL)
+            {
+                memcpy(gen->context, gen->reset, func->size);
+            }
+            else
+            {
+                memset(gen->context, 0, func->size);
+            }
         }
     }
 }

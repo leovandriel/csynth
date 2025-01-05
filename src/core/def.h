@@ -13,8 +13,11 @@ typedef struct Gen Gen;
 
 typedef enum
 {
+    /** @brief No flags. */
     FuncFlagNone = 0,
+    /** @brief Do not propagate reset to arguments. */
     FuncFlagStopReset = 1 << 1,
+    /** @brief Do not reset context. */
     FuncFlagSkipReset = 1 << 2,
 } FuncFlag;
 

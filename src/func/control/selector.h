@@ -30,7 +30,10 @@ static void selector_handle_event(ControlEvent *event, void *context_)
     SelectorContext *context = (SelectorContext *)context_;
     if (control_event_key_equal(event->key, context->key))
     {
-        context->selected = (context->selected + 1) % context->count;
+        if (++context->selected >= context->count)
+        {
+            context->selected = 0;
+        }
         state_event_broadcast(event->time, StateEventKeyTypeControl, &context->key, StateEventValueTypeInt, &context->selected);
     }
 }
