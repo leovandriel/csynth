@@ -89,7 +89,7 @@ double terminal_time(void)
 {
     struct timespec spec;
     timespec_get(&spec, TIME_UTC);
-    return (double)spec.tv_sec + (double)spec.tv_nsec / 1e9;
+    return (double)spec.tv_sec + (double)spec.tv_nsec * 1e-9;
 }
 
 /**

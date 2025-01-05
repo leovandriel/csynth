@@ -20,7 +20,7 @@ static func pluck(func frequency)
 {
     func note = karplus_strong_(frequency, .6);
     note = clamp_(-1, 1, mul_(10, note));
-    note = lpf(dvd_(frequency, 2), note);
+    note = lpf(mul_(0.5, frequency), note);
     return note;
 }
 

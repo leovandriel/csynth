@@ -28,7 +28,6 @@ Func *sub_(Func *lhs, double rhs) { return sub(lhs, const_(rhs)); }
 Func *mul_(double value, Func *input) { return mul(const_(value), input); }
 Func *inv(Func *input) { return inv_create(input); }
 Func *dvd(Func *lhs, Func *rhs) { return mul(lhs, inv(rhs)); }
-Func *dvd_(Func *lhs, double rhs) { return dvd(lhs, const_(rhs)); }
 Func *avg_create(size_t count, Func **inputs) { return mul_create(ARGS(add_create(count, inputs), const_(1.0 / (double)count))); }
 #define avg(...) (avg_create(ARGS(__VA_ARGS__)))
 
@@ -62,7 +61,7 @@ Func *exponent_op(Func *span, Func *left, Func *right, Func *input) { return mul
 Func *exponent_op_(double span, double left, double right, Func *input) { return exponent_op(const_(span), const_(left), const_(right), input); }
 
 Func *ar(Func *input) { return sub_(mul_(2, input), 1); }
-Func *kr(Func *input) { return dvd_(add_(1, input), 2); }
+Func *kr(Func *input) { return mul_(0.5, add_(1, input)); }
 Func *kr_affine(Func *offset, Func *factor, Func *input) { return add(offset, mul(factor, kr(input))); }
 Func *kr_affine_(double offset, double factor, Func *input) { return kr_affine(const_(offset), const_(factor), input); }
 Func *kr_scale(Func *factor, Func *input) { return mul(factor, kr(input)); }

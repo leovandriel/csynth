@@ -35,7 +35,7 @@ void player_event_loop_no_terminal(double duration, __U int exit_key)
     {
         duration = FLT_MAX;
     }
-    Pa_Sleep((long)(duration * 1000));
+    Pa_Sleep((long)(duration * 1e3));
 }
 
 static int player_callback(__U const void *input, void *output_, size_t count, __U const PaStreamCallbackTimeInfo *info, __U PaStreamCallbackFlags flags, void *data)
@@ -74,7 +74,7 @@ csError player_play_pause(PaStream *stream)
 csError player_play_channels_no_cleanup(PlayerConfig config, size_t count, Func **channels)
 {
 #ifdef AUTO_EXIT
-    config.duration = AUTO_EXIT / 1000.0;
+    config.duration = AUTO_EXIT * 1e-3;
 #endif
     PaError pa_error = Pa_Initialize();
     if (pa_error != paNoError)
@@ -130,7 +130,7 @@ csError player_play_channels_no_cleanup(PlayerConfig config, size_t count, Func 
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to get stream info: %s", Pa_GetErrorText(pa_error), pa_error);
     }
-    log_info("Stream opened: %.1f ms, %.3f kHz", stream_info->outputLatency * 1000, stream_info->sampleRate / 1000);
+    log_info("Stream opened: %.1f ms, %.3f kHz", stream_info->outputLatency * 1e3, stream_info->sampleRate * 1e-3);
     pa_error = Pa_StartStream(stream);
     if (pa_error != paNoError)
     {

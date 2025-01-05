@@ -72,7 +72,7 @@ csError midi_read_broadcast(MidiContext *context)
     }
     for (int i = 0; i < count; i++)
     {
-        double time = (double)buffer[i].timestamp / 1000.;
+        double time = (double)buffer[i].timestamp * 1e-3;
         uint8_t status = Pm_MessageStatus(buffer[i].message);
         MidiType type = status >> 4;
         uint8_t channel = status & 0x0F;
@@ -101,7 +101,7 @@ csError midi_terminate(MidiContext *context)
 
 double midi_time(void)
 {
-    return (double)Pt_Time() / 1000.0;
+    return (double)Pt_Time() * 1e-3;
 }
 
 /**

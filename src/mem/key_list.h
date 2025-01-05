@@ -73,7 +73,7 @@ csError key_list_read_file(KeyList *list, FILE *file)
     {
         KeyboardEvent event = {
             .key = key,
-            .time = stamp / 1000.0,
+            .time = stamp * 1e-3,
         };
         csError error = key_list_add(list, event);
         if (error != csErrorNone)
@@ -108,7 +108,7 @@ csError key_list_write_file(KeyList *list, FILE *file)
 {
     for (KeyboardEvent *event = list->head; event; event = event->next)
     {
-        int count = fprintf(file, "%d %d\n", event->key, (int)(event->time * 1000));
+        int count = fprintf(file, "%d %d\n", event->key, (int)(event->time * 1e3));
         if (count < 0)
         {
             return error_type(csErrorFileWrite);
