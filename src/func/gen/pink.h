@@ -37,7 +37,16 @@ static double pink_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U vo
  * @brief Create a function that approximates pink noise, using an array of
  * first order low pass filters.
  *
- * @return Func* Pink noise function.
+ * Pink noise has a power spectral density that decreases by 3 dB per octave,
+ * meaning it has equal energy per octave. This implementation uses six cascaded
+ * first-order low-pass filters with carefully chosen coefficients to approximate
+ * the 1/f spectrum characteristic of pink noise.
+ *
+ * The algorithm generates white noise and processes it through the filter array,
+ * combining the outputs with specific weights. The result closely matches the
+ * spectral properties of pink noise while being computationally efficient.
+ *
+ * @return Func* Pink noise function that outputs values roughly in the range [-1, 1].
  */
 Func *pink_create(void)
 {

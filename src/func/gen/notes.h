@@ -4,8 +4,11 @@
 #include "./const.h"
 
 /*
- * Note constants for 10 octaves of 12 notes equal temperament. The contents of
- * this file can be generated using `utils/notes.c`.
+ * Note constants for 10 octaves of 12 notes in equal temperament tuning (A4 = 440 Hz).
+ * Each octave contains 12 semitones spaced by a factor of 2^(1/12), starting from C0 at 16.35 Hz.
+ * Both sharp (s) and flat (b) enharmonic equivalents are defined (e.g. Cs0_ and Db0_).
+ * The constants are calculated as: frequency = 440 * 2^((n-57)/12) where n is semitones from A4.
+ * The contents of this file can be generated using the utility script `utils/notes.c`.
  */
 
 #define C0_ 16.351597831287413953  // 440 * pow(2, -57 / 12.0)

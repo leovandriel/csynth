@@ -35,11 +35,24 @@ static void wav_cleanup(void *initial_)
 /**
  * @brief Create a function that reads samples from a WAV file.
  *
- * @param buffer PcmBuffer struct containing the samples.
- * @param free Flag to free buffer on cleanup.
- * @param channel Channel to read from.
- * @param tick Function that controls the reading speed.
- * @return Func* WAV function.
+ * This function creates a generator that plays back PCM audio data from a WAV file.
+ * The samples are read from the specified channel at a rate controlled by the tick
+ * parameter. The output values are normalized to the range [-1, 1] by dividing
+ * the 16-bit integer samples by 32767.
+ *
+ * The reading position advances by the tick amount each sample. For normal playback
+ * at the original sample rate, tick should be 1.0. Values less than 1 will play
+ * slower (pitch down), values greater than 1 will play faster (pitch up). Negative
+ * values will play backwards.
+ *
+ * @param buffer PcmBuffer struct containing the WAV file samples loaded in memory.
+ * @param free If true, the buffer will be automatically freed when the function is
+ *            destroyed. If false, the caller retains ownership of the buffer.
+ * @param channel Zero-based index of the channel to read from. Must be less than
+ *               the number of channels in the WAV file.
+ * @param tick Function that controls the reading speed in samples per sample.
+ *            Speed multiplier = tick * output_rate / input_rate
+ * @return Func* WAV playback function that outputs normalized samples in [-1, 1].
  */
 Func *wav_create(PcmBuffer buffer, bool free, int channel, Func *tick)
 {

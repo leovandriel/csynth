@@ -11,10 +11,14 @@ static double rand_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U vo
 }
 
 /**
- * @brief Create a function that outputs randly distributed pseudo random
- * values on interval [-1, 1], i.e. white noise.
+ * @brief Create a function that outputs uniformly distributed pseudo random
+ * values on interval [0, 1].
+ * 
+ * This implementation uses a global random number generator to produce values
+ * with uniform distribution. Each call to the function returns a new random
+ * value independent of previous values.
  *
- * @return Func* rand noise function.
+ * @return Func* Random noise function that outputs values in the range [0, 1].
  */
 Func *rand_create(void)
 {

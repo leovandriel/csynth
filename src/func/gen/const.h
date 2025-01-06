@@ -18,10 +18,22 @@ static double const_eval(__U size_t count, __U Gen **args, __U Eval *eval, void 
 }
 
 /**
- * @brief Create a function of constant value.
+ * @brief Create a function that outputs a constant value.
  *
- * @param value Value to be returned during sampling.
- * @return Func* Const function.
+ * This function creates a generator that always outputs the same value,
+ * regardless of time or other inputs. It is useful for:
+ * - Setting fixed parameter values
+ * - Creating DC offsets
+ * - Testing and debugging
+ * - Providing constant modulation values
+ *
+ * The constant function is one of the simplest generators, with O(1) time
+ * complexity since it just returns a stored value.
+ *
+ * @param value The fixed numerical value that will be output every time the
+ *              function is evaluated. Can be any double precision floating point
+ *              number.
+ * @return Func* A constant function that always returns the specified value.
  */
 Func *const_create(double value)
 {

@@ -66,9 +66,17 @@ static void karplus_strong_free(__U size_t count, void *context_)
  * @brief Create a function that simulates a vibrating string using the
  * Karplus-Strong algorithm.
  *
- * @param pitch_tick Function that controls the pitch of the string.
- * @param decay_tick Function that controls the decay of the string.
- * @return Func* Karplus-Strong function.
+ * The Karplus-Strong algorithm works by maintaining a circular buffer of samples
+ * that are filtered and fed back into the buffer. The buffer length determines
+ * the fundamental frequency, while the filtering process creates natural-sounding
+ * decay characteristics.
+ *
+ * @param pitch_tick Function that controls the pitch of the string in periods per sample.
+ *                   The buffer size will be 1/pitch_tick samples.
+ * @param decay_tick Function that controls the decay time of the string.
+ *                   Higher values create faster decay. The decay factor is
+ *                   calculated as: 0.5 * 2^(-decay_tick * buffer_size)
+ * @return Func* Karplus-Strong function that outputs plucked string sounds.
  */
 Func *karplus_strong_create(Func *pitch_tick, Func *decay_tick)
 {

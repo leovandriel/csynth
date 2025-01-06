@@ -52,13 +52,28 @@ static double sine_eval(__U size_t count, Gen **args, Eval *eval, void *context_
 }
 
 /**
- * @brief Create a function that outputs an approximate sine wave.
+ * @brief Create a function that outputs an approximate sine wave using a recursive algorithm.
  *
- * Due to the cost of `sin`, the result is cached in a lookup table and
- * interpolated.
+ * This implementation uses a second-order recurrence relation to generate sine waves
+ * efficiently without calling sin() for each sample. The algorithm maintains phase
+ * coherence when frequency changes occur.
  *
- * @param tick Periods per sample.
- * @return Func* Sine function.
+ * The recurrence relation used is:
+ *     y[n] = 2cos(ω)y[n-1] - y[n-2]
+ * where ω = 2π * tick is the angular frequency.
+ *
+ * When the frequency changes, the algorithm computes a new coefficient and maintains
+ * continuity by solving for the quadrature component (cosine) of the wave using the
+ * current and previous samples. This preserves both amplitude and phase.
+ *
+ * The output is a high-quality sine wave with minimal computational overhead, making
+ * it suitable for real-time audio synthesis. The wave maintains constant amplitude
+ * of 1.0 regardless of frequency.
+ *
+ * @param tick Function that controls frequency in periods per sample.
+ *            To get frequency in Hz, multiply by sample rate:
+ *            frequency = tick * sample_rate
+ * @return Func* Sine oscillator that outputs values in range [-1, 1].
  */
 Func *sine_create(Func *tick)
 {
