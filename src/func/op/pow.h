@@ -28,12 +28,29 @@ static double pow_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 /**
  * @brief Create a function for the power function, i.e. base ^ exponent.
  *
- * Due to cost of `pow`, the result is cached in the context and recomputed
- * periodically.
+ * This function creates a generator that raises a base value to an exponent,
+ * computing base^exponent. Due to the computational cost of the pow() function,
+ * the result is cached in the context and only recomputed when the compute_flag
+ * is set in the evaluator.
  *
- * @param base Base value.
- * @param exponent Exponent value.
- * @return Func* Power function.
+ * Common applications include:
+ * - Creating exponential curves and envelopes
+ * - Implementing waveshapers and distortion effects
+ * - Computing frequency ratios for musical intervals
+ * - Building amplitude scaling functions
+ *
+ * The output range depends on the input ranges:
+ * - For positive base values, output will be positive
+ * - For negative base values, output may be complex (undefined)
+ * - Larger exponents can cause very large or small outputs
+ * - Base 0 with negative exponent is undefined
+ *
+ * @param base Base function whose output will be raised to the exponent. Should
+ *             generally be non-negative for predictable results.
+ * @param exponent Function whose output determines the power to raise the base
+ *                to. Integer values are most common but any real value is
+ *                valid.
+ * @return Func* Power function that outputs base^exponent for each sample.
  */
 Func *pow_create(Func *base, Func *exponent)
 {

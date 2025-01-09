@@ -25,13 +25,28 @@ static double tanh_eval(__U size_t count, Gen **args, Eval *eval, __U void *cont
 }
 
 /**
- * @brief Create a function for the hyperbolic tangent function.
+ * @brief Create a function for the hyperbolic tangent function, i.e. tanh(x).
  *
- * Due to cost of `tanh`, the result is cached in the context and recomputed
- * periodically.
+ * This function creates a generator that computes the hyperbolic tangent of its
+ * input. Due to the computational cost of the tanh() function, the result is
+ * cached in the context and only recomputed when the compute_flag is set in the
+ * evaluator.
  *
- * @param angle Angle in radians.
- * @return Func* Tanh function.
+ * Common applications include:
+ * - Soft clipping and saturation effects
+ * - Neural network activation functions
+ * - Smooth compression of signals
+ * - Waveshaping and distortion
+ *
+ * The output range will always be (-1, 1):
+ * - Output approaches +1 asymptotically as input increases
+ * - Output approaches -1 asymptotically as input decreases
+ * - Linear response near 0 with smooth compression at extremes
+ * - Symmetric around origin: tanh(-x) = -tanh(x)
+ *
+ * @param angle Function whose output provides the input value. The hyperbolic
+ *             tangent will be computed for each value.
+ * @return Func* Hyperbolic tangent function.
  */
 Func *tanh_create(Func *angle)
 {

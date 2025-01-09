@@ -21,14 +21,28 @@ static double max_eval(size_t count, Gen **args, Eval *eval, __U void *context)
 }
 
 /**
- * @brief Create a function for the maximum across all inputs.
+ * @brief Create a function that outputs the maximum value across all inputs.
  *
- * Can be used to clamp a signal to a maximum value, e.g. to prevent clipping or
- * create a distortion effect.
+ * This function creates a generator that evaluates multiple input functions and
+ * outputs the largest value among them for each sample. It compares the outputs
+ * of all input functions and returns the maximum value found. This is useful
+ * for implementing various audio effects and signal processing operations.
  *
- * @param count Number of arguments.
- * @param args Argument array.
- * @return Func* Max function.
+ * Common applications include:
+ * - Clamping a signal to a maximum value by comparing it with a constant
+ * - Creating waveshaping/distortion effects by combining with other functions
+ * - Implementing maximum-based envelope followers
+ * - Building more complex signal processing chains
+ *
+ * The output range will be bounded by the maximum possible output of any input
+ * function. For normalized audio signals in [-1, 1], the output will also stay
+ * within that range.
+ *
+ * @param count Number of input functions to compare. Must be greater than 0.
+ * @param args Array of input functions to find maximum across. Must contain
+ *            count elements. Each function will be evaluated once per sample.
+ * @return Func* Maximum function that outputs the largest value across all
+ *         inputs for each sample.
  */
 Func *max_create(size_t count, Func **args)
 {

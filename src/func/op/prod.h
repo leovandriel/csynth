@@ -23,8 +23,23 @@ static double prod_eval(__U size_t count, Gen **args, Eval *eval, void *context_
  * @brief Create a function that accumulates the product over time, across
  * samples.
  *
- * @param input Input function.
- * @return Func* Product function.
+ * This function creates a generator that maintains a running product of its
+ * input values over time. For each sample, it multiplies the current input
+ * value with the accumulated product and outputs the previous accumulated
+ * value. The product starts at 1.0 and grows or shrinks based on the input
+ * values.
+ *
+ * Common applications include:
+ * - Calculating cumulative gain changes over time
+ * - Creating exponential growth or decay effects
+ * - Implementing multiplicative accumulation in signal processing
+ * - Building complex modulation chains
+ *
+ * The output behavior depends on the input values:
+ * - Input values > 1 cause exponential growth
+ * - Input values between 0 and 1 cause decay
+ * - Input values < 0 cause sign flipping and scaling
+ * - Input
  */
 Func *prod_create(Func *input)
 {

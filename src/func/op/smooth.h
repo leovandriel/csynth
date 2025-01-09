@@ -22,15 +22,40 @@ static double smooth_eval(__U size_t count, Gen **args, Eval *eval, __U void *co
 }
 
 /**
- * @brief Create a function for the smooth step function, i.e. 0 if input <
- * edge0, 1 if input > edge1, otherwise smooth interpolation.
+ * @brief Create a function for the smooth step function that performs Hermite
+ * interpolation between edges.
  *
- * If first > second, the function is reversed, i.e. 1 - smooth()
+ * This function creates a generator that smoothly transitions between 0 and 1
+ * using a cubic Hermite polynomial interpolation (smoothstep). The transition
+ * occurs between two edge values, with a continuous first derivative at the
+ * edges for smooth transitions.
  *
- * @param edge0 First edge.
- * @param edge1 Second edge.
- * @param input Input value.
- * @return Func* Smooth function.
+ * The interpolation follows the formula: t * t * (3 - 2t) where t is the
+ * normalized position between edge0 and edge1. This creates an S-shaped curve
+ * with the following properties:
+ * - Output is 0 when input <= edge0
+ * - Output is 1 when input >= edge1
+ * - Smooth transition between edges with zero derivatives at edges
+ * - Monotonically increasing between edges
+ *
+ * If edge0 > edge1, the function behavior is reversed:
+ * - Output is 1 when input <= edge1
+ * - Output is 0 when input >= edge0
+ * - Smooth transition occurs from 1 to 0 between edges
+ *
+ * Common applications include:
+ * - Crossfading between signals
+ * - Creating envelope shapes
+ * - Smooth parameter automation
+ * - Anti-aliased thresholding
+ *
+ * @param edge0 Function that defines the first transition edge. When input is
+ *              below this value (or above for reversed case), output will be 0.
+ * @param edge1 Function that defines the second transition edge. When input is
+ *              above this value (or below for reversed case), output will be 1.
+ * @param input Function whose output will be compared against the edges to
+ *              determine the interpolation position.
+ * @return Func* Smooth step function that outputs values in range [0,1].
  */
 Func *smooth_create(Func *edge0, Func *edge1, Func *input)
 {

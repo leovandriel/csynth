@@ -22,8 +22,26 @@ static double sum_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 /**
  * @brief Create a function that accumulates the sum over time, across samples.
  *
- * @param input Input function.
- * @return Func* Sum function.
+ * This function creates a generator that maintains a running sum of its input
+ * values over time. For each sample, it adds the current input value to the
+ * accumulated sum and outputs the previous accumulated value. The sum starts at
+ * 0.0 and grows or shrinks based on the input values.
+ *
+ * Common applications include:
+ * - Calculating cumulative changes over time
+ * - Creating linear ramps and slopes
+ * - Implementing integration in signal processing
+ * - Building additive accumulation chains
+ *
+ * The output behavior depends on the input values:
+ * - Positive input values cause linear growth
+ * - Negative input values cause linear decay
+ * - Zero input maintains constant output
+ * - Large input values can cause rapid accumulation
+ *
+ * @param input Function whose output values will be accumulated into the
+ *              running sum over time.
+ * @return Func* Sum function that outputs the accumulated total.
  */
 Func *sum_create(Func *input)
 {

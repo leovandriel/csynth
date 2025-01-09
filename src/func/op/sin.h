@@ -25,12 +25,29 @@ static double sin_eval(__U size_t count, Gen **args, Eval *eval, __U void *conte
 }
 
 /**
- * @brief Create a function for the sine function.
+ * @brief Create a function for the sine function, i.e. sin(angle).
  *
- * Due to cost of `sin`, the result is cached in the context and recomputed
- * periodically. Cannot be used to generate a sine wave.
+ * This function creates a generator that computes the sine of its input angle.
+ * Due to the computational cost of the sin() function, the result is cached in
+ * the context and only recomputed when the compute_flag is set in the
+ * evaluator. This is intended for signal processing operations that need sine
+ * calculations, not for generating continuous sine waves (use oscillator
+ * functions instead).
  *
- * @param angle Angle in radians.
+ * Common applications include:
+ * - Phase calculations in signal processing
+ * - Circular/trigonometric transformations
+ * - Modulation effects using sine-based waveshaping
+ * - Mathematical operations requiring sine
+ *
+ * The output range will always be [-1, 1] regardless of input:
+ * - Input angle in radians (2π = one full cycle)
+ * - Output is symmetric around 0
+ * - Peaks at +1 when angle = π/2 + 2πn
+ * - Troughs at -1 when angle = 3π/2 + 2πn
+ *
+ * @param angle Function whose output provides the angle in radians. The sine
+ *             will be computed for each angle value.
  * @return Func* Sine function.
  */
 Func *sin_create(Func *angle)

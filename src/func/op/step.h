@@ -13,12 +13,33 @@ static double step_eval(__U size_t count, Gen **args, Eval *eval, __U void *cont
 }
 
 /**
- * @brief Create a function for the step function, i.e. 0 if input < edge,
- * otherwise 1.
+ * @brief Create a function for the step function that outputs a binary
+ * threshold.
  *
- * @param edge Edge value.
- * @param input Input value.
- * @return Func* Step function.
+ * This function creates a generator that implements a simple threshold or step
+ * function. It compares an input value against an edge threshold and outputs
+ * either 0 or 1 based on whether the input is less than or greater than/equal
+ * to the edge.
+ *
+ * The step function behavior is:
+ * - Output is 0 when input < edge
+ * - Output is 1 when input >= edge
+ * - Discontinuous transition at edge point
+ *
+ * Common applications include:
+ * - Binary thresholding of signals
+ * - Creating gate signals from continuous inputs
+ * - Basic waveform generation (square waves)
+ * - Digital logic operations
+ *
+ * For a smooth transition between values, consider using smooth_create()
+ * instead which provides continuous interpolation between edges.
+ *
+ * @param edge Function that defines the threshold value. When input crosses
+ *             this value, output switches between 0 and 1.
+ * @param input Function whose output will be compared against the edge to
+ *              determine the binary output state.
+ * @return Func* Step function that outputs either 0 or 1.
  */
 Func *step_create(Func *edge, Func *input)
 {
