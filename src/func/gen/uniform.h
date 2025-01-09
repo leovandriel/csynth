@@ -23,15 +23,17 @@ static double uniform_eval(__U size_t count, __U Gen **args, __U Eval *eval, __U
  * values on interval [-1, 1], i.e. white noise.
  *
  * White noise contains equal power across all frequencies, making it useful as
- * a basic noise source or for generating other types of noise through filtering.
- * Each call to the function returns a new random value independent of previous
- * values, using a dedicated random number generator initialized with seed 0.
+ * a basic noise source or for generating other types of noise through
+ * filtering. Each call to the function returns a new random value independent
+ * of previous values, using a dedicated random number generator initialized
+ * with seed 0.
  *
  * The output range of [-1, 1] means the noise can be directly mixed with other
  * audio signals without additional scaling. For noise with different ranges,
  * combine this with scaling functions.
  *
- * @return Func* Uniform noise function that outputs values in the range [-1, 1].
+ * @return Func* Uniform noise function that outputs values in the range [-1,
+ * 1].
  */
 Func *uniform_create(void)
 {

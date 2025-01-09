@@ -21,22 +21,22 @@ static double param_eval(__U size_t count, __U Gen **args, Eval *eval, void *con
  * @brief Create a function that returns the value of an eval parameter.
  *
  * Eval parameters allow for dynamic control of the synthesis process by passing
- * variables down the synthesis tree. Each Eval struct contains an array of parameter
- * values that can be accessed by functions during evaluation.
+ * variables down the synthesis tree. Each Eval struct contains an array of
+ * parameter values that can be accessed by functions during evaluation.
  *
- * When the created function is evaluated, it looks up and returns the value of the
- * specified parameter from the current Eval context. If no Eval context is provided
- * (eval is NULL), it returns 0.0 as a default value.
+ * When the created function is evaluated, it looks up and returns the value of
+ * the specified parameter from the current Eval context. If no Eval context is
+ * provided (eval is NULL), it returns 0.0 as a default value.
  *
- * This provides a way to modulate synthesis parameters like frequency, amplitude,
- * or filter cutoffs dynamically at runtime without modifying the synthesis tree
- * structure. The parameter values can be updated between evaluation calls to create
- * time-varying effects.
+ * This provides a way to modulate synthesis parameters like frequency,
+ * amplitude, or filter cutoffs dynamically at runtime without modifying the
+ * synthesis tree structure. The parameter values can be updated between
+ * evaluation calls to create time-varying effects.
  *
- * @param param Index of the eval parameter to return. Must be a valid index into
- *             the Eval params array.
- * @return Func* Parameter accessor function that outputs the current value of the
- *              specified eval parameter.
+ * @param param Index of the eval parameter to return. Must be a valid index
+ *             into the Eval params array.
+ * @return Func* Parameter accessor function that outputs the current value of
+ *              the specified eval parameter.
  */
 Func *param_create(EvalParam param)
 {

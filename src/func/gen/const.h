@@ -31,8 +31,8 @@ static double const_eval(__U size_t count, __U Gen **args, __U Eval *eval, void 
  * complexity since it just returns a stored value.
  *
  * @param value The fixed numerical value that will be output every time the
- *              function is evaluated. Can be any double precision floating point
- *              number.
+ *              function is evaluated. Can be any double precision floating
+ *              point number.
  * @return Func* A constant function that always returns the specified value.
  */
 Func *const_create(double value)

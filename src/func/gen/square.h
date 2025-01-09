@@ -34,13 +34,15 @@ static double square_eval(__U size_t count, Gen **args, Eval *eval, void *contex
  * odd harmonics that decrease in amplitude as 1/n, making it useful for
  * synthesizing hollow or reedy tones.
  *
- * The frequency of the wave is controlled by the tick parameter, which specifies
- * how many periods/cycles occur per sample. For example, to generate a 440 Hz
- * square wave at a 44.1 kHz sample rate, tick should be 440/44100 ≈ 0.00998.
+ * The frequency of the wave is controlled by the tick parameter, which
+ * specifies how many periods/cycles occur per sample. For example, to generate
+ * a 440 Hz square wave at a 44.1 kHz sample rate, tick should be 440/44100 ≈
+ * 0.00998.
  *
  * @param tick Function that controls the frequency in periods per sample.
  *            Frequency in Hz = tick * sample_rate
- * @return Func* Square wave oscillator that outputs values alternating between +1 and -1.
+ * @return Func* Square wave oscillator that outputs values alternating between
+ * +1 and -1.
  */
 Func *square_create(Func *tick)
 {

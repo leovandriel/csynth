@@ -35,14 +35,15 @@ static double triangle_eval(__U size_t count, Gen **args, Eval *eval, void *cont
 /**
  * @brief Create a function that outputs a triangle wave oscillator.
  *
- * A triangle wave is a periodic waveform that linearly ramps up and down between
- * +1 and -1, creating a triangular shape. Unlike square waves, triangle waves
- * contain only odd harmonics that decrease in amplitude as 1/n^2, resulting in
- * a mellower sound with less high frequency content.
+ * A triangle wave is a periodic waveform that linearly ramps up and down
+ * between +1 and -1, creating a triangular shape. Unlike square waves, triangle
+ * waves contain only odd harmonics that decrease in amplitude as 1/n^2,
+ * resulting in a mellower sound with less high frequency content.
  *
- * The frequency of the wave is controlled by the tick parameter, which specifies
- * how many periods/cycles occur per sample. For example, to generate a 440 Hz
- * triangle wave at a 44.1 kHz sample rate, tick should be 440/44100 ≈ 0.00998.
+ * The frequency of the wave is controlled by the tick parameter, which
+ * specifies how many periods/cycles occur per sample. For example, to generate
+ * a 440 Hz triangle wave at a 44.1 kHz sample rate, tick should be 440/44100 ≈
+ * 0.00998.
  *
  * @param tick Function that controls the frequency in periods per sample.
  *            Frequency in Hz = tick * sample_rate

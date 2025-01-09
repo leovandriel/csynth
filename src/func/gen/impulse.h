@@ -27,8 +27,8 @@ static double impulse_eval(__U size_t count, __U Gen **args, __U Eval *eval, voi
  *
  * Represents a single impulse, similar to a discrete-time Dirac delta function.
  * When first evaluated, the function outputs 1.0, then outputs 0.0 for all
- * subsequent evaluations. This creates an impulse response that can be used
- * to test system behavior, trigger events, or initialize state.
+ * subsequent evaluations. This creates an impulse response that can be used to
+ * test system behavior, trigger events, or initialize state.
  *
  * Example usage:
  * - Triggering envelope generators or filters
@@ -36,7 +36,8 @@ static double impulse_eval(__U size_t count, __U Gen **args, __U Eval *eval, voi
  * - Initializing delay lines or feedback paths
  * - Creating click/pop sounds for percussion synthesis
  *
- * @return Func* Impulse function that outputs 1.0 on first evaluation and 0.0 after.
+ * @return Func* Impulse function that outputs 1.0 on first evaluation and 0.0
+ * after.
  */
 Func *impulse_create(void)
 {
