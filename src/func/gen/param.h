@@ -23,7 +23,7 @@ static double param_eval(__U size_t count, __U Gen **args, Eval *eval, void *con
  * Eval parameters allow for dynamic control of the synthesis process by passing
  * variables down the synthesis tree. Each Eval struct contains an array of parameter
  * values that can be accessed by functions during evaluation.
- * 
+ *
  * When the created function is evaluated, it looks up and returns the value of the
  * specified parameter from the current Eval context. If no Eval context is provided
  * (eval is NULL), it returns 0.0 as a default value.

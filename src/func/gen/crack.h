@@ -26,7 +26,7 @@ static double crack_eval(__U size_t count, Gen **args, Eval *eval, __U void *con
  * This function creates a generator that produces random "crackle" sounds by
  * outputting random values at random intervals. Each sample has a probability
  * (controlled by tick) of being a random value in [-1, 1], otherwise it outputs 0.
- * 
+ *
  * The crackle effect is useful for:
  * - Simulating vinyl record noise/pops
  * - Creating fire/static sound effects

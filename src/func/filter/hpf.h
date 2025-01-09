@@ -28,11 +28,17 @@ static double hpf_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 }
 
 /**
- * @brief Create a function that implements a first-order high-pass filter.
+ * @brief Create a function that implements a first-order high-pass filter. The
+ *        filter attenuates low frequency components below the cutoff frequency
+ *        while allowing high frequency components to pass through. The cutoff
+ *        frequency is determined by the tick parameter, where cutoff =
+ *        1/(2π*tick). The filter has a slope of +6 dB/octave above the cutoff
+ *        frequency.
  *
- * @param tick Periods per sample.
- * @param input Input signal.
- * @return Func* High-pass filter function.
+ * @param tick Periods per sample, controls the cutoff frequency. Higher values
+ *             result in a lower cutoff frequency.
+ * @param input Input signal to be filtered.
+ * @return Func* High-pass filter function that processes the input signal.
  */
 Func *hpf_create(Func *tick, Func *input)
 {

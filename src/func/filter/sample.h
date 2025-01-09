@@ -26,14 +26,23 @@ static double sample_eval(__U size_t count, __U Gen **args, __U Eval *eval, void
 }
 
 /**
- * @brief Create a function that samples from an input function and
- * returns that value as a constant.
+ * @brief Create a function that samples from an input function once and returns
+ * that value as a constant.
  *
- * Can be used to sample a constant control signal, like detune on key press.
+ * The function evaluates the input function exactly once when first called,
+ * stores the result, and returns that same sampled value on all subsequent
+ * calls. This creates a constant signal from a potentially varying input.
  *
- * @param input Input function to sample from, like a uniform random function.
+ * Can be used to sample a control signal at a specific point in time, like
+ * capturing a random detune value when a note is pressed, or freezing an LFO at
+ * a particular phase. The sampled value persists until the function is reset.
  *
- * @return Func* Sample function.
+ * @param input Input function to sample from. Common inputs include: - Random
+ *              generators for per-note variation - LFOs to capture specific
+ *              modulation values - Control signals to freeze their current
+ *              state
+ *
+ * @return Func* Sample function that outputs the constant sampled value
  */
 Func *sample_create(Func *input)
 {

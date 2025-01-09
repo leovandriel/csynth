@@ -44,12 +44,22 @@ static double resonant_eval(__U size_t count, Gen **args, Eval *eval, void *cont
 }
 
 /**
- * @brief Create a function that implements a second-order resonant filter.
+ * @brief Create a function that implements a second-order resonant filter. The
+ *        filter amplifies frequencies around the resonant frequency while
+ *        attenuating others. The resonant frequency is determined by the tick
+ *        parameter, where resonant = 1/(2π*tick). The Q factor controls the
+ *        width and height of the resonant peak, with higher values creating a
+ *        narrower and taller peak. The filter has a slope of -12 dB/octave away
+ *        from the resonant frequency.
  *
- * @param tick Periods per sample.
- * @param q_factor Q factor.
- * @param input Input signal.
- * @return Func* Resonant function.
+ * @param tick Periods per sample, controls the resonant frequency. Higher
+ *             values result in a lower resonant frequency.
+ * @param q_factor Q factor that determines the resonance characteristics.
+ *                 Higher values create a sharper resonant peak with more
+ *                 emphasis at the resonant frequency. Typical values range from
+ *                 0.5 to 10.
+ * @param input Input signal to be filtered.
+ * @return Func* Resonant filter function that processes the input signal.
  */
 Func *resonant_create(Func *tick, Func *q_factor, Func *input)
 {

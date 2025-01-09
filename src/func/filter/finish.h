@@ -34,11 +34,15 @@ static double finish_eval(__U size_t count, __U Gen **args, Eval *eval, void *co
 
 /**
  * @brief Create a function that permanently snaps to zero if extended silence
- * is detected.
+ * is detected. The function tracks the maximum absolute value of the input
+ * signal over time, applying exponential decay to this level. When the level
+ * falls below FUNC_AUDIBLE, the output is permanently set to zero. This helps
+ * optimize CPU usage by silencing inactive voices.
  *
- * @param tick Periods per sample.
- * @param input Input signal.
- * @return Func* Finish function.
+ * @param tick Periods per sample, controls how quickly the level decays.
+ * @param input Input signal to monitor and potentially silence.
+ * @return Func* Finish function that monitors and silences based on input
+ * level.
  */
 Func *finish_create(Func *tick, Func *input)
 {
