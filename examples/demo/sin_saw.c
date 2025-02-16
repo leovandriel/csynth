@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/sin_saw -Wall -Wextra -O3 -lm -lportaudio && ./bin/sin_saw "$@"; exit $?
+//usr/bin/true && ./utils/run.c "$0" -Wall -Wextra -O3 -lm -lportaudio; exit $?
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
 

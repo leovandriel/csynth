@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/dynamic -Wall -Wextra -O3 -lm -lportaudio && ./bin/dynamic "$@"; exit $?
+//usr/bin/true && ./utils/run.c "$0" -Wall -Wextra -O3 -lm -lportaudio; exit $?
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
 

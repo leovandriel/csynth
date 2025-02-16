@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/keyboard_synth -Wall -Wextra -O3 -lm -lportaudio && ./bin/keyboard_synth "$@"; exit $?
+//usr/bin/true && ./utils/run.c "$0" -Wall -Wextra -O3 -lm -lportaudio; exit $?
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
 #include "../../src/ui/display.h"

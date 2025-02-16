@@ -1,4 +1,4 @@
-//usr/bin/gcc "$0" -o bin/drummer -Wall -Wextra -O3 -lm -lportaudio && ./bin/drummer "$@"; exit $?
+//usr/bin/true && ./utils/run.c "$0" -Wall -Wextra -O3 -lm -lportaudio; exit $?
 // Based on: https://supercollider.github.io/examples
 #include "../../src/func/all.h"
 #include "../../src/io/player.h"
