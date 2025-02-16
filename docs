@@ -1,6 +1,0 @@
-#!/bin/bash
-
-set -e
-
-doxygen Doxyfile 2>&1 | grep "warning" | grep -v "warning: Compound"
-
