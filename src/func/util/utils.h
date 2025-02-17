@@ -7,6 +7,7 @@
 #include "./dump.h"
 #include "./fps.h"
 #include "./gauge.h"
+#include "./gram.h"
 #include "./mem.h"
 #include "./print.h"
 #include "./record.h"
@@ -68,6 +69,12 @@ Func *mem(Func *input)
 Func *scope(Func *input, Func *frequency)
 {
     return scope_create(input, frequency, 300, 1.05, "output/scope.ppm", 600, 300, 4);
+}
+
+/** @brief Plot spectrogram. */
+Func *gram(Func *input)
+{
+    return gram_create(input, 200, 2048, 200, "output/gram.ppm", 8);
 }
 
 #endif // CSYNTH_UTILS_H
