@@ -18,15 +18,11 @@ static double triangle_eval(__U size_t count, Gen **args, Eval *eval, void *cont
     TriangleContext *context = (TriangleContext *)context_;
     double output = context->last;
     double tick = gen_eval(args[0], eval);
-    context->last += context->direction * tick;
-    if (context->last > 1.0)
+    double skew = gen_eval(args[1], eval);
+    context->last += 4.0 / (skew + context->direction) * tick;
+    if (context->direction * context->last > 1.0)
     {
-        context->last = 2.0 - context->last;
-        context->direction = -context->direction;
-    }
-    else if (context->last < -1.0)
-    {
-        context->last = -2.0 - context->last;
+        context->last = context->direction + (context->last - context->direction) * (skew + context->direction) / (skew - context->direction);
         context->direction = -context->direction;
     }
     return output;
@@ -47,12 +43,14 @@ static double triangle_eval(__U size_t count, Gen **args, Eval *eval, void *cont
  *
  * @param tick Function that controls the frequency in periods per sample.
  *            Frequency in Hz = tick * sample_rate
+ * @param skew Value in [-1, 1], with 0 being a standard triangle wave, -1 and 1
+ *             being a sawtooth wave.
  * @return Func* Triangle wave oscillator that outputs values between -1 and +1.
  */
-Func *triangle_create(Func *tick)
+Func *triangle_create(Func *tick, Func *skew)
 {
-    TriangleContext initial = {.direction = 4.0};
-    return func_create(NULL, triangle_eval, NULL, NULL, sizeof(TriangleContext), &initial, FuncFlagNone, tick);
+    TriangleContext initial = {.direction = 1.0};
+    return func_create(NULL, triangle_eval, NULL, NULL, sizeof(TriangleContext), &initial, FuncFlagNone, tick, skew);
 }
 
 #endif // CSYNTH_TRIANGLE_H

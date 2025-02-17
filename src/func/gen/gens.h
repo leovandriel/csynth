@@ -35,7 +35,11 @@ Func *square(Func *frequency) { return square_create(mul(param(EvalParamPitchTic
 /** @brief Create a square wave oscillator with constant frequency */
 Func *square_(double frequency) { return square(const_(frequency)); }
 /** @brief Create a triangle wave oscillator with variable frequency */
-Func *triangle(Func *frequency) { return triangle_create(mul(param(EvalParamPitchTick), frequency)); }
+Func *triangle_skew(Func *frequency, Func *skew) { return triangle_create(mul(param(EvalParamPitchTick), frequency), skew); }
+/** @brief Create a triangle wave oscillator with variable frequency */
+Func *triangle_skew_(Func *frequency, double skew) { return triangle_skew(frequency, const_(skew)); }
+/** @brief Create a triangle wave oscillator with variable frequency */
+Func *triangle(Func *frequency) { return triangle_skew(frequency, const_(0)); }
 /** @brief Create a triangle wave oscillator with constant frequency */
 Func *triangle_(double frequency) { return triangle(const_(frequency)); }
 
