@@ -4,7 +4,7 @@
 
 void test_scope(void)
 {
-    Gen *gen = gen_create(scope_create(const_create(1), const_create(1), 1.0, "output/test.ppm", 10, 10, (Color){255, 255, 255}, 1, 1));
+    Gen *gen = gen_create(scope_create(const_create(1), const_create(1), 1, 1.0, "output/test.ppm", 10, 10, 1));
     Eval eval = {0};
     eval.params[EvalParamPitchTick] = 1;
     assert_long_equal(gen_eval(gen, &eval), 1);

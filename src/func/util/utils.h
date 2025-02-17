@@ -64,10 +64,10 @@ Func *mem(Func *input)
     return mem_create(input);
 }
 
-/** @brief Plot wave at given frequency. */
+/** @brief Plot oscilloscope. */
 Func *scope(Func *input, Func *frequency)
 {
-    return scope_create(input, frequency, 1.05, "output/scope.ppm", 600, 300, (Color){255, 255, 255}, 3, 300);
+    return scope_create(input, frequency, 300, 1.05, "output/scope.ppm", 600, 300, 4);
 }
 
 #endif // CSYNTH_UTILS_H
