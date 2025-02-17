@@ -10,6 +10,7 @@
 #include "./mem.h"
 #include "./print.h"
 #include "./record.h"
+#include "./scope.h"
 #include "./wrap.h"
 
 /** @brief Shorthand for `gauge_create`, including a display label. */
@@ -61,6 +62,12 @@ Func *mem(Func *input)
     display_label("alloc");
     display_label("free");
     return mem_create(input);
+}
+
+/** @brief Plot wave at given frequency. */
+Func *scope(Func *input, Func *frequency)
+{
+    return scope_create(input, frequency, 1.05, "output/scope.ppm", 600, 300, (Color){255, 255, 255}, 3, 300);
 }
 
 #endif // CSYNTH_UTILS_H

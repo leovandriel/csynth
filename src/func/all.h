@@ -78,6 +78,7 @@
 #include "./util/print.h"
 #include "./util/record.h"
 #include "./util/scale.h"
+#include "./util/scope.h"
 #include "./util/times.h"
 #include "./util/utils.h"
 #include "./util/wrap.h"
