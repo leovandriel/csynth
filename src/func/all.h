@@ -35,6 +35,7 @@
 #include "./filter/envelopes.h"
 #include "./filter/filters.h"
 #include "./filter/finish.h"
+#include "./filter/gamma.h"
 #include "./filter/hpf.h"
 #include "./filter/lpf.h"
 #include "./filter/resonant.h"

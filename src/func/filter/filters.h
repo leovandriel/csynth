@@ -11,6 +11,7 @@
 #include "./compressor.h"
 #include "./distortion.h"
 #include "./finish.h"
+#include "./gamma.h"
 #include "./hpf.h"
 #include "./lpf.h"
 #include "./resonant.h"
@@ -98,5 +99,12 @@ Func *finish_(double duration, Func *input) { return finish(const_(duration), in
 Func *slope(Func *frequency, Func *input) { return slope_create(mul(param(EvalParamPitchTick), frequency), input); }
 /** @brief Create a slope limit with constant derivative */
 Func *slope_(double derivative, Func *input) { return slope(const_(derivative), input); }
+
+/** @brief Maps triangle wave shape to circle */
+Func *circle(Func *frequency) { return gamma_create(triangle(frequency), const_(1), map_circle); }
+/** @brief Maps triangle wave shape to power */
+Func *gamma(Func *input, Func *exponent) { return gamma_create(input, exponent, map_gamma); }
+/** @brief Maps triangle wave shape to power */
+Func *gamma_(Func *input, int exponent) { return gamma(input, _(exponent)); }
 
 #endif // CSYNTH_FILTERS_H
