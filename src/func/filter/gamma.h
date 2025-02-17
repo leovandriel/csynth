@@ -7,28 +7,22 @@
 
 typedef double (*gamma_mapping)(double amplitude, double param);
 
-double map_gamma(double amplitude, double exponent)
+double map_gamma(double amplitude, double exponent) // gamma_mapping
 {
-    if (exponent >= 0)
+    if (exponent < 0)
     {
-        return 1 - fast_pow(1 - amplitude, exponent);
+        return math_pow_int(amplitude, -(int)exponent);
     }
-    else
-    {
-        return fast_pow(amplitude, -exponent);
-    }
+    return 1 - math_pow_int(1 - amplitude, (int)exponent);
 }
 
-double map_circle(double amplitude, double shape)
+double map_circle(double amplitude, double shape) // gamma_mapping
 {
-    if (shape > 0)
+    if (shape < 0)
     {
-        return fast_sqrt_0to1(amplitude * (2 - amplitude));
+        return 1 - math_sqrt_0to1(1 - amplitude * amplitude);
     }
-    else
-    {
-        return 1 - fast_sqrt_0to1(1 - amplitude * amplitude);
-    }
+    return math_sqrt_0to1(amplitude * (2 - amplitude));
 }
 
 /** @brief See gamma_create */

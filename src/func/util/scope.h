@@ -60,8 +60,8 @@ static csError scope_write(ScopeContext *context)
     unsigned char *out = write_buffer, *out_end = write_buffer + WRITER_BUFFER_SIZE;
     for (size_t *in = context->buffer, *int_end = context->buffer + size; in < int_end; in++)
     {
-        double value = *in / context->periods;
-        double corrected = (1 - fast_pow(1 - value / 255.0, context->gamma)) * 255.0;
+        double value = (double)(*in / context->periods);
+        double corrected = (1 - math_pow_int(1 - value / 255.0, context->gamma)) * 255.0;
         *(out++) = (unsigned char)corrected;
         if (out == out_end)
         {
@@ -79,9 +79,9 @@ static double scope_eval(__U size_t count, Gen **args, Eval *eval, void *context
     ScopeContext *context = (ScopeContext *)context_;
     double input = gen_eval(args[0], eval);
     double frequency = gen_eval(args[1], eval);
-    size_t x = context->width * context->phase;
-    size_t y = context->height * (input / context->range + 1) * 0.5;
-    size_t *buffer = &context->buffer[(y * context->width - x) * SCOPE_COLOR_DEPTH];
+    size_t x_coord = (size_t)((double)context->width * context->phase);
+    size_t y_coord = (size_t)((double)context->height * (input / context->range + 1) * 0.5);
+    size_t *buffer = &context->buffer[(y_coord * context->width - x_coord) * SCOPE_COLOR_DEPTH];
     *(buffer++) += context->color.r;
     *(buffer++) += context->color.g;
     *(buffer++) += context->color.b;

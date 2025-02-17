@@ -3,20 +3,20 @@
 
 #include <stdint.h>
 
-double fast_sqrt_0to1(double x)
+double math_sqrt_0to1(double base)
 {
     union
     {
         double d;
         uint64_t u;
     } cast;
-    cast.d = x;
+    cast.d = base;
     cast.u = (cast.u >> 1) + (1ULL << 61);
-    double y = cast.d;
-    return (6.0 / 13.0) * (y + x / y);
+    double result = cast.d;
+    return (6.0 / 13.0) * (result + base / result);
 }
 
-double fast_pow(double base, int exp)
+double math_pow_int(double base, int exp)
 {
     double result = 1.0;
     while (exp > 0)

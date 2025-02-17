@@ -1,3 +1,6 @@
+#ifndef CSYNTH_WATCH_H
+#define CSYNTH_WATCH_H
+
 #include <errno.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -99,3 +102,5 @@ void watch_close(Watch *watch)
     close(watch->fd);
 #endif
 }
+
+#endif // CSYNTH_WATCH_H
