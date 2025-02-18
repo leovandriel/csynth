@@ -107,7 +107,7 @@ This should sound like
 
 To see more of what you can do with CSynth, take a look in
 [examples/demo](examples/demo). To learn more about available functions, take a
-look in [src/func](src/func) and [examples/func](examples/func). 
+look in [src/func](src/func) and [examples/func](examples/func).
 
 If you run into audio issues, run the following to get an overview of all audio
 devices:
@@ -115,7 +115,6 @@ devices:
 ```shell
 ./utils/inspect_audio.c
 ```
-
 
 ## Functions
 
@@ -379,51 +378,91 @@ samples functions to an audio buffer. To implement a custom audio player:
 Lastly, functions that rely on sample data, like [wav](src/func/gen/wav.h), use
 [reader](src/io/reader.h) to load WAV data.
 
+## Tooling
+
+It analyze or troubleshoot, following tools are provided:
+
+- Logger: To write logs, use `log_info/warn/error`, see
+  [logger](src/util/logger.h).
+- Func: To print function tree, use `func_stats_print`, see
+  [func_tools](src/util/func_tools.h).
+- Dump: To print sample stats, use `log20/1k/10sec`, see
+  [dump](src/func/util/dump.h).
+- Print: To print text when function is sampled, use `print`, see
+  [print](src/func/util/print.h).
+- FPS: To get function calls per second, use `fps`, see
+  [fps](src/func/util/fps.h).
+- Memory: To get memory use, use `mem`, see [mem](src/func/util/mem.h).
+- Oscilloscope: To view wave form, use `scope`, see
+  [scope](src/func/util/scope.h).
+- Spectrogram: To do fourier analysis, use `gram`, see
+  [gram](src/func/util/gram.h).
+
 ## How it works
 
-CSynth represents audio synthesis as a directed acyclic graph (DAG) of functions. This architecture provides flexibility and composability while keeping the core implementation minimal and easy to understand.
+CSynth represents audio synthesis as a directed acyclic graph (DAG) of
+functions. This architecture provides flexibility and composability while
+keeping the core implementation minimal and easy to understand.
 
-The function graph is built using `*_create` functions or helper functions like `sine` and `saw`. This allows for a functional programming style where the audio composition is separate from the generation. The composition can be programmed directly in C. See [func.h](src/core/func.h) for details.
+The function graph is built using `*_create` functions or helper functions like
+`sine` and `saw`. This allows for a functional programming style where the audio
+composition is separate from the generation. The composition can be programmed
+directly in C. See [func.h](src/core/func.h) for details.
 
 Functions are organized into categories:
+
 - [gen](src/func/gen): Generate audio samples (sine, saw, etc.)
-- [op](src/func/op): Mathematical operations (add, mul, etc.) 
+- [op](src/func/op): Mathematical operations (add, mul, etc.)
 - [filter](src/func/filter): Audio filters (lpf, hpf, etc.)
 - [effect](src/func/effect): Complex effects (delay, reverb, etc.)
 - [comp](src/func/comp): Composition tools (seq, pattern, etc.)
 - [control](src/func/control): Manual controls (keyboard, midi, etc.)
 
-Once defined, the function graph can be sampled using `player` or `writer`. These handle audio device setup, sample generation, and cleanup. During sampling, the function DAG is transformed into a generator tree, allowing functions to be reused while maintaining separate state. See [gen.h](src/core/gen.h) for details.
+Once defined, the function graph can be sampled using `player` or `writer`.
+These handle audio device setup, sample generation, and cleanup. During
+sampling, the function DAG is transformed into a generator tree, allowing
+functions to be reused while maintaining separate state. See
+[gen.h](src/core/gen.h) for details.
 
 The `sampler` orchestrates this process:
+
 1. Creates the generator tree via `gen_create`
-2. Generates samples by calling `gen_eval` on the root generator 
+2. Generates samples by calling `gen_eval` on the root generator
 3. Quantizes samples to the target format
 4. Maintains `EvalParam` state for pitch, tempo, sustain etc.
 
-Generators can be reset to their initial state using `gen_reset`. This is useful for things like envelopes that need to restart on each trigger. For example, the `trigger` function resets its generator on key press to play a new note. Reset behavior is configurable per function via `FuncFlag`.
+Generators can be reset to their initial state using `gen_reset`. This is useful
+for things like envelopes that need to restart on each trigger. For example, the
+`trigger` function resets its generator on key press to play a new note. Reset
+behavior is configurable per function via `FuncFlag`.
 
-While flexible and composable, this architecture has performance implications since even simple compositions can require hundreds of generators. To manage this, CSynth uses different evaluation rates:
+While flexible and composable, this architecture has performance implications
+since even simple compositions can require hundreds of generators. To manage
+this, CSynth uses different evaluation rates:
 
 - `COMPUTE_RATE`: Controls when expensive computations occur
-- `CONTROL_RATE`: Reduces UI overhead 
+- `CONTROL_RATE`: Reduces UI overhead
 - `DISPLAY_RATE`: Reduces display update overhead
 
-The sampler's `compute_flag` indicates when expensive computations should run based on these rates.
+The sampler's `compute_flag` indicates when expensive computations should run
+based on these rates.
 
 ## Dependencies
 
-CSynth is designed to have minimal dependencies, relying primarily on the C standard
-library. The core audio synthesis engine, file I/O, and all synth functions work
-without any external dependencies.
+CSynth is designed to have minimal dependencies, relying primarily on the C
+standard library. The core audio synthesis engine, file I/O, and all synth
+functions work without any external dependencies.
 
 The only external dependencies are for real-time audio/MIDI device support:
 
-- [PortAudio](https://www.portaudio.com/) for audio playback ([player.h](src/io/player.h))
-- [PortMidi](https://github.com/PortMidi/portmidi) for MIDI input ([midi_player.h](src/io/midi_player.h))
+- [PortAudio](https://www.portaudio.com/) for audio playback
+  ([player.h](src/io/player.h))
+- [PortMidi](https://github.com/PortMidi/portmidi) for MIDI input
+  ([midi_player.h](src/io/midi_player.h))
 
-These dependencies are only included in the relevant device I/O headers and examples.
-The rest of the codebase remains dependency-free and can be used standalone.
+These dependencies are only included in the relevant device I/O headers and
+examples. The rest of the codebase remains dependency-free and can be used
+standalone.
 
 ## Development
 
