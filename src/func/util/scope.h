@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "../../io/file.h"
+#include "../../io/ppm_header.h"
 #include "../../util/error.h"
 #include "../../util/math.h"
 
@@ -32,16 +33,20 @@ typedef struct
     double phase;
     /** @brief The count of periods accumulated. */
     size_t period_count;
+    /** @brief The current image index. */
+    size_t image_index;
 } ScopeContext;
 
 static csError scope_write(ScopeContext *context)
 {
-    FILE *file = fopen_(context->filename, "w");
+    char filename[256];
+    snprintf(filename, 256, context->filename, (int)context->image_index);
+    FILE *file = fopen_(filename, "w");
     if (file == NULL)
     {
         return error_type(csErrorFileOpen);
     }
-    fprintf(file, "P6\n%zu %zu\n255\n", context->width, context->height);
+    ppm_header_write(file, context->width, context->height);
     size_t size = context->width * context->height * SCOPE_COLOR_DEPTH;
     unsigned char write_buffer[WRITER_BUFFER_SIZE];
     unsigned char *out = write_buffer, *out_end = write_buffer + WRITER_BUFFER_SIZE;
@@ -58,6 +63,7 @@ static csError scope_write(ScopeContext *context)
     }
     fwrite(write_buffer, sizeof(unsigned char), out - write_buffer, file);
     fclose_(file);
+    log_info("Oscilloscope saved to %s", filename);
     return csErrorNone;
 }
 
@@ -80,6 +86,7 @@ static double scope_eval(__U size_t count, Gen **args, Eval *eval, void *context
         {
             scope_write(context);
             memset(context->buffer, 0, context->width * context->height * SCOPE_COLOR_DEPTH * sizeof(size_t));
+            context->image_index++;
         }
     }
     return input;

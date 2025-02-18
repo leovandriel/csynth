@@ -6,6 +6,7 @@
 #include <string.h>
 
 #include "../../io/file.h"
+#include "../../io/ppm_header.h"
 #include "../../util/error.h"
 #include "../../util/math.h"
 
@@ -55,12 +56,16 @@ void gram_add(GramContext *context)
     }
 }
 
-void gram_write(GramContext *context)
+static csError gram_write(GramContext *context)
 {
     char filename[256];
     snprintf(filename, 256, context->filename, (int)context->image_index);
     FILE *file = fopen_(filename, "wb");
-    fprintf(file, "P6\n%zu %zu\n255\n", context->frame_count, context->height);
+    if (file == NULL)
+    {
+        return error_type(csErrorFileOpen);
+    }
+    ppm_header_write(file, context->frame_count, context->height);
     unsigned char write_buffer[WRITER_BUFFER_SIZE];
     unsigned char *out = write_buffer, *out_end = write_buffer + WRITER_BUFFER_SIZE;
     for (size_t j = 0; j < context->height; j++)
@@ -80,6 +85,8 @@ void gram_write(GramContext *context)
     }
     fwrite(write_buffer, sizeof(unsigned char), out - write_buffer, file);
     fclose_(file);
+    log_info("Spectrogram saved to %s", filename);
+    return csErrorNone;
 }
 
 static double gram_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
