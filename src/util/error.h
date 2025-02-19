@@ -26,6 +26,7 @@ typedef enum
     csErrorDisplay,
     csErrorPortAudio,
     csErrorPortMidi,
+    csErrorThread,
     csErrorLength,
 } csError;
 
@@ -67,6 +68,8 @@ const char *error_message(csError type)
         return "PortAudio error";
     case csErrorPortMidi:
         return "PortMIDI error";
+    case csErrorThread:
+        return "thread error";
     default:
         return "unknown error";
     }
