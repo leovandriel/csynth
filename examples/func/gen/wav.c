@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/wav -Wall -Wextra -O3 -lm -lportaudio && ./bin/wav "$@"; exit $?
 #include "../../../src/func/all.h"
-#include "../../../src/io/player.h"
+#include "../../../src/io/term_player.h"
 
 int main(void)
 {

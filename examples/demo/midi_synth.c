@@ -1,4 +1,4 @@
-//usr/bin/true && ./utils/run.c "$0" -Wall -Wextra -O3 -lm -lportaudio; exit $?
+//usr/bin/true && ./utils/run.c "$0" -Wall -Wextra -O3 -lm -lportaudio -lportmidi; exit $?
 #include "../../src/func/all.h"
 #include "../../src/io/midi_player.h"
 #include "../../src/util/func_tools.h"

@@ -1,6 +1,6 @@
 //usr/bin/true && ./utils/run.c "$0" -Wall -Wextra -O3 -lm -lportaudio; exit $?
 #include "../../src/func/all.h"
-#include "../../src/io/player.h"
+#include "../../src/io/time_player.h"
 #include "../../src/util/random.h"
 
 static func strum(int count, const double *frequencies, double span, double decay)
@@ -92,5 +92,5 @@ int main(void)
     func guitar = seq_abs(
         t(0), gg0,
         t(18), add(guitar1, guitar2));
-    return play_duration(24, guitar);
+    return play_time(24, guitar);
 }

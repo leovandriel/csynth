@@ -112,6 +112,9 @@ double midi_time(void)
  */
 void midi_loop(double duration, int exit_key)
 {
+#ifdef AUTO_EXIT
+    duration = AUTO_EXIT * 1e-3;
+#endif
     MidiContext context = {0};
     csError error = midi_initialize(&context);
     if (error != csErrorNone)

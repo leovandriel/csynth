@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/crack -Wall -Wextra -O3 -lm -lportaudio && ./bin/crack "$@"; exit $?
 #include "../../../src/func/all.h"
-#include "../../../src/io/player.h"
+#include "../../../src/io/time_player.h"
 
 int main(void)
 {
@@ -9,5 +9,5 @@ int main(void)
         print("crack(1)", crack_(1)), _(4),
         print("crack(10)", crack_(10)), _(4),
         print("crack(100)", crack_(100)), _(4));
-    return play_duration(12, mul_(.5, fun));
+    return play_time(12, mul_(.5, fun));
 }

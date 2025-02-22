@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/seq -Wall -Wextra -O3 -lm -lportaudio && ./bin/seq "$@"; exit $?
 #include "../../../src/func/all.h"
-#include "../../../src/io/player.h"
+#include "../../../src/io/time_player.h"
 
 int main(void)
 {
@@ -10,5 +10,5 @@ int main(void)
                             seq_loop_(.25, F3, F4),
                             seq_loop_(.25, Eb3, Eb4));
     func fun = mul_(.1, lowpass_(400, 1, saw(melody)));
-    return play_duration(16, fun);
+    return play_time(16, fun);
 }

@@ -1,6 +1,6 @@
 //usr/bin/true && ./utils/run.c "$0" -Wall -Wextra -O3 -lm -lportaudio; exit $?
 #include "../../src/func/all.h"
-#include "../../src/io/player.h"
+#include "../../src/io/time_player.h"
 
 static func beep(void)
 {
@@ -28,5 +28,5 @@ int main(void)
     func dynamic = seq_rel(
         modulate_pitch(), _(10),
         modulate_tempo(), _(10));
-    return play_duration(20, dynamic);
+    return play_time(20, dynamic);
 }

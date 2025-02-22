@@ -4,19 +4,32 @@
 #include "../ui/midi.h"
 #include "./player.h"
 
-/** @brief Configuration that uses PortAudio output and PortMIDI input. */
-const PlayerConfig MIDI_PLAYER_CONFIG = {
-    .loop = midi_loop,
-    .duration = 0.0,
-    .sample_rate = SAMPLE_RATE,
-    .exit_key = EXIT_KEY,
-};
+#define EXIT_KEY '\e' // ESC key
 
-/** @brief Shorthand for `player_play_with_cleanup`, using MIDI_PLAYER_CONFIG.
- * */
-int play_midi(Func *input) { return player_play_with_cleanup(MIDI_PLAYER_CONFIG, ARGS(input)); } /* midi_player_ */
-/** @brief Shorthand for `player_play_with_cleanup`, using MIDI_PLAYER_CONFIG.
- * */
-int play_midi_stereo(Func *left, Func *right) { return player_play_with_cleanup(MIDI_PLAYER_CONFIG, ARGS(left, right)); } /* midi_player_ */
+/** @brief Play channels with PortAudio output. */
+csError midi_player_play(size_t count, Func **channels)
+{
+    Player player = {0};
+    csError error = player_open(&player, SAMPLE_RATE, count, channels);
+    if (error != csErrorNone)
+    {
+        return error;
+    }
+    midi_loop(0.0, EXIT_KEY);
+    return player_close(&player);
+}
+
+int play_midi_cleanup(size_t count, Func **channels) /* midi_player_ */
+{
+    csError error = midi_player_play(count, channels);
+    cleanup_all();
+    return error;
+}
+
+/** @brief Shorthand for `play_midi_cleanup`. */
+int play_midi(Func *input) { return play_midi_cleanup(ARGS(input)); } /* midi_player_ */
+
+/** @brief Shorthand for `play_midi_cleanup`. */
+int play_midi_stereo(Func *left, Func *right) { return play_midi_cleanup(ARGS(left, right)); } /* midi_player_ */
 
 #endif // CSYNTH_MIDI_PLAYER_H

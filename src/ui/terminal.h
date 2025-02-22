@@ -100,6 +100,9 @@ double terminal_time(void)
  */
 void terminal_loop(double duration, int exit_key)
 {
+#ifdef AUTO_EXIT
+    duration = AUTO_EXIT * 1e-3;
+#endif
     struct termios term = terminal_setup(1);
     signal(SIGINT, terminal_handler);
     double start = terminal_time();

@@ -44,7 +44,7 @@ that plays a 440 Hz sine wave:
 
 ```c
 #include "./src/func/all.h"
-#include "./src/io/player.h"
+#include "./src/io/term_player.h"
 
 int main(void)
 {
@@ -340,16 +340,16 @@ MIDI is implemented, see [midi.h](./src/ui/midi.h).
 ## I/O
 
 Most of the examples above use [player](src/io/player.h) to sample a function to
-the system audio buffer. A [player](src/io/player.h) takes care of setting up
+the system audio buffer. A [term_player](src/io/term_player.h) takes care of setting up
 [PortAudio](https://www.portaudio.com/), the [sampler](src/io/sampler.h), the
 [terminal](src/ui/terminal.h), and it cleans things up before exiting the
 program. It comes in a few variants:
 
 ```c
     play(sine(A4));
-    play_duration(10, sine(A4)); // 10 seconds
+    play_time(10, sine(A4)); // 10 seconds
     play_stereo(sine(A4), sine(B4));
-    play_stereo_duration(10, sine(A4), sine(B4));
+    play_stereo_time(10, sine(A4), sine(B4));
     play_channels(4, (func[]){sine(A4), sine(B4), sine(C4), sine(D4)});
 ```
 
@@ -456,7 +456,7 @@ functions work without any external dependencies.
 The only external dependencies are for real-time audio/MIDI device support:
 
 - [PortAudio](https://www.portaudio.com/) for audio playback
-  ([player.h](src/io/player.h))
+  ([player.h](src/io/term_player.h))
 - [PortMidi](https://github.com/PortMidi/portmidi) for MIDI input
   ([midi_player.h](src/io/midi_player.h))
 

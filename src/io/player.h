@@ -4,39 +4,14 @@
 #include <portaudio.h>
 #include <stdio.h>
 
-#include "../ui/display.h"
-#include "../ui/terminal.h"
 #include "../util/cleanup.h"
 #include "../util/logger.h"
 #include "./sampler.h"
-
-#define EXIT_KEY '\e' // ESC key
-
-typedef void (*player_event_loop)(double duration, int exit_key);
-
-/**
- * @brief Player configuration.
- */
 typedef struct
 {
-    /** @brief Event loop function. */
-    player_event_loop loop;
-    /** @brief Duration in seconds after which playback stops. */
-    double duration;
-    /** @brief Sample rate in Hz. */
-    size_t sample_rate;
-    /** @brief Keyboard key code to trigger stop playback. */
-    int exit_key;
-} PlayerConfig;
-
-void player_event_loop_no_terminal(double duration, __U int exit_key)
-{
-    if (duration <= 0.0)
-    {
-        duration = FLT_MAX;
-    }
-    Pa_Sleep((long)(duration * 1e3));
-}
+    Sampler *sampler;
+    PaStream *stream;
+} Player;
 
 static int player_callback(__U const void *input, void *output_, size_t count, __U const PaStreamCallbackTimeInfo *info, __U PaStreamCallbackFlags flags, void *data)
 {
@@ -71,11 +46,8 @@ csError player_play_pause(PaStream *stream)
 }
 
 /** @brief Play channels with PortAudio output. */
-csError player_play_channels_no_cleanup(PlayerConfig config, size_t count, Func **channels)
+csError player_open(Player *player, size_t sample_rate, size_t count, Func **channels)
 {
-#ifdef AUTO_EXIT
-    config.duration = AUTO_EXIT * 1e-3;
-#endif
     PaError pa_error = Pa_Initialize();
     if (pa_error != paNoError)
     {
@@ -101,59 +73,51 @@ csError player_play_channels_no_cleanup(PlayerConfig config, size_t count, Func 
         .suggestedLatency = device_info->defaultLowOutputLatency,
         .hostApiSpecificStreamInfo = NULL,
     };
-    csError error = display_show();
-    if (error != csErrorNone)
-    {
-        Pa_Terminate();
-        return error;
-    }
-    Sampler *sampler = sampler_create(config.sample_rate, count, channels);
-    if (sampler == NULL)
+    player->sampler = sampler_create(sample_rate, count, channels);
+    if (player->sampler == NULL)
     {
         Pa_Terminate();
         return error_type_message(csErrorInit, "Unable to create sampler");
     }
-    log_info("Sampler created: %d funcs, %d gens, %d handlers", func_list_size(), sampler_gen_count(sampler), event_list_size());
-    PaStream *stream = NULL;
-    pa_error = Pa_OpenStream(&stream, NULL, &params, (int)config.sample_rate, paFramesPerBufferUnspecified, paNoFlag, player_callback, sampler);
+    log_info("Sampler created: %d funcs, %d gens, %d handlers", func_list_size(), sampler_gen_count(player->sampler), event_list_size());
+    player->stream = NULL;
+    pa_error = Pa_OpenStream(&player->stream, NULL, &params, (int)sample_rate, paFramesPerBufferUnspecified, paNoFlag, player_callback, player->sampler);
     if (pa_error != paNoError)
     {
-        sampler_free(sampler);
+        sampler_free(player->sampler);
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to open stream: %s", Pa_GetErrorText(pa_error), pa_error);
     }
-    const PaStreamInfo *stream_info = Pa_GetStreamInfo(stream);
+    const PaStreamInfo *stream_info = Pa_GetStreamInfo(player->stream);
     if (pa_error != paNoError)
     {
-        sampler_free(sampler);
-        Pa_CloseStream(stream);
+        sampler_free(player->sampler);
+        Pa_CloseStream(player->stream);
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to get stream info: %s", Pa_GetErrorText(pa_error), pa_error);
     }
     log_info("Stream opened: %.1f ms, %.3f kHz", stream_info->outputLatency * 1e3, stream_info->sampleRate * 1e-3);
-    pa_error = Pa_StartStream(stream);
+    pa_error = Pa_StartStream(player->stream);
     if (pa_error != paNoError)
     {
-        sampler_free(sampler);
-        Pa_CloseStream(stream);
+        sampler_free(player->sampler);
+        Pa_CloseStream(player->stream);
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to start stream: %s", Pa_GetErrorText(pa_error), pa_error);
     }
-    config.loop(config.duration, config.exit_key);
-    pa_error = Pa_CloseStream(stream);
+    return csErrorNone;
+}
+
+csError player_close(Player *player)
+{
+    PaError pa_error = Pa_CloseStream(player->stream);
     if (pa_error != paNoError)
     {
-        sampler_free(sampler);
+        sampler_free(player->sampler);
         Pa_Terminate();
         return error_type_message(csErrorPortAudio, "Unable to close stream: %s", Pa_GetErrorText(pa_error), pa_error);
     }
-    sampler_free(sampler);
-    error = display_hide();
-    if (error != csErrorNone)
-    {
-        Pa_Terminate();
-        return error;
-    }
+    sampler_free(player->sampler);
     pa_error = Pa_Terminate();
     if (pa_error != paNoError)
     {
@@ -161,38 +125,5 @@ csError player_play_channels_no_cleanup(PlayerConfig config, size_t count, Func 
     }
     return csErrorNone;
 }
-
-csError player_play_with_cleanup(PlayerConfig config, size_t count, Func **channels)
-{
-    csError error = player_play_channels_no_cleanup(config, count, channels);
-    cleanup_all();
-    return error;
-}
-
-const PlayerConfig PLAYER_CONFIG_TERMINAL = {
-    .loop = terminal_loop,
-    .duration = 0.0,
-    .sample_rate = SAMPLE_RATE,
-    .exit_key = EXIT_KEY,
-};
-const PlayerConfig PLAYER_CONFIG_NO_TERMINAL = {
-    .loop = player_event_loop_no_terminal,
-    .duration = 0.0,
-    .sample_rate = SAMPLE_RATE,
-    .exit_key = EXIT_KEY,
-};
-
-int play_channels(size_t count, Func **channels) { return player_play_with_cleanup(PLAYER_CONFIG_TERMINAL, count, channels); } /* player_ */
-int play(Func *input) { return play_channels(ARGS(input)); }                                                                   /* player_ */
-int play_stereo(Func *left, Func *right) { return play_channels(ARGS(left, right)); }                                          /* player_ */
-
-int play_channels_duration(double duration, size_t count, Func **channels) /* player_ */
-{
-    PlayerConfig config = PLAYER_CONFIG_NO_TERMINAL;
-    config.duration = duration;
-    return player_play_with_cleanup(config, count, channels);
-}
-int play_duration(double duration, Func *input) { return play_channels_duration(duration, ARGS(input)); }                          /* player_ */
-int play_stereo_duration(double duration, Func *left, Func *right) { return play_channels_duration(duration, ARGS(left, right)); } /* player_ */
 
 #endif // CSYNTH_PLAYER_H
