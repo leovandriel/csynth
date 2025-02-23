@@ -4,7 +4,8 @@
 
 void test_gram(void)
 {
-    Gen *gen = gen_create(gram_create(const_create(1), 8, 8, 1, "output/test.ppm", 1));
+    RenderPipe pipe = {.width = 1, .height = 1};
+    Gen *gen = gen_create(gram_create(const_create(1), 8, &pipe, 1));
     Eval eval = {0};
     eval.params[EvalParamPitchTick] = 1;
     assert_long_equal(gen_eval(gen, &eval), 1);

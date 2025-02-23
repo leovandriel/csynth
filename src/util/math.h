@@ -57,4 +57,9 @@ void math_fft(complex double *samples, size_t window)
     }
 }
 
+double math_gamma(double value, int gamma)
+{
+    return 1 - math_pow_int(1 - value, gamma);
+}
+
 #endif // CSYNTH_MATH_H

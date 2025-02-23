@@ -66,15 +66,15 @@ Func *mem(Func *input)
 }
 
 /** @brief Plot oscilloscope. */
-Func *scope(Func *input, Func *frequency)
+Func *scope(Func *input, Func *frequency, RenderPipe *pipe)
 {
-    return scope_create(input, frequency, 300, 1.05, "output/scope.ppm", 600, 300, 4);
+    return scope_create(input, frequency, 1, 1.05, pipe, 1);
 }
 
 /** @brief Plot spectrogram. */
-Func *gram(Func *input)
+Func *gram(Func *input, RenderPipe *pipe)
 {
-    return gram_create(input, 200, 2048, 200, "output/gram.ppm", 8);
+    return gram_create(input, 2048, pipe, 8);
 }
 
 #endif // CSYNTH_UTILS_H

@@ -6,13 +6,13 @@
 
 #include "../../io/file.h"
 #include "../../io/ppm_header.h"
+#include "../../ui/render_pipe.h"
 #include "../../util/error.h"
 #include "../../util/math.h"
 #include "../../util/worker.h"
 
-#define SCOPE_COLOR_DEPTH 3
 #define SCOPE_BUFFER_COUNT 2
-#define SCOPE_WRITER_BUFFER_SIZE 4096
+#define SCOPE_BUFFER_TYPE uint32_t
 
 /** @see scope_create */
 typedef struct
@@ -21,24 +21,18 @@ typedef struct
     size_t periods;
     /** @brief The range of the input, typically slightly above one. */
     double range;
-    /** @brief The name of the file to save the image. */
-    const char *filename;
-    /** @brief The width of the image. */
-    size_t width;
-    /** @brief The height of the image. */
-    size_t height;
+    /** @brief Image render target. */
+    RenderPipe *pipe;
     /** @brief Gamma correction, brightens darker pixels. */
     int gamma;
     /** @brief Pixel buffer. */
-    size_t *buffers[SCOPE_BUFFER_COUNT];
+    SCOPE_BUFFER_TYPE *buffers[SCOPE_BUFFER_COUNT];
     /** @brief Pixel buffer index. */
     size_t buffer_index;
     /** @brief The current phase of the plot. */
     double phase;
     /** @brief The count of periods accumulated. */
     size_t period_count;
-    /** @brief The current image index. */
-    size_t image_index;
     /** Async worker. */
     Worker worker;
 } ScopeContext;
@@ -46,32 +40,23 @@ typedef struct
 static void scope_job(void *context_)
 {
     ScopeContext *context = (ScopeContext *)context_;
-    char filename[256];
-    snprintf(filename, 256, context->filename, (int)context->image_index++);
-    FILE *file = fopen_(filename, "w");
-    if (file == NULL)
+    uint32_t *out_buffer = NULL;
+    size_t out_pitch = 0;
+    if (render_pipe_lock(context->pipe, &out_buffer, &out_pitch) != 0)
     {
         return;
     }
-    ppm_header_write(file, context->width, context->height);
-    size_t size = context->width * context->height * SCOPE_COLOR_DEPTH;
-    unsigned char write_buffer[SCOPE_WRITER_BUFFER_SIZE];
-    unsigned char *out = write_buffer, *out_end = write_buffer + SCOPE_WRITER_BUFFER_SIZE;
-    size_t *buffer = context->buffers[(context->buffer_index + SCOPE_BUFFER_COUNT - 1) % SCOPE_BUFFER_COUNT];
-    for (size_t *in = buffer, *in_end = in + size; in < in_end; in++)
+    SCOPE_BUFFER_TYPE *buffer = context->buffers[(context->buffer_index + SCOPE_BUFFER_COUNT - 1) % SCOPE_BUFFER_COUNT];
+    for (size_t j = 0; j < context->pipe->height; j++)
     {
-        double value = (double)(*in / context->periods);
-        double corrected = (1 - math_pow_int(1 - value / 255.0, context->gamma)) * 255.0;
-        *(out++) = (unsigned char)corrected;
-        if (out == out_end)
+        for (size_t i = 0; i < context->pipe->width; i++)
         {
-            fwrite(write_buffer, sizeof(unsigned char), out - write_buffer, file);
-            out = write_buffer;
+            double value = (double)buffer[j * context->pipe->width + i] / (double)context->periods;
+            unsigned char out = (unsigned char)(math_gamma(value, context->gamma) * 255.0);
+            out_buffer[j * (out_pitch / sizeof(uint32_t)) + i] = 0xFF000000 | (out << 16) | (out << 8) | out;
         }
     }
-    fwrite(write_buffer, sizeof(unsigned char), out - write_buffer, file);
-    fclose_(file);
-    log_info("Oscilloscope saved to %s", filename);
+    render_pipe_unlock(context->pipe);
 }
 
 static double scope_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
@@ -79,13 +64,10 @@ static double scope_eval(__U size_t count, Gen **args, Eval *eval, void *context
     ScopeContext *context = (ScopeContext *)context_;
     double input = gen_eval(args[0], eval);
     double frequency = gen_eval(args[1], eval);
-    size_t x_coord = (size_t)((double)context->width * context->phase);
-    size_t y_coord = (size_t)((double)context->height * (input / context->range + 1) * 0.5);
-    size_t *buffer = context->buffers[context->buffer_index];
-    size_t *iter = &buffer[(y_coord * context->width - x_coord) * SCOPE_COLOR_DEPTH];
-    *(iter++) += 255;
-    *(iter++) += 255;
-    *(iter++) += 255;
+    size_t x_coord = (size_t)((double)context->pipe->width * context->phase);
+    size_t y_coord = (size_t)((double)context->pipe->height * (input / context->range + 1) * 0.5);
+    SCOPE_BUFFER_TYPE *buffer = context->buffers[context->buffer_index];
+    buffer[y_coord * context->pipe->width + x_coord]++;
     context->phase += eval->params[EvalParamPitchTick] * frequency;
     if (context->phase >= 1.0)
     {
@@ -94,8 +76,8 @@ static double scope_eval(__U size_t count, Gen **args, Eval *eval, void *context
         {
             context->buffer_index = (context->buffer_index + 1) % SCOPE_BUFFER_COUNT;
             worker_run(&context->worker, scope_job, context);
-            size_t *buffer = context->buffers[context->buffer_index];
-            memset(buffer, 0, context->width * context->height * SCOPE_COLOR_DEPTH * sizeof(size_t));
+            SCOPE_BUFFER_TYPE *buffer = context->buffers[context->buffer_index];
+            memset(buffer, 0, context->pipe->width * context->pipe->height * sizeof(SCOPE_BUFFER_TYPE));
         }
     }
     return input;
@@ -106,7 +88,7 @@ static int scope_init(__U size_t count, __U Gen **args, void *context_)
     ScopeContext *context = (ScopeContext *)context_;
     for (size_t i = 0; i < SCOPE_BUFFER_COUNT; i++)
     {
-        context->buffers[i] = (size_t *)malloc_(context->width * context->height * SCOPE_COLOR_DEPTH * sizeof(size_t));
+        context->buffers[i] = (SCOPE_BUFFER_TYPE *)malloc_(context->pipe->width * context->pipe->height * sizeof(SCOPE_BUFFER_TYPE));
         if (context->buffers[i] == NULL)
         {
             for (size_t j = 0; j < i; j++)
@@ -144,14 +126,12 @@ static void scope_free(__U size_t count, void *context_)
  * @param periods The number of periods to accumulate in the plot.
  * @return A pointer to the created scope function.
  */
-Func *scope_create(Func *input, Func *frequency, size_t periods, double range, const char *filename, size_t width, size_t height, int gamma)
+Func *scope_create(Func *input, Func *frequency, size_t periods, double range, RenderPipe *pipe, int gamma)
 {
     ScopeContext initial = {
         .periods = periods,
         .range = range,
-        .filename = filename,
-        .width = width,
-        .height = height,
+        .pipe = pipe,
         .gamma = gamma,
     };
     return func_create(scope_init, scope_eval, scope_free, NULL, sizeof(ScopeContext), &initial, FuncFlagNone, input, frequency);
