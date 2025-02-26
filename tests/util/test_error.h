@@ -1,7 +1,7 @@
 #include "../../src/util/error.h"
 #include "./test.h"
 
-volatile static int test_error_count_global = 0;
+static volatile int test_error_count_global = 0;
 
 int test_error_format(__U FILE *file, LoggerLevel level, __U const char *source, __U int line, const char *message, ...)
 {

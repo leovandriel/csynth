@@ -103,8 +103,6 @@ Func *slope_(double derivative, Func *input) { return slope(const_(derivative), 
 /** @brief Maps triangle wave shape to circle */
 Func *circle(Func *frequency) { return gamma_create(triangle(frequency), const_(1), map_circle); }
 /** @brief Maps triangle wave shape to power */
-Func *gamma(Func *input, Func *exponent) { return gamma_create(input, exponent, map_gamma); }
-/** @brief Maps triangle wave shape to power */
-Func *gamma_(Func *input, int exponent) { return gamma(input, _(exponent)); }
+Func *gamma_(Func *input, int exponent) { return gamma_create(input, _(exponent), map_gamma); }
 
 #endif // CSYNTH_FILTERS_H

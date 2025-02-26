@@ -33,7 +33,7 @@ int watch_init(Watch *watch, const char *filename)
     {
         return errno;
     }
-    int watch->wd = inotify_add_watch(watch->fd, filename, IN_MODIFY);
+    watch->wd = inotify_add_watch(watch->fd, filename, IN_MODIFY);
     if (watch->wd < 0)
     {
         int error = errno ? errno : -1;
