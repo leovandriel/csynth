@@ -45,7 +45,7 @@ Func *pause_reset(int key, Func *input) { return pause_create(key, 1, 0, input);
 Func *reset_pause(int key, Func *input) { return pause_create(key, 1, 1, input); }
 
 /** @brief Shorthand for `selector_create`. */
-#define selector(key, ...) (selector_create(key, ARGS(__VA_ARGS__)))
+#define selector(key, ...) (selector_create(key, ARGS_FUNC(__VA_ARGS__)))
 
 /** @brief Shorthand for `stepper_create`. */
 Func *stepper(int key, double value, double delta) { return stepper_create(key, value, delta, -FLT_MAX, FLT_MAX, 0); }

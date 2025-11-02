@@ -27,9 +27,9 @@ int play_screen_cleanup(RenderPipe *pipe, size_t count, Func **channels) /* scre
 }
 
 /** @brief Shorthand for `play_screen_cleanup`. */
-int play_screen(Func *input, RenderPipe *pipe) { return play_screen_cleanup(pipe, ARGS(input)); } /* screen_player_ */
+int play_screen(Func *input, RenderPipe *pipe) { return play_screen_cleanup(pipe, ARGS_FUNC(input)); } /* screen_player_ */
 
 /** @brief Shorthand for `play_screen_cleanup`. */
-int play_screen_stereo(Func *left, Func *right, RenderPipe *pipe) { return play_screen_cleanup(pipe, ARGS(left, right)); } /* screen_player_ */
+int play_screen_stereo(Func *left, Func *right, RenderPipe *pipe) { return play_screen_cleanup(pipe, ARGS_FUNC(left, right)); } /* screen_player_ */
 
 #endif // CSYNTH_SCREEN_PLAYER_H

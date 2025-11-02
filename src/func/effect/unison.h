@@ -28,7 +28,7 @@ Func *unison_create(size_t count, Func *input)
     {
         array[i] = input;
     }
-    Func *output = mul_create(ARGS(add_create(count, array), const_(1.0 / count)));
+    Func *output = mul_create(ARGS_FUNC(add_create(count, array), const_(1.0 / count)));
     free_(array);
     return output;
 }

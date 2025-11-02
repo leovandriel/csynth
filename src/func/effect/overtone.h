@@ -30,9 +30,9 @@ Func *overtone_create(int range, Func *gain, Func *input)
     {
         double gain_factor = (double)i / (double)(count - 1);
         double pitch_factor = exp2((double)i * sign);
-        Func *gain_ = pow_create(const_(M_E), mul_create(ARGS(const_(gain_factor), gain)));
+        Func *gain_ = pow_create(const_(M_E), mul_create(ARGS_FUNC(const_(gain_factor), gain)));
         Func *input_ = scale_create(EvalParamPitchTick, const_(pitch_factor), input);
-        array[i] = mul_create(ARGS(gain_, input_));
+        array[i] = mul_create(ARGS_FUNC(gain_, input_));
     }
     Func *output = add_create(count, array);
     free_(array);

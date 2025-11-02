@@ -11,8 +11,9 @@
 #define ARRAY(__type, ...) ((__type[]){__VA_ARGS__})
 #define ARRAY_SIZE(__array) (sizeof((__array)) / sizeof((__array)[0]))
 #define ARRAY_ARGS(__array) ARRAY_SIZE(__array), (__array)
-#define ARGS(...) ARRAY_ARGS(ARRAY(Func *, __VA_ARGS__))
-#define ARGS_COUNT(...) ARRAY_SIZE(ARRAY(Func *, __VA_ARGS__))
+#define ARGS_TYPE(__type, ...) ARRAY_ARGS(ARRAY(__type, __VA_ARGS__))
+#define ARGS_FUNC(...) ARGS_TYPE(Func *, __VA_ARGS__)
+#define ARGS_COUNT(__type, ...) ARRAY_SIZE(ARRAY(__type, __VA_ARGS__))
 
 static const double FUNC_EPSILON = DBL_EPSILON * 2;
 static const double FUNC_AUDIBLE = 1e-3;

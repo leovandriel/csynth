@@ -26,7 +26,7 @@ Func *wrap(wrap_callback callback, Func *input, void *context) { return wrap_cre
 /** @brief Shorthand for `wrap_create`, using an EvalParamPitchTick timer. */
 Func *wrap_(wrap_callback callback, void *context) { return wrap(callback, timer(EvalParamPitchTick), context); }
 
-#define record_channels(_filename, _sample_rate, ...) (record_filename(_filename, _sample_rate, ARGS(__VA_ARGS__)))
+#define record_channels(_filename, _sample_rate, ...) (record_filename(_filename, _sample_rate, ARGS_FUNC(__VA_ARGS__)))
 /** @brief Shorthand for `record_create`, using SAMPLE_RATE and a mono channel.
  * */
 Func *record(const char *filename, Func *input) { return record_channels(filename, SAMPLE_RATE, input); }

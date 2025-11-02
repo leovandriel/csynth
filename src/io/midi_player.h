@@ -27,9 +27,9 @@ int play_midi_cleanup(size_t count, Func **channels) /* midi_player_ */
 }
 
 /** @brief Shorthand for `play_midi_cleanup`. */
-int play_midi(Func *input) { return play_midi_cleanup(ARGS(input)); } /* midi_player_ */
+int play_midi(Func *input) { return play_midi_cleanup(ARGS_FUNC(input)); } /* midi_player_ */
 
 /** @brief Shorthand for `play_midi_cleanup`. */
-int play_midi_stereo(Func *left, Func *right) { return play_midi_cleanup(ARGS(left, right)); } /* midi_player_ */
+int play_midi_stereo(Func *left, Func *right) { return play_midi_cleanup(ARGS_FUNC(left, right)); } /* midi_player_ */
 
 #endif // CSYNTH_MIDI_PLAYER_H

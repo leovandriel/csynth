@@ -19,7 +19,7 @@
 #include "./tanh.h"
 
 /** @brief Macro to create an addition function with variable arguments */
-#define add(...) (add_create(ARGS(__VA_ARGS__)))
+#define add(...) (add_create(ARGS_FUNC(__VA_ARGS__)))
 /** @brief Creates an addition function that adds a constant value to an input */
 Func *add_(double value, Func *input) { return add(const_(value), input); }
 /** @brief Creates a negation function that outputs -input */
@@ -30,7 +30,7 @@ Func *sub(Func *lhs, Func *rhs) { return add(lhs, neg(rhs)); }
 Func *sub_(Func *lhs, double rhs) { return sub(lhs, const_(rhs)); }
 
 /** @brief Macro to create a multiplication function with variable arguments */
-#define mul(...) (mul_create(ARGS(__VA_ARGS__)))
+#define mul(...) (mul_create(ARGS_FUNC(__VA_ARGS__)))
 /** @brief Creates a multiplication function that multiplies input by a constant value */
 Func *mul_(double value, Func *input) { return mul(const_(value), input); }
 /** @brief Creates an inversion function that outputs 1/input */
@@ -38,9 +38,9 @@ Func *inv(Func *input) { return inv_create(input); }
 /** @brief Creates a division function that outputs lhs/rhs */
 Func *dvd(Func *lhs, Func *rhs) { return mul(lhs, inv(rhs)); }
 /** @brief Creates an average function that outputs the mean of multiple inputs */
-Func *avg_create(size_t count, Func **inputs) { return mul_create(ARGS(add_create(count, inputs), const_(1.0 / (double)count))); }
+Func *avg_create(size_t count, Func **inputs) { return mul_create(ARGS_FUNC(add_create(count, inputs), const_(1.0 / (double)count))); }
 /** @brief Macro to create an average function with variable arguments */
-#define avg(...) (avg_create(ARGS(__VA_ARGS__)))
+#define avg(...) (avg_create(ARGS_FUNC(__VA_ARGS__)))
 
 /** @brief Creates a power function that outputs base^exponent */
 Func *pow_op(Func *base, Func *exponent) { return pow_create(base, exponent); }
@@ -65,11 +65,11 @@ Func *sum(Func *input) { return sum_create(input); }
 Func *prod(Func *input) { return prod_create(input); }
 
 /** @brief Macro to create a minimum function with variable arguments */
-#define min(...) (min_create(ARGS(__VA_ARGS__)))
+#define min(...) (min_create(ARGS_FUNC(__VA_ARGS__)))
 /** @brief Creates a minimum function comparing against a constant maximum */
 Func *min_(double max, Func *input) { return min(const_(max), input); }
 /** @brief Macro to create a maximum function with variable arguments */
-#define max(...) (max_create(ARGS(__VA_ARGS__)))
+#define max(...) (max_create(ARGS_FUNC(__VA_ARGS__)))
 /** @brief Creates a maximum function comparing against a constant minimum */
 Func *max_(double min, Func *input) { return max(const_(min), input); }
 /** @brief Creates a clamp function that constrains input between min and max */

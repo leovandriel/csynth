@@ -7,7 +7,7 @@
 
 void test_gen_count(void)
 {
-    Func *input = mul_create(ARGS(const_create(0.5), sine_create(const_create(0.1))));
+    Func *input = mul_create(ARGS_FUNC(const_create(0.5), sine_create(const_create(0.1))));
     Gen *gen = gen_create(input);
     Eval eval = {0};
     assert_long_equal(eval.gen_count, 0);

@@ -28,7 +28,7 @@ int play_time_cleanup(double duration, size_t count, Func **channels) /* time_pl
     return error;
 }
 
-int play_time(double duration, Func *input) { return play_time_cleanup(duration, ARGS(input)); }                          /* time_player_ */
-int play_stereo_time(double duration, Func *left, Func *right) { return play_time_cleanup(duration, ARGS(left, right)); } /* time_player_ */
+int play_time(double duration, Func *input) { return play_time_cleanup(duration, ARGS_FUNC(input)); }                          /* time_player_ */
+int play_stereo_time(double duration, Func *left, Func *right) { return play_time_cleanup(duration, ARGS_FUNC(left, right)); } /* time_player_ */
 
 #endif // CSYNTH_TIME_PLAYER_H

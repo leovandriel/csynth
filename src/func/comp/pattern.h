@@ -35,7 +35,7 @@ Func *pattern_create(const char *string, Func *tick, Func *timing, Func *input)
     {
         if (string[i] == '.')
         {
-            array[index++] = add_create(ARGS(const_create(i), mul_create(ARGS(sample_create(gauss_create()), timing))));
+            array[index++] = add_create(ARGS_FUNC(const_create(i), mul_create(ARGS_FUNC(sample_create(gauss_create()), timing))));
             array[index++] = input;
         }
     }
