@@ -1,4 +1,4 @@
-//usr/bin/true && ./utils/run.c "$0" -Wall -Wextra -O3 -lm -lportaudio; exit $?
+//usr/bin/gcc "$0" -o bin/guitar -Wall -Wextra -O3 -lm -lportaudio && ./bin/guitar "$@"; exit $?
 #include "../../src/func/all.h"
 #include "../../src/io/time_player.h"
 #include "../../src/util/random.h"
