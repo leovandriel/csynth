@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/gram -Wall -Wextra -O3 -lm -lportaudio -lSDL2 && ./bin/gram "$@"; exit $?
 #include "../../../src/func/all.h"
-#include "../../../src/io/screen_player.h"
+#include "../../../src/run/screen_run.h"
 
 int main(void)
 {

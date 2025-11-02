@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/midi_value -Wall -Wextra -O3 -lm -lportaudio -lportmidi && ./bin/midi_value "$@"; exit $?
 #include "../../../src/func/all.h"
-#include "../../../src/io/midi_player.h"
+#include "../../../src/run/midi_run.h"
 
 int main(void)
 {

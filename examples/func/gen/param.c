@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/param -Wall -Wextra -O3 -lm -lportaudio -lportmidi && ./bin/param "$@"; exit $?
 #include "../../../src/func/all.h"
-#include "../../../src/io/midi_player.h"
+#include "../../../src/run/midi_run.h"
 
 int main(void)
 {

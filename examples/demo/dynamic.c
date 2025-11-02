@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/dynamic -Wall -Wextra -O3 -lm -lportaudio && ./bin/dynamic "$@"; exit $?
 #include "../../src/func/all.h"
-#include "../../src/io/time_player.h"
+#include "../../src/run/play.h"
 
 static func beep(void)
 {

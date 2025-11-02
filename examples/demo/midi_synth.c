@@ -1,6 +1,7 @@
 //usr/bin/gcc "$0" -o bin/midi_synth -Wall -Wextra -O3 -lm -lportaudio -lportmidi && ./bin/midi_synth "$@"; exit $?
 #include "../../src/func/all.h"
-#include "../../src/io/midi_player.h"
+#include "../../src/run/midi_run.h"
+#include "../../src/run/play.h"
 #include "../../src/util/func_tools.h"
 
 int main(void)

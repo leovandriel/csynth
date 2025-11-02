@@ -1,6 +1,6 @@
 //usr/bin/gcc "$0" -o bin/stereo -Wall -Wextra -O3 -lm -lportaudio && ./bin/stereo "$@"; exit $?
 #include "../../src/func/all.h"
-#include "../../src/io/term_player.h"
+#include "../../src/run/play.h"
 
 func ear(func angle)
 {
