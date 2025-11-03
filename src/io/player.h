@@ -4,9 +4,10 @@
 #include <portaudio.h>
 #include <stdio.h>
 
-#include "../util/cleanup.h"
 #include "../util/logger.h"
+#include "../event/event.h"
 #include "./sampler.h"
+
 typedef struct
 {
     Sampler *sampler;

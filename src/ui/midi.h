@@ -6,9 +6,7 @@
 
 #include "../event/control_event.h"
 #include "../util/logger.h"
-#include "./display.h"
 #include "./midi_state.h"
-#include "./terminal.h"
 
 #define MIDI_EVENT_BUFFER_SIZE 1024
 #define MIDI_CHANNEL_COUNT 16
@@ -102,56 +100,6 @@ csError midi_terminate(MidiContext *context)
 double midi_time(void)
 {
     return (double)Pt_Time() * 1e-3;
-}
-
-/**
- * @brief Handle key input from MIDI device
- *
- * @param duration Max loop duration in seconds.
- * @param exit_key Key code to exit loop.
- */
-void midi_loop(double duration, int exit_key)
-{
-#ifdef AUTO_EXIT
-    duration = AUTO_EXIT * 1e-3;
-#endif
-    MidiContext context = {0};
-    csError error = midi_initialize(&context);
-    if (error != csErrorNone)
-    {
-        error_catch(error);
-        return;
-    }
-    struct termios term = terminal_setup(0);
-    signal(SIGINT, terminal_handler);
-    double start = midi_time();
-    while (!terminal_signaled())
-    {
-        int key = terminal_read(exit_key);
-        if (key < 0)
-        {
-            break;
-        }
-        double time = midi_time();
-        if (duration > 0 && time > start + duration)
-        {
-            break;
-        }
-        if (key > 0)
-        {
-            control_event_broadcast_keyboard(midi_time(), key);
-        }
-        error = midi_read_broadcast(&context);
-        if (error != csErrorNone)
-        {
-            break;
-        }
-        display_render();
-        Pt_Sleep(1);
-    }
-    terminal_restore(term);
-    error = midi_terminate(&context);
-    error_catch(error);
 }
 
 #endif // CSYNTH_MIDI_H

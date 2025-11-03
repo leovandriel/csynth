@@ -5,11 +5,11 @@
 #include <stdio.h>
 #include <termios.h>
 
-#include "../event/control_event.h"
-#include "../util/time.h"
-#include "./display.h"
+#include "../core/def.h"
 
-static volatile bool terminal_signal_global = 0;
+#define EXIT_KEY '\e' // ESC key
+
+static volatile int terminal_signal_global = 0;
 
 struct termios terminal_setup(cc_t vtime)
 {
@@ -28,7 +28,7 @@ void terminal_restore(struct termios term)
     tcsetattr(fileno(stdin), TCSANOW, &term);
 }
 
-static void terminal_handler(__U int signal)
+void terminal_handler(__U int signal)
 {
     terminal_signal_global = true;
 }
@@ -83,41 +83,6 @@ int terminal_read(int exit_key)
 bool terminal_signaled(void)
 {
     return terminal_signal_global;
-}
-
-/**
- * @brief Handle key input from terminal
- *
- * @param duration Max loop duration in seconds.
- * @param exit_key Key code to exit loop.
- */
-void terminal_loop(double duration, int exit_key)
-{
-#ifdef AUTO_EXIT
-    duration = AUTO_EXIT * 1e-3;
-#endif
-    struct termios term = terminal_setup(1);
-    signal(SIGINT, terminal_handler);
-    double start = time_sec();
-    while (!terminal_signaled())
-    {
-        int key = terminal_read(exit_key);
-        if (key < 0)
-        {
-            break;
-        }
-        double time = time_sec();
-        if (duration > 0 && time > start + duration)
-        {
-            break;
-        }
-        if (key > 0)
-        {
-            control_event_broadcast_keyboard(time, key);
-        }
-        display_render();
-    }
-    terminal_restore(term);
 }
 
 #endif // CSYNTH_TERMINAL_H
