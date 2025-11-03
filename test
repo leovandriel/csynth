@@ -16,6 +16,7 @@ rm -f ./tests/.test.c
 find ./tests -regex "$pattern" -print0 | while read -d $'\0' file; do
     name=$(basename "$file" .h)
     printf "#include \".$file\"\\nint main(void) { $name(); alloc_list_dump(); assert_msg(alloc_list_is_empty(),\"$file\"); return 0; }" > ./tests/.test.c
+    # printf "testing: $file\n"
     gcc ./tests/.test.c -o bin/test -Wall -Wextra -lm -DALLOC_TRACE -DFILE_TRACE
     ./bin/test
     echo -n "."

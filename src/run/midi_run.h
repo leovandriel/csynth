@@ -3,8 +3,8 @@
 
 #include "../ui/midi.h"
 #include "./player_run.h"
-#include "./sleep_run.h"
 #include "./run.h"
+#include "./sleep_run.h"
 
 #define MIDI_SLEEP_DURATION 0.001
 
@@ -12,7 +12,6 @@ typedef struct
 {
     MidiContext context;
 } MidiRun;
-
 
 csError midi_run_init(void *context)
 {

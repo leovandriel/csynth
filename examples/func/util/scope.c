@@ -4,8 +4,8 @@
 
 int main(void)
 {
-    RenderPipe pipe = {.width = 400, .height = 400};
     func fm = sine(kr_range(C4, C5, sine_(0.5)));
+    RenderPipe pipe = {.width = 400, .height = 400};
     func scoped = scope(fm, C4, &pipe);
     return play_screen(scoped, &pipe);
 }

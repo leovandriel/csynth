@@ -4,8 +4,8 @@
 #include <portaudio.h>
 #include <stdio.h>
 
-#include "../util/logger.h"
 #include "../event/event.h"
+#include "../util/logger.h"
 #include "./sampler.h"
 
 typedef struct

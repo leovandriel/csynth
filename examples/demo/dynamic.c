@@ -23,10 +23,15 @@ func modulate_tempo(void)
     return tempo(modulate, beep());
 }
 
+/** @brief Demo modulation of pitch and tempo.
+ *
+ * The demo modulates the pitch and tempo of a sine wave.
+ * It also demonstrates the use of a timer to control playback duration.
+ */
 int main(void)
 {
     func dynamic = seq_rel(
         modulate_pitch(), _(10),
         modulate_tempo(), _(10));
-    return play_time(20, dynamic);
+    return play_time(10, dynamic);
 }

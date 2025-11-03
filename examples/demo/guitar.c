@@ -1,6 +1,8 @@
 //usr/bin/gcc "$0" -o bin/guitar -Wall -Wextra -O3 -lm -lportaudio && ./bin/guitar "$@"; exit $?
 #include "../../src/func/all.h"
-#include "../../src/io/time_player.h"
+#include "../../src/io/run.h"
+#include "../../src/io/timer.h"
+#include "../../src/run/play.h"
 #include "../../src/util/random.h"
 
 static func strum(int count, const double *frequencies, double span, double decay)

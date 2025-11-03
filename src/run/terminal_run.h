@@ -1,10 +1,10 @@
 #ifndef CSYNTH_TERMINAL_RUN_H
 #define CSYNTH_TERMINAL_RUN_H
 
-#include "./run.h"
 #include "../ui/terminal.h"
 #include "../util/error.h"
 #include "../util/time.h"
+#include "./run.h"
 
 typedef struct
 {

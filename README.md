@@ -44,7 +44,7 @@ that plays a 440 Hz sine wave:
 
 ```c
 #include "./src/func/all.h"
-#include "./src/io/term_player.h"
+#include "./src/run/play.h"
 
 int main(void)
 {
@@ -52,7 +52,7 @@ int main(void)
 }
 ```
 
-Now run with (and stop by pressing Esc):
+Now run with (CTRL+C to stop):
 
 ```shell
 ./examples/tutorial.c
@@ -298,7 +298,7 @@ A basic example of this is a MIDI keyboard based on the sawtooth function:
 
 Here, `play_midi` connects to the default MIDI device and
 [midi_keyboard](./src/func/control/midi_keyboard.h) listens for MIDI events on
-channel `1`. Be sure to include [midi_player.h](./src/io/midi_player.h) and link
+channel `1`. Be sure to include [midi_player.h](./src/run/midi_run.h) and link
 with `portmidi`.
 
 To make the sound more interesting, let's add a
@@ -340,10 +340,9 @@ MIDI is implemented, see [midi.h](./src/ui/midi.h).
 ## I/O
 
 Most of the examples above use [player](src/io/player.h) to sample a function to
-the system audio buffer. A [term_player](src/io/term_player.h) takes care of setting up
-[PortAudio](https://www.portaudio.com/), the [sampler](src/io/sampler.h), the
-[terminal](src/ui/terminal.h), and it cleans things up before exiting the
-program. It comes in a few variants:
+the system audio buffer. It takes care of setting up 
+[PortAudio](https://www.portaudio.com/), the [sampler](src/io/sampler.h), and it
+cleans things up before exiting the program. It comes in a few variants:
 
 ```c
     play(sine(A4));
@@ -456,9 +455,9 @@ functions work without any external dependencies.
 The only external dependencies are for real-time audio/MIDI device support:
 
 - [PortAudio](https://www.portaudio.com/) for audio playback
-  ([player.h](src/io/term_player.h))
+  ([player.h](src/io/player.h))
 - [PortMidi](https://github.com/PortMidi/portmidi) for MIDI input
-  ([midi_player.h](src/io/midi_player.h))
+  ([midi_player.h](src/run/midi_run.h))
 
 These dependencies are only included in the relevant device I/O headers and
 examples. The rest of the codebase remains dependency-free and can be used
