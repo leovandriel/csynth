@@ -10,34 +10,25 @@ typedef struct
     double duration;
 } TimerRun;
 
-csError timer_run_init(void *context)
+csError time_run_init(void *context)
 {
     TimerRun *run = (TimerRun *)context;
-    if (run == NULL)
-    {
-        return error_type_message(csErrorMemoryAlloc, "Unable to allocate memory for timer run");
-    }
     run->start = time_sec();
     return csErrorNone;
 }
 
-csError timer_run_tick(void *context)
+csRunOrError time_run_tick(void *context)
 {
     TimerRun *run = (TimerRun *)context;
     double time = time_sec();
     if (run->duration > 0 && time > run->start + run->duration)
     {
-        return -1;
+        return (csRunOrError){.run = csBreak};
     }
-    return csErrorNone;
+    return (csRunOrError){.run = csContinue};
 }
 
-void timer_run_free(void *context)
-{
-    free_(context);
-}
-
-RunLoop timer_run(double duration)
+RunLoop time_run(double duration)
 {
     TimerRun *run = (TimerRun *)malloc_(sizeof(TimerRun));
     if (run != NULL)
@@ -45,10 +36,10 @@ RunLoop timer_run(double duration)
         run->duration = duration;
     }
     return (RunLoop){
-        .init = timer_run_init,
-        .tick = timer_run_tick,
-        .free = timer_run_free,
+        .init = time_run_init,
+        .tick = time_run_tick,
         .context = run,
+        .manage_context = true,
     };
 }
 

@@ -12,13 +12,9 @@ typedef struct
     Func **channels;
 } PlayerRun;
 
-csError player_run_init(__U void *context)
+csError player_run_init(void *context)
 {
     PlayerRun *run = (PlayerRun *)context;
-    if (run == NULL)
-    {
-        return error_type_message(csErrorMemoryAlloc, "Unable to allocate memory for player run");
-    }
     return player_open(&run->player, run->sample_rate, run->count, run->channels);
 }
 
@@ -26,7 +22,6 @@ void player_run_free(void *context)
 {
     PlayerRun *run = (PlayerRun *)context;
     player_close(&run->player);
-    free_(run);
 }
 
 RunLoop player_run_channels(size_t count, Func **channels)
@@ -42,6 +37,7 @@ RunLoop player_run_channels(size_t count, Func **channels)
         .init = player_run_init,
         .free = player_run_free,
         .context = run,
+        .manage_context = true,
     };
 }
 

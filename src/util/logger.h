@@ -11,7 +11,7 @@ typedef enum
     LoggerLevelNone = 0,
     LoggerLevelDebug,
     LoggerLevelInfo,
-    LoggerLevelWarn,
+    LoggerLevelWarning,
     LoggerLevelError,
     LoggerLevelMute,
 } LoggerLevel;
@@ -44,7 +44,7 @@ int logger_format_default(FILE *file, LoggerLevel level, const char *source, int
 #ifdef LOG_LEVEL
 #define LOGGER_LEVEL_DEFAULT LOG_LEVEL
 #else
-#define LOGGER_LEVEL_DEFAULT LoggerLevelInfo
+#define LOGGER_LEVEL_DEFAULT LoggerLevelWarning
 #endif
 #define LOGGER_FORMAT_DEFAULT logger_format_default
 
@@ -86,7 +86,7 @@ void logger_set_file(FILE *file)
 #define log_expr(__level, ...) (logger_global.level <= __level && LOGGER_FORMAT(LOGGER_FILE, __level, "/"__FILE__, __LINE__, __VA_ARGS__))
 
 #define log_error_expr(...) log_expr(LoggerLevelError, __VA_ARGS__)
-#define log_warn_expr(...) log_expr(LoggerLevelWarn, __VA_ARGS__)
+#define log_warn_expr(...) log_expr(LoggerLevelWarning, __VA_ARGS__)
 #define log_info_expr(...) log_expr(LoggerLevelInfo, __VA_ARGS__)
 #define log_debug_expr(...) log_expr(LoggerLevelDebug, __VA_ARGS__)
 

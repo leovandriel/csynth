@@ -5,48 +5,34 @@
 #include "./player_run.h"
 #include "./run.h"
 
-typedef struct
-{
-    ScreenContext *context;
-} ScreenRun;
-
 csError screen_run_init(void *context)
 {
-    ScreenRun *run = (ScreenRun *)context;
-    if (run == NULL)
-    {
-        return error_type_message(csErrorMemoryAlloc, "Unable to allocate memory for screen run");
-    }
-    return screen_init(run->context);
+    return screen_init((ScreenContext *)context);
 }
 
-csError screen_run_tick(void *context)
+csRunOrError screen_run_tick(void *context)
 {
-    ScreenRun *run = (ScreenRun *)context;
-    return screen_tick(run->context);
+    return (csRunOrError)screen_tick((ScreenContext *)context);
 }
 
 void screen_run_free(void *context)
 {
-    ScreenRun *run = (ScreenRun *)context;
-    screen_free(run->context);
-    free_(run->context);
-    free_(run);
+    screen_free((ScreenContext *)context);
 }
 
 RunLoop screen_run(RenderPipe *pipe)
 {
-    ScreenRun *run = (ScreenRun *)malloc_(sizeof(ScreenRun));
-    if (run != NULL)
+    ScreenContext *context = (ScreenContext *)malloc_(sizeof(ScreenContext));
+    if (context != NULL)
     {
-        run->context = (ScreenContext *)malloc_(sizeof(ScreenContext));
-        run->context->pipe = pipe;
+        context->pipe = pipe;
     }
     return (RunLoop){
         .init = screen_run_init,
         .tick = screen_run_tick,
         .free = screen_run_free,
-        .context = run,
+        .context = context,
+        .manage_context = true,
     };
 }
 

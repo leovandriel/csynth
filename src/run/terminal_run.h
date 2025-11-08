@@ -15,40 +15,35 @@ typedef struct
 csError terminal_run_init(void *context)
 {
     TerminalRun *run = (TerminalRun *)context;
-    if (run == NULL)
-    {
-        return error_type_message(csErrorMemoryAlloc, "Unable to allocate memory for terminal run");
-    }
     run->term = terminal_setup(1);
     signal(SIGINT, terminal_handler);
     return csErrorNone;
 }
 
-csError terminal_run_tick(void *context)
+csRunOrError terminal_run_tick(void *context)
 {
     TerminalRun *run = (TerminalRun *)context;
     if (terminal_signaled())
     {
-        return -1;
+        return (csRunOrError){.run = csBreak};
     }
     int key = terminal_read(run->exit_key);
     if (key < 0)
     {
-        return -1;
+        return (csRunOrError){.run = csBreak};
     }
     double time = time_sec();
     if (key > 0)
     {
         control_event_broadcast_keyboard(time, key);
     }
-    return csErrorNone;
+    return (csRunOrError){.run = csContinue};
 }
 
 void terminal_run_free(void *context)
 {
     TerminalRun *run = (TerminalRun *)context;
     terminal_restore(run->term);
-    free_(run);
 }
 
 RunLoop terminal_run_with(int exit_key)
@@ -63,6 +58,7 @@ RunLoop terminal_run_with(int exit_key)
         .tick = terminal_run_tick,
         .free = terminal_run_free,
         .context = run,
+        .manage_context = true,
     };
 }
 

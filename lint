@@ -39,7 +39,7 @@ find ./src -name "*.h" -type f -print0 | while read -d $'\0' file; do
     parent=$(basename "$folder")
     ignores=("notes.h" "envelopes.h" "time.h" "biquad.h" "times.h" "func_tools.h")
     if [[ "${parent}s" != "$name" ]] && [[ ! " ${ignores[*]} " =~ " ${filename} " ]]; then
-        found_prefix=$(grep "^[^ {}#/]" "$file" | grep -v "\([ *]${name}_\|[ *]${upper}_\|typedef\|struct\)" | tee)
+        found_prefix=$(grep "^[^ {}#/]" "$file" | grep -v "\([ *]${name}\|[ *]${upper}\|typedef\|struct\)" | tee)
         if [[ "$found_prefix" ]]; then
             printf "\r\e[KInvalid declaration: $file\n$found_prefix\n" >&2
             exit 1

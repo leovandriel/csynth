@@ -26,5 +26,5 @@ int main(void)
     synth = reverb(reverb_time, reverb_decay, synth);
     synth = mul(post_gain, synth);
     func drums = add(pad(10, 40, snare()), pad(10, 41, bdrum()), pad(10, 42, hihat()));
-    return play(fps("fps", add(mul_(.2, synth), mul_(5, drums))), midi_run());
+    return play_midi(fps("fps", add(mul_(.2, synth), mul_(5, drums))));
 }

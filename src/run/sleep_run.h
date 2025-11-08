@@ -12,29 +12,14 @@ typedef struct
     double duration;
 } SleeperRun;
 
-csError sleeper_run_init(void *context)
-{
-    SleeperRun *run = (SleeperRun *)context;
-    if (run == NULL)
-    {
-        return error_type_message(csErrorMemoryAlloc, "Unable to allocate memory for sleeper run");
-    }
-    return csErrorNone;
-}
-
-csError sleeper_run_tick(void *context)
+csRunOrError sleep_run_tick(void *context)
 {
     SleeperRun *run = (SleeperRun *)context;
     time_sleep(run->duration);
-    return csErrorNone;
+    return (csRunOrError){ .run = csContinue };
 }
 
-void sleeper_run_free(void *context)
-{
-    free_(context);
-}
-
-RunLoop sleeper_run(double duration)
+RunLoop sleep_run(double duration)
 {
     SleeperRun *run = (SleeperRun *)malloc_(sizeof(SleeperRun));
     if (run != NULL)
@@ -42,10 +27,9 @@ RunLoop sleeper_run(double duration)
         run->duration = duration;
     }
     return (RunLoop){
-        .init = sleeper_run_init,
-        .tick = sleeper_run_tick,
-        .free = sleeper_run_free,
+        .tick = sleep_run_tick,
         .context = run,
+        .manage_context = true,
     };
 }
 

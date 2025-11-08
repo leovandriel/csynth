@@ -2,7 +2,6 @@
 #define CSYNTH_MIDI_H
 
 #include <portmidi.h>
-#include <porttime.h>
 
 #include "../event/control_event.h"
 #include "../util/logger.h"
@@ -19,7 +18,7 @@ typedef struct
     PortMidiStream *stream;
 } MidiContext;
 
-csError midi_initialize(MidiContext *context)
+csError midi_init(MidiContext *context)
 {
     PmError pm_error = Pm_Initialize();
     if (pm_error != pmNoError)
@@ -82,24 +81,18 @@ csError midi_read_broadcast(MidiContext *context)
     return csErrorNone;
 }
 
-csError midi_terminate(MidiContext *context)
+void midi_free(MidiContext *context)
 {
     PmError pm_error = Pm_Close(context->stream);
     if (pm_error != pmNoError)
     {
-        return error_type_message(csErrorPortMidi, "Unable to close: %s", Pm_GetErrorText(pm_error));
+        return error_catch_message(csErrorPortMidi, "Unable to close: %s", Pm_GetErrorText(pm_error));
     }
     pm_error = Pm_Terminate();
     if (pm_error != pmNoError)
     {
-        return error_type_message(csErrorPortMidi, "Unable to terminate: %s", Pm_GetErrorText(pm_error));
+        return error_catch_message(csErrorPortMidi, "Unable to terminate: %s", Pm_GetErrorText(pm_error));
     }
-    return csErrorNone;
-}
-
-double midi_time(void)
-{
-    return (double)Pt_Time() * 1e-3;
 }
 
 #endif // CSYNTH_MIDI_H
