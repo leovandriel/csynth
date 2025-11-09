@@ -4,6 +4,8 @@
 #include "../../src/run/play.h"
 #include "../../src/util/func_tools.h"
 
+logger_set_level(LoggerLevelInfo);
+
 int main(void)
 {
     func lpf_knob = gauge("lpf", knob_ex_(1, 70, 20000, 1));

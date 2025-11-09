@@ -33,10 +33,12 @@ int test_logger_log(FILE *file, LoggerLevel level, const char *source, int line,
 void test_logger_format(void)
 {
     logger_set_format(test_logger_log);
+    assert_long_equal(test_logger_args_global.level, LoggerLevelNone);
+    logger_set_level(LoggerLevelInfo);
     log_info("test1", 1);
-    assert_long_equal(test_logger_args_global.level, LoggerLevelInfo);
+    assert_not_null(test_logger_args_global.source);
     assert_string_equal(strrchr(test_logger_args_global.source, '/'), "/test_logger.h");
-    assert_long_equal(test_logger_args_global.line, 36);
+    assert_long_equal(test_logger_args_global.line, 38);
     assert_string_equal(test_logger_args_global.message, "test1");
     assert_long_equal(test_logger_args_global.arg, 1);
     log_debug("test2", 2);
@@ -52,7 +54,7 @@ void test_logger_file(void)
     logger_set_file(file);
     log_info("test1");
     assert_long_equal(fclose_(file), 0);
-    assert_string_equal(buffer + 30, " INFO test_logger.h:53 - test1\n");
+    assert_string_equal(buffer + 30, " INFO test_logger.h:55 - test1\n");
     logger_set_file(NULL);
 }
 

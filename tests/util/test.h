@@ -47,7 +47,7 @@
 #define assert_null(_a)                                   \
     do                                                    \
     {                                                     \
-        void *__a = (_a);                                 \
+        void *__a = (void *)(_a);                         \
         if (__a != NULL)                                  \
         {                                                 \
             fprintf(stdout, "assert(%p == NULL)\n", __a); \
@@ -58,7 +58,7 @@
 #define assert_not_null(_a)                               \
     do                                                    \
     {                                                     \
-        void *__a = (_a);                                 \
+        void *__a = (void *)(_a);                         \
         if (__a == NULL)                                  \
         {                                                 \
             fprintf(stdout, "assert(%p != NULL)\n", __a); \

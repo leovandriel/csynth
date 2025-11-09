@@ -16,7 +16,7 @@ csRunOrError sleep_run_tick(void *context)
 {
     SleeperRun *run = (SleeperRun *)context;
     time_sleep(run->duration);
-    return (csRunOrError){ .run = csContinue };
+    return (csRunOrError){.run = csContinue};
 }
 
 RunLoop sleep_run(double duration)
