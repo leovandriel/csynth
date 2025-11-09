@@ -89,7 +89,7 @@ csError run_loop_run(size_t count, RunLoop *loops)
             }
         }
     }
-    return result.error > csErrorNone ? result.error : csErrorNone;
+    return result.error < csErrorNone ? result.error : csErrorNone;
 }
 
 csError run_loop_run_cleanup(size_t count, RunLoop *loops)
