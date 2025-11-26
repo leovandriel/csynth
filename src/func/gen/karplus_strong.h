@@ -48,7 +48,7 @@ static double karplus_strong_eval(__U size_t count, Gen **args, Eval *eval, void
     return output;
 }
 
-static int karplus_strong_init(__U size_t count, __U Gen **args, void *context_)
+static csError karplus_strong_init(__U size_t count, __U Gen **args, void *context_)
 {
     KarplusStrongContext *context = (KarplusStrongContext *)context_;
     context->buffer.filler = fill_rand_1_1;

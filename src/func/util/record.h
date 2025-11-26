@@ -42,7 +42,7 @@ static double record_eval(size_t count, Gen **args, Eval *eval, void *context_)
     return sum;
 }
 
-static int record_init(size_t count, __U Gen **args, void *context_)
+static csError record_init(size_t count, __U Gen **args, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
     WavHeader header = {0};

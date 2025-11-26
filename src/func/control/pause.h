@@ -43,7 +43,7 @@ static void pause_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static int pause_init(__U size_t count, __U Gen **args, void *context_)
+static csError pause_init(__U size_t count, __U Gen **args, void *context_)
 {
     PauseContext *context = (PauseContext *)context_;
     state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeBool, &context->paused);

@@ -3,6 +3,7 @@
 
 #include "../core/gen.h"
 #include "./event.h"
+#include <stdbool.h>
 
 #define KEYBOARD_EVENT_UP 1792833
 #define KEYBOARD_EVENT_DOWN 1792834
@@ -81,7 +82,7 @@ typedef struct
     control_handle_event handle_event;
 } ControlEventContext;
 
-int control_event_midi_equal(MidiKey key_a, MidiKey key_b)
+bool control_event_midi_equal(MidiKey key_a, MidiKey key_b)
 {
     switch (key_a.type)
     {
@@ -98,14 +99,14 @@ int control_event_midi_equal(MidiKey key_a, MidiKey key_b)
     case MidiTypeSystem:
         break;
     }
-    return 0;
+    return false;
 }
 
-int control_event_key_equal(ControlEventKey key_a, ControlEventKey key_b)
+bool control_event_key_equal(ControlEventKey key_a, ControlEventKey key_b)
 {
     if (key_a.type != key_b.type)
     {
-        return 0;
+        return false;
     }
     switch (key_a.type)
     {
@@ -116,7 +117,7 @@ int control_event_key_equal(ControlEventKey key_a, ControlEventKey key_b)
     case ControlEventTypeMidi:
         return control_event_midi_equal(key_a.midi, key_b.midi);
     }
-    return 0;
+    return false;
 }
 
 void control_event_broadcast_keyboard(double time, int key)

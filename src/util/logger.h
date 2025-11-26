@@ -2,6 +2,7 @@
 #define CSYNTH_LOGGER_H
 
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -25,7 +26,7 @@ static const char *LOGGER_LEVEL_STRINGS[] = {
     "MUTE",
 };
 
-int logger_format_default(FILE *file, LoggerLevel level, const char *source, int line, const char *message, ...)
+bool logger_format_default(FILE *file, LoggerLevel level, const char *source, int line, const char *message, ...)
 {
     va_list args = {0};
     va_start(args, message);
@@ -34,10 +35,10 @@ int logger_format_default(FILE *file, LoggerLevel level, const char *source, int
     char buffer[20];
     strftime(buffer, 20, "%Y-%m-%d %H:%M:%S", localtime(&spec.tv_sec));
     fprintf(file, "\r\e[K%s.%06ld %s %s:%d - ", buffer, spec.tv_nsec / 1000, LOGGER_LEVEL_STRINGS[level], strrchr(source, '/') + 1, line);
-    int result = vfprintf(file, message, args);
+    vfprintf(file, message, args);
     fprintf(file, "\n");
     va_end(args);
-    return result;
+    return true;
 }
 
 #define LOGGER_FILE_DEFAULT stderr
@@ -48,7 +49,16 @@ int logger_format_default(FILE *file, LoggerLevel level, const char *source, int
 #endif
 #define LOGGER_FORMAT_DEFAULT logger_format_default
 
-typedef int (*logger_format)(FILE *file, LoggerLevel level, const char *source, int line, const char *message, ...);
+/**
+ * @brief Logger format function.
+ * @param file The file to write the log to.
+ * @param level The log level.
+ * @param source The source file of the log.
+ * @param line The line number of the log.
+ * @param message The message to log.
+ * @return True if the log was written successfully, false otherwise.
+ */
+typedef bool (*logger_format)(FILE *file, LoggerLevel level, const char *source, int line, const char *message, ...);
 
 /**
  * @brief Logger configuration.

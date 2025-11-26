@@ -83,7 +83,7 @@ static double scope_eval(__U size_t count, Gen **args, Eval *eval, void *context
     return input;
 }
 
-static int scope_init(__U size_t count, __U Gen **args, void *context_)
+static csError scope_init(__U size_t count, __U Gen **args, void *context_)
 {
     ScopeContext *context = (ScopeContext *)context_;
     for (size_t i = 0; i < SCOPE_BUFFER_COUNT; i++)

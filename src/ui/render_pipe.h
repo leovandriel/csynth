@@ -3,7 +3,7 @@
 
 #include <stddef.h>
 
-typedef int (*render_lock)(uint32_t **buffer, size_t *pitch, void *context);
+typedef bool (*render_lock)(uint32_t **buffer, size_t *pitch, void *context);
 typedef void (*render_unlock)(void *context);
 
 typedef struct
@@ -15,13 +15,13 @@ typedef struct
     void *context;
 } RenderPipe;
 
-int render_pipe_lock(RenderPipe *pipe, void *buffer, size_t *pitch)
+bool render_pipe_lock(RenderPipe *pipe, void *buffer, size_t *pitch)
 {
     if (pipe->lock != NULL)
     {
         return pipe->lock(buffer, pitch, pipe->context);
     }
-    return 1;
+    return true;
 }
 
 void render_pipe_unlock(RenderPipe *pipe)

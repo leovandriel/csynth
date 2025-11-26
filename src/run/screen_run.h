@@ -36,7 +36,7 @@ RunLoop screen_run(RenderPipe *pipe)
     };
 }
 
-int play_screen(Func *input, RenderPipe *pipe) { return run_loop(player_run(input), screen_run(pipe)); }
-int play_screen_stereo(Func *left, Func *right, RenderPipe *pipe) { return run_loop(player_run(left, right), screen_run(pipe)); }
+csError play_screen(Func *input, RenderPipe *pipe) { return run_loop(player_run(input), screen_run(pipe)); }
+csError play_screen_stereo(Func *left, Func *right, RenderPipe *pipe) { return run_loop(player_run(left, right), screen_run(pipe)); }
 
 #endif // CSYNTH_SCREEN_RUN_H

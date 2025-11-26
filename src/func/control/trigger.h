@@ -41,7 +41,7 @@ static void trigger_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static int trigger_init(__U size_t count, __U Gen **args, void *context_)
+static csError trigger_init(__U size_t count, __U Gen **args, void *context_)
 {
     TriggerContext *context = (TriggerContext *)context_;
     state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeTrigger, &context->on);

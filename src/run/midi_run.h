@@ -34,7 +34,7 @@ RunLoop midi_run()
     };
 }
 
-int play_midi(Func *input) { return run_loop(player_run(input), midi_run(), sleep_run(MIDI_SLEEP_DURATION)); }
-int play_midi_stereo(Func *left, Func *right) { return run_loop(player_run(left, right), midi_run(), sleep_run(MIDI_SLEEP_DURATION)); }
+csError play_midi(Func *input) { return run_loop(player_run(input), midi_run(), sleep_run(MIDI_SLEEP_DURATION)); }
+csError play_midi_stereo(Func *left, Func *right) { return run_loop(player_run(left, right), midi_run(), sleep_run(MIDI_SLEEP_DURATION)); }
 
 #endif // CSYNTH_MIDI_RUN_H

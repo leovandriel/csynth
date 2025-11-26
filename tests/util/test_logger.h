@@ -14,7 +14,7 @@ typedef struct
 
 static LoggerArgs test_logger_args_global = {0};
 
-int test_logger_log(FILE *file, LoggerLevel level, const char *source, int line, const char *message, ...)
+bool test_logger_log(FILE *file, LoggerLevel level, const char *source, int line, const char *message, ...)
 {
     va_list args = {0};
     va_start(args, message);
@@ -27,7 +27,7 @@ int test_logger_log(FILE *file, LoggerLevel level, const char *source, int line,
         .arg = va_arg(args, int),
     };
     va_end(args);
-    return 0;
+    return true;
 }
 
 void test_logger_format(void)

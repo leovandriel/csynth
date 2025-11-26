@@ -41,7 +41,7 @@ static void track_handle_event(EventType type, const void *event_, void *context
     }
 }
 
-static int track_init(__U size_t count, __U Gen **args, void *context_)
+static csError track_init(__U size_t count, __U Gen **args, void *context_)
 {
     TrackContext *context = (TrackContext *)context_;
     const void *handler = event_add_handler(track_handle_event, context);

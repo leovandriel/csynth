@@ -3,7 +3,7 @@
 
 static volatile int test_error_count_global = 0;
 
-int test_error_format(__U FILE *file, LoggerLevel level, __U const char *source, __U int line, const char *message, ...)
+bool test_error_format(__U FILE *file, LoggerLevel level, __U const char *source, __U int line, const char *message, ...)
 {
     va_list args = {0};
     va_start(args, message);
@@ -11,7 +11,7 @@ int test_error_format(__U FILE *file, LoggerLevel level, __U const char *source,
     assert_string_equal(message, "unable to allocate memory");
     test_error_count_global++;
     va_end(args);
-    return 0;
+    return true;
 }
 
 void test_error(void)

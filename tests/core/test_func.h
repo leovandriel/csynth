@@ -1,9 +1,9 @@
 #include "../../src/core/func.h"
 #include "../util/test.h"
 
-int test_init_callback(__U size_t count, __U Gen **args, __U void *context)
+csError test_init_callback(__U size_t count, __U Gen **args, __U void *context)
 {
-    return 0;
+    return csErrorNone;
 }
 
 double test_eval_callback(__U size_t count, __U Gen **args, __U Eval *eval, __U void *context)

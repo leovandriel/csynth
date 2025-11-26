@@ -38,7 +38,7 @@ static void selector_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static int selector_init(__U size_t count, __U Gen **args, void *context_)
+static csError selector_init(__U size_t count, __U Gen **args, void *context_)
 {
     SelectorContext *context = (SelectorContext *)context_;
     state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeInt, &context->selected);

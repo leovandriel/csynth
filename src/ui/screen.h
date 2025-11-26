@@ -23,13 +23,13 @@ typedef struct
     double start;
 } ScreenContext;
 
-int screen_lock(uint32_t **buffer, size_t *pitch, void *context_)
+bool screen_lock(uint32_t **buffer, size_t *pitch, void *context_)
 {
     ScreenContext *context = (ScreenContext *)context_;
     *pitch = context->pitch;
     *buffer = context->buffer;
     pthread_mutex_lock(&context->mutex);
-    return 0;
+    return false;
 }
 
 void screen_unlock(void *context_)

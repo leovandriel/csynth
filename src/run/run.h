@@ -74,7 +74,7 @@ csError run_loop_run(size_t count, RunLoop *loops)
 #ifdef AUTO_EXIT
         if (j >= AUTO_EXIT)
         {
-            result = {.loop = Stop};
+            result = (csRunOrError){.run = csBreak};
         }
 #endif
     }

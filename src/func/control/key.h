@@ -44,7 +44,7 @@ static void key_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static int key_init(__U size_t count, __U Gen **args, void *context_)
+static csError key_init(__U size_t count, __U Gen **args, void *context_)
 {
     KeyContext *context = (KeyContext *)context_;
     return control_event_add(&context->parent);

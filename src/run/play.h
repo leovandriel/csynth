@@ -20,7 +20,7 @@
  *
  * Adding timer and sleeper ensure thread sleeps during loop and stops after given duration.
  */
-int play_time(double duration, Func *input) { return run_loop(player_run(input), time_run(duration), sleep_run(PLAY_SLEEP_DURATION)); }
-int play_time_stereo(double duration, Func *left, Func *right) { return run_loop(player_run(left, right), time_run(duration), sleep_run(PLAY_SLEEP_DURATION)); }
+csError play_time(double duration, Func *input) { return run_loop(player_run(input), time_run(duration), sleep_run(PLAY_SLEEP_DURATION)); }
+csError play_time_stereo(double duration, Func *left, Func *right) { return run_loop(player_run(left, right), time_run(duration), sleep_run(PLAY_SLEEP_DURATION)); }
 
 #endif // CSYNTH_PLAY_H

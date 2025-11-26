@@ -91,7 +91,7 @@ static double gram_eval(__U size_t count, Gen **args, Eval *eval, void *context_
     return input;
 }
 
-static int gram_init(__U size_t count, __U Gen **args, void *context_)
+static csError gram_init(__U size_t count, __U Gen **args, void *context_)
 {
     GramContext *context = (GramContext *)context_;
     context->sample_buffer = (double *)malloc_(context->window_size * sizeof(double));

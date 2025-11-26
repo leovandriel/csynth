@@ -96,7 +96,7 @@ static void midi_keyboard_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static int midi_keyboard_init(__U size_t count, __U Gen **args, void *context_)
+static csError midi_keyboard_init(__U size_t count, __U Gen **args, void *context_)
 {
     MidiKeyboardContext *context = (MidiKeyboardContext *)context_;
     MidiKeyboardKey *keys = (MidiKeyboardKey *)malloc_(context->capacity * sizeof(MidiKeyboardKey));

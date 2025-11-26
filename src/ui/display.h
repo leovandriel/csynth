@@ -64,7 +64,7 @@ void display_free(void)
     }
 }
 
-static int display_set_value(DisplayElement *list, StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value)
+static bool display_set_value(DisplayElement *list, StateEventKeyType key_type, const void *key, StateEventValueType value_type, const void *value)
 {
     bool modified = false;
     for (DisplayElement *element = list; element != NULL; element = element->next)

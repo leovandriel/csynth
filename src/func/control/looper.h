@@ -77,7 +77,7 @@ static void looper_handle_event(ControlEvent *event, void *context_)
     }
 }
 
-static int looper_init(__U size_t count, __U Gen **args, void *context_)
+static csError looper_init(__U size_t count, __U Gen **args, void *context_)
 {
     LooperContext *context = (LooperContext *)context_;
     state_event_broadcast(0, StateEventKeyTypeControl, &context->key, StateEventValueTypeBoolInv, &context->recording);
