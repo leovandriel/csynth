@@ -2,6 +2,7 @@
 #define CSYNTH_MATH_H
 
 #include <complex.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -22,6 +23,15 @@ double math_sqrt_0to1(double base)
 
 double math_pow_int(double base, int exp)
 {
+    if (base == 0.0)
+    {
+        return 0.0;
+    }
+    if (exp < 0)
+    {
+        base = 1.0 / base;
+        exp = -exp;
+    }
     double result = 1.0;
     while (exp > 0)
     {
@@ -35,25 +45,36 @@ double math_pow_int(double base, int exp)
     return result;
 }
 
-void math_fft(complex double *samples, size_t window)
+void math_fft(complex double *samples, size_t count, bool inverse)
 {
-    if (window <= 1)
+    if (count <= 1)
     {
         return;
     }
-    complex double even[window / 2], odd[window / 2];
-    for (size_t i = 0; i < window / 2; i++)
+    size_t half = count / 2;
+    complex double even[half], odd[half];
+    for (size_t i = 0; i < half; i++)
     {
-        even[i] = samples[i * 2];
-        odd[i] = samples[i * 2 + 1];
+        even[i] = samples[2 * i];
+        odd[i] = samples[2 * i + 1];
     }
-    math_fft(even, window / 2);
-    math_fft(odd, window / 2);
-    for (size_t k = 0; k < window / 2; k++)
+    math_fft(even, half, inverse);
+    math_fft(odd, half, inverse);
+    double sign = inverse ? 1.0 : -1.0;
+    double angle_base = sign * 2.0 * PI / (double)count;
+    for (size_t k = 0; k < half; k++)
     {
-        complex double twiddle = cexp(-2.0 * I * PI * (double)k / (double)window) * odd[k];
-        samples[k] = even[k] + twiddle;
-        samples[k + window / 2] = even[k] - twiddle;
+        complex double twiddle = cexp(I * angle_base * (double)k) * odd[k];
+        if (inverse)
+        {
+            samples[k] = (even[k] + twiddle) / 2.0;
+            samples[k + half] = (even[k] - twiddle) / 2.0;
+        }
+        else
+        {
+            samples[k] = even[k] + twiddle;
+            samples[k + half] = even[k] - twiddle;
+        }
     }
 }
 

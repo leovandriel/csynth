@@ -13,7 +13,7 @@ double map_gamma(double amplitude, double exponent) // gamma_mapping
     {
         return math_pow_int(amplitude, -(int)exponent);
     }
-    return 1 - math_pow_int(1 - amplitude, (int)exponent);
+    return math_gamma(amplitude, (int)exponent);
 }
 
 double map_circle(double amplitude, double shape) // gamma_mapping

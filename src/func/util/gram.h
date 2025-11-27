@@ -64,12 +64,17 @@ static void gram_add(GramContext *context)
         double hanning = (0.5 - 0.5 * cos(2.0 * M_PI * (double)i / (double)context->window_size));
         fft_input[i] = context->sample_buffer[(context->sample_offset + i) % context->window_size] * hanning;
     }
-    math_fft(fft_input, context->window_size);
+    math_fft(fft_input, context->window_size, false);
     for (size_t j = 0; j < context->pipe->height; j++)
     {
-        double magnitude = cabs(fft_input[j / 2]) * 4.0 / (double)context->window_size;
-        double corrected = 1 - math_pow_int(1 - magnitude, context->gamma);
-        buffer[context->pipe->height - 1 - j] = (unsigned char)(255.0 * corrected);
+        double magnitude = cabs(fft_input[j]) * 4.0 / (double)context->window_size;
+        double corrected = math_gamma(magnitude, context->gamma);
+        int scaled = (int)(256.0 * corrected);
+        if (scaled > 255)
+        {
+            scaled = 255;
+        }
+        buffer[context->pipe->height - 1 - j] = (unsigned char)scaled;
     }
 }
 
@@ -119,10 +124,12 @@ static void gram_free(__U size_t count, void *context_)
 /**
  * @brief Creates a gram function that plots the spectrogram to a PPM image file.
  *
+ * Frequency range is [1, height - 1] * sample_rate / window_size.
+ *
  * @param input The input function.
  * @param frame_count Number of frames per image, i.e. image width.
  * @param window_size Number of samples per window, i.e. max image height.
- * @param height Image height, truncating top if below window_size.
+ * @param pipe Render pipe, defines height and width, truncating top if below window_size.
  * @param filename The name of the file to save the image. Include %i for image index.
  * @param gamma Gamma correction, brightens darker pixels.
  * @return A pointer to the created gram function.

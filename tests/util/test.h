@@ -10,6 +10,7 @@
 #define long_equal(_a, _b) ((_a) == (_b))
 #define double_equal(_a, _b) ((_a) - (_b) < 4 * DBL_EPSILON && (_b) - (_a) < 4 * DBL_EPSILON)
 #define double_range(_a, _b, _c) ((_a) >= (_b) && (_a) <= (_c))
+#define complex_equal(_a, _b) ((creal(_a) - creal(_b) < 4 * DBL_EPSILON && cimag(_a) - cimag(_b) < 4 * DBL_EPSILON))
 
 #define assert_long_equal(_a, _b)                              \
     do                                                         \
@@ -42,6 +43,17 @@
             fprintf(stdout, "assert(%.16f >= %.16f && %.16f <= %.16f)\n", __a, __b, __a, __c); \
         }                                                                                      \
         assert(double_range(__a, __b, __c));                                                   \
+    } while (0)
+
+#define assert_complex_equal(_a, _b)                                                                                                             \
+    do                                                                                                                                           \
+    {                                                                                                                                            \
+        double __a = (_a), __b = (_b);                                                                                                           \
+        if (!complex_equal(__a, __b))                                                                                                            \
+        {                                                                                                                                        \
+            fprintf(stdout, "assert(abs((%.16f+%.16fi) - (%.16f+%.16fi)) < 4 * DBL_EPSILON)\n", creal(__a), cimag(__a), creal(__b), cimag(__b)); \
+        }                                                                                                                                        \
+        assert(complex_equal(__a, __b));                                                                                                         \
     } while (0)
 
 #define assert_null(_a)                                   \
