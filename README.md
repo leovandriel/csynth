@@ -469,13 +469,15 @@ Available utilities for development:
 
 - `./test` to run all tests
 - `./test <name>` to run a specific test
-- `./utils/format` to format all code
+- `./utils/format.c` to format all code
 - `./lint` to lint all code
 - `./leak` to check for memory leaks
 - `./utils/docs` to generate documentation
 - `./utils/inspect_audio.c` to inspect audio devices
 - `./utils/inspect_midi.c` to inspect MIDI devices
 - `./utils/inspect_terminal.c` to inspect terminal keys
+
+Before submit PR, please run `./utils/format.c`, `./test`.
 
 ## FAQ
 

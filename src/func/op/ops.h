@@ -37,6 +37,8 @@ Func *mul_(double value, Func *input) { return mul(const_(value), input); }
 Func *inv(Func *input) { return inv_create(input); }
 /** @brief Creates a division function that outputs lhs/rhs */
 Func *dvd(Func *lhs, Func *rhs) { return mul(lhs, inv(rhs)); }
+/** @brief Creates a division function that outputs lhs/rhs */
+Func *dvd_(Func *lhs, double rhs) { return dvd(lhs, const_(rhs)); }
 /** @brief Creates an average function that outputs the mean of multiple inputs */
 Func *avg_create(size_t count, Func **inputs) { return mul_create(ARGS_FUNC(add_create(count, inputs), const_(1.0 / (double)count))); }
 /** @brief Macro to create an average function with variable arguments */

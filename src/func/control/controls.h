@@ -90,8 +90,16 @@ Func *bend_(int channel, double factor, Func *input) { return bend(channel, cons
 
 /** @brief Shorthand for `keyboard_create`, using KEYBOARD_SEMITONES. */
 Func *keyboard(keyboard_control_func control, Func *input) { return keyboard_create(KEYBOARD_SEMITONES, control, input); }
+/** @brief Shorthand for `keyboard_create`, using pitch shift. */
+Func *keyboard_shift(keyboard_control_func control, Func *semitones, Func *input) { return keyboard(control, pitch_shift_ratio(semitones, const_(KEYBOARD_SEMITONES), input)); }
+/** @brief Shorthand for `keyboard_shift`, using double arguments. */
+Func *keyboard_shift_(keyboard_control_func control, double semitones, Func *input) { return keyboard_shift(control, const_(semitones), input); }
 /** @brief Shorthand for `keyboard_create`, using MIDI_KEYBOARD_NOTE_COUNT. */
 Func *midi_keyboard(int channel, Func *input) { return midi_keyboard_count(channel, KEYBOARD_SEMITONES, MIDI_KEYBOARD_NOTE_COUNT, input); }
+/** @brief Shorthand for `midi_keyboard_count`, using pitch shift. */
+Func *midi_keyboard_shift(int channel, Func *semitones, Func *input) { return midi_keyboard(channel, pitch_shift_ratio(semitones, const_(KEYBOARD_SEMITONES), input)); }
+/** @brief Shorthand for `midi_keyboard_shift`, using double arguments. */
+Func *midi_keyboard_shift_(int channel, double semitones, Func *input) { return midi_keyboard_shift(channel, const_(semitones), input); }
 
 Func *looper_keyboard(int key, Func *interval, Func *input) { return looper_keyboard_create(key, dvd(param(EvalParamTempoTick), interval), input); }
 Func *looper_keyboard_(int key, double interval, Func *input) { return looper_keyboard(key, const_(interval), input); }
