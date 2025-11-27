@@ -32,12 +32,12 @@ typedef struct
 csError reader_read_file(PcmBuffer *buffer, FILE *file)
 {
     WavHeader header = {0};
-    size_t header_count = fread(&header, sizeof(header), 1, file);
-    if (header_count != 1)
+    csError error = wav_header_read_file(&header, file);
+    if (error != csErrorNone)
     {
-        return error_type_message(csErrorWav, "Unable to read WAV header");
+        return error;
     }
-    csError error = wav_header_read(&header, &buffer->sample_count, &buffer->channel_count, &buffer->sample_rate);
+    error = wav_header_parse(&header, &buffer->sample_count, &buffer->channel_count, &buffer->sample_rate);
     if (error != csErrorNone)
     {
         return error;

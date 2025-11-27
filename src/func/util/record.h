@@ -46,13 +46,8 @@ static csError record_init(size_t count, __U Gen **args, void *context_)
 {
     RecordContext *context = (RecordContext *)context_;
     WavHeader header = {0};
-    wav_header_write(&header, 1, (uint32_t)count, context->sample_rate);
-    size_t header_count = fwrite(&header, sizeof(header), 1, context->file);
-    if (header_count != 1)
-    {
-        return error_type(csErrorFileWrite);
-    }
-    return csErrorNone;
+    wav_header_update(&header, 1, (uint32_t)count, context->sample_rate);
+    return wav_header_write_file(&header, context->file);
 }
 
 static void record_free(size_t count, void *context_)
@@ -68,11 +63,11 @@ static void record_free(size_t count, void *context_)
         error_catch(csErrorFileSeek);
     }
     WavHeader header = {0};
-    wav_header_write(&header, (uint32_t)context->size, (uint32_t)count, context->sample_rate);
-    size_t header_count = fwrite(&header, sizeof(header), 1, context->file);
-    if (header_count != 1)
+    wav_header_update(&header, (uint32_t)context->size, (uint32_t)count, context->sample_rate);
+    csError error = wav_header_write_file(&header, context->file);
+    if (error != csErrorNone)
     {
-        error_catch(csErrorFileWrite);
+        error_catch(error);
     }
 }
 

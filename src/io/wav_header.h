@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "./file.h"
 #include "./sampler.h"
 
 #define DEFAULT_WAV_FILENAME "output/default.wav"
@@ -47,7 +48,27 @@ typedef struct
 static const size_t WAV_HEADER_SIZE = sizeof(WavHeader) - WAV_HEADER_(riff_type) - WAV_HEADER_(file_size);
 static const size_t WAV_HEADER_FORMAT_SIZE = WAV_HEADER_(format_type) + WAV_HEADER_(num_channels) + WAV_HEADER_(sample_rate) + WAV_HEADER_(byte_rate) + WAV_HEADER_(block_align) + WAV_HEADER_(bits_sample);
 
-csError wav_header_read(WavHeader *header, size_t *sample_count, size_t *channel_count, size_t *sample_rate)
+csError wav_header_read_file(WavHeader *header, FILE *file)
+{
+    size_t header_count = fread(header, sizeof(*header), 1, file);
+    if (header_count != 1)
+    {
+        return error_type_message(csErrorWav, "Unable to read WAV header");
+    }
+    return csErrorNone;
+}
+
+csError wav_header_write_file(WavHeader *header, FILE *file)
+{
+    size_t header_count = fwrite(header, sizeof(*header), 1, file);
+    if (header_count != 1)
+    {
+        return error_type_message(csErrorWav, "Unable to write WAV header");
+    }
+    return csErrorNone;
+}
+
+csError wav_header_parse(WavHeader *header, size_t *sample_count, size_t *channel_count, size_t *sample_rate)
 {
     if (memcmp(header->riff_type, "RIFF", 4) || memcmp(header->file_type, "WAVE", 4) || memcmp(header->format_mark, "fmt ", 4) || header->format_type != 1 || memcmp(header->data_chunk, "data", 4))
     {
@@ -71,7 +92,7 @@ csError wav_header_read(WavHeader *header, size_t *sample_count, size_t *channel
     return csErrorNone;
 }
 
-void wav_header_write(WavHeader *header, size_t sample_count, size_t channel_count, size_t sample_rate)
+void wav_header_update(WavHeader *header, size_t sample_count, size_t channel_count, size_t sample_rate)
 {
     uint32_t data_size = sizeof(sample_t) * channel_count * sample_count;
     memcpy(header->riff_type, "RIFF", 4);
@@ -87,6 +108,46 @@ void wav_header_write(WavHeader *header, size_t sample_count, size_t channel_cou
     header->bits_sample = (uint16_t)(sizeof(sample_t) * 8);
     memcpy(header->data_chunk, "data", 4);
     header->data_size = data_size;
+}
+
+csError wav_header_read_filename(WavHeader *header, const char *filename)
+{
+    FILE *file = fopen_(filename, "rb");
+    if (file == NULL)
+    {
+        return error_type_message(csErrorFileOpen, "Unable to open file: %s", filename);
+    }
+    csError error = wav_header_read_file(header, file);
+    if (error != csErrorNone)
+    {
+        fclose_(file);
+        return error;
+    }
+    if (fclose_(file) == EOF)
+    {
+        return error_type(csErrorFileClose);
+    }
+    return csErrorNone;
+}
+
+csError wav_header_write_filename(WavHeader *header, const char *filename)
+{
+    FILE *file = fopen_(filename, "wb");
+    if (file == NULL)
+    {
+        return error_type_message(csErrorFileOpen, "Unable to open file: %s", filename);
+    }
+    csError error = wav_header_write_file(header, file);
+    if (error != csErrorNone)
+    {
+        fclose_(file);
+        return error;
+    }
+    if (fclose_(file) == EOF)
+    {
+        return error_type(csErrorFileClose);
+    }
+    return csErrorNone;
 }
 
 #endif // CSYNTH_WAV_HEADER_H

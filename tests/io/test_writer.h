@@ -15,7 +15,7 @@ void test_writer(void)
     size_t sample_count = 0;
     size_t channel_count = 0;
     size_t sample_rate = 0;
-    assert_long_equal(wav_header_read(&header, &sample_count, &channel_count, &sample_rate), csErrorNone);
+    assert_long_equal(wav_header_parse(&header, &sample_count, &channel_count, &sample_rate), csErrorNone);
     assert_long_equal(sample_count, 10);
     assert_long_equal(channel_count, 1);
     assert_long_equal(sample_rate, 10);
