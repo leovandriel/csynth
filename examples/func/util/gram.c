@@ -4,9 +4,9 @@
 
 int main(void)
 {
-    // func fm = sine(kr_range(C3, C9, sine_(0.5)));
-    func fm = pitch_shift(kr_range_(0, 6, sine_(0.5)), sine(C3));
-    RenderPipe pipe = {.width = 400, .height = 400};
+    // func fm = sine(kr_range(C0, B9, sine_(0.5)));
+    func fm = pitch_shift(kr_range_(0, 8, sine_(0.5)), sine(C2));
+    RenderPipe pipe = {.width = 1024, .height = 1024};
     func note = gram(fm, &pipe);
     return play_screen(note, &pipe);
 }

@@ -5,7 +5,6 @@
 #include <string.h>
 
 #include "../../io/file.h"
-#include "../../io/ppm_header.h"
 #include "../../ui/render_pipe.h"
 #include "../../util/error.h"
 #include "../../util/math.h"
@@ -52,7 +51,7 @@ static void scope_job(void *context_)
         for (size_t i = 0; i < context->pipe->width; i++)
         {
             double value = (double)buffer[j * context->pipe->width + i] / (double)context->periods;
-            unsigned char out = (unsigned char)(math_gamma(value, context->gamma) * 255.0);
+            uint32_t out = (uint32_t)math_clamp(math_gamma(value, context->gamma) * 0x100, 0, 0xFF);
             out_buffer[j * (out_pitch / sizeof(uint32_t)) + i] = 0xFF000000 | (out << 16) | (out << 8) | out;
         }
     }
@@ -112,8 +111,7 @@ static void scope_free(__U size_t count, void *context_)
 }
 
 /**
- * @brief Creates a scope function that plots the wave of a given frequency to
- * a PPM image file.
+ * @brief Creates a scope function that plots the wave of a given frequency.
  *
  * @param input The input function.
  * @param frequency The frequency of the plot, i.e. which frequency will be

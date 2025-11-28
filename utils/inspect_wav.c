@@ -9,6 +9,8 @@
 #include "../src/io/reader.h"
 #include "../src/io/wav_header.h"
 #include "../src/io/writer.h"
+#include "../src/util/fourier.h"
+#include "../src/io/ppm_header.h"
 
 /**
  * @brief Format an integer with commas.
@@ -199,6 +201,64 @@ csError cut(size_t start, size_t end, const char *in_filename, const char *out_f
     return csErrorNone;
 }
 
+csError gram(size_t window_size, size_t step_size, const char *in_filename, const char *out_filename)
+{
+    if (!fourier_is_power_of_two(window_size))
+    {
+        return error_type_message(csErrorInvalidArgument, "Window size must be a power of 2, got %zu", window_size);
+    }
+    PcmBuffer buffer = {0};
+    csError error = reader_read_filename(&buffer, in_filename);
+    if (error != csErrorNone)
+    {
+        return error;
+    }
+    size_t width = buffer.sample_count / step_size;
+    size_t height = window_size / 2;
+    uint32_t *image_buffer = (uint32_t *)malloc_(width * height * sizeof(uint32_t));
+    if (image_buffer == NULL)
+    {
+        reader_free(&buffer);
+        return error_type(csErrorMemoryAlloc);
+    }
+    double *in_buffer = (double *)malloc_(window_size * sizeof(double));
+    if (in_buffer == NULL)
+    {
+        free_(image_buffer);
+        reader_free(&buffer);
+        return error_type(csErrorMemoryAlloc);
+    }
+    double *out_buffer = (double *)malloc_(height * sizeof(double));
+    if (out_buffer == NULL)
+    {
+        free_(in_buffer);
+        free_(image_buffer);
+        reader_free(&buffer);
+        return error_type(csErrorMemoryAlloc);
+    }
+    size_t sample_offset = 0, frame_offset = 0;
+    for (size_t i = 0; i < buffer.sample_count; i++)
+    {
+        in_buffer[sample_offset % window_size] = (double)buffer.samples[i * buffer.channel_count] / (double)0x8000;
+        sample_offset++;
+        if (sample_offset % step_size == 0) {
+            fourier_transform(in_buffer, window_size, sample_offset, out_buffer);
+            for (size_t j = 0; j < height; j++)
+            {
+                image_buffer[j * width + frame_offset] = fourier_value_to_color(out_buffer[height - j - 1]);
+            }
+            frame_offset++;
+        }
+    }
+    ppm_bgra_to_rgb((unsigned char *)image_buffer, width, height);
+    ppm_write_filename(out_filename, width, height, (unsigned char *)image_buffer);
+    free_(out_buffer);
+    free_(in_buffer);
+    free_(image_buffer);
+    reader_free(&buffer);
+    return csErrorNone;
+}
+
 int main(int argc, char **argv)
 {
     if (argc < 2)
@@ -241,6 +301,20 @@ int main(int argc, char **argv)
         const char *in_filename = argv[4];
         const char *out_filename = argv[5];
         return cut(start, end, in_filename, out_filename);
+    }
+
+    if (strcmp(tool, "gram") == 0)
+    {
+        if (argc < 6)
+        {
+            fprintf(stderr, "Usage: %s gram window-size step-size in-filename out-filename\n", argv[0]);
+            return -1;
+        }
+        size_t window_size = (size_t)atoll(argv[2]);
+        size_t step_size = (size_t)atoll(argv[3]);
+        const char *in_filename = argv[4];
+        const char *out_filename = argv[5];
+        return gram(window_size, step_size, in_filename, out_filename);
     }
 
     return error_type_message(csErrorInvalidArgument, "Unknown tool: %s", tool);

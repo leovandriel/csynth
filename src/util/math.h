@@ -2,7 +2,6 @@
 #define CSYNTH_MATH_H
 
 #include <complex.h>
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -45,42 +44,14 @@ double math_pow_int(double base, int exp)
     return result;
 }
 
-void math_fft(complex double *samples, size_t count, bool inverse)
-{
-    if (count <= 1)
-    {
-        return;
-    }
-    size_t half = count / 2;
-    complex double even[half], odd[half];
-    for (size_t i = 0; i < half; i++)
-    {
-        even[i] = samples[2 * i];
-        odd[i] = samples[2 * i + 1];
-    }
-    math_fft(even, half, inverse);
-    math_fft(odd, half, inverse);
-    double sign = inverse ? 1.0 : -1.0;
-    double angle_base = sign * 2.0 * PI / (double)count;
-    for (size_t k = 0; k < half; k++)
-    {
-        complex double twiddle = cexp(I * angle_base * (double)k) * odd[k];
-        if (inverse)
-        {
-            samples[k] = (even[k] + twiddle) / 2.0;
-            samples[k + half] = (even[k] - twiddle) / 2.0;
-        }
-        else
-        {
-            samples[k] = even[k] + twiddle;
-            samples[k + half] = even[k] - twiddle;
-        }
-    }
-}
-
 double math_gamma(double value, int gamma)
 {
     return 1 - math_pow_int(1 - value, gamma);
+}
+
+double math_clamp(double v, double min, double max)
+{
+    return v <= max ? (v >= min ? v : min) : max;
 }
 
 #endif // CSYNTH_MATH_H

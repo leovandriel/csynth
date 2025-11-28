@@ -74,7 +74,7 @@ Func *scope(Func *input, Func *frequency, RenderPipe *pipe)
 /** @brief Plot spectrogram. */
 Func *gram(Func *input, RenderPipe *pipe)
 {
-    return gram_create(input, 2048, pipe, 8);
+    return gram_create(input, pipe);
 }
 
 #endif // CSYNTH_UTILS_H
