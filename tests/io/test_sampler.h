@@ -17,9 +17,9 @@ void test_sampler(void)
     assert_long_equal(buffer[2], 3276);
     assert_long_equal(buffer[3], 6553);
     assert_long_equal(buffer[4], 6553);
-    assert_long_equal(buffer[5], 13106);
+    assert_long_equal(buffer[5], 13107);
     assert_long_equal(buffer[6], 9830);
-    assert_long_equal(buffer[7], -13106);
+    assert_long_equal(buffer[7], -13107);
     sampler_free(sampler);
     func_free();
 }

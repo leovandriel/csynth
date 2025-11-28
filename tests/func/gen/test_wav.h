@@ -13,10 +13,10 @@ void test_wav(void)
     };
     Gen *gen = gen_create(wav_create(buffer, false, 0, const_create(0.1)));
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
-    assert_double_equal(gen_eval(gen, NULL), 1.0000000000000000);
-    assert_double_equal(gen_eval(gen, NULL), -1.0000000000000000);
-    assert_double_equal(gen_eval(gen, NULL), 0.0000305185094760);
-    assert_double_equal(gen_eval(gen, NULL), -0.0000305185094760);
+    assert_double_equal(gen_eval(gen, NULL), 0.9999694824218750);
+    assert_double_equal(gen_eval(gen, NULL), -0.9999694824218750);
+    assert_double_equal(gen_eval(gen, NULL), 0.0000305175781250);
+    assert_double_equal(gen_eval(gen, NULL), -0.0000305175781250);
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);
     assert_double_equal(gen_eval(gen, NULL), 0.0000000000000000);

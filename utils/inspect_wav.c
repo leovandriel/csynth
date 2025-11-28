@@ -6,11 +6,11 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "../src/io/ppm_header.h"
 #include "../src/io/reader.h"
 #include "../src/io/wav_header.h"
 #include "../src/io/writer.h"
 #include "../src/util/fourier.h"
-#include "../src/io/ppm_header.h"
 
 /**
  * @brief Format an integer with commas.
@@ -241,7 +241,8 @@ csError gram(size_t window_size, size_t step_size, const char *in_filename, cons
     {
         in_buffer[sample_offset % window_size] = (double)buffer.samples[i * buffer.channel_count] / (double)0x8000;
         sample_offset++;
-        if (sample_offset % step_size == 0) {
+        if (sample_offset % step_size == 0)
+        {
             fourier_transform(in_buffer, window_size, sample_offset, out_buffer);
             for (size_t j = 0; j < height; j++)
             {

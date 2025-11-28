@@ -24,9 +24,9 @@ void test_writer(void)
     assert_long_equal(data[1], 3276);
     assert_long_equal(data[2], 6553);
     assert_long_equal(data[3], 9830);
-    assert_long_equal(data[4], 13106);
-    assert_long_equal(data[5], 16383);
-    assert_long_equal(data[6], -13106);
+    assert_long_equal(data[4], 13107);
+    assert_long_equal(data[5], 16384);
+    assert_long_equal(data[6], -13107);
     assert_long_equal(data[7], -9830);
     assert_long_equal(data[8], -6553);
     assert_long_equal(data[9], -3276);

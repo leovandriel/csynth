@@ -20,7 +20,7 @@ static double wav_eval(__U size_t count, Gen **args, Eval *eval, void *context_)
 {
     WavContext *context = (WavContext *)context_;
     sample_t sample = reader_sample(&context->buffer, context->time, context->channel);
-    double output = (double)sample / 32767;
+    double output = (double)sample / 0x8000;
     double tick = gen_eval(args[0], eval);
     context->time += tick;
     return output;

@@ -4,6 +4,7 @@
 #include "../core/func.h"
 #include "../core/gen.h"
 #include "../util/error.h"
+#include "../util/math.h"
 
 #define SAMPLE_RATE 44100 // 44.1 kHz
 #define DISPLAY_RATE 10   // 10 FPS
@@ -84,9 +85,7 @@ Sampler *sampler_create(size_t sample_rate, size_t count, Func **inputs)
 
 sample_t sampler_quantize(double output)
 {
-    double scaled = output * VOLUME_MULTIPLIER;
-    double clip = scaled > 1.0 ? 1.0 : (scaled < -1.0 ? -1.0 : scaled);
-    return (sample_t)(clip * 32767);
+    return (sample_t)math_clamp(output * VOLUME_MULTIPLIER * 0x8000, -0x8000, 0x7FFF);
 }
 
 void sampler_eval_next(Eval *eval)
