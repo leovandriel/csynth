@@ -315,6 +315,40 @@ csError fft(size_t start, size_t window_size, const char *in_filename, const cha
     return csErrorNone;
 }
 
+csError scope(size_t start, double frequency, size_t periods, const char *in_filename, const char *out_filename, size_t channel, size_t height)
+{
+    PcmBuffer buffer = {0};
+    csError error = reader_read_filename(&buffer, in_filename);
+    if (error != csErrorNone)
+    {
+        return error;
+    }
+    size_t width = (size_t)(buffer.sample_rate / frequency);
+    uint32_t *image_buffer = (uint32_t *)calloc_(width * height, sizeof(uint32_t));
+    if (image_buffer == NULL)
+    {
+        reader_free(&buffer);
+        return error_type(csErrorMemoryAlloc);
+    }
+    for (size_t i = 0; i < width; i++)
+    {
+        image_buffer[(height / 2) * width + i] = 0xFF222222;
+    }
+    for (size_t i = 0; i < width * periods; i++)
+    {
+        double amplitude = (double)buffer.samples[(start + i * buffer.channel_count + channel) % buffer.sample_count] / (double)0x8000;
+        size_t y = (size_t)math_clamp(height * (amplitude + 1.0) / 2.0, 0.0, height - 1);
+        size_t color = (size_t)math_clamp((double)0x100 * (double)i / (double)width / (double)periods, 0.0, 0xFF);
+        image_buffer[y * width + i % width] = 0xFF000000 + (color << 16) + (color << 8) + color;
+    }
+    printf("Period: %zu samples\n", width);
+    ppm_bgra_to_rgb((unsigned char *)image_buffer, width, height);
+    ppm_write_filename(out_filename, width, height, (unsigned char *)image_buffer);
+    free_(image_buffer);
+    reader_free(&buffer);
+    return csErrorNone;
+}
+
 int main(int argc, char **argv)
 {
     if (argc < 2)
@@ -389,6 +423,23 @@ int main(int argc, char **argv)
         size_t height = 512;
         double db_range = 160.0;
         return fft(start, window_size, in_filename, out_filename, channel, height, db_range);
+    }
+
+    if (strcmp(tool, "scope") == 0)
+    {
+        if (argc < 7)
+        {
+            fprintf(stderr, "Usage: %s scope start frequency periods in-filename out-filename\n", argv[0]);
+            return -1;
+        }
+        size_t start = (size_t)atoll(argv[2]);
+        double frequency = (double)atof(argv[3]);
+        size_t periods = (size_t)atoll(argv[4]);
+        const char *in_filename = argv[5];
+        const char *out_filename = argv[6];
+        size_t channel = 0;
+        size_t height = 512;
+        return scope(start, frequency, periods, in_filename, out_filename, channel, height);
     }
 
     return error_type_message(csErrorInvalidArgument, "Unknown tool: %s", tool);
