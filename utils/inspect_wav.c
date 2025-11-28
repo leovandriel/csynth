@@ -201,7 +201,7 @@ csError cut(size_t start, size_t end, const char *in_filename, const char *out_f
     return csErrorNone;
 }
 
-csError gram(size_t window_size, size_t step_size, const char *in_filename, const char *out_filename)
+csError gram(size_t window_size, size_t step_size, const char *in_filename, const char *out_filename, size_t channel)
 {
     if (!fourier_is_power_of_two(window_size))
     {
@@ -215,7 +215,7 @@ csError gram(size_t window_size, size_t step_size, const char *in_filename, cons
     }
     size_t width = buffer.sample_count / step_size;
     size_t height = window_size / 2;
-    uint32_t *image_buffer = (uint32_t *)malloc_(width * height * sizeof(uint32_t));
+    uint32_t *image_buffer = (uint32_t *)calloc_(width * height, sizeof(uint32_t));
     if (image_buffer == NULL)
     {
         reader_free(&buffer);
@@ -239,7 +239,7 @@ csError gram(size_t window_size, size_t step_size, const char *in_filename, cons
     size_t sample_offset = 0, frame_offset = 0;
     for (size_t i = 0; i < buffer.sample_count; i++)
     {
-        in_buffer[sample_offset % window_size] = (double)buffer.samples[i * buffer.channel_count] / (double)0x8000;
+        in_buffer[sample_offset % window_size] = (double)buffer.samples[i * buffer.channel_count + channel] / (double)0x8000;
         sample_offset++;
         if (sample_offset % step_size == 0)
         {
@@ -253,7 +253,62 @@ csError gram(size_t window_size, size_t step_size, const char *in_filename, cons
     }
     ppm_bgra_to_rgb((unsigned char *)image_buffer, width, height);
     ppm_write_filename(out_filename, width, height, (unsigned char *)image_buffer);
+    printf("Bin size: %.3f Hz\n", (double)buffer.sample_rate / (double)window_size);
     free_(out_buffer);
+    free_(in_buffer);
+    free_(image_buffer);
+    reader_free(&buffer);
+    return csErrorNone;
+}
+
+csError fft(size_t start, size_t window_size, const char *in_filename, const char *out_filename, size_t channel, size_t height, double db_range)
+{
+    if (!fourier_is_power_of_two(window_size))
+    {
+        return error_type_message(csErrorInvalidArgument, "Window size must be a power of 2, got %zu", window_size);
+    }
+    PcmBuffer buffer = {0};
+    csError error = reader_read_filename(&buffer, in_filename);
+    if (error != csErrorNone)
+    {
+        return error;
+    }
+    size_t width = window_size / 2;
+    uint32_t *image_buffer = (uint32_t *)calloc_(width * height, sizeof(uint32_t));
+    if (image_buffer == NULL)
+    {
+        reader_free(&buffer);
+        return error_type(csErrorMemoryAlloc);
+    }
+    double *in_buffer = (double *)malloc_(window_size * sizeof(double));
+    if (in_buffer == NULL)
+    {
+        free_(image_buffer);
+        reader_free(&buffer);
+        return error_type(csErrorMemoryAlloc);
+    }
+    for (size_t j = 1; j < db_range / 20; j += 1)
+    {
+        size_t scaled = (size_t)math_clamp((-20.0 * j + db_range) / db_range * height, 0.0, height - 1);
+        for (size_t i = 0; i < width; i++)
+        {
+            image_buffer[(height - scaled - 1) * width + i] = ((const int[]){0xFF300000, 0xFF002000, 0xFF000050})[j % 3];
+        }
+    }
+    for (size_t i = 0; i < window_size; i++)
+    {
+        in_buffer[i] = (double)buffer.samples[(start + i * buffer.channel_count + channel) % buffer.sample_count] / (double)0x8000;
+    }
+    fourier_transform(in_buffer, window_size, 0, in_buffer);
+    for (size_t j = 0; j < width; j++)
+    {
+        double db = fourier_value_to_db(in_buffer[j]);
+        size_t scaled = (size_t)math_clamp((db + db_range) / db_range * height, 0.0, height - 1);
+        image_buffer[(height - scaled - 1) * width + j] = 0xFFFFFFFF;
+    }
+    ppm_bgra_to_rgb((unsigned char *)image_buffer, width, height);
+    ppm_write_filename(out_filename, width, height, (unsigned char *)image_buffer);
+    printf("Bin size: %.3f Hz\n", (double)buffer.sample_rate / (double)window_size);
     free_(in_buffer);
     free_(image_buffer);
     reader_free(&buffer);
@@ -315,7 +370,25 @@ int main(int argc, char **argv)
         size_t step_size = (size_t)atoll(argv[3]);
         const char *in_filename = argv[4];
         const char *out_filename = argv[5];
-        return gram(window_size, step_size, in_filename, out_filename);
+        size_t channel = 0;
+        return gram(window_size, step_size, in_filename, out_filename, channel);
+    }
+
+    if (strcmp(tool, "fft") == 0)
+    {
+        if (argc < 6)
+        {
+            fprintf(stderr, "Usage: %s fft start window-size in-filename out-filename\n", argv[0]);
+            return -1;
+        }
+        size_t start = (size_t)atoll(argv[2]);
+        size_t window_size = (size_t)atoll(argv[3]);
+        const char *in_filename = argv[4];
+        const char *out_filename = argv[5];
+        size_t channel = 0;
+        size_t height = 512;
+        double db_range = 160.0;
+        return fft(start, window_size, in_filename, out_filename, channel, height, db_range);
     }
 
     return error_type_message(csErrorInvalidArgument, "Unknown tool: %s", tool);
