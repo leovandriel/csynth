@@ -11,6 +11,7 @@
 #include "../src/io/wav_header.h"
 #include "../src/io/writer.h"
 #include "../src/util/fourier.h"
+#include "../src/util/note.h"
 #include "../src/util/sort.h"
 
 /**
@@ -445,13 +446,20 @@ csError peaks(size_t start, size_t window_exp, const char *filename, size_t chan
             dominant_freq = frequency;
             dominant_db = db;
         }
-        printf("%.2f Hz (%s%.2f): %.2f dB (%s%.2f)\n",
+        double note_index = note_frequency_to_index(frequency);
+        double note_index_frac = note_index - round(note_index);
+        char note[4];
+        note_index_to_string(note_index, note, 4);
+        printf("%.2f Hz (%s%.2f), %.2f dB (%s%.2f), %s%s%.0f%%\n",
                frequency,
                frequency >= dominant_freq ? "x" : "/",
                frequency >= dominant_freq ? frequency / dominant_freq : dominant_freq / frequency,
                db,
                db > dominant_db ? "+" : "-",
-               db > dominant_db ? db - dominant_db : dominant_db - db);
+               db > dominant_db ? db - dominant_db : dominant_db - db,
+               note,
+               note_index_frac > 0.0 ? "+" : "-",
+               fabs(note_index_frac) * 100.0);
         if (++found >= count)
         {
             break;

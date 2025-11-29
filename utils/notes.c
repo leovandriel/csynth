@@ -2,24 +2,33 @@
 #include <math.h>
 #include <stdio.h>
 
-static const char *NOTE_NAMES[] = {"C", "Cs", "Db", "D", "Ds", "Eb", "E", "F", "Fs", "Gb", "G", "Gs", "Ab", "A", "As", "Bb", "B"};
+#include "../src/util/note.h"
 
 int main(void)
 {
     int octaves = 10;
-    for (int i = 0; i < 17 * octaves; i++)
+    for (int i = 0; i < 12 * octaves; i++)
     {
-        const char *note = NOTE_NAMES[i % 17];
-        int octave = i / 17;
-        int index = (int)((i + 4) * 12.0 / 17 - 59.45);
-        double freq = 440 * pow(2, index / 12.0);
-        int prec = 20 - (int)log10(freq);
-        fprintf(stdout, "#define %s%d_ %.*f // 440 * pow(2, %d / 12.0)\n", note, octave, prec, freq, index);
+        for (int j = -!NOTE_NAMES[i % 12][0]; j <= 1; j += 2)
+        {
+            char note[4];
+            note_ij_to_string(i, j, note, 4);
+            int index = i - 57;
+            double freq = 440 * pow(2, index / 12.0);
+            int prec = 19 - (int)log10(freq);
+            fprintf(stdout, "#define %s_ %.*f // 440 * pow(2, %d / 12.0)\n", note, prec, freq, index);
+        }
     }
-    for (int i = 0; i < 17 * octaves; i++)
+
+    fprintf(stdout, "\n");
+
+    for (int i = 0; i < 12 * octaves; i++)
     {
-        const char *note = NOTE_NAMES[i % 17];
-        int octave = i / 17;
-        fprintf(stdout, "#define %s%d (const_(%s%d_))\n", note, octave, note, octave);
+        for (int j = -!NOTE_NAMES[i % 12][0]; j <= 1; j += 2)
+        {
+            char note[4];
+            note_ij_to_string(i, j, note, 4);
+            fprintf(stdout, "#define %s (const_(%s_))\n", note, note);
+        }
     }
 }
