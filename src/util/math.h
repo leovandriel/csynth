@@ -49,9 +49,9 @@ double math_gamma(double value, int gamma)
     return 1 - math_pow_int(1 - value, gamma);
 }
 
-double math_clamp(double v, double min, double max)
+double math_clamp(double value, double min, double max)
 {
-    return v <= max ? (v >= min ? v : min) : max;
+    return value <= max ? (value >= min ? value : min) : max;
 }
 
 #endif // CSYNTH_MATH_H

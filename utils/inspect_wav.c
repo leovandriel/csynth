@@ -11,6 +11,7 @@
 #include "../src/io/wav_header.h"
 #include "../src/io/writer.h"
 #include "../src/util/fourier.h"
+#include "../src/util/sort.h"
 
 /**
  * @brief Format an integer with commas.
@@ -133,6 +134,15 @@ csError play(const char *filename)
         return error_type_message(csErrorPortAudio, "Unable to start stream: %s", Pa_GetErrorText(pa_error), pa_error);
     }
     getchar();
+    pa_error = Pa_StopStream(stream);
+    if (pa_error != paNoError)
+    {
+        Pa_CloseStream(stream);
+        Pa_Terminate();
+        reader_free(&data.buffer);
+        return error_type_message(csErrorPortAudio, "Unable to stop stream: %s", Pa_GetErrorText(pa_error), pa_error);
+    }
+    pa_error = Pa_CloseStream(stream);
     if (pa_error != paNoError)
     {
         Pa_Terminate();
@@ -158,7 +168,7 @@ csError play(const char *filename)
  * @param out_filename Output filename.
  * @return csError Error code, zero on success.
  */
-csError cut(size_t start, size_t end, const char *in_filename, const char *out_filename)
+csError cut(size_t start, size_t length, const char *in_filename, const char *out_filename)
 {
     PcmBuffer buffer = {0};
     csError error = reader_read_filename(&buffer, in_filename);
@@ -166,12 +176,14 @@ csError cut(size_t start, size_t end, const char *in_filename, const char *out_f
     {
         return error;
     }
+    size_t end = start + length;
     if (end > buffer.sample_count)
     {
         end = buffer.sample_count;
     }
     if (start > end)
     {
+        reader_free(&buffer);
         return error_type_message(csErrorInvalidArgument, "Start is greater than end");
     }
     size_t sample_count = end - start;
@@ -182,6 +194,7 @@ csError cut(size_t start, size_t end, const char *in_filename, const char *out_f
     out_buffer.samples = (sample_t *)malloc_(sample_count * buffer.channel_count * sizeof(sample_t));
     if (out_buffer.samples == NULL)
     {
+        reader_free(&buffer);
         return error_type(csErrorMemoryAlloc);
     }
     for (size_t i = 0; i < sample_count; i++)
@@ -195,25 +208,24 @@ csError cut(size_t start, size_t end, const char *in_filename, const char *out_f
     error = writer_write_filename(&out_buffer, out_filename);
     if (error != csErrorNone)
     {
+        reader_free(&out_buffer);
         return error;
     }
     reader_free(&out_buffer);
     return csErrorNone;
 }
 
-csError gram(size_t window_size, size_t step_size, const char *in_filename, const char *out_filename, size_t channel)
+csError gram(size_t window_exp, double step_seconds, const char *in_filename, const char *out_filename, size_t channel)
 {
-    if (!fourier_is_power_of_two(window_size))
-    {
-        return error_type_message(csErrorInvalidArgument, "Window size must be a power of 2, got %zu", window_size);
-    }
     PcmBuffer buffer = {0};
     csError error = reader_read_filename(&buffer, in_filename);
     if (error != csErrorNone)
     {
         return error;
     }
+    size_t step_size = (size_t)(step_seconds * buffer.sample_rate);
     size_t width = buffer.sample_count / step_size;
+    size_t window_size = 1 << window_exp;
     size_t height = window_size / 2;
     uint32_t *image_buffer = (uint32_t *)calloc_(width * height, sizeof(uint32_t));
     if (image_buffer == NULL)
@@ -261,18 +273,15 @@ csError gram(size_t window_size, size_t step_size, const char *in_filename, cons
     return csErrorNone;
 }
 
-csError fft(size_t start, size_t window_size, const char *in_filename, const char *out_filename, size_t channel, size_t height, double db_range)
+csError fft(size_t start, size_t window_exp, const char *in_filename, const char *out_filename, size_t channel, size_t height, double db_range)
 {
-    if (!fourier_is_power_of_two(window_size))
-    {
-        return error_type_message(csErrorInvalidArgument, "Window size must be a power of 2, got %zu", window_size);
-    }
     PcmBuffer buffer = {0};
     csError error = reader_read_filename(&buffer, in_filename);
     if (error != csErrorNone)
     {
         return error;
     }
+    size_t window_size = 1 << window_exp;
     size_t width = window_size / 2;
     uint32_t *image_buffer = (uint32_t *)calloc_(width * height, sizeof(uint32_t));
     if (image_buffer == NULL)
@@ -297,7 +306,7 @@ csError fft(size_t start, size_t window_size, const char *in_filename, const cha
     }
     for (size_t i = 0; i < window_size; i++)
     {
-        in_buffer[i] = (double)buffer.samples[(start + i * buffer.channel_count + channel) % buffer.sample_count] / (double)0x8000;
+        in_buffer[i] = (double)buffer.samples[((start + i) * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
     }
     fourier_transform(in_buffer, window_size, 0, in_buffer);
     for (size_t j = 0; j < width; j++)
@@ -336,7 +345,7 @@ csError scope(size_t start, double frequency, size_t periods, const char *in_fil
     }
     for (size_t i = 0; i < width * periods; i++)
     {
-        double amplitude = (double)buffer.samples[(start + i * buffer.channel_count + channel) % buffer.sample_count] / (double)0x8000;
+        double amplitude = (double)buffer.samples[((start + i) * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
         size_t y = (size_t)math_clamp(height * (amplitude + 1.0) / 2.0, 0.0, height - 1);
         size_t color = (size_t)math_clamp((double)0x100 * (double)i / (double)width / (double)periods, 0.0, 0xFF);
         image_buffer[y * width + i % width] = 0xFF000000 + (color << 16) + (color << 8) + color;
@@ -345,6 +354,111 @@ csError scope(size_t start, double frequency, size_t periods, const char *in_fil
     ppm_bgra_to_rgb((unsigned char *)image_buffer, width, height);
     ppm_write_filename(out_filename, width, height, (unsigned char *)image_buffer);
     free_(image_buffer);
+    reader_free(&buffer);
+    return csErrorNone;
+}
+
+static int freq_compare(const void *a, const void *b, const void *context)
+{
+    double *in_buffer = (double *)context;
+    double a_value = in_buffer[*(size_t *)a];
+    double b_value = in_buffer[*(size_t *)b];
+    return a_value < b_value ? 1 : (a_value > b_value ? -1 : 0);
+}
+
+csError peaks(size_t start, size_t window_exp, const char *filename, size_t channel, size_t count)
+{
+    PcmBuffer buffer = {0};
+    csError error = reader_read_filename(&buffer, filename);
+    if (error != csErrorNone)
+    {
+        return error;
+    }
+    size_t window_size = 1 << window_exp;
+    double *in_buffer = (double *)malloc_(window_size * sizeof(double));
+    if (in_buffer == NULL)
+    {
+        reader_free(&buffer);
+        return error_type(csErrorMemoryAlloc);
+    }
+    size_t *sort_buffer = (size_t *)malloc_(window_size / 2 * sizeof(size_t));
+    if (sort_buffer == NULL)
+    {
+        free_(in_buffer);
+        reader_free(&buffer);
+        return error_type(csErrorMemoryAlloc);
+    }
+    for (size_t i = 0; i < window_size; i++)
+    {
+        in_buffer[i] = (double)buffer.samples[((start + i) * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
+    }
+    fourier_transform(in_buffer, window_size, 0, in_buffer);
+    for (size_t i = 0; i < window_size / 2; i++)
+    {
+        sort_buffer[i] = i;
+    }
+    sort(sort_buffer, window_size / 2, sizeof(size_t), freq_compare, in_buffer);
+    double bin_size = (double)buffer.sample_rate / (double)window_size;
+    double dominant_freq = -1.0, dominant_db = -1.0;
+    size_t found = 0;
+    for (size_t i = 0; i < window_size / 2; i++)
+    {
+        size_t index = sort_buffer[i];
+        // ignore DC and Nyquist frequencies
+        if (index == 0 || index == window_size / 2 - 1)
+        {
+            continue;
+        }
+        // skip is near previous bin
+        bool is_near = false;
+        for (size_t j = 0; j < i; j++)
+        {
+            size_t diff = index > sort_buffer[j] ? index - sort_buffer[j] : sort_buffer[j] - index;
+            if (diff <= 1)
+            {
+                is_near = true;
+                break;
+            }
+        }
+        if (is_near)
+        {
+            continue;
+        }
+        double frequency = (double)index * bin_size;
+        double db = fourier_value_to_db(in_buffer[index]);
+        double a = fourier_value_to_db(in_buffer[index - 1]);
+        double b = fourier_value_to_db(in_buffer[index + 1]);
+        if (db < a || db < b)
+        {
+            continue;
+        }
+        // interpolate for higher precision
+        double denom = a + b - 2.0 * db;
+        if (denom != 0.0)
+        {
+            double delta = 0.5 * (a - b) / denom;
+            frequency += delta * bin_size;
+            db -= 0.25 * (a - b) * delta;
+        }
+        if (found == 0)
+        {
+            dominant_freq = frequency;
+            dominant_db = db;
+        }
+        printf("%.2f Hz (%s%.2f): %.2f dB (%s%.2f)\n",
+               frequency,
+               frequency >= dominant_freq ? "x" : "/",
+               frequency >= dominant_freq ? frequency / dominant_freq : dominant_freq / frequency,
+               db,
+               db > dominant_db ? "+" : "-",
+               db > dominant_db ? db - dominant_db : dominant_db - db);
+        if (++found >= count)
+        {
+            break;
+        }
+    }
+    free_(in_buffer);
+    free_(sort_buffer);
     reader_free(&buffer);
     return csErrorNone;
 }
@@ -383,46 +497,46 @@ int main(int argc, char **argv)
     {
         if (argc < 6)
         {
-            fprintf(stderr, "Usage: %s cut start end in-filename out-filename\n", argv[0]);
+            fprintf(stderr, "Usage: %s cut start length in-filename out-filename\n", argv[0]);
             return -1;
         }
-        size_t start = (size_t)atoll(argv[2]);
-        size_t end = (size_t)atoll(argv[3]);
+        size_t start = (size_t)atoll(argv[2]);  // 0 for start of file
+        size_t length = (size_t)atoll(argv[3]); // 1000 for 1000 samples (see sample rate)
         const char *in_filename = argv[4];
         const char *out_filename = argv[5];
-        return cut(start, end, in_filename, out_filename);
+        return cut(start, length, in_filename, out_filename);
     }
 
     if (strcmp(tool, "gram") == 0)
     {
         if (argc < 6)
         {
-            fprintf(stderr, "Usage: %s gram window-size step-size in-filename out-filename\n", argv[0]);
+            fprintf(stderr, "Usage: %s gram window-exp step-seconds in-filename out-filename\n", argv[0]);
             return -1;
         }
-        size_t window_size = (size_t)atoll(argv[2]);
-        size_t step_size = (size_t)atoll(argv[3]);
+        size_t window_exp = (size_t)atoll(argv[2]);  // 10 for 1024 samples
+        double step_seconds = (double)atof(argv[3]); // 0.1 for 10 per second
         const char *in_filename = argv[4];
         const char *out_filename = argv[5];
         size_t channel = 0;
-        return gram(window_size, step_size, in_filename, out_filename, channel);
+        return gram(window_exp, step_seconds, in_filename, out_filename, channel);
     }
 
     if (strcmp(tool, "fft") == 0)
     {
         if (argc < 6)
         {
-            fprintf(stderr, "Usage: %s fft start window-size in-filename out-filename\n", argv[0]);
+            fprintf(stderr, "Usage: %s fft start window-exp in-filename out-filename\n", argv[0]);
             return -1;
         }
-        size_t start = (size_t)atoll(argv[2]);
-        size_t window_size = (size_t)atoll(argv[3]);
+        size_t start = (size_t)atoll(argv[2]);      // 0 for start of file
+        size_t window_exp = (size_t)atoll(argv[3]); // 10 for 1024 samples
         const char *in_filename = argv[4];
         const char *out_filename = argv[5];
         size_t channel = 0;
         size_t height = 512;
         double db_range = 160.0;
-        return fft(start, window_size, in_filename, out_filename, channel, height, db_range);
+        return fft(start, window_exp, in_filename, out_filename, channel, height, db_range);
     }
 
     if (strcmp(tool, "scope") == 0)
@@ -432,14 +546,29 @@ int main(int argc, char **argv)
             fprintf(stderr, "Usage: %s scope start frequency periods in-filename out-filename\n", argv[0]);
             return -1;
         }
-        size_t start = (size_t)atoll(argv[2]);
-        double frequency = (double)atof(argv[3]);
-        size_t periods = (size_t)atoll(argv[4]);
+        size_t start = (size_t)atoll(argv[2]);    // 0 for start of file
+        double frequency = (double)atof(argv[3]); // 440.0 for A4
+        size_t periods = (size_t)atoll(argv[4]);  // 1 for one period
         const char *in_filename = argv[5];
         const char *out_filename = argv[6];
         size_t channel = 0;
         size_t height = 512;
         return scope(start, frequency, periods, in_filename, out_filename, channel, height);
+    }
+
+    if (strcmp(tool, "peaks") == 0)
+    {
+        if (argc < 5)
+        {
+            fprintf(stderr, "Usage: %s peaks start window-exp filename\n", argv[0]);
+            return -1;
+        }
+        size_t start = (size_t)atoll(argv[2]);      // 0 for start of file
+        size_t window_exp = (size_t)atoll(argv[3]); // 10 gives decent results
+        const char *filename = argv[4];
+        size_t channel = 0;
+        size_t count = 10;
+        return peaks(start, window_exp, filename, channel, count);
     }
 
     return error_type_message(csErrorInvalidArgument, "Unknown tool: %s", tool);
