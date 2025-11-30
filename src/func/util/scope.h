@@ -22,8 +22,6 @@ typedef struct
     double range;
     /** @brief Image render target. */
     RenderPipe *pipe;
-    /** @brief Gamma correction, brightens darker pixels. */
-    int gamma;
     /** @brief Pixel buffer. */
     SCOPE_BUFFER_TYPE *buffers[SCOPE_BUFFER_COUNT];
     /** @brief Pixel buffer index. */
@@ -51,7 +49,7 @@ static void scope_job(void *context_)
         for (size_t i = 0; i < context->pipe->width; i++)
         {
             double value = (double)buffer[j * context->pipe->width + i] / (double)context->periods;
-            uint32_t out = (uint32_t)math_clamp(math_gamma(value, context->gamma) * 0x100, 0, 0xFF);
+            uint32_t out = (uint32_t)math_clamp(value * 0x100, 0, 0xFF);
             out_buffer[j * (out_pitch / sizeof(uint32_t)) + i] = 0xFF000000 | (out << 16) | (out << 8) | out;
         }
     }
@@ -120,17 +118,15 @@ static void scope_free(__U size_t count, void *context_)
  * @param filename The name of the file to save the image.
  * @param width The width of the image.
  * @param height The height of the image.
- * @param gamma Gamma correction, brightens darker pixels.
  * @param periods The number of periods to accumulate in the plot.
  * @return A pointer to the created scope function.
  */
-Func *scope_create(Func *input, Func *frequency, size_t periods, double range, RenderPipe *pipe, int gamma)
+Func *scope_create(Func *input, Func *frequency, size_t periods, double range, RenderPipe *pipe)
 {
     ScopeContext initial = {
         .periods = periods,
         .range = range,
         .pipe = pipe,
-        .gamma = gamma,
     };
     return func_create(scope_init, scope_eval, scope_free, NULL, sizeof(ScopeContext), &initial, FuncFlagNone, input, frequency);
 }

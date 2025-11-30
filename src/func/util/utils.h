@@ -68,7 +68,7 @@ Func *mem(Func *input)
 /** @brief Plot oscilloscope. */
 Func *scope(Func *input, Func *frequency, RenderPipe *pipe)
 {
-    return scope_create(input, frequency, 1, 1.05, pipe, 1);
+    return scope_create(input, frequency, 1, 1.05, pipe);
 }
 
 /** @brief Plot spectrogram. */
