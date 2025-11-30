@@ -216,6 +216,16 @@ csError cut(size_t start, size_t length, const char *in_filename, const char *ou
     return csErrorNone;
 }
 
+/**
+ * @brief Create a spectrogram of a WAV file.
+ *
+ * @param window_exp Window exponent, e.g. 10 for 1024 samples
+ * @param step_seconds Step size in seconds
+ * @param in_filename Input filename
+ * @param out_filename Output filename
+ * @param channel Channel index
+ * @return csError Error code, zero on success
+ */
 csError gram(size_t window_exp, double step_seconds, const char *in_filename, const char *out_filename, size_t channel)
 {
     PcmBuffer buffer = {0};
@@ -274,6 +284,17 @@ csError gram(size_t window_exp, double step_seconds, const char *in_filename, co
     return csErrorNone;
 }
 
+/**
+ * @brief Create a FFT plot of a given frequency.
+ *
+ * @param window_exp Window exponent, e.g. 10 for 1024 samples
+ * @param in_filename Input filename
+ * @param out_filename Output filename
+ * @param channel Channel index
+ * @param height Height of the plot
+ * @param db_range DB range
+ * @return csError Error code, zero on success
+ */
 csError fft(size_t window_exp, const char *in_filename, const char *out_filename, size_t channel, size_t height, double db_range)
 {
     PcmBuffer buffer = {0};
@@ -325,7 +346,18 @@ csError fft(size_t window_exp, const char *in_filename, const char *out_filename
     return csErrorNone;
 }
 
-csError scope(double frequency, size_t periods, const char *in_filename, const char *out_filename, size_t channel, size_t height)
+/**
+ * @brief Create a scope plot of a given frequency.
+ *
+ * @param frequency Frequency that will be primarily visible
+ * @param periods Number of periods to plot
+ * @param in_filename Input filename
+ * @param out_filename Output filename
+ * @param channel Channel index
+ * @param height Height of the plot
+ * @return csError Error code, zero on success
+ */
+csError scope(double frequency_or_periods, const char *in_filename, const char *out_filename, size_t channel, size_t height)
 {
     PcmBuffer buffer = {0};
     csError error = reader_read_filename(&buffer, in_filename);
@@ -333,7 +365,36 @@ csError scope(double frequency, size_t periods, const char *in_filename, const c
     {
         return error;
     }
-    size_t width = (size_t)(buffer.sample_rate / frequency);
+    double frequency = frequency_or_periods;
+    // Auto-detect frequency
+    if (frequency_or_periods <= 0.0)
+    {
+        size_t window_size = 1 << 10;
+        double *fft_array = (double *)malloc_(window_size * sizeof(double));
+        if (fft_array == NULL)
+        {
+            reader_free(&buffer);
+            return error_type(csErrorMemoryAlloc);
+        }
+        for (size_t i = 0; i < window_size; i++)
+        {
+            fft_array[i] = (double)buffer.samples[(i * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
+        }
+        double db = 0.0;
+        fourier_find_dominant(fft_array, window_size, buffer.sample_rate, &frequency, &db);
+        printf("Detected frequency: %.2f Hz\n", frequency);
+        // Auto-detect period count
+        double periods = -frequency_or_periods;
+        if (frequency_or_periods == 0.0)
+        {
+            periods = floor(height * frequency / (double)buffer.sample_rate);
+            printf("Detected periods: %.0f\n", periods);
+        }
+        frequency /= periods;
+        free_(fft_array);
+    }
+    double period = (double)buffer.sample_rate / frequency;
+    size_t width = (size_t)floor(period);
     uint32_t *image_buffer = (uint32_t *)calloc_(width * height, sizeof(uint32_t));
     if (image_buffer == NULL)
     {
@@ -344,15 +405,16 @@ csError scope(double frequency, size_t periods, const char *in_filename, const c
     {
         image_buffer[(height / 2) * width + i] = 0xFF222222;
     }
-    for (size_t i = 0; i < width * periods; i++)
+    for (size_t i = 0; i < buffer.sample_count; i++)
     {
         double amplitude = (double)buffer.samples[(i * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
         size_t y = (size_t)math_clamp(height * (amplitude + 1.0) / 2.0, 0.0, height - 1);
-        size_t color = (size_t)math_clamp((double)0x100 * (double)i / (double)width / (double)periods, 0.0, 0xFF);
-        image_buffer[y * width + i % width] = 0xFF000000 + (color << 16) + (color << 8) + color;
+        size_t color = (size_t)math_clamp((double)0x10 + (double)0xF0 * (double)i / (double)buffer.sample_count, 0.0, 0xFF);
+        size_t x = (size_t)floor(fmod((double)i, period));
+        image_buffer[y * width + x] = 0xFF000000 + (color << 16) + (color << 8) + color;
     }
-    printf("Period: %zu samples\n", width);
-    ppm_bgra_to_rgb((unsigned char *)image_buffer, width, height);
+    printf("Period: %.3f samples\n", period);
+    ppm_bgra_to_rgb((unsigned char *)image_buffer, width, height); // assumes little endian
     ppm_write_filename(out_filename, width, height, (unsigned char *)image_buffer);
     free_(image_buffer);
     reader_free(&buffer);
@@ -367,31 +429,16 @@ static int freq_compare(const void *a, const void *b, const void *context)
     return a_value < b_value ? 1 : (a_value > b_value ? -1 : 0);
 }
 
-bool interpolate_max(double *array, size_t index, double bin_size, double *frequency_out, double *db_out)
-{
-    double frequency = (double)index * bin_size;
-    double db = fourier_value_to_db(array[index]);
-    double a = fourier_value_to_db(array[index - 1]);
-    double b = fourier_value_to_db(array[index + 1]);
-    if (db < a || db < b)
-    {
-        *frequency_out = frequency;
-        *db_out = db;
-        return false;
-    }
-    double denom = a + b - 2.0 * db;
-    if (denom != 0.0)
-    {
-        double delta = 0.5 * (a - b) / denom;
-        frequency += delta * bin_size;
-        db -= 0.25 * (a - b) * delta;
-    }
-    *frequency_out = frequency;
-    *db_out = db;
-    return true;
-}
-
-csError peaks(size_t window_exp, const char *filename, size_t channel, size_t count)
+/**
+ * @brief Find the dominant frequencies in a WAV file.
+ *
+ * @param window_exp Window exponent, e.g. 10 for 1024 samples
+ * @param filename Input filename
+ * @param channel Channel index
+ * @param count Number of frequencies to find
+ * @return csError Error code, zero on success
+ */
+csError dominant(size_t window_exp, const char *filename, size_t channel, size_t count)
 {
     PcmBuffer buffer = {0};
     csError error = reader_read_filename(&buffer, filename);
@@ -450,7 +497,7 @@ csError peaks(size_t window_exp, const char *filename, size_t channel, size_t co
             continue;
         }
         double frequency = -1.0, db = -1.0;
-        if (!interpolate_max(fft_array, index, bin_size, &frequency, &db))
+        if (!fourier_interpolate_max(fft_array, index, bin_size, &frequency, &db))
         {
             continue;
         }
@@ -484,6 +531,15 @@ csError peaks(size_t window_exp, const char *filename, size_t channel, size_t co
     return csErrorNone;
 }
 
+/**
+ * @brief Find the melody in a WAV file.
+ *
+ * @param window_exp Window exponent, e.g. 10 for 1024 samples
+ * @param filename Input filename
+ * @param channel Channel index
+ * @param db_threshold DB threshold, below this value is ignored
+ * @return csError Error code, zero on success
+ */
 csError melody(size_t window_exp, const char *filename, size_t channel, double db_threshold)
 {
     PcmBuffer buffer = {0};
@@ -505,18 +561,8 @@ csError melody(size_t window_exp, const char *filename, size_t channel, double d
         {
             fft_array[j] = (double)buffer.samples[((i * window_size + j) * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
         }
-        fourier_transform(fft_array, window_size, 0, fft_array);
-        size_t index = 0;
-        for (size_t j = 1; j < window_size / 2 - 1; j++)
-        {
-            if (fft_array[index] < fft_array[j])
-            {
-                index = j;
-            }
-        }
-        double bin_size = (double)buffer.sample_rate / (double)window_size;
         double frequency = -1.0, db = -1.0;
-        interpolate_max(fft_array, index, bin_size, &frequency, &db);
+        fourier_find_dominant(fft_array, window_size, buffer.sample_rate, &frequency, &db);
         if (frequency < 1.0 || db < db_threshold)
         {
             continue;
@@ -548,7 +594,7 @@ int main(int argc, char **argv)
     const char *tool = argv[1];
     if (strcmp(tool, "info") == 0)
     {
-        if (argc < 3)
+        if (argc != 3)
         {
             fprintf(stderr, "Usage: %s info filename\n", argv[0]);
             return -1;
@@ -559,7 +605,7 @@ int main(int argc, char **argv)
 
     if (strcmp(tool, "play") == 0)
     {
-        if (argc < 3)
+        if (argc != 3)
         {
             fprintf(stderr, "Usage: %s play filename\n", argv[0]);
             return -1;
@@ -570,7 +616,7 @@ int main(int argc, char **argv)
 
     if (strcmp(tool, "cut") == 0)
     {
-        if (argc < 6)
+        if (argc != 6)
         {
             fprintf(stderr, "Usage: %s cut start length in-filename out-filename\n", argv[0]);
             return -1;
@@ -584,7 +630,7 @@ int main(int argc, char **argv)
 
     if (strcmp(tool, "gram") == 0)
     {
-        if (argc < 6)
+        if (argc != 6)
         {
             fprintf(stderr, "Usage: %s gram window-exp step-seconds in-filename out-filename\n", argv[0]);
             return -1;
@@ -599,14 +645,14 @@ int main(int argc, char **argv)
 
     if (strcmp(tool, "fft") == 0)
     {
-        if (argc < 6)
+        if (argc != 6)
         {
             fprintf(stderr, "Usage: %s fft window-exp in-filename out-filename\n", argv[0]);
             return -1;
         }
-        size_t window_exp = (size_t)atoll(argv[3]); // 10 for 1024 samples
-        const char *in_filename = argv[4];
-        const char *out_filename = argv[5];
+        size_t window_exp = (size_t)atoll(argv[2]); // 10 for 1024 samples
+        const char *in_filename = argv[3];
+        const char *out_filename = argv[4];
         size_t channel = 0;
         size_t height = 512;
         double db_range = 160.0;
@@ -615,37 +661,36 @@ int main(int argc, char **argv)
 
     if (strcmp(tool, "scope") == 0)
     {
-        if (argc < 6)
+        if (argc != 5)
         {
-            fprintf(stderr, "Usage: %s scope frequency periods in-filename out-filename\n", argv[0]);
+            fprintf(stderr, "Usage: %s scope frequency-or-neg-periods in-filename out-filename\n", argv[0]);
             return -1;
         }
-        double frequency = (double)atof(argv[3]); // 440.0 for A4
-        size_t periods = (size_t)atoll(argv[4]);  // 1 for one period
-        const char *in_filename = argv[5];
-        const char *out_filename = argv[6];
+        double frequency = (double)atof(argv[2]); // 440.0 for A4, -N for N auto-detectedperiods
+        const char *in_filename = argv[3];
+        const char *out_filename = argv[4];
         size_t channel = 0;
         size_t height = 512;
-        return scope(frequency, periods, in_filename, out_filename, channel, height);
+        return scope(frequency, in_filename, out_filename, channel, height);
     }
 
-    if (strcmp(tool, "peaks") == 0)
+    if (strcmp(tool, "dominant") == 0)
     {
-        if (argc < 4)
+        if (argc != 4)
         {
-            fprintf(stderr, "Usage: %s peaks window-exp filename\n", argv[0]);
+            fprintf(stderr, "Usage: %s dominant window-exp filename\n", argv[0]);
             return -1;
         }
-        size_t window_exp = (size_t)atoll(argv[3]); // 10 gives decent results
-        const char *filename = argv[4];
+        size_t window_exp = (size_t)atoll(argv[2]); // 10 gives decent results
+        const char *filename = argv[3];
         size_t channel = 0;
         size_t count = 10;
-        return peaks(window_exp, filename, channel, count);
+        return dominant(window_exp, filename, channel, count);
     }
 
     if (strcmp(tool, "melody") == 0)
     {
-        if (argc < 4)
+        if (argc != 4)
         {
             fprintf(stderr, "Usage: %s melody window-exp filename\n", argv[0]);
             return -1;

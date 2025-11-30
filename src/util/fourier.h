@@ -98,4 +98,43 @@ void fourier_to_rgb(double *in_buffer, size_t in_offset, uint32_t *out_buffer, s
     }
 }
 
+bool fourier_interpolate_max(double *array, size_t index, double bin_size, double *frequency_out, double *db_out)
+{
+    double frequency = (double)index * bin_size;
+    double db = fourier_value_to_db(array[index]);
+    double a = fourier_value_to_db(array[index - 1]);
+    double b = fourier_value_to_db(array[index + 1]);
+    if (db < a || db < b)
+    {
+        *frequency_out = frequency;
+        *db_out = db;
+        return false;
+    }
+    double denom = a + b - 2.0 * db;
+    if (denom != 0.0)
+    {
+        double delta = 0.5 * (a - b) / denom;
+        frequency += delta * bin_size;
+        db -= 0.25 * (a - b) * delta;
+    }
+    *frequency_out = frequency;
+    *db_out = db;
+    return true;
+}
+
+void fourier_find_dominant(double *array, size_t window_size, size_t sample_rate, double *frequency_out, double *db_out)
+{
+    fourier_transform(array, window_size, 0, array);
+    size_t index = 0;
+    for (size_t j = 1; j < window_size / 2 - 1; j++)
+    {
+        if (array[index] < array[j])
+        {
+            index = j;
+        }
+    }
+    double bin_size = (double)sample_rate / (double)window_size;
+    fourier_interpolate_max(array, index, bin_size, frequency_out, db_out);
+}
+
 #endif // CSYNTH_FOURIER_H
