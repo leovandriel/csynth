@@ -66,9 +66,9 @@ Func *mem(Func *input)
 }
 
 /** @brief Plot oscilloscope. */
-Func *scope(Func *frequency, RenderPipe *pipe, Func *input)
+Func *scope(Func *frequency, Func *input, RenderPipe *pipe)
 {
-    return scope_create(mul(param(EvalParamPitchTick), frequency), 10, 10, 1.0, pipe, input);
+    return scope_create(frequency != NULL ? mul(param(EvalParamPitchTick), frequency) : NULL, 1000, input, pipe);
 }
 
 /** @brief Plot spectrogram. */

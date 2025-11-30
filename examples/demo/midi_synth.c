@@ -1,7 +1,8 @@
-//usr/bin/gcc "$0" -o bin/midi_synth -Wall -Wextra -O3 -lm -lportaudio -lportmidi && ./bin/midi_synth "$@"; exit $?
+//usr/bin/gcc "$0" -o bin/midi_synth -Wall -Wextra -O3 -lm -lportaudio -lportmidi -lSDL2 && ./bin/midi_synth "$@"; exit $?
 #include "../../src/func/all.h"
 #include "../../src/run/midi_run.h"
 #include "../../src/run/play.h"
+#include "../../src/run/screen_run.h"
 #include "../../src/util/func_tools.h"
 
 #define PITCH_SHIFT_SEMITONES -12
@@ -29,5 +30,10 @@ int main(void)
     synth = reverb(reverb_time, reverb_decay, synth);
     synth = mul(post_gain, synth);
     func drums = add(pad(10, 40, snare()), pad(10, 41, bdrum()), pad(10, 42, hihat()));
-    return play_midi(fps("fps", add(mul_(.2, synth), mul_(5, drums))));
+    func all = add(mul_(.2, synth), mul_(5, drums));
+    RenderPipe scope_pipe = {.width = 512, .height = 512};
+    RenderPipe gram_pipe = {.width = 512, .height = 512};
+    all = scope(NULL, all, &scope_pipe);
+    all = gram(all, &gram_pipe);
+    return play(all, midi_run(), screen_run(&scope_pipe), screen_run(&gram_pipe));
 }

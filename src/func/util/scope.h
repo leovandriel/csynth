@@ -7,15 +7,13 @@
 #include "../../io/file.h"
 #include "../../ui/render_pipe.h"
 #include "../../util/error.h"
+#include "../../util/fourier.h"
 #include "../../util/math.h"
 #include "../../util/worker.h"
-#include "../../util/fourier.h"
 
 /** @see scope_create */
 typedef struct
 {
-    /** @brief The range of the input, typically slightly above one. */
-    double range;
     /** @brief Image render target. */
     RenderPipe *pipe;
     /** @brief Whether to auto-detect the tick frequency. */
@@ -30,15 +28,11 @@ typedef struct
     size_t trail_count;
     /** @brief The number of samples added to the buffer, up to trail_count. */
     size_t trail_index;
-    /** @brief The number of samples between renders. */
-    size_t render_count;
-    /** @brief The number of samples since last render, up to render_count. */
-    size_t render_index;
     /** @brief The current phase of the plot. */
     double phase;
     /** @brief Render buffer. */
-    double *input_render;
-    double *phase_render;
+    double *render_input_buffer;
+    double *render_phase_buffer;
     /** Async worker. */
     Worker worker;
 } ScopeContext;
@@ -55,18 +49,32 @@ static void scope_job(void *context_)
     memset(out_buffer, 0, context->pipe->width * context->pipe->height * sizeof(uint32_t));
     for (size_t i = 0; i < context->trail_count; i++)
     {
-        double phase = context->phase_render[i];
-        double input = context->input_render[i];
+        double phase = context->render_phase_buffer[i];
+        double input = context->render_input_buffer[i];
+        if (input <= -1.0 || input >= 1.0 || phase < 0.0 || phase >= 1.0)
+        {
+            continue;
+        }
         size_t x_coord = (size_t)round(phase * (double)context->pipe->width);
-        size_t y_coord = (size_t)((double)context->pipe->height * (input / context->range + 1) * 0.5);
+        size_t y_coord = (size_t)((double)context->pipe->height * (input + 1.0) * 0.5);
+        if (x_coord >= context->pipe->width || y_coord >= context->pipe->height)
+        {
+            continue;
+        }
         uint32_t out = (uint32_t)math_clamp((double)0x100 * (double)i / (double)context->trail_count, 0, 0xFF);
         out_buffer[y_coord * context->pipe->width + x_coord] = 0xFF000000 | (out << 16) | (out << 8) | out;
     }
     render_pipe_unlock(context->pipe);
     if (context->auto_detect)
     {
+        size_t window_size = 1;
+        while (window_size <= context->trail_count)
+        {
+            window_size <<= 1;
+        }
+        window_size >>= 1;
         double db = 0.0, frequency = 0.0;
-        fourier_find_dominant(context->input_render, context->trail_count, 1, &frequency, &db);
+        fourier_find_dominant(context->render_input_buffer, window_size, 1, &frequency, &db);
         context->detected_tick = frequency;
     }
 }
@@ -80,16 +88,12 @@ static double scope_eval(__U size_t count, Gen **args, Eval *eval, void *context
     if (++context->trail_index >= context->trail_count)
     {
         context->trail_index = 0;
-    }
-    if (++context->render_index >= context->render_count)
-    {
-        context->render_index = 0;
-        memcpy(context->input_render, context->input_buffer, context->trail_count * sizeof(double));
-        memcpy(context->phase_render, context->phase_buffer, context->trail_count * sizeof(double));
+        memcpy(context->render_input_buffer, context->input_buffer, context->trail_count * sizeof(double));
+        memcpy(context->render_phase_buffer, context->phase_buffer, context->trail_count * sizeof(double));
         worker_run(&context->worker, scope_job, context);
     }
     context->phase += context->auto_detect ? context->detected_tick : gen_eval(args[1], eval);
-    if (context->phase >= 1.0)
+    while (context->phase >= 1.0)
     {
         context->phase -= 1.0;
     }
@@ -110,18 +114,18 @@ static csError scope_init(__U size_t count, __U Gen **args, void *context_)
         free_(context->input_buffer);
         return error_type(csErrorMemoryAlloc);
     }
-    context->input_render = (double *)calloc_(context->trail_count, sizeof(double));
-    if (context->input_render == NULL)
+    context->render_input_buffer = (double *)calloc_(context->trail_count, sizeof(double));
+    if (context->render_input_buffer == NULL)
     {
         free_(context->phase_buffer);
         free_(context->input_buffer);
         return error_type(csErrorMemoryAlloc);
     }
-    context->phase_render = (double *)calloc_(context->trail_count, sizeof(double));
-    if (context->phase_render == NULL)
+    context->render_phase_buffer = (double *)calloc_(context->trail_count, sizeof(double));
+    if (context->render_phase_buffer == NULL)
     {
         free_(context->phase_buffer);
-        free_(context->input_render);
+        free_(context->render_input_buffer);
         free_(context->input_buffer);
         return error_type(csErrorMemoryAlloc);
     }
@@ -134,28 +138,25 @@ static void scope_free(__U size_t count, void *context_)
     worker_free(&context->worker);
     free_(context->input_buffer);
     free_(context->phase_buffer);
-    free_(context->input_render);
-    free_(context->phase_render);
+    free_(context->render_input_buffer);
+    free_(context->render_phase_buffer);
 }
 
 /**
  * @brief Creates a scope function that plots the wave of a given frequency.
  *
  * @param tick The frequency of the plot, i.e. which frequency will be primarily visible. NULL for auto-detect.
- * @param samples The number of trailing samples to display.
- * @param range The range of the input, typically slightly above one.
+ * @param trail_count The number of trailing samples to display.
  * @param pipe The render pipe to use.
  * @param input The input function.
  * @return A pointer to the created scope function.
  */
-Func *scope_create(Func *tick, size_t trail_exp, size_t render_exp, double range, RenderPipe *pipe, Func *input)
+Func *scope_create(Func *tick, size_t trail_count, Func *input, RenderPipe *pipe)
 {
     ScopeContext initial = {
-        .trail_count = 1 << trail_exp,
-        .render_count = 1 << render_exp,
-        .range = range,
+        .trail_count = trail_count,
         .pipe = pipe,
-        .auto_detect = tick,
+        .auto_detect = (tick == NULL),
     };
     if (tick == NULL)
     {

@@ -37,10 +37,10 @@ Or, if you have a MIDI keyboard:
 ## Tutorial
 
 To make music in CSynth, you can combine basic (mathematical) functions to
-create sounds, instruments, and compositions.
+create sounds, instruments, and compositions. Let's create a single note with
+reverb. 
 
-Let's create a single note with reverb. Start by writing a minimal C program
-that plays a 440 Hz sine wave:
+Start by writing a minimal C program that plays a 440 Hz sine wave:
 
 ```c
 #include "./src/func/all.h"
