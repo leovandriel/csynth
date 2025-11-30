@@ -274,7 +274,7 @@ csError gram(size_t window_exp, double step_seconds, const char *in_filename, co
     return csErrorNone;
 }
 
-csError fft(size_t start, size_t window_exp, const char *in_filename, const char *out_filename, size_t channel, size_t height, double db_range)
+csError fft(size_t window_exp, const char *in_filename, const char *out_filename, size_t channel, size_t height, double db_range)
 {
     PcmBuffer buffer = {0};
     csError error = reader_read_filename(&buffer, in_filename);
@@ -307,7 +307,7 @@ csError fft(size_t start, size_t window_exp, const char *in_filename, const char
     }
     for (size_t i = 0; i < window_size; i++)
     {
-        in_buffer[i] = (double)buffer.samples[((start + i) * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
+        in_buffer[i] = (double)buffer.samples[(i * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
     }
     fourier_transform(in_buffer, window_size, 0, in_buffer);
     for (size_t j = 0; j < width; j++)
@@ -325,7 +325,7 @@ csError fft(size_t start, size_t window_exp, const char *in_filename, const char
     return csErrorNone;
 }
 
-csError scope(size_t start, double frequency, size_t periods, const char *in_filename, const char *out_filename, size_t channel, size_t height)
+csError scope(double frequency, size_t periods, const char *in_filename, const char *out_filename, size_t channel, size_t height)
 {
     PcmBuffer buffer = {0};
     csError error = reader_read_filename(&buffer, in_filename);
@@ -346,7 +346,7 @@ csError scope(size_t start, double frequency, size_t periods, const char *in_fil
     }
     for (size_t i = 0; i < width * periods; i++)
     {
-        double amplitude = (double)buffer.samples[((start + i) * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
+        double amplitude = (double)buffer.samples[(i * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
         size_t y = (size_t)math_clamp(height * (amplitude + 1.0) / 2.0, 0.0, height - 1);
         size_t color = (size_t)math_clamp((double)0x100 * (double)i / (double)width / (double)periods, 0.0, 0xFF);
         image_buffer[y * width + i % width] = 0xFF000000 + (color << 16) + (color << 8) + color;
@@ -361,13 +361,37 @@ csError scope(size_t start, double frequency, size_t periods, const char *in_fil
 
 static int freq_compare(const void *a, const void *b, const void *context)
 {
-    double *in_buffer = (double *)context;
-    double a_value = in_buffer[*(size_t *)a];
-    double b_value = in_buffer[*(size_t *)b];
+    double *array = (double *)context;
+    double a_value = array[*(size_t *)a];
+    double b_value = array[*(size_t *)b];
     return a_value < b_value ? 1 : (a_value > b_value ? -1 : 0);
 }
 
-csError peaks(size_t start, size_t window_exp, const char *filename, size_t channel, size_t count)
+bool interpolate_max(double *array, size_t index, double bin_size, double *frequency_out, double *db_out)
+{
+    double frequency = (double)index * bin_size;
+    double db = fourier_value_to_db(array[index]);
+    double a = fourier_value_to_db(array[index - 1]);
+    double b = fourier_value_to_db(array[index + 1]);
+    if (db < a || db < b)
+    {
+        *frequency_out = frequency;
+        *db_out = db;
+        return false;
+    }
+    double denom = a + b - 2.0 * db;
+    if (denom != 0.0)
+    {
+        double delta = 0.5 * (a - b) / denom;
+        frequency += delta * bin_size;
+        db -= 0.25 * (a - b) * delta;
+    }
+    *frequency_out = frequency;
+    *db_out = db;
+    return true;
+}
+
+csError peaks(size_t window_exp, const char *filename, size_t channel, size_t count)
 {
     PcmBuffer buffer = {0};
     csError error = reader_read_filename(&buffer, filename);
@@ -376,35 +400,35 @@ csError peaks(size_t start, size_t window_exp, const char *filename, size_t chan
         return error;
     }
     size_t window_size = 1 << window_exp;
-    double *in_buffer = (double *)malloc_(window_size * sizeof(double));
-    if (in_buffer == NULL)
+    double *fft_array = (double *)malloc_(window_size * sizeof(double));
+    if (fft_array == NULL)
     {
         reader_free(&buffer);
         return error_type(csErrorMemoryAlloc);
     }
-    size_t *sort_buffer = (size_t *)malloc_(window_size / 2 * sizeof(size_t));
-    if (sort_buffer == NULL)
+    size_t *sort_array = (size_t *)malloc_(window_size / 2 * sizeof(size_t));
+    if (sort_array == NULL)
     {
-        free_(in_buffer);
+        free_(fft_array);
         reader_free(&buffer);
         return error_type(csErrorMemoryAlloc);
     }
     for (size_t i = 0; i < window_size; i++)
     {
-        in_buffer[i] = (double)buffer.samples[((start + i) * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
+        fft_array[i] = (double)buffer.samples[(i * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
     }
-    fourier_transform(in_buffer, window_size, 0, in_buffer);
+    fourier_transform(fft_array, window_size, 0, fft_array);
     for (size_t i = 0; i < window_size / 2; i++)
     {
-        sort_buffer[i] = i;
+        sort_array[i] = i;
     }
-    sort(sort_buffer, window_size / 2, sizeof(size_t), freq_compare, in_buffer);
+    sort(sort_array, window_size / 2, sizeof(size_t), freq_compare, fft_array);
     double bin_size = (double)buffer.sample_rate / (double)window_size;
     double dominant_freq = -1.0, dominant_db = -1.0;
     size_t found = 0;
     for (size_t i = 0; i < window_size / 2; i++)
     {
-        size_t index = sort_buffer[i];
+        size_t index = sort_array[i];
         // ignore DC and Nyquist frequencies
         if (index == 0 || index == window_size / 2 - 1)
         {
@@ -414,7 +438,7 @@ csError peaks(size_t start, size_t window_exp, const char *filename, size_t chan
         bool is_near = false;
         for (size_t j = 0; j < i; j++)
         {
-            size_t diff = index > sort_buffer[j] ? index - sort_buffer[j] : sort_buffer[j] - index;
+            size_t diff = index > sort_array[j] ? index - sort_array[j] : sort_array[j] - index;
             if (diff <= 1)
             {
                 is_near = true;
@@ -425,21 +449,10 @@ csError peaks(size_t start, size_t window_exp, const char *filename, size_t chan
         {
             continue;
         }
-        double frequency = (double)index * bin_size;
-        double db = fourier_value_to_db(in_buffer[index]);
-        double a = fourier_value_to_db(in_buffer[index - 1]);
-        double b = fourier_value_to_db(in_buffer[index + 1]);
-        if (db < a || db < b)
+        double frequency = -1.0, db = -1.0;
+        if (!interpolate_max(fft_array, index, bin_size, &frequency, &db))
         {
             continue;
-        }
-        // interpolate for higher precision
-        double denom = a + b - 2.0 * db;
-        if (denom != 0.0)
-        {
-            double delta = 0.5 * (a - b) / denom;
-            frequency += delta * bin_size;
-            db -= 0.25 * (a - b) * delta;
         }
         if (found == 0)
         {
@@ -465,8 +478,62 @@ csError peaks(size_t start, size_t window_exp, const char *filename, size_t chan
             break;
         }
     }
-    free_(in_buffer);
-    free_(sort_buffer);
+    free_(fft_array);
+    free_(sort_array);
+    reader_free(&buffer);
+    return csErrorNone;
+}
+
+csError melody(size_t window_exp, const char *filename, size_t channel, double db_threshold)
+{
+    PcmBuffer buffer = {0};
+    csError error = reader_read_filename(&buffer, filename);
+    if (error != csErrorNone)
+    {
+        return error;
+    }
+    size_t window_size = 1 << window_exp;
+    double *fft_array = (double *)malloc_(window_size * sizeof(double));
+    if (fft_array == NULL)
+    {
+        reader_free(&buffer);
+        return error_type(csErrorMemoryAlloc);
+    }
+    for (size_t i = 0; i < buffer.sample_count / window_size; i++)
+    {
+        for (size_t j = 0; j < window_size; j++)
+        {
+            fft_array[j] = (double)buffer.samples[((i * window_size + j) * buffer.channel_count + channel) % (buffer.sample_count * buffer.channel_count)] / (double)0x8000;
+        }
+        fourier_transform(fft_array, window_size, 0, fft_array);
+        size_t index = 0;
+        for (size_t j = 1; j < window_size / 2 - 1; j++)
+        {
+            if (fft_array[index] < fft_array[j])
+            {
+                index = j;
+            }
+        }
+        double bin_size = (double)buffer.sample_rate / (double)window_size;
+        double frequency = -1.0, db = -1.0;
+        interpolate_max(fft_array, index, bin_size, &frequency, &db);
+        if (frequency < 1.0 || db < db_threshold)
+        {
+            continue;
+        }
+        double note_index = note_frequency_to_index(frequency);
+        double note_index_frac = note_index - round(note_index);
+        char note[4];
+        note_index_to_string(note_index, note, 4);
+        printf("%.3fs: %s %s%.0f%% (%.2f dB)\n",
+               (double)(i * window_size) / (double)buffer.sample_rate,
+               note,
+               note_index_frac > 0.0 ? "+" : "-",
+               fabs(note_index_frac) * 100.0,
+               db);
+    }
+
+    free_(fft_array);
     reader_free(&buffer);
     return csErrorNone;
 }
@@ -534,49 +601,60 @@ int main(int argc, char **argv)
     {
         if (argc < 6)
         {
-            fprintf(stderr, "Usage: %s fft start window-exp in-filename out-filename\n", argv[0]);
+            fprintf(stderr, "Usage: %s fft window-exp in-filename out-filename\n", argv[0]);
             return -1;
         }
-        size_t start = (size_t)atoll(argv[2]);      // 0 for start of file
         size_t window_exp = (size_t)atoll(argv[3]); // 10 for 1024 samples
         const char *in_filename = argv[4];
         const char *out_filename = argv[5];
         size_t channel = 0;
         size_t height = 512;
         double db_range = 160.0;
-        return fft(start, window_exp, in_filename, out_filename, channel, height, db_range);
+        return fft(window_exp, in_filename, out_filename, channel, height, db_range);
     }
 
     if (strcmp(tool, "scope") == 0)
     {
-        if (argc < 7)
+        if (argc < 6)
         {
-            fprintf(stderr, "Usage: %s scope start frequency periods in-filename out-filename\n", argv[0]);
+            fprintf(stderr, "Usage: %s scope frequency periods in-filename out-filename\n", argv[0]);
             return -1;
         }
-        size_t start = (size_t)atoll(argv[2]);    // 0 for start of file
         double frequency = (double)atof(argv[3]); // 440.0 for A4
         size_t periods = (size_t)atoll(argv[4]);  // 1 for one period
         const char *in_filename = argv[5];
         const char *out_filename = argv[6];
         size_t channel = 0;
         size_t height = 512;
-        return scope(start, frequency, periods, in_filename, out_filename, channel, height);
+        return scope(frequency, periods, in_filename, out_filename, channel, height);
     }
 
     if (strcmp(tool, "peaks") == 0)
     {
-        if (argc < 5)
+        if (argc < 4)
         {
-            fprintf(stderr, "Usage: %s peaks start window-exp filename\n", argv[0]);
+            fprintf(stderr, "Usage: %s peaks window-exp filename\n", argv[0]);
             return -1;
         }
-        size_t start = (size_t)atoll(argv[2]);      // 0 for start of file
         size_t window_exp = (size_t)atoll(argv[3]); // 10 gives decent results
         const char *filename = argv[4];
         size_t channel = 0;
         size_t count = 10;
-        return peaks(start, window_exp, filename, channel, count);
+        return peaks(window_exp, filename, channel, count);
+    }
+
+    if (strcmp(tool, "melody") == 0)
+    {
+        if (argc < 4)
+        {
+            fprintf(stderr, "Usage: %s melody window-exp filename\n", argv[0]);
+            return -1;
+        }
+        size_t window_exp = (size_t)atoll(argv[2]); // 10 gives decent results
+        const char *filename = argv[3];
+        size_t channel = 0;
+        double db_threshold = -80.0;
+        return melody(window_exp, filename, channel, db_threshold);
     }
 
     return error_type_message(csErrorInvalidArgument, "Unknown tool: %s", tool);
